@@ -23,8 +23,10 @@ evidence, and tested decoders for game data.
   mutable-cell predicates, and cell-derived object creation. The top-level
   room loader, NMI-request reset, room-screen initialization, and room-state
   snapshot orchestration now form a semantic vertical slice. Controller
-  polling, PPU mode helpers, and CNROM bank selection are also semantic
-  platform modules. Reset and the NMI-paced main loop are reconstructed with
+  polling, both Famicom save-data transports, PPU mode helpers, and CNROM bank
+  selection are also semantic platform modules. The 394-byte save/load payload,
+  its signature, validation, and room-restoration path are reconstructed too.
+  Reset and the NMI-paced main loop are reconstructed with
   their cold/warm boot contract and named frame phases. The NMI handler now
   exposes its 23-task scheduler, OAM/scroll synchronization, controller paths,
   modular counters, and audio tick. OAM staging-to-DMA construction and full
@@ -65,13 +67,17 @@ evidence, and tested decoders for game data.
   the right-nametable edge expansion and timing delay.
 - `scripts/castle_map.py` validates the complete 10x10 visited-room and current
   room marker geometry.
-- `make format`, `make lint`, 121 unit tests, reproducible disassembly checks,
+- `scripts/famicom_data_io.py` exhaustively validates all 256 expansion-port
+  byte transfers plus the pulse symbols, leader, and shared preamble contract.
+- `scripts/save_data.py` losslessly encodes and decodes the 394-byte save
+  payload and validates the exact `GNUTUEDEB`/`BEDEUTUN` ROM/wire signature.
+- `make format`, `make lint`, 133 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,728 instructions after 30
+  disagreements. Evidence-refined Ghidra exports 9,728 instructions after 33
   evidence-backed data ranges remove 183 false-positive instructions.
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
@@ -155,6 +161,10 @@ make attribute-upload-state # inspect both attribute transfers as JSON
 make validate-attribute-upload # validate 108 attribute PPU writes
 make castle-map-state # inspect the 10x10 map marker geometry
 make validate-castle-map # validate all 100 map positions
+make data-io-state   # inspect pulse and expansion serial contracts as JSON
+make validate-data-io # validate both Famicom data transports
+make save-data       # inspect the 394-byte save-payload layout as JSON
+make validate-save-data # validate payload codec and ROM signature
 make clean           # remove build artifacts only
 ```
 
@@ -184,9 +194,13 @@ scripts/verify_rom.py      focused image/region comparison diagnostics
 scripts/room_data.py       100-room prefix-code decoder
 scripts/room_screen_data.py room status-screen data validator
 scripts/controller_input.py controller serial-polling model
+scripts/famicom_data_io.py pulse and expansion data-transport model
+scripts/save_data.py     394-byte save-payload codec and validator
 scripts/audio_data.py      music table and textual-stream validator
 src/main.asm               assembly entrypoint
-src/preservation/prg.asm   PRG entry region and ordered module includes
+src/input/famicom_data_pulse.asm PRG entry, pulse transport, and module order
+src/input/famicom_data_io.asm shared dispatch and expansion serial transport
+src/game/save_load.asm  save/load payload, validation, and room restoration
 src/input/controllers.asm  controller wrappers and eight-bit serial polling
 src/system/ppu.asm         PPU mode helpers and CNROM bank selection
 src/system/startup.asm     reset signature, initialization, and main frame loop

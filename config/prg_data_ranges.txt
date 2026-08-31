@@ -25,6 +25,9 @@ table EB8F EBBF RuntimeObjectTypeTableHead
 table EBC0 EBE8 RuntimeObjectOverlappingTypeStateTable
 table EF06 EF6A RoomObjectStateOffsets
 data EF6B F8FB RoomObjectStream
+text FB77 FBAB SaveLoadMenuText
+text FC82 FC98 LoadErrorText
+text FC99 FCA1 BackwardSaveSignatureText
 padding FEE8 FF2F PaddingBeforeTileTables
 table FF30 FF93 LeftTileByCell
 table FF94 FFF7 RightTileByCell

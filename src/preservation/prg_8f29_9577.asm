@@ -339,11 +339,11 @@ Func_952D:
     LDA #$FF
     STA PauseMode
     LDA $10
-    STA a:$0741
+    STA RoomRuntimeLoadMirror + $0B
     LDA $11
-    STA a:$0742
+    STA RoomRuntimeLoadMirror + $0C
     LDA $12
-    STA a:$0743
+    STA RoomRuntimeLoadMirror + $0D
     LDA $0D
     STA $14
     LDA $0E

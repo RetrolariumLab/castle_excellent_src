@@ -89,6 +89,40 @@ D1. Eight rotations place A, B, Select, Start, Up, Down, Left, and Right in bits
 has a wrapper for callers that already control NMI; controller 2's poller
 itself enables NMI before returning.
 
+## Famicom data I/O
+
+The Japanese save/load path supports two transports selected by the sign bit
+of contextual zero-page `$1F`. Negative selects pulse-width signaling through
+bit 1 of `$4016`; nonnegative selects an expansion serial protocol that writes
+clock/data phases to `$4016` and samples D2 from `$4017`. Both byte paths are
+MSB-first and share `$17` as their shift buffer. The common wrappers preserve
+X in `$1A`; pulse receive and preamble validation return carry set on failure.
+
+Pulse bytes begin with one long framing cycle. Each zero is one long cycle;
+each one is two short cycles; four short stop cycles follow the eight data
+bits. The transmitted leader is 33 groups of 256 short pairs. Expansion
+transactions strobe `$00,$02`, send `00 AA 55`, and transfer each bit with
+clock-high then clock-low writes while holding the data bit stable. The
+receiver ignores the first byte and validates the following `AA 55` pair.
+
+The caller serializes the current room and all mutable/persistent room state.
+This proves the software protocol but not the exact external accessory, so
+module and symbol names remain peripheral-neutral.
+
+The wire payload after the transport preamble is exactly 394 bytes. Its first
+two bytes are current room and runtime-tail state, followed by 14 runtime bytes.
+The next blocks read RAM in descending address order: 120 bytes from
+`$0607-$0590`, 150 from `$069D-$0608`, and 100 visited flags from
+`$0701-$069E`. Eight bytes `BEDEUTUN` terminate the payload. ROM stores the
+nine-byte reverse text `GNUTUEDEB` at `$FC99`; the loops use indexes 8 through
+1, deliberately excluding the first physical `G`.
+
+Load mirrors these traversals and validates the signature before rebuilding
+the room, objects, attributes, scroll, and mutable cell beneath the restored
+player position. Carry errors are checked for the room byte and every repeated
+region byte. The single runtime-tail byte at payload offset 1 is stored without
+a carry check, an original behavior retained by the reconstruction.
+
 ## Room pipeline
 
 ```text

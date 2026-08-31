@@ -269,7 +269,7 @@ Label_A56C:
     .byte $85, $1B, $29, $07, $A8, $A5, $1B, $86, $1B, $46, $1B, $6A, $46, $1B, $6A, $46
     .byte $1B, $6A, $AA, $B9, $5B, $A5, $60
 
-Func_A58A:
+ConvertPixelPositionToTileCoordinates:
     LSR A
     TXA
     ROR A
@@ -338,9 +338,9 @@ Label_A616:
     TAY
     LDX $21
     LDA $22
-    JSR Func_A58A
-    JSR Func_A66D
-    JSR Func_A70A
+    JSR ConvertPixelPositionToTileCoordinates
+    JSR FindMutableCellOrdinalAtPosition
+    JSR RestoreMutableCellByOrdinal
     LDA $3B
     BMI Label_A63B
     LDA $38
@@ -393,7 +393,7 @@ Label_A664:
     BNE Label_A661
     RTS
 
-Func_A66D:
+FindMutableCellOrdinalAtPosition:
     STX $21
     STY $22
     JSR Func_A5A4

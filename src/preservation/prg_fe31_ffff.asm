@@ -17,7 +17,7 @@ Func_FE31:
     STA $22
     LDA #$84
     STA $21
-    JSR Func_FCEA
+    JSR ShowBackgroundOnlyMessage
     JSR StopAudioStreams
     JSR ClearSoundRequests
     JSR LoadAudioTrackSet2

@@ -16,5 +16,5 @@
 .include "memory/hardware.inc"
 .include "memory/ram.inc"
 
-.include "preservation/prg.asm"
+.include "input/famicom_data_pulse.asm"
 .include "graphics/chr.asm"

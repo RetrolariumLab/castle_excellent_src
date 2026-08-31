@@ -39,6 +39,10 @@
   request reset, screen initialization, status data, and snapshot rotation;
 - [x] reconstruct both controller pollers, fixed PPU mode helpers, and the
   four-entry CNROM bank-select table with exhaustive input-model checks;
+- [x] reconstruct both Famicom save-data transports, their pulse and expansion
+  serial formats, common byte wrappers, preamble, and error-return contracts;
+- [x] reconstruct the 394-byte save payload, reversed RAM traversals, exact
+  `BEDEUTUN` signature, load-error path, and post-load room restoration;
 - [x] reconstruct Reset and the NMI-paced main loop, including cold/warm boot,
   the `POWER`/`POW` signature contract, and the two-NMI frame gate;
 - [x] reconstruct the common NMI frame handler, 23-task request scheduler,

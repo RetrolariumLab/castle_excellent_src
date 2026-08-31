@@ -2,6 +2,156 @@
   "schema_version": 1,
   "symbols": [
     {
+      "address": "0x8000",
+      "name": "DelayLongPulseHalf",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8002",
+      "name": "WaitLongPulseHalf",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8006",
+      "name": "DelayShortPulseHalf",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8008",
+      "name": "WaitShortPulseHalf",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x800C",
+      "name": "WaitForPulseEdge",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x800E",
+      "name": "MeasurePulseEdgeDelay",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x801F",
+      "name": "ReturnPulseEdgeTimeout",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8021",
+      "name": "CountPulseEdgesInWindow",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8025",
+      "name": "SamplePulseWindow",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8037",
+      "name": "PadUnchangedPulseSample",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8041",
+      "name": "EmitLongPulseCycle",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8057",
+      "name": "EmitPulseBitFromCarry",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8059",
+      "name": "EmitShortPulsePair",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x807F",
+      "name": "ReceivePulsePreamble",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x8088",
+      "name": "ReadNextPulsePreambleEdge",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8097",
+      "name": "SendPulsePreamble",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x809D",
+      "name": "SendPulsePreambleCycles",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x80A9",
+      "name": "SendPulseByte",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x80AE",
+      "name": "SendNextPulseBit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x80BC",
+      "name": "ReceivePulseByte",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x80C3",
+      "name": "WaitForPulseStartLow",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x80CF",
+      "name": "MeasurePulseStartWidth",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x80E2",
+      "name": "DecodeNextPulseBit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x80F4",
+      "name": "WaitForPulseBitTail",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x80FE",
+      "name": "ReturnPulseByteStatus",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x80FF",
       "name": "ReadController1",
       "kind": "routine",
@@ -95,6 +245,102 @@
       "address": "0x817C",
       "name": "ChrBankSelectValues",
       "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8180",
+      "name": "SendDataPreamble",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8187",
+      "name": "SendExpansionPreamble",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x819F",
+      "name": "ReceiveDataPreamble",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81A6",
+      "name": "ReceiveExpansionPreamble",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81C0",
+      "name": "ReturnDataPreambleFailure",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81C2",
+      "name": "SendDataByte",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81D0",
+      "name": "SendExpansionBytePath",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81D3",
+      "name": "RestoreDataIoSendX",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81D6",
+      "name": "ReceiveDataByte",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81E2",
+      "name": "ReceivePulseBytePath",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81E5",
+      "name": "ReturnDataByte",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81EA",
+      "name": "SendExpansionByte",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81EC",
+      "name": "SendNextExpansionBit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81FF",
+      "name": "ReceiveExpansionByte",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8201",
+      "name": "ReceiveNextExpansionBit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x821A",
+      "name": "StrobeExpansionPort",
+      "kind": "routine",
       "confidence": "confirmed"
     },
     {
@@ -214,6 +460,24 @@
     {
       "address": "0xA2B1",
       "name": "InitializeNewGame",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA58A",
+      "name": "ConvertPixelPositionToTileCoordinates",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA66D",
+      "name": "FindMutableCellOrdinalAtPosition",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA70A",
+      "name": "RestoreMutableCellByOrdinal",
       "kind": "routine",
       "confidence": "high"
     },
@@ -1686,6 +1950,180 @@
       "name": "HandleSubCommandInput",
       "kind": "routine",
       "confidence": "high"
+    },
+    {
+      "address": "0xF9CC",
+      "name": "OpenSubCommandMenu",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFA74",
+      "name": "UpdateSubCommandMenu",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB51",
+      "name": "ExitSubCommandMenu",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB9D",
+      "name": "LoadTransferMessage",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
+      "address": "0xFBA5",
+      "name": "SaveTransferMessage",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
+      "address": "0xFBFE",
+      "name": "SaveGameState",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFC08",
+      "name": "CheckSaveStateAvailable",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFC10",
+      "name": "BeginSaveTransfer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFC3D",
+      "name": "SendSavedRuntimeState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFC55",
+      "name": "SendSavedMutableRegion",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFC60",
+      "name": "SendSavedObjectRegion",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFC6B",
+      "name": "SendSavedVisitedFlags",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFC76",
+      "name": "SendSaveDataSignature",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFC82",
+      "name": "LoadErrorMessage",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
+      "address": "0xFC8D",
+      "name": "LoadErrorPrompt",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
+      "address": "0xFC99",
+      "name": "BackwardSaveSignatureText",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFCA2",
+      "name": "ShowLoadErrorScreen",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFCD5",
+      "name": "WaitForLoadErrorAcknowledgement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFCEA",
+      "name": "ShowBackgroundOnlyMessage",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFCF6",
+      "name": "WaitForSaveLoadVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD03",
+      "name": "HandleLoadFailure",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD06",
+      "name": "LoadGameState",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD3A",
+      "name": "ReceiveSavedRuntimeState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD48",
+      "name": "ReceiveSavedMutableRegion",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD55",
+      "name": "ReceiveSavedObjectRegion",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD62",
+      "name": "ReceiveSavedVisitedFlags",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD6F",
+      "name": "VerifySaveDataSignature",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD96",
+      "name": "RebuildLoadedRoom",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFDC2",
+      "name": "ReturnFromSaveLoad",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0xFDC5",

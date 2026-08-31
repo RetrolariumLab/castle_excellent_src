@@ -2,6 +2,42 @@
   "schema_version": 1,
   "breakpoints": [
     {
+      "address": "0xFBFE",
+      "name": "SaveGameState",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFD06",
+      "name": "LoadGameState",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8180",
+      "name": "SendDataPreamble",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x819F",
+      "name": "ReceiveDataPreamble",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81C2",
+      "name": "SendDataByte",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x81D6",
+      "name": "ReceiveDataByte",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x80FF",
       "name": "ReadController1",
       "kind": "execute",

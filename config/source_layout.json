@@ -2,29 +2,29 @@
   "schema_version": 1,
   "files": [
     {
-      "path": "src/preservation/prg.asm",
+      "path": "src/input/famicom_data_pulse.asm",
       "start": "0x8000",
       "end": "0x80FF",
-      "title": "Preservation PRG before controller input",
+      "title": "Famicom pulse-width data transport",
       "segment": "PRG",
       "includes_after": [
-        "../input/controllers.asm",
+        "controllers.asm",
         "../system/ppu.asm",
-        "prg_8180_8224.asm",
+        "famicom_data_io.asm",
         "../system/startup.asm",
-        "prg_82ce_8f0f.asm",
+        "../preservation/prg_82ce_8f0f.asm",
         "../game/objects/runtime_record_offsets.asm",
-        "prg_8f29_9577.asm",
+        "../preservation/prg_8f29_9577.asm",
         "../system/nmi_tasks.asm",
-        "prg_9583_a35b.asm",
+        "../preservation/prg_9583_a35b.asm",
         "../game/rooms/load_room.asm",
-        "prg_a3ac_a6d7.asm",
+        "../preservation/prg_a3ac_a6d7.asm",
         "../game/rooms/mutable_cell_predicates.asm",
-        "prg_a70a_ab49.asm",
+        "../preservation/prg_a70a_ab49.asm",
         "../game/rooms/room_metadata.asm",
-        "prg_ac13_b64b.asm",
+        "../preservation/prg_ac13_b64b.asm",
         "../rendering/room_screen.asm",
-        "prg_b7fd_c55c.asm",
+        "../preservation/prg_b7fd_c55c.asm",
         "../system/nmi.asm",
         "../rendering/oam_dma.asm",
         "../rendering/status_upload.asm",
@@ -44,9 +44,10 @@
         "../game/rooms/mutable_cell_state_apply.asm",
         "../game/rooms/persistent_state_load.asm",
         "../game/objects/room_data.asm",
-        "prg_f8fc_fdc4.asm",
+        "../preservation/prg_f8fc_fbfd.asm",
+        "../game/save_load.asm",
         "../game/rooms/persistent_state_save.asm",
-        "prg_fe31_ffff.asm"
+        "../preservation/prg_fe31_ffff.asm"
       ]
     },
     {
@@ -62,10 +63,10 @@
       "title": "PPU state helpers and CNROM bank selection"
     },
     {
-      "path": "src/preservation/prg_8180_8224.asm",
+      "path": "src/input/famicom_data_io.asm",
       "start": "0x8180",
       "end": "0x8225",
-      "title": "Preservation PRG between PPU helpers and reset"
+      "title": "Famicom data-transport selection and expansion-port serial I/O"
     },
     {
       "path": "src/system/startup.asm",
@@ -266,10 +267,16 @@
       "title": "Room object state offsets and terminated object lists"
     },
     {
-      "path": "src/preservation/prg_f8fc_fdc4.asm",
+      "path": "src/preservation/prg_f8fc_fbfd.asm",
       "start": "0xF8FC",
+      "end": "0xFBFE",
+      "title": "Preservation PRG before save and load orchestration"
+    },
+    {
+      "path": "src/game/save_load.asm",
+      "start": "0xFBFE",
       "end": "0xFDC5",
-      "title": "Preservation PRG between object data and persistent-state saving"
+      "title": "Save and load transfer, validation, and room restoration"
     },
     {
       "path": "src/game/rooms/persistent_state_save.asm",

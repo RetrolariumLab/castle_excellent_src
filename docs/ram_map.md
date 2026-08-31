@@ -4,6 +4,11 @@
 | --- | ---: | --- | --- | --- |
 | `$0000` | 1 | global NMI frame counter | high | increment in common NMI frame path and OAM order selection |
 | `$0001-$0002` | 2 | player score, little-endian | high | cold-boot clear and score formatter |
+| `$0005-$0012` | 14 | save/load runtime state, scoped to `$FBFE-$FDC4` | confirmed | symmetric payload send/receive |
+| `$0013` | 1 | save/load runtime tail, scoped to `$FBFE-$FDC4` | confirmed | payload byte one |
+| `$0017` | 1 | data-I/O shift byte, scoped to `$8000-$8224` | confirmed | both transmitters and receivers |
+| `$001A` | 1 | saved X for data-I/O wrappers, scoped to `$8000-$8224` | confirmed | byte send/receive entry points |
+| `$001F` | 1 | data transport selector, scoped to `$8000-$8224` | confirmed | sign dispatches pulse vs expansion path |
 | `$0020` | 1 | polled controller buttons, scoped to `$80FF-$8157` | confirmed | both eight-bit serial pollers |
 | `$00F8` | 1 | current NMI task index | confirmed | high/low handler dispatch and request scan |
 | `$00F9-$00FA` | 2 | NMI task handler pointer, little-endian | confirmed | indirect NMI jump |
@@ -55,6 +60,17 @@ Controller polling contextually names `$20` as `PolledControllerButtons`.
 After eight ROR operations it contains A/B/Select/Start/Up/Down/Left/Right in
 bits 0-7. This scoped name does not claim the same meaning for unrelated uses
 of `$20` elsewhere in the PRG.
+
+Famicom data I/O contextually names `$17` as the byte shift buffer, `$1A` as
+the preserved X register, and `$1F` as the transport selector. The pulse path
+also owns `$2D-$30` as accumulated width, remaining-bit count, leader-page
+count, and sampled input level. These aliases are restricted to
+`$8000-$8224`; the same zero-page bytes have unrelated meanings elsewhere.
+
+Save/load orchestration contextually views `$05-$12` as the 14-byte runtime
+payload and `$13` as its separate tail byte. `$38-$3A` mirrors runtime offsets
+11-13 while the loaded room is decoded and the player-adjacent mutable cell is
+restored. These meanings are scoped to `$FBFE-$FDC4`.
 
 The object loader and state-application path prove the first five bytes of each
 six-byte record: `+0` runtime type, `+1/+2` little-endian X in pixels, `+3` Y in

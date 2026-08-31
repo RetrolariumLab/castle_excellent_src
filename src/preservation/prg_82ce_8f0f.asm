@@ -620,10 +620,10 @@ Label_86D6:
     TAY
     LDA #$01
     LDX #$30
-    JSR Func_A58A
-    JSR Func_A66D
+    JSR ConvertPixelPositionToTileCoordinates
+    JSR FindMutableCellOrdinalAtPosition
     BCS Label_870C
-    JSR Func_A70A
+    JSR RestoreMutableCellByOrdinal
 
 Label_870C:
     JMP Func_952D
@@ -658,10 +658,10 @@ Label_8721:
     TAY
     LDA #$00
     LDX #$00
-    JSR Func_A58A
-    JSR Func_A66D
+    JSR ConvertPixelPositionToTileCoordinates
+    JSR FindMutableCellOrdinalAtPosition
     BCS Label_8755
-    JSR Func_A70A
+    JSR RestoreMutableCellByOrdinal
 
 Label_8755:
     JMP Func_952D
@@ -834,7 +834,7 @@ Label_8A63:
     LDY RuntimeObjectY,X
     INY
     JSR Func_94EA
-    JSR Func_A58A
+    JSR ConvertPixelPositionToTileCoordinates
     JSR Func_A5A4
     LDY #$00
     LDA #$52
@@ -919,7 +919,7 @@ Label_8B12:
     ADC #$06
     TAY
     JSR Func_94EA
-    JSR Func_A58A
+    JSR ConvertPixelPositionToTileCoordinates
     JSR Func_A5A4
     LDY #$00
     LDA #$53

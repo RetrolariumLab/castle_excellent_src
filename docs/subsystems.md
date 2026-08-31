@@ -7,7 +7,7 @@ The room decoder is the first promoted module.
 
 ## Platform I/O (`$8000-$8224`)
 
-This area combines Famicom expansion-port/tape signaling, controller polling,
+This area combines Famicom expansion-port/data signaling, controller polling,
 PPU state helpers, and CNROM selection. Controller code at `$80FF-$8157` now
 lives in `src/input/controllers.asm`. Both pollers strobe `$4016`, read eight
 serial samples from `$4016` or `$4017`, prefer D0 when it is set, otherwise use
@@ -22,9 +22,22 @@ PPU/CNROM code at `$8158-$817F` lives in `src/system/ppu.asm`.
 `SelectChrBank` indexes `$00,$01,$02,$03` and writes the selected value back to
 the same ROM-table address, a bus-conflict-safe CNROM latch pattern.
 
-The surrounding tape routines are intentionally still address-named. They toggle
-and sample bit 1 of `$4016`, but the complete save/load protocol and its
-Japanese peripheral contract have not yet been proven.
+The two data transports now live in `src/input/famicom_data_pulse.asm` and
+`src/input/famicom_data_io.asm`. A negative selector at `$1F` chooses the
+pulse-width path; a nonnegative selector chooses the expansion serial path.
+The pulse sender uses one long cycle for a zero bit and two short cycles for a
+one bit, with an 8,448-cycle leader. Its receiver measures bit 1 of `$4016` and
+returns carry set when a sample window contains four or more edges.
+
+The expansion path strobes `$4016` with `$00,$02`, sends `00 AA 55`, and then
+transfers bytes MSB-first. Output data remains on bit 0 while bit 2 falls;
+input data is sampled from bit 2 of `$4017`. The receiver discards the first
+preamble byte, verifies `$AA,$55`, and reports failure in carry. Common byte
+wrappers preserve X. Higher code at `$FBFE-$FDC4` now lives in
+`src/game/save_load.asm`. It saves or loads a fixed 394-byte payload containing
+the room index, runtime state, 120 mutable-region bytes, 150 object-region
+bytes, 100 visited flags, and an eight-byte signature. The exact external accessory remains deliberately
+unnamed until hardware evidence distinguishes the two Japanese interfaces.
 
 ## Main loop and game/object logic (`$8225-$B7AC`)
 
@@ -170,7 +183,9 @@ alone must not be used to classify any other unobserved byte.
 
 ## Tail tables and vectors (`$F8FC-$FFFF`)
 
-This region mixes additional game/UI routines with lookup tables. The final
-known tables map each logical room cell to its left and right background tile,
-followed by the NMI, reset, and IRQ vectors. It should remain mixed until more
-static consumers and runtime scenarios establish tighter boundaries.
+The save/load module at `$FBFE-$FDC4` is semantic. The adjacent title and
+sub-command UI remains preservation source, as does the post-save tail. The
+final known tables map each logical room cell to its left and right background
+tile, followed by the NMI, reset, and IRQ vectors. Remaining mixed ranges stay
+unpromoted until more static consumers and runtime scenarios establish tighter
+boundaries.

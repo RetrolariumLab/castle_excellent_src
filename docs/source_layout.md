@@ -5,10 +5,10 @@ The source is one canonical address-ordered PRG translation unit:
 | Module | Output | Responsibility |
 | --- | --- | --- |
 | `src/main.asm` | header + include order | canonical entrypoint |
-| `src/preservation/prg.asm` | `$8000-$80FE` | unresolved Famicom tape signaling and ordered includes |
+| `src/input/famicom_data_pulse.asm` | `$8000-$80FE` | pulse-width data transport and ordered includes |
 | `src/input/controllers.asm` | `$80FF-$8157` | controller wrappers and serial polling |
 | `src/system/ppu.asm` | `$8158-$817F` | PPU state helpers and CNROM bank selection |
-| `src/preservation/prg_8180_8224.asm` | `$8180-$8224` | unresolved Famicom tape/peripheral signaling |
+| `src/input/famicom_data_io.asm` | `$8180-$8224` | transport selection and expansion-port serial I/O |
 | `src/system/startup.asm` | `$8225-$82CD` | reset, cold/warm boot state, and NMI-paced main loop |
 | `src/preservation/prg_82ce_8f0f.asm` | `$82CE-$8F0F` | unresolved player movement and early gameplay logic |
 | `src/game/objects/runtime_record_offsets.asm` | `$8F10-$8F28` | six-byte record offsets by object count |
@@ -42,16 +42,17 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/rooms/mutable_cell_state_apply.asm` | `$EDEF-$EE55` | mutable-cell state-bit application |
 | `src/game/rooms/persistent_state_load.asm` | `$EE56-$EF05` | snapshot restore and persistent-state loading |
 | `src/game/objects/room_data.asm` | `$EF06-$F8FB` | packed-state offsets and 100 terminated object lists |
-| `src/preservation/prg_f8fc_fdc4.asm` | `$F8FC-$FDC4` | unresolved UI, sub-command, and password code |
+| `src/preservation/prg_f8fc_fbfd.asm` | `$F8FC-$FBFD` | unresolved title and sub-command UI |
+| `src/game/save_load.asm` | `$FBFE-$FDC4` | save/load payload, validation, messages, and room restoration |
 | `src/game/rooms/persistent_state_save.asm` | `$FDC5-$FE30` | snapshot persistence writer |
 | `src/preservation/prg_fe31_ffff.asm` | `$FE31-$FFFF` | unresolved ending and tail tables |
 | `src/graphics/chr.asm` | four 8 KiB banks | private CHR payload |
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 40 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 41 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 39 in CPU-address order. Ghidra-defined instructions are emitted
+following 40 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

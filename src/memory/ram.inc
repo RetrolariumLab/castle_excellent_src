@@ -10,6 +10,15 @@ CurrentObjectOffset = $0041
 ; Contextual result buffer for controller polling at $80FF-$8157
 PolledControllerButtons = $0020
 
+; Contextual Famicom data-I/O state at $8000-$8224
+DataIoByte = $0017
+DataIoSavedX = $001A
+DataIoTransportMode = $001F
+PulseAccumulatedWidth = $002D
+PulseBitsRemaining = $002E
+PulsePreamblePageCount = $002F
+PulseInputLevel = $0030
+
 AudioTempoOffset = $00DA
 AudioStreamPointerLo = $00DB
 AudioStreamPointerHi = $00DC
@@ -115,6 +124,21 @@ RoomRuntimeStateSnapshotA = $0745
 RoomRuntimeStateSnapshotB = $0754
 RoomRuntimeSnapshotSize = 14
 RoomRuntimeLoadMirrorSize = 15
+
+; Contextual save/load serialization views at $FBFE-$FDC4
+SaveLoadRuntimeState = $0005
+ActiveRoomRuntimeTail = $0013
+SaveLoadPpuStringPointerLo = $0021
+SaveLoadPpuStringPointerHi = $0022
+SaveLoadResumeState = $0038
+SaveLoadMusicSelectionState = $0772
+SaveLoadScreenState = $07CD
+SaveRuntimeStateSize = 14
+SaveMutableRegion = $0590
+SaveMutableRegionSize = $78
+SaveObjectRegion = $0608
+SaveObjectRegionSize = $96
+SaveDataSignatureSize = 8
 
 NmiTaskRequests = $0785
 NmiTaskRequestCount = 23

@@ -1,5 +1,5 @@
-; Preservation PRG between object data and persistent-state saving
-; CPU range $F8FC-$FDC4
+; Preservation PRG before save and load orchestration
+; CPU range $F8FC-$FBFD
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
@@ -109,12 +109,12 @@ Label_F9B9:
     EOR #$FF
     AND Controller2Buttons
     AND #$03
-    BNE Label_F9CC
+    BNE OpenSubCommandMenu
     LDA Controller2Buttons
     STA PreviousController2Buttons
     RTS
 
-Label_F9CC:
+OpenSubCommandMenu:
     JSR ClearRoomNametablesAndSprites
     LDA #$00
     STA JOYPAD1
@@ -188,9 +188,9 @@ Label_F9D7:
     LDA #$FF
     STA $1C
 
-Label_FA74:
+UpdateSubCommandMenu:
     LDA PPU_STATUS
-    BPL Label_FA74
+    BPL UpdateSubCommandMenu
     LDA PPU_STATUS
     LDA #$21
     STA PPU_ADDR
@@ -265,13 +265,13 @@ Label_FAF5:
     LDA $1D
     CMP #$05
     BCS Label_FB1E
-    JMP Label_FA74
+    JMP UpdateSubCommandMenu
 
 Label_FB1E:
     LDA #$00
     STA $1D
     BNE Label_FB27
-    JMP Label_FA74
+    JMP UpdateSubCommandMenu
 
 Label_FB27:
     TYA
@@ -301,9 +301,9 @@ Label_FB3D:
     STA $1D
 
 Label_FB4E:
-    JMP Label_FA74
+    JMP UpdateSubCommandMenu
 
-Func_FB51:
+ExitSubCommandMenu:
     LDA #$FF
     STA PauseMode
     STA PreviousController2Buttons
@@ -320,22 +320,27 @@ Label_FB62:
     BEQ Label_FB71
     DEX
     BEQ Label_FB74
-    BNE Func_FB51
+    BNE ExitSubCommandMenu
 
 Label_FB71:
-    JMP Func_FD06
+    JMP LoadGameState
 
 Label_FB74:
-    JMP Label_FBFE
+    JMP SaveGameState
     .byte $83, $85, $72, $FF, $73, $7F, $7D, $7D, $71, $7E, $74, $00, $7C, $7F, $71, $74
     .byte $00, $83, $71, $86, $75, $00, $82, $75, $83, $75, $84, $00, $72, $71, $73, $7B
-    .byte $00, $77, $71, $7D, $75, $00, $7C, $7F, $71, $74, $79, $7E, $77, $00, $83, $71
-    .byte $86, $79, $7E, $77, $00
+    .byte $00, $77, $71, $7D, $75, $00
+
+LoadTransferMessage:
+    .byte $7C, $7F, $71, $74, $79, $7E, $77, $00
+
+SaveTransferMessage:
+    .byte $83, $71, $86, $79, $7E, $77, $00
 
 Label_FBAC:
     LDA $13
     BNE Label_FBB3
-    JMP Label_FA74
+    JMP UpdateSubCommandMenu
 
 Label_FBB3:
     JSR LoadRoomPersistentState
@@ -357,17 +362,17 @@ Label_FBC0:
     DEC $13
     LDA #$00
     STA a:$07CD
-    JMP Label_FD96
+    JMP RebuildLoadedRoom
 
 Label_FBD6:
     LDA $13
     BNE Label_FBDD
-    JMP Label_FA74
+    JMP UpdateSubCommandMenu
 
 Label_FBDD:
     LDA RoomStateSnapshotA
     BNE Label_FBE5
-    JMP Label_FA74
+    JMP UpdateSubCommandMenu
 
 Label_FBE5:
     STA CurrentRoomIndex
@@ -383,224 +388,3 @@ Label_FBEC:
     STA RoomStateSnapshotA
     STA RoomStateSnapshotB
     BEQ Label_FBC0
-
-Label_FBFE:
-    JSR DisableNmi
-    LDA $13
-    BNE Label_FC08
-    JMP Label_FA74
-
-Label_FC08:
-    LDA RoomStateLoadMirror
-    BNE Label_FC10
-    JMP Label_FA74
-
-Label_FC10:
-    DEC $13
-    JSR ClearRoomNametablesAndSprites
-    LDA #$FB
-    STA $22
-    LDA #$A5
-    STA $21
-    LDA PPU_STATUS
-    LDA #$21
-    STA PPU_ADDR
-    LDA #$0C
-    STA PPU_ADDR
-    JSR Func_FCEA
-    JSR Func_8180
-    LDA CurrentRoomIndex
-    JSR Func_81C2
-    LDA a:$0744
-    JSR Func_81C2
-    LDX #$00
-
-Label_FC3D:
-    LDA RoomRuntimeLoadMirror,X
-    JSR Func_81C2
-    INX
-    CPX #$0E
-    BCC Label_FC3D
-    JSR SaveRoomStateSnapshotB
-    LDA #$00
-    STA RoomStateSnapshotA
-    STA RoomStateSnapshotB
-    LDX #$78
-
-Label_FC55:
-    LDA RoomCells + $18F,X
-    JSR Func_81C2
-    DEX
-    BNE Label_FC55
-    LDX #$96
-
-Label_FC60:
-    LDA a:$0607,X
-    JSR Func_81C2
-    DEX
-    BNE Label_FC60
-    LDX #$64
-
-Label_FC6B:
-    LDA a:$069D,X
-    JSR Func_81C2
-    DEX
-    BNE Label_FC6B
-    LDX #$08
-
-Label_FC76:
-    LDA a:$FC99,X
-    JSR Func_81C2
-    DEX
-    BNE Label_FC76
-    JMP Func_FB51
-    .byte $7C, $7F, $71, $74, $FF, $75, $82, $82, $7F, $82, $00, $80, $85, $83, $78, $FF
-    .byte $71, $FF, $7F, $82, $FF, $72, $00, $47, $4E, $55, $54, $55, $45, $44, $45, $42
-
-Func_FCA2:
-    JSR ClearRoomNametablesAndSprites
-    LDA PPU_STATUS
-    LDA #$21
-    STA PPU_ADDR
-    LDA #$0B
-    STA PPU_ADDR
-    LDA #$FC
-    STA $22
-    LDA #$82
-    STA $21
-    JSR WriteTerminatedPpuTiles
-    LDA PPU_STATUS
-    LDA #$21
-    STA PPU_ADDR
-    LDA #$4A
-    STA PPU_ADDR
-    LDA #$FC
-    STA $22
-    LDA #$8D
-    STA $21
-    JSR Func_FCEA
-
-Label_FCD5:
-    JSR ReadController1WithoutNmiControl
-    AND #$03
-    BEQ Label_FCD5
-    JSR InitializeNewGame
-    LDA #$00
-    STA APU_STATUS
-    STA a:$07CD
-    JMP Label_F9CC
-
-Func_FCEA:
-    JSR WriteTerminatedPpuTiles
-    LDA PPU_STATUS
-    JSR ResetPpuScroll
-    STA APU_STATUS
-
-Label_FCF6:
-    LDA PPU_STATUS
-    BPL Label_FCF6
-    LDA #$08
-    STA PPU_MASK
-    JMP DisableNmi
-
-Label_FD03:
-    JMP Func_FCA2
-
-Func_FD06:
-    JSR DisableNmi
-    JSR Func_819F
-    BCS Label_FD03
-    JSR ClearRoomNametablesAndSprites
-    LDA #$FB
-    STA $22
-    LDA #$9D
-    STA $21
-    LDA PPU_STATUS
-    LDA #$21
-    STA PPU_ADDR
-    LDA #$0C
-    STA PPU_ADDR
-    JSR Func_FCEA
-    JSR Func_81D6
-    BCS Label_FD03
-    STA CurrentRoomIndex
-    STA CurrentRoomState
-    JSR Func_81D6
-    STA $13
-    LDX #$00
-
-Label_FD3A:
-    JSR Func_81D6
-    BCS Label_FD03
-    STA $05,X
-    INX
-    CPX #$0E
-    BCC Label_FD3A
-    LDX #$78
-
-Label_FD48:
-    JSR Func_81D6
-    BCS Label_FD03
-    STA RoomCells + $18F,X
-    DEX
-    BNE Label_FD48
-    LDX #$96
-
-Label_FD55:
-    JSR Func_81D6
-    BCS Label_FD03
-    STA a:$0607,X
-    DEX
-    BNE Label_FD55
-    LDX #$64
-
-Label_FD62:
-    JSR Func_81D6
-    BCS Label_FD03
-    STA a:$069D,X
-    DEX
-    BNE Label_FD62
-    LDX #$08
-
-Label_FD6F:
-    JSR Func_81D6
-    BCS Label_FD03
-    CMP a:$FC99,X
-    BNE Label_FD03
-    DEX
-    BNE Label_FD6F
-    LDA #$00
-    STA JOYPAD1
-    STA RoomStateLoadMirror
-    STA RoomStateSnapshotA
-    STA RoomStateSnapshotB
-    LDA $10
-    STA $38
-    LDA $11
-    STA $39
-    LDA $12
-    STA $3A
-
-Label_FD96:
-    LDA #$00
-    STA a:$0772
-    LDX CurrentRoomIndex
-    DEX
-    JSR DecodeRoom
-    JSR BuildRoomAttributeTables
-    JSR LoadRoomObjects
-    JSR SelectAndApplyRoomState
-    JSR UpdateHorizontalScroll
-    LDA $3A
-    SEC
-    SBC #$10
-    TAY
-    LDA $39
-    LDX $38
-    JSR Func_A58A
-    JSR Func_A66D
-    BCS Label_FDC2
-    JSR Func_A70A
-
-Label_FDC2:
-    JMP Func_FB51

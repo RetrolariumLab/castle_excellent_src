@@ -101,7 +101,7 @@ Label_97A7:
     BCS Label_97DE
     TAY
     JSR Func_94EA
-    JSR Func_A58A
+    JSR ConvertPixelPositionToTileCoordinates
     JSR Func_A5A4
     LDY #$14
     LDA ($2B),Y
@@ -134,7 +134,7 @@ Label_97E7:
     LDX $43
     LDY RuntimeObjectY,X
     JSR Func_94EA
-    JSR Func_A58A
+    JSR ConvertPixelPositionToTileCoordinates
     JSR Func_A5A4
     LDA #$53
     LDY #$00
@@ -158,7 +158,7 @@ Label_980E:
     SBC #$08
     TAY
     JSR Func_94EA
-    JSR Func_A58A
+    JSR ConvertPixelPositionToTileCoordinates
     JSR Func_A5A4
     LDY #$00
     LDA ($2B),Y
@@ -216,7 +216,7 @@ Label_987A:
     BCS Label_98B9
     TAY
     JSR Func_94EA
-    JSR Func_A58A
+    JSR ConvertPixelPositionToTileCoordinates
     JSR Func_A5A4
     LDY #$14
     LDA ($2B),Y
@@ -254,7 +254,7 @@ Label_98C2:
     LDX $43
     LDY RuntimeObjectY,X
     JSR Func_94EA
-    JSR Func_A58A
+    JSR ConvertPixelPositionToTileCoordinates
     JSR Func_A5A4
     LDA #$53
     LDY #$00
@@ -280,7 +280,7 @@ Label_98EC:
     SBC #$08
     TAY
     JSR Func_94EA
-    JSR Func_A58A
+    JSR ConvertPixelPositionToTileCoordinates
     JSR Func_A5A4
     LDY #$00
     LDA ($2B),Y

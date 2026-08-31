@@ -15,9 +15,9 @@ ROM := $(BUILD_DIR)/castle_excellent.nes
 LABELS := $(BUILD_DIR)/castle_excellent.lbl
 MAP := $(BUILD_DIR)/castle_excellent.map
 DEBUG := $(BUILD_DIR)/castle_excellent.dbg
-SOURCE_FILES := src/main.asm src/preservation/prg.asm src/graphics/chr.asm \
+SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.asm \
 	src/input/controllers.asm src/system/ppu.asm \
-	src/preservation/prg_8180_8224.asm src/system/startup.asm \
+	src/input/famicom_data_io.asm src/system/startup.asm \
 	src/preservation/prg_82ce_8f0f.asm \
 	src/game/objects/runtime_record_offsets.asm src/preservation/prg_8f29_9577.asm \
 	src/system/nmi_tasks.asm src/preservation/prg_9583_a35b.asm \
@@ -36,7 +36,8 @@ SOURCE_FILES := src/main.asm src/preservation/prg.asm src/graphics/chr.asm \
 	src/game/rooms/state_orchestration.asm src/game/rooms/persistent_state_apply.asm \
 	src/game/objects/stream_seek.asm src/game/rooms/mutable_cell_state_apply.asm \
 	src/game/rooms/persistent_state_load.asm \
-	src/game/objects/room_data.asm src/preservation/prg_f8fc_fdc4.asm \
+	src/game/objects/room_data.asm src/preservation/prg_f8fc_fbfd.asm \
+	src/game/save_load.asm \
 	src/game/rooms/persistent_state_save.asm src/preservation/prg_fe31_ffff.asm \
 	src/memory/hardware.inc src/memory/ram.inc
 
@@ -77,7 +78,8 @@ TIMEOUT_FRAMES ?= 15000
 	startup-state validate-startup nmi-state validate-nmi oam-state validate-oam \
 	status-state validate-status room-row-state validate-room-rows \
 	attribute-upload-state validate-attribute-upload castle-map-state \
-	validate-castle-map
+	validate-castle-map data-io-state validate-data-io save-data \
+	validate-save-data
 
 all: verify
 
@@ -276,7 +278,19 @@ castle-map-state:
 validate-castle-map:
 	$(PYTHON) scripts/castle_map.py --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map
+data-io-state:
+	$(PYTHON) scripts/famicom_data_io.py --pretty
+
+validate-data-io:
+	$(PYTHON) scripts/famicom_data_io.py --validate
+
+save-data: $(ROM)
+	$(PYTHON) scripts/save_data.py --image "$(ROM)" --pretty
+
+validate-save-data: $(ROM)
+	$(PYTHON) scripts/save_data.py --image "$(ROM)" --validate
+
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data
 
 check: release-check
 

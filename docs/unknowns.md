@@ -22,6 +22,33 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Residual: `$8135-$813A` encodes a plausible second no-NMI wrapper but remains
   raw because no call target or runtime trace reaches it
 
+### INPUT-002 - Famicom save-data transports
+
+- Status: resolved
+- Known: sign bit of scoped `$1F` selects pulse-width signaling through `$4016`
+  or expansion serial signaling through `$4016/$4017`; both serialize bytes
+  MSB-first through scoped `$17`
+- Pulse path: zero is one long cycle, one is two short cycles, the leader is
+  33 x 256 short pairs, and carry reports invalid receive edge counts
+- Expansion path: strobe `$00,$02`, preamble `00 AA 55`, output clock on bit 2,
+  output data on bit 0, and input data from `$4017` bit 2
+- Evidence: semantic `$8000-$80FE` and `$8180-$8224`, save/load callers,
+  exhaustive 256-byte model, deterministic disassembly, and byte-identical ROM
+- Residual: exact accessory identities for the two Japanese interfaces remain
+  open pending hardware documentation or a focused runtime capture
+
+### SAVE-001 - serialized game-state payload
+
+- Status: resolved
+- Known: payload length is 394 bytes with field offsets 0, 1, 2, 16, 136, 286,
+  and 386; the three RAM blocks are transferred in descending address order
+- Signature: ROM text `GNUTUEDEB` at `$FC99-$FCA1` is indexed 8 through 1 to
+  produce the eight wire bytes `BEDEUTUN`
+- Load behavior: the room, 14 runtime bytes, all three blocks, and signature
+  check carry; runtime-tail byte at offset 1 does not check receive status
+- Evidence: semantic `$FBFE-$FDC4`, symmetric send/receive loops, lossless
+  394-byte codec, exact ROM signature validation, and byte-identical build
+
 ### SYS-001 - reset signature and frame gate
 
 - Status: resolved

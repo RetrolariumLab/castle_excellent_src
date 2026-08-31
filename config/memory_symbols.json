@@ -123,7 +123,8 @@
     },
     {
       "address": "0x069E",
-      "name": "RoomVisitedFlags"
+      "name": "RoomVisitedFlags",
+      "size": 100
     },
     {
       "address": "0x0702",
@@ -171,7 +172,8 @@
     },
     {
       "address": "0x0736",
-      "name": "RoomRuntimeLoadMirror"
+      "name": "RoomRuntimeLoadMirror",
+      "size": 15
     },
     {
       "address": "0x0745",
@@ -289,6 +291,54 @@
       "name": "PhysicalController1Buttons"
     },
     {
+      "address": "0x0017",
+      "name": "DataIoByte",
+      "start": "0x8000",
+      "end": "0x8225"
+    },
+    {
+      "address": "0x001A",
+      "name": "DataIoSavedX",
+      "start": "0x8000",
+      "end": "0x8225"
+    },
+    {
+      "address": "0x001F",
+      "name": "DataIoTransportMode",
+      "start": "0x8000",
+      "end": "0x8225"
+    },
+    {
+      "address": "0x002D",
+      "name": "PulseAccumulatedWidth",
+      "start": "0x8000",
+      "end": "0x80FF"
+    },
+    {
+      "address": "0x002E",
+      "name": "PulseBitsRemaining",
+      "start": "0x8000",
+      "end": "0x80FF"
+    },
+    {
+      "address": "0x002F",
+      "name": "PulsePreamblePageCount",
+      "start": "0x8000",
+      "end": "0x80FF"
+    },
+    {
+      "address": "0x0030",
+      "name": "PulseInputLevel",
+      "start": "0x8000",
+      "end": "0x80FF"
+    },
+    {
+      "address": "0x4017",
+      "name": "EXPANSION_PORT_INPUT",
+      "start": "0x81FF",
+      "end": "0x8217"
+    },
+    {
       "address": "0x0034",
       "name": "PendingScrollX",
       "start": "0xC55D",
@@ -383,6 +433,50 @@
       "name": "ActiveRoomRuntimeState",
       "start": "0xEC63",
       "end": "0xECB7"
+    },
+    {
+      "address": "0x0005",
+      "name": "SaveLoadRuntimeState",
+      "size": 14,
+      "start": "0xFBFE",
+      "end": "0xFDC5"
+    },
+    {
+      "address": "0x0013",
+      "name": "ActiveRoomRuntimeTail",
+      "start": "0xFBFE",
+      "end": "0xFDC5"
+    },
+    {
+      "address": "0x0021",
+      "name": "SaveLoadPpuStringPointerLo",
+      "start": "0xFBFE",
+      "end": "0xFDC5"
+    },
+    {
+      "address": "0x0022",
+      "name": "SaveLoadPpuStringPointerHi",
+      "start": "0xFBFE",
+      "end": "0xFDC5"
+    },
+    {
+      "address": "0x0038",
+      "name": "SaveLoadResumeState",
+      "size": 3,
+      "start": "0xFBFE",
+      "end": "0xFDC5"
+    },
+    {
+      "address": "0x0772",
+      "name": "SaveLoadMusicSelectionState",
+      "start": "0xFD96",
+      "end": "0xFDC5"
+    },
+    {
+      "address": "0x07CD",
+      "name": "SaveLoadScreenState",
+      "start": "0xFBFE",
+      "end": "0xFDC5"
     },
     {
       "address": "0x0016",

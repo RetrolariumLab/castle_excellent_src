@@ -4,6 +4,35 @@ All CPU addresses below refer to the Japanese PRG mapped at `$8000-$FFFF`.
 The descriptions began with the published trace and were checked against the
 exact Japanese reference image identified in `assets/manifest.json`.
 
+## Save-data payload
+
+The Japanese save/load code transfers a fixed 394-byte payload after its
+transport-specific preamble:
+
+| Offset | Size | Contents | RAM traversal |
+| ---: | ---: | --- | --- |
+| 0 | 1 | current one-based room index | `$0037` |
+| 1 | 1 | runtime tail byte | `$0013` / mirror `$0744` |
+| 2 | 14 | active runtime state | ascending `$0005-$0012` |
+| 16 | 120 | mutable save region | descending `$0607-$0590` |
+| 136 | 150 | object save region | descending `$069D-$0608` |
+| 286 | 100 | visited-room flags | descending `$0701-$069E` |
+| 386 | 8 | signature | ASCII `BEDEUTUN` |
+
+The 120-byte mutable block contains the 108 proven persistent mutable-cell
+bytes plus 12 adjacent bytes. The 150-byte object block contains the 141
+proven persistent object bytes plus nine adjacent bytes. The format therefore
+serializes physical RAM regions, not only the currently named logical arrays.
+
+ROM `$FC99-$FCA1` contains ASCII `GNUTUEDEB`. Indexed reads from 8 down to 1
+produce the eight wire bytes `BEDEUTUN`; byte zero, the leading physical `G`,
+is not transferred. `scripts/save_data.py` independently round-trips all six
+fields and validates the exact physical and wire signatures.
+
+The receiver checks carry after the room byte and every looped byte, but not
+after payload byte 1. This unchecked status is part of the original binary
+contract and remains unchanged.
+
 ## Controller button byte
 
 The serial pollers produce this one-byte layout at `$20`:

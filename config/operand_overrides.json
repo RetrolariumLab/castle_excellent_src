@@ -2,6 +2,318 @@
   "schema_version": 1,
   "overrides": [
     {
+      "instruction": "0x8014",
+      "expected": "#$02",
+      "operand": "#PulseInputMask",
+      "evidence": "the pulse-width receiver samples bit 1 of the Famicom port"
+    },
+    {
+      "instruction": "0x8021",
+      "expected": "#$28",
+      "operand": "#PulseSampleCount",
+      "evidence": "the pulse decoder counts transitions across a fixed 40-sample window"
+    },
+    {
+      "instruction": "0x8028",
+      "expected": "#$02",
+      "operand": "#PulseInputMask",
+      "evidence": "the fixed pulse sampling window observes the same port bit"
+    },
+    {
+      "instruction": "0x807F",
+      "expected": "#$04",
+      "operand": "#PulseReceiveMode",
+      "evidence": "pulse preamble synchronization selects the receive-side port mode"
+    },
+    {
+      "instruction": "0x808B",
+      "expected": "#$12",
+      "operand": "#PulsePreambleMinEdgeDelay",
+      "evidence": "preamble synchronization rejects pulses shorter than 18 delay iterations"
+    },
+    {
+      "instruction": "0x808F",
+      "expected": "#$1A",
+      "operand": "#PulsePreambleMaxEdgeDelayExclusive",
+      "evidence": "preamble synchronization rejects pulses of 26 or more delay iterations"
+    },
+    {
+      "instruction": "0x8097",
+      "expected": "#$21",
+      "operand": "#PulsePreamblePageTotal",
+      "evidence": "the transmitter emits 33 pages of 256 short preamble cycles"
+    },
+    {
+      "instruction": "0x80AC",
+      "expected": "#$08",
+      "operand": "#DataIoBitCount",
+      "evidence": "the pulse transmitter serializes one eight-bit byte MSB first"
+    },
+    {
+      "instruction": "0x80BF",
+      "expected": "#$02",
+      "operand": "#PulseInputMask",
+      "evidence": "pulse-byte reception waits for the sampled input bit to rise"
+    },
+    {
+      "instruction": "0x80C6",
+      "expected": "#$02",
+      "operand": "#PulseInputMask",
+      "evidence": "pulse-byte reception then waits for the sampled input bit to fall"
+    },
+    {
+      "instruction": "0x80DA",
+      "expected": "#$50",
+      "operand": "#PulseStartMinWidth",
+      "evidence": "the receiver accumulates framing edges until their width reaches 80"
+    },
+    {
+      "instruction": "0x80DE",
+      "expected": "#$08",
+      "operand": "#DataIoBitCount",
+      "evidence": "the pulse receiver reconstructs exactly eight data bits"
+    },
+    {
+      "instruction": "0x80E5",
+      "expected": "#$04",
+      "operand": "#PulseInvalidEdgeCount",
+      "evidence": "four or more edges in one sample window report a receive error"
+    },
+    {
+      "instruction": "0x80E9",
+      "expected": "#$02",
+      "operand": "#PulseOneEdgeCount",
+      "evidence": "two or three sampled edges decode as a one bit"
+    },
+    {
+      "instruction": "0x8191",
+      "expected": "#$AA",
+      "operand": "#DataPreambleSyncA",
+      "evidence": "the expansion transport sends the first checked synchronization byte"
+    },
+    {
+      "instruction": "0x8198",
+      "expected": "#$55",
+      "operand": "#DataPreambleSyncB",
+      "evidence": "the expansion transport sends the second checked synchronization byte"
+    },
+    {
+      "instruction": "0x81B1",
+      "expected": "#$AA",
+      "operand": "#DataPreambleSyncA",
+      "evidence": "the receiver checks the first synchronization byte after a discarded byte"
+    },
+    {
+      "instruction": "0x81BA",
+      "expected": "#$55",
+      "operand": "#DataPreambleSyncB",
+      "evidence": "the receiver checks the second synchronization byte"
+    },
+    {
+      "instruction": "0x81EA",
+      "expected": "#$07",
+      "operand": "#DataIoBitCount - 1",
+      "evidence": "the expansion transmitter counts eight bits from index seven through zero"
+    },
+    {
+      "instruction": "0x81F1",
+      "expected": "#$06",
+      "operand": "#ExpansionSerialClockHigh",
+      "evidence": "each expansion output bit begins with clock bit 2 high and bit 1 held high"
+    },
+    {
+      "instruction": "0x81F6",
+      "expected": "#$03",
+      "operand": "#ExpansionSerialClockLowMask",
+      "evidence": "masking clears the expansion clock while retaining bit 1 and serial data"
+    },
+    {
+      "instruction": "0x81FF",
+      "expected": "#$07",
+      "operand": "#DataIoBitCount - 1",
+      "evidence": "the expansion receiver counts eight bits from index seven through zero"
+    },
+    {
+      "instruction": "0x8206",
+      "expected": "#$01",
+      "operand": "#ExpansionSerialDataBit",
+      "evidence": "two shifts move expansion-port D2 into the low data bit"
+    },
+    {
+      "instruction": "0x8208",
+      "expected": "#$06",
+      "operand": "#ExpansionSerialClockHigh",
+      "evidence": "each expansion input sample is acknowledged with the same high clock phase"
+    },
+    {
+      "instruction": "0x820D",
+      "expected": "#$03",
+      "operand": "#ExpansionSerialClockLowMask",
+      "evidence": "the input acknowledge ends by clearing expansion clock bit 2"
+    },
+    {
+      "instruction": "0x821F",
+      "expected": "#$02",
+      "operand": "#ExpansionSerialStrobe",
+      "evidence": "the expansion transaction starts with a zero-to-bit-1 strobe"
+    },
+    {
+      "instruction": "0xFC15",
+      "expected": "#$FB",
+      "operand": "#>SaveTransferMessage",
+      "evidence": "save transfer displays the terminated message at $FBA5"
+    },
+    {
+      "instruction": "0xFC19",
+      "expected": "#$A5",
+      "operand": "#<SaveTransferMessage",
+      "evidence": "low byte of the save-transfer message pointer"
+    },
+    {
+      "instruction": "0xFC44",
+      "expected": "#$0E",
+      "operand": "#SaveRuntimeStateSize",
+      "evidence": "save payload contains the 14-byte active runtime state"
+    },
+    {
+      "instruction": "0xFC53",
+      "expected": "#$78",
+      "operand": "#SaveMutableRegionSize",
+      "evidence": "save payload copies the 120-byte mutable-state region in descending address order"
+    },
+    {
+      "instruction": "0xFC55",
+      "expected": "a:$058F,X",
+      "operand": "SaveMutableRegion - 1,X",
+      "evidence": "X runs from 120 through one, covering $0607 down to $0590"
+    },
+    {
+      "instruction": "0xFC5E",
+      "expected": "#$96",
+      "operand": "#SaveObjectRegionSize",
+      "evidence": "save payload copies the 150-byte object-state region in descending address order"
+    },
+    {
+      "instruction": "0xFC60",
+      "expected": "a:$0607,X",
+      "operand": "SaveObjectRegion - 1,X",
+      "evidence": "X runs from 150 through one, covering $069D down to $0608"
+    },
+    {
+      "instruction": "0xFC69",
+      "expected": "#$64",
+      "operand": "#RoomVisitedFlagCount",
+      "evidence": "save payload copies all 100 room-visited flags"
+    },
+    {
+      "instruction": "0xFC6B",
+      "expected": "a:$069D,X",
+      "operand": "RoomVisitedFlags - 1,X",
+      "evidence": "X runs from 100 through one, covering visited flags $0701 down to $069E"
+    },
+    {
+      "instruction": "0xFC74",
+      "expected": "#$08",
+      "operand": "#SaveDataSignatureSize",
+      "evidence": "save payload ends with eight signature bytes"
+    },
+    {
+      "instruction": "0xFCB2",
+      "expected": "#$FC",
+      "operand": "#>LoadErrorMessage",
+      "evidence": "load failure displays the first terminated message at $FC82"
+    },
+    {
+      "instruction": "0xFCB6",
+      "expected": "#$82",
+      "operand": "#<LoadErrorMessage",
+      "evidence": "low byte of the load-error message pointer"
+    },
+    {
+      "instruction": "0xFCCA",
+      "expected": "#$FC",
+      "operand": "#>LoadErrorPrompt",
+      "evidence": "load failure displays the acknowledgement prompt at $FC8D"
+    },
+    {
+      "instruction": "0xFCCE",
+      "expected": "#$8D",
+      "operand": "#<LoadErrorPrompt",
+      "evidence": "low byte of the load-error prompt pointer"
+    },
+    {
+      "instruction": "0xFCD8",
+      "expected": "#$03",
+      "operand": "#SaveLoadAcknowledgeButtons",
+      "evidence": "either A or B acknowledges the load-error screen"
+    },
+    {
+      "instruction": "0xFCFB",
+      "expected": "#$08",
+      "operand": "#PpuMaskBackgroundOnly",
+      "evidence": "save/load messages enable background rendering without sprites"
+    },
+    {
+      "instruction": "0xFD11",
+      "expected": "#$FB",
+      "operand": "#>LoadTransferMessage",
+      "evidence": "load transfer displays the terminated message at $FB9D"
+    },
+    {
+      "instruction": "0xFD15",
+      "expected": "#$9D",
+      "operand": "#<LoadTransferMessage",
+      "evidence": "low byte of the load-transfer message pointer"
+    },
+    {
+      "instruction": "0xFD42",
+      "expected": "#$0E",
+      "operand": "#SaveRuntimeStateSize",
+      "evidence": "load payload restores the same 14-byte active runtime state"
+    },
+    {
+      "instruction": "0xFD46",
+      "expected": "#$78",
+      "operand": "#SaveMutableRegionSize",
+      "evidence": "load payload restores the 120-byte mutable-state region"
+    },
+    {
+      "instruction": "0xFD4D",
+      "expected": "a:$058F,X",
+      "operand": "SaveMutableRegion - 1,X",
+      "evidence": "receive order mirrors the descending save-region traversal"
+    },
+    {
+      "instruction": "0xFD53",
+      "expected": "#$96",
+      "operand": "#SaveObjectRegionSize",
+      "evidence": "load payload restores the 150-byte object-state region"
+    },
+    {
+      "instruction": "0xFD5A",
+      "expected": "a:$0607,X",
+      "operand": "SaveObjectRegion - 1,X",
+      "evidence": "receive order mirrors the descending object-region traversal"
+    },
+    {
+      "instruction": "0xFD60",
+      "expected": "#$64",
+      "operand": "#RoomVisitedFlagCount",
+      "evidence": "load payload restores all 100 room-visited flags"
+    },
+    {
+      "instruction": "0xFD67",
+      "expected": "a:$069D,X",
+      "operand": "RoomVisitedFlags - 1,X",
+      "evidence": "receive order mirrors the descending visited-flag traversal"
+    },
+    {
+      "instruction": "0xFD6D",
+      "expected": "#$08",
+      "operand": "#SaveDataSignatureSize",
+      "evidence": "load validates all eight trailing signature bytes"
+    },
+    {
       "instruction": "0xEA3E",
       "expected": "#$04",
       "operand": "#ControllerButtonSelect",

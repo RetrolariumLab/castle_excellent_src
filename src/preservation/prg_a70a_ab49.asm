@@ -3,7 +3,7 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-Func_A70A:
+RestoreMutableCellByOrdinal:
     LDA #$04
     STA $2A
     LDA #$00

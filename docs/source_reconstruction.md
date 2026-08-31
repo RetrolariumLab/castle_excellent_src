@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 29 semantic and 11 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 32 semantic and 9 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -32,7 +32,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 14,421 PRG bytes (44.01%): `$E45D-$E8DE`
+The promoted ranges currently cover 15,296 PRG bytes (46.68%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -53,11 +53,24 @@ and uploads both attribute tables, then chooses room audio. Four packed status
 tile streams, five pointer loads, and 16 initial attribute bytes are checked
 independently against the reference PRG.
 
-The platform slice adds controller polling at `$80FF-$8157` and PPU/CNROM
-helpers at `$8158-$817F`. An exhaustive independent model checks all 256 button
-masks when serialized on either D0 or the original D1 fallback. The four-byte
-CHR selector table is typed data, and the fixed PPUCTRL/PPUMASK modes are named
-constants rather than unexplained literals.
+The platform slice covers both save-data transports at `$8000-$80FE` and
+`$8180-$8224`, controller polling at `$80FF-$8157`, and PPU/CNROM helpers at
+`$8158-$817F`. The pulse path emits one long cycle for zero and two short
+cycles for one; the expansion path transfers eight bits MSB-first through
+`$4016/$4017` after a `00 AA 55` preamble. An independent model exhaustively
+checks all 256 expansion bytes, clock/data phases, preamble validation, pulse
+symbols, and the 8,448-cycle pulse leader. A second exhaustive model checks all
+256 controller masks on either D0 or the original D1 fallback. The four-byte
+CHR selector table is typed data, and protocol and PPU literals are named
+constants.
+
+The save/load slice adds `$FBFE-$FDC4`. It serializes a fixed 394-byte payload:
+room and runtime header bytes, 14 runtime bytes, 120 mutable-region bytes, 150
+object-region bytes, all 100 visited flags, and the eight-byte `BEDEUTUN`
+signature. The three RAM regions traverse descending addresses. A lossless
+codec proves every field boundary, reversal, exact ROM signature source, and
+encode/decode round trip. The load path checks carry for the preamble and every
+field except payload byte one, preserving the original unchecked-status quirk.
 
 The startup slice adds `$8225-$82CD`. `Reset` waits for two vblanks, establishes
 the stack, compares the three-byte RAM sentinel `POW` with the five-byte ROM
