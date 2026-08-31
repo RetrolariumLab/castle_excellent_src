@@ -5,19 +5,39 @@ The source is one canonical address-ordered PRG translation unit:
 | Module | Output | Responsibility |
 | --- | --- | --- |
 | `src/main.asm` | header + include order | canonical entrypoint |
-| `src/preservation/prg.asm` | `$8000-$E45C` | unresolved leading PRG and ordered includes |
+| `src/preservation/prg.asm` | `$8000-$8F0F` | unresolved leading PRG and ordered includes |
+| `src/game/objects/runtime_record_offsets.asm` | `$8F10-$8F28` | six-byte record offsets by object count |
+| `src/preservation/prg_8f29_9577.asm` | `$8F29-$9577` | unresolved early object/game logic |
+| `src/system/nmi_tasks.asm` | `$9578-$9582` | reset all 23 NMI task requests |
+| `src/preservation/prg_9583_a35b.asm` | `$9583-$A35B` | unresolved object handlers and gameplay logic |
+| `src/game/rooms/load_room.asm` | `$A35C-$A3AB` | top-level room loading and audio selection |
+| `src/preservation/prg_a3ac_a6d7.asm` | `$A3AC-$A6D7` | unresolved room/gameplay helpers |
+| `src/game/rooms/mutable_cell_predicates.asm` | `$A6D8-$A709` | persistent mutable-cell predicates |
+| `src/preservation/prg_a70a_ab49.asm` | `$A70A-$AB49` | unresolved room manipulation helpers |
+| `src/game/rooms/room_metadata.asm` | `$AB4A-$AC12` | object counts and mutable-state offsets |
+| `src/preservation/prg_ac13_b64b.asm` | `$AC13-$B64B` | unresolved object handlers and sprite data |
+| `src/rendering/room_screen.asm` | `$B64C-$B7FC` | room nametable, status, attribute, and OAM initialization |
+| `src/preservation/prg_b7fd_e45c.asm` | `$B7FD-$E45C` | unresolved audio, NMI, rendering, and gameplay code |
 | `src/game/rooms/decoder.asm` | `$E45D-$E8DE` | codebook, pointers, bit reader, and room decoder |
 | `src/rendering/room_attributes.asm` | `$E8DF-$EA35` | attribute addressing, builder, and cell palette table |
 | `src/preservation/prg_ea36_eb8e.asm` | `$EA36-$EB8E` | unresolved room-load completion and PPU work |
 | `src/game/objects/room_loader.asm` | `$EB8F-$EC62` | static-object lookup tables and runtime-record loader |
-| `src/preservation/prg_ec63_ffff.asm` | `$EC63-$FFFF` | unresolved trailing PRG |
+| `src/game/rooms/state_orchestration.asm` | `$EC63-$ECB6` | object loading, state selection, and snapshot rotation |
+| `src/game/rooms/persistent_state_apply.asm` | `$ECB7-$EDD1` | bitmap application and cell-derived objects |
+| `src/game/objects/stream_seek.asm` | `$EDD2-$EDEE` | terminated room-object list navigation |
+| `src/game/rooms/mutable_cell_state_apply.asm` | `$EDEF-$EE55` | mutable-cell state-bit application |
+| `src/game/rooms/persistent_state_load.asm` | `$EE56-$EF05` | snapshot restore and persistent-state loading |
+| `src/game/objects/room_data.asm` | `$EF06-$F8FB` | packed-state offsets and 100 terminated object lists |
+| `src/preservation/prg_f8fc_fdc4.asm` | `$F8FC-$FDC4` | unresolved UI, sub-command, and password code |
+| `src/game/rooms/persistent_state_save.asm` | `$FDC5-$FE30` | snapshot persistence writer |
+| `src/preservation/prg_fe31_ffff.asm` | `$FE31-$FFFF` | unresolved ending and tail tables |
 | `src/graphics/chr.asm` | four 8 KiB banks | private CHR payload |
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The six PRG sources contain no CHR data and no `.incbin`. Their boundaries
-are machine-checked from `config/source_layout.json`; the first file includes
-the following five in CPU-address order. Ghidra-defined instructions are emitted
+The 26 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+machine-checked from `config/source_layout.json`; the first file includes the
+following 25 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

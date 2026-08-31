@@ -4,16 +4,108 @@
     {
       "path": "src/preservation/prg.asm",
       "start": "0x8000",
-      "end": "0xE45D",
-      "title": "Preservation PRG before the room decoder",
+      "end": "0x8F10",
+      "title": "Preservation PRG before runtime object offset data",
       "segment": "PRG",
       "includes_after": [
+        "../game/objects/runtime_record_offsets.asm",
+        "prg_8f29_9577.asm",
+        "../system/nmi_tasks.asm",
+        "prg_9583_a35b.asm",
+        "../game/rooms/load_room.asm",
+        "prg_a3ac_a6d7.asm",
+        "../game/rooms/mutable_cell_predicates.asm",
+        "prg_a70a_ab49.asm",
+        "../game/rooms/room_metadata.asm",
+        "prg_ac13_b64b.asm",
+        "../rendering/room_screen.asm",
+        "prg_b7fd_e45c.asm",
         "../game/rooms/decoder.asm",
         "../rendering/room_attributes.asm",
         "prg_ea36_eb8e.asm",
         "../game/objects/room_loader.asm",
-        "prg_ec63_ffff.asm"
+        "../game/rooms/state_orchestration.asm",
+        "../game/rooms/persistent_state_apply.asm",
+        "../game/objects/stream_seek.asm",
+        "../game/rooms/mutable_cell_state_apply.asm",
+        "../game/rooms/persistent_state_load.asm",
+        "../game/objects/room_data.asm",
+        "prg_f8fc_fdc4.asm",
+        "../game/rooms/persistent_state_save.asm",
+        "prg_fe31_ffff.asm"
       ]
+    },
+    {
+      "path": "src/game/objects/runtime_record_offsets.asm",
+      "start": "0x8F10",
+      "end": "0x8F29",
+      "title": "Runtime object record offsets by object count"
+    },
+    {
+      "path": "src/preservation/prg_8f29_9577.asm",
+      "start": "0x8F29",
+      "end": "0x9578",
+      "title": "Preservation PRG before NMI task reset"
+    },
+    {
+      "path": "src/system/nmi_tasks.asm",
+      "start": "0x9578",
+      "end": "0x9583",
+      "title": "NMI task-request reset"
+    },
+    {
+      "path": "src/preservation/prg_9583_a35b.asm",
+      "start": "0x9583",
+      "end": "0xA35C",
+      "title": "Preservation PRG before room loading"
+    },
+    {
+      "path": "src/game/rooms/load_room.asm",
+      "start": "0xA35C",
+      "end": "0xA3AC",
+      "title": "Top-level room loading and audio selection"
+    },
+    {
+      "path": "src/preservation/prg_a3ac_a6d7.asm",
+      "start": "0xA3AC",
+      "end": "0xA6D8",
+      "title": "Preservation PRG after room loading"
+    },
+    {
+      "path": "src/game/rooms/mutable_cell_predicates.asm",
+      "start": "0xA6D8",
+      "end": "0xA70A",
+      "title": "Persistent mutable-cell predicates"
+    },
+    {
+      "path": "src/preservation/prg_a70a_ab49.asm",
+      "start": "0xA70A",
+      "end": "0xAB4A",
+      "title": "Preservation PRG before room metadata"
+    },
+    {
+      "path": "src/game/rooms/room_metadata.asm",
+      "start": "0xAB4A",
+      "end": "0xAC13",
+      "title": "Room object counts and mutable-cell state offsets"
+    },
+    {
+      "path": "src/preservation/prg_ac13_b64b.asm",
+      "start": "0xAC13",
+      "end": "0xB64C",
+      "title": "Preservation PRG before room-screen initialization"
+    },
+    {
+      "path": "src/rendering/room_screen.asm",
+      "start": "0xB64C",
+      "end": "0xB7FD",
+      "title": "Room nametable, status, attribute, and sprite initialization"
+    },
+    {
+      "path": "src/preservation/prg_b7fd_e45c.asm",
+      "start": "0xB7FD",
+      "end": "0xE45D",
+      "title": "Preservation PRG after room-screen initialization"
     },
     {
       "path": "src/game/rooms/decoder.asm",
@@ -40,10 +132,58 @@
       "title": "Static room object tables and runtime-record loader"
     },
     {
-      "path": "src/preservation/prg_ec63_ffff.asm",
+      "path": "src/game/rooms/state_orchestration.asm",
       "start": "0xEC63",
+      "end": "0xECB7",
+      "title": "Room object loading, state selection, and snapshot rotation"
+    },
+    {
+      "path": "src/game/rooms/persistent_state_apply.asm",
+      "start": "0xECB7",
+      "end": "0xEDD2",
+      "title": "Persistent state application and room-cell object creation"
+    },
+    {
+      "path": "src/game/objects/stream_seek.asm",
+      "start": "0xEDD2",
+      "end": "0xEDEF",
+      "title": "Static room object stream seeker"
+    },
+    {
+      "path": "src/game/rooms/mutable_cell_state_apply.asm",
+      "start": "0xEDEF",
+      "end": "0xEE56",
+      "title": "Mutable-cell state bit application"
+    },
+    {
+      "path": "src/game/rooms/persistent_state_load.asm",
+      "start": "0xEE56",
+      "end": "0xEF06",
+      "title": "Room-state snapshot restore and persistent-state loading"
+    },
+    {
+      "path": "src/game/objects/room_data.asm",
+      "start": "0xEF06",
+      "end": "0xF8FC",
+      "title": "Room object state offsets and terminated object lists"
+    },
+    {
+      "path": "src/preservation/prg_f8fc_fdc4.asm",
+      "start": "0xF8FC",
+      "end": "0xFDC5",
+      "title": "Preservation PRG between object data and persistent-state saving"
+    },
+    {
+      "path": "src/game/rooms/persistent_state_save.asm",
+      "start": "0xFDC5",
+      "end": "0xFE31",
+      "title": "Room-state snapshot persistence writer"
+    },
+    {
+      "path": "src/preservation/prg_fe31_ffff.asm",
+      "start": "0xFE31",
       "end": "0x10000",
-      "title": "Preservation PRG after room object loading"
+      "title": "Preservation PRG after persistent-state saving"
     }
   ]
 }

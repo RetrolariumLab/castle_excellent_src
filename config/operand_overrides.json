@@ -54,6 +54,552 @@
       "expected": "#$06",
       "operand": "#RuntimeObjectRecordSize",
       "evidence": "loader advances to the next six-byte runtime object record"
+    },
+    {
+      "instruction": "0xECD1",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "persistent object bits advance one runtime record"
+    },
+    {
+      "instruction": "0xECB9",
+      "expected": "$18",
+      "operand": "AppliedRoomObjectStateBits + 2",
+      "evidence": "shifts the high byte of the three-byte object bitmap"
+    },
+    {
+      "instruction": "0xECBB",
+      "expected": "$17",
+      "operand": "AppliedRoomObjectStateBits + 1",
+      "evidence": "shifts the middle byte of the three-byte object bitmap"
+    },
+    {
+      "instruction": "0xECD4",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "persistent object bits cover the complete runtime pool"
+    },
+    {
+      "instruction": "0xECF1",
+      "expected": "#$28",
+      "operand": "#RoomMutableCellStateBitLimit",
+      "evidence": "mutable-cell state loop uses bit ordinals 1 through 39"
+    },
+    {
+      "instruction": "0xECDE",
+      "expected": "$1D",
+      "operand": "AppliedRoomMutableCellStateBits + 4",
+      "evidence": "shifts the fifth byte of the mutable-cell bitmap"
+    },
+    {
+      "instruction": "0xECE0",
+      "expected": "$1C",
+      "operand": "AppliedRoomMutableCellStateBits + 3",
+      "evidence": "shifts the fourth byte of the mutable-cell bitmap"
+    },
+    {
+      "instruction": "0xECE2",
+      "expected": "$1B",
+      "operand": "AppliedRoomMutableCellStateBits + 2",
+      "evidence": "shifts the third byte of the mutable-cell bitmap"
+    },
+    {
+      "instruction": "0xECE4",
+      "expected": "$1A",
+      "operand": "AppliedRoomMutableCellStateBits + 1",
+      "evidence": "shifts the second byte of the mutable-cell bitmap"
+    },
+    {
+      "instruction": "0xECF7",
+      "expected": "a:$AB49,X",
+      "operand": "RoomObjectCounts - 1,X",
+      "evidence": "one-based room index selects the room's static object count"
+    },
+    {
+      "instruction": "0xED00",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "high byte initializes the room-cell scan pointer"
+    },
+    {
+      "instruction": "0xED04",
+      "expected": "#$00",
+      "operand": "#<RoomCells",
+      "evidence": "low byte initializes the room-cell scan pointer"
+    },
+    {
+      "instruction": "0xED64",
+      "expected": "#$90",
+      "operand": "#<RoomMutableCellPersistentState",
+      "evidence": "low byte of the first address after the 400-byte room grid"
+    },
+    {
+      "instruction": "0xED68",
+      "expected": "#$05",
+      "operand": "#>RoomMutableCellPersistentState",
+      "evidence": "high byte of the first address after the 400-byte room grid"
+    },
+    {
+      "instruction": "0xED76",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "subtracts the room grid base from a scanned cell pointer"
+    },
+    {
+      "instruction": "0xED80",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "division by the 20-cell room width"
+    },
+    {
+      "instruction": "0xED8B",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "division by the 20-cell room width"
+    },
+    {
+      "instruction": "0xEDCD",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "cell-derived object creation advances one runtime record"
+    },
+    {
+      "instruction": "0xEDD2",
+      "expected": "#$6B",
+      "operand": "#<RoomObjectStream",
+      "evidence": "low byte initializes the static room object stream pointer"
+    },
+    {
+      "instruction": "0xEDD6",
+      "expected": "#$EF",
+      "operand": "#>RoomObjectStream",
+      "evidence": "high byte initializes the static room object stream pointer"
+    },
+    {
+      "instruction": "0xEDEF",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "high byte initializes the mutable-cell scan pointer"
+    },
+    {
+      "instruction": "0xEDF3",
+      "expected": "#$00",
+      "operand": "#<RoomCells",
+      "evidence": "low byte initializes the mutable-cell scan pointer"
+    },
+    {
+      "instruction": "0xEE2B",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "writes the paired cell one room row below"
+    },
+    {
+      "instruction": "0xEE40",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "writes the paired cell one room row below"
+    },
+    {
+      "instruction": "0xEE4D",
+      "expected": "#$90",
+      "operand": "#<RoomMutableCellPersistentState",
+      "evidence": "low byte of the first address after the room grid"
+    },
+    {
+      "instruction": "0xEE51",
+      "expected": "#$05",
+      "operand": "#>RoomMutableCellPersistentState",
+      "evidence": "high byte of the first address after the room grid"
+    },
+    {
+      "instruction": "0xEE5E",
+      "expected": "$15,X",
+      "operand": "LoadedRoomObjectStateBits - 1,X",
+      "evidence": "snapshot offsets 1-3 mirror to the three object-state bytes at $16-$18"
+    },
+    {
+      "instruction": "0xEE79",
+      "expected": "$15,X",
+      "operand": "LoadedRoomObjectStateBits - 1,X",
+      "evidence": "snapshot offsets 1-3 mirror to the three object-state bytes at $16-$18"
+    },
+    {
+      "instruction": "0xEE9B",
+      "expected": "a:$EF05,X",
+      "operand": "RoomObjectStateOffsets - 1,X",
+      "evidence": "previous cumulative object-state offset for the one-based room index"
+    },
+    {
+      "instruction": "0xEE9F",
+      "expected": "a:$EF05,X",
+      "operand": "RoomObjectStateOffsets - 1,X",
+      "evidence": "starting cumulative object-state offset for the one-based room index"
+    },
+    {
+      "instruction": "0xEEAE",
+      "expected": "a:$0609,X",
+      "operand": "RoomObjectPersistentState + 1,X",
+      "evidence": "second packed object-state byte"
+    },
+    {
+      "instruction": "0xEEB1",
+      "expected": "$17",
+      "operand": "LoadedRoomObjectStateBits + 1",
+      "evidence": "second unpacked object-state byte"
+    },
+    {
+      "instruction": "0xEEB3",
+      "expected": "a:$0714",
+      "operand": "CurrentRoomObjectState + 1",
+      "evidence": "second current-room object-state byte"
+    },
+    {
+      "instruction": "0xEEB9",
+      "expected": "a:$060A,X",
+      "operand": "RoomObjectPersistentState + 2,X",
+      "evidence": "third packed object-state byte"
+    },
+    {
+      "instruction": "0xEEBC",
+      "expected": "$18",
+      "operand": "LoadedRoomObjectStateBits + 2",
+      "evidence": "third unpacked object-state byte"
+    },
+    {
+      "instruction": "0xEEBE",
+      "expected": "a:$0715",
+      "operand": "CurrentRoomObjectState + 2",
+      "evidence": "third current-room object-state byte"
+    },
+    {
+      "instruction": "0xEEC7",
+      "expected": "a:$ABAD,X",
+      "operand": "RoomMutableCellStateOffsets - 1,X",
+      "evidence": "previous cumulative mutable-cell-state offset"
+    },
+    {
+      "instruction": "0xEECD",
+      "expected": "a:$ABAD,X",
+      "operand": "RoomMutableCellStateOffsets - 1,X",
+      "evidence": "starting cumulative mutable-cell-state offset"
+    },
+    {
+      "instruction": "0xEEDC",
+      "expected": "a:$0591,X",
+      "operand": "RoomMutableCellPersistentState + 1,X",
+      "evidence": "second packed mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEDF",
+      "expected": "$1A",
+      "operand": "LoadedRoomMutableCellStateBits + 1",
+      "evidence": "second unpacked mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEE1",
+      "expected": "a:$0717",
+      "operand": "CurrentRoomMutableCellState + 1",
+      "evidence": "second current-room mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEE7",
+      "expected": "a:$0592,X",
+      "operand": "RoomMutableCellPersistentState + 2,X",
+      "evidence": "third packed mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEEA",
+      "expected": "$1B",
+      "operand": "LoadedRoomMutableCellStateBits + 2",
+      "evidence": "third unpacked mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEEC",
+      "expected": "a:$0718",
+      "operand": "CurrentRoomMutableCellState + 2",
+      "evidence": "third current-room mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEF2",
+      "expected": "a:$0593,X",
+      "operand": "RoomMutableCellPersistentState + 3,X",
+      "evidence": "fourth packed mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEF5",
+      "expected": "$1C",
+      "operand": "LoadedRoomMutableCellStateBits + 3",
+      "evidence": "fourth unpacked mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEF7",
+      "expected": "a:$0719",
+      "operand": "CurrentRoomMutableCellState + 3",
+      "evidence": "fourth current-room mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEEFD",
+      "expected": "a:$0594,X",
+      "operand": "RoomMutableCellPersistentState + 4,X",
+      "evidence": "fifth packed mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEF00",
+      "expected": "$1D",
+      "operand": "LoadedRoomMutableCellStateBits + 4",
+      "evidence": "fifth unpacked mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xEF02",
+      "expected": "a:$071A",
+      "operand": "CurrentRoomMutableCellState + 4",
+      "evidence": "fifth current-room mutable-cell-state byte"
+    },
+    {
+      "instruction": "0xFDCF",
+      "expected": "a:$EF05,Y",
+      "operand": "RoomObjectStateOffsets - 1,Y",
+      "evidence": "previous cumulative object-state offset while saving"
+    },
+    {
+      "instruction": "0xFDD6",
+      "expected": "a:$EF05,X",
+      "operand": "RoomObjectStateOffsets - 1,X",
+      "evidence": "starting cumulative object-state offset while saving"
+    },
+    {
+      "instruction": "0xFDE6",
+      "expected": "a:$0609,X",
+      "operand": "RoomObjectPersistentState + 1,X",
+      "evidence": "second packed object-state byte while saving"
+    },
+    {
+      "instruction": "0x957A",
+      "expected": "#$16",
+      "operand": "#NmiTaskRequestCount - 1",
+      "evidence": "reset loop covers all 23 NMI task-request bytes at $0785-$079B"
+    },
+    {
+      "instruction": "0xA363",
+      "expected": "a:$069D,X",
+      "operand": "RoomVisitedFlags - 1,X",
+      "evidence": "one-based room index marks one of 100 room-visited flags"
+    },
+    {
+      "instruction": "0xA33E",
+      "expected": "#$64",
+      "operand": "#RoomVisitedFlagCount",
+      "evidence": "new-game initialization clears one flag for each of 100 rooms"
+    },
+    {
+      "instruction": "0xA340",
+      "expected": "a:$069D,X",
+      "operand": "RoomVisitedFlags - 1,X",
+      "evidence": "descending one-based initialization covers all room-visited flags"
+    },
+    {
+      "instruction": "0xA368",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "room loading clears all 24 six-byte runtime records"
+    },
+    {
+      "instruction": "0xA36A",
+      "expected": "$49,X",
+      "operand": "RuntimeObjectRecords - 1,X",
+      "evidence": "descending one-based clear loop covers $004A-$00D9"
+    },
+    {
+      "instruction": "0xB68B",
+      "expected": "#$40",
+      "operand": "#NametableAttributeTableSize",
+      "evidence": "left nametable attribute clear writes 64 bytes"
+    },
+    {
+      "instruction": "0xB6A2",
+      "expected": "#$40",
+      "operand": "#NametableAttributeTableSize",
+      "evidence": "right nametable attribute clear writes 64 bytes"
+    },
+    {
+      "instruction": "0xB6DC",
+      "expected": "#$B7",
+      "operand": "#>RoomStatusTilesAt208E",
+      "evidence": "high byte of the zero-terminated status tile string"
+    },
+    {
+      "instruction": "0xB6E0",
+      "expected": "#$7C",
+      "operand": "#<RoomStatusTilesAt208E",
+      "evidence": "low byte of the zero-terminated status tile string"
+    },
+    {
+      "instruction": "0xB6F4",
+      "expected": "#$B7",
+      "operand": "#>RoomStatusTilesAt206E",
+      "evidence": "high byte of the zero-terminated status tile string"
+    },
+    {
+      "instruction": "0xB6F8",
+      "expected": "#$9E",
+      "operand": "#<RoomStatusTilesAt206E",
+      "evidence": "low byte of the zero-terminated status tile string"
+    },
+    {
+      "instruction": "0xB714",
+      "expected": "#$07",
+      "operand": "#>StatusScoreTiles",
+      "evidence": "high byte of the formatted score tile buffer"
+    },
+    {
+      "instruction": "0xB718",
+      "expected": "#$9D",
+      "operand": "#<StatusScoreTiles",
+      "evidence": "low byte of the formatted score tile buffer"
+    },
+    {
+      "instruction": "0xB72F",
+      "expected": "#$B7",
+      "operand": "#>RoomStatusTilesAt2062",
+      "evidence": "high byte of the zero-terminated status tile string"
+    },
+    {
+      "instruction": "0xB733",
+      "expected": "#$8B",
+      "operand": "#<RoomStatusTilesAt2062",
+      "evidence": "low byte of the zero-terminated status tile string"
+    },
+    {
+      "instruction": "0xB747",
+      "expected": "#$B7",
+      "operand": "#>RoomStatusTilesAt20A2",
+      "evidence": "high byte of the zero-terminated status tile string"
+    },
+    {
+      "instruction": "0xB74B",
+      "expected": "#$97",
+      "operand": "#<RoomStatusTilesAt20A2",
+      "evidence": "low byte of the zero-terminated status tile string"
+    },
+    {
+      "instruction": "0xB768",
+      "expected": "#$10",
+      "operand": "#InitialRoomAttributeCount",
+      "evidence": "initial room status area uses 16 attribute bytes"
+    },
+    {
+      "instruction": "0xB7DE",
+      "expected": "#$40",
+      "operand": "#NametableAttributeTableSize",
+      "evidence": "left room attribute upload consumes the first 64-byte table"
+    },
+    {
+      "instruction": "0xB7F6",
+      "expected": "#$80",
+      "operand": "#RoomAttributeScratchSize",
+      "evidence": "right room attribute upload ends after both 64-byte tables"
+    },
+    {
+      "instruction": "0xEC69",
+      "expected": "#$08",
+      "operand": "#RoomStateRecordSize - 1",
+      "evidence": "snapshot rotation copies one nine-byte room-state record"
+    },
+    {
+      "instruction": "0xEC7A",
+      "expected": "#$0D",
+      "operand": "#RoomRuntimeSnapshotSize - 1",
+      "evidence": "runtime snapshot rotation copies 14 bytes"
+    },
+    {
+      "instruction": "0xECA2",
+      "expected": "#$08",
+      "operand": "#RoomStateRecordSize - 1",
+      "evidence": "selected room state is mirrored as one nine-byte record"
+    },
+    {
+      "instruction": "0xECAD",
+      "expected": "#$0E",
+      "operand": "#RoomRuntimeLoadMirrorSize - 1",
+      "evidence": "selected runtime state mirror stores 15 active bytes"
+    },
+    {
+      "instruction": "0xFDE3",
+      "expected": "a:$072F",
+      "operand": "RoomObjectStateSnapshotB + 1",
+      "evidence": "second object-state byte in snapshot B"
+    },
+    {
+      "instruction": "0xFDEF",
+      "expected": "a:$060A,X",
+      "operand": "RoomObjectPersistentState + 2,X",
+      "evidence": "third packed object-state byte while saving"
+    },
+    {
+      "instruction": "0xFDEC",
+      "expected": "a:$0730",
+      "operand": "RoomObjectStateSnapshotB + 2",
+      "evidence": "third object-state byte in snapshot B"
+    },
+    {
+      "instruction": "0xFDF9",
+      "expected": "a:$ABAD,Y",
+      "operand": "RoomMutableCellStateOffsets - 1,Y",
+      "evidence": "previous cumulative mutable-cell-state offset while saving"
+    },
+    {
+      "instruction": "0xFE02",
+      "expected": "a:$ABAD,X",
+      "operand": "RoomMutableCellStateOffsets - 1,X",
+      "evidence": "starting cumulative mutable-cell-state offset while saving"
+    },
+    {
+      "instruction": "0xFE12",
+      "expected": "a:$0591,X",
+      "operand": "RoomMutableCellPersistentState + 1,X",
+      "evidence": "second packed mutable-cell-state byte while saving"
+    },
+    {
+      "instruction": "0xFE0F",
+      "expected": "a:$0732",
+      "operand": "RoomMutableCellStateSnapshotB + 1",
+      "evidence": "second mutable-cell-state byte in snapshot B"
+    },
+    {
+      "instruction": "0xFE1B",
+      "expected": "a:$0592,X",
+      "operand": "RoomMutableCellPersistentState + 2,X",
+      "evidence": "third packed mutable-cell-state byte while saving"
+    },
+    {
+      "instruction": "0xFE18",
+      "expected": "a:$0733",
+      "operand": "RoomMutableCellStateSnapshotB + 2",
+      "evidence": "third mutable-cell-state byte in snapshot B"
+    },
+    {
+      "instruction": "0xFE24",
+      "expected": "a:$0593,X",
+      "operand": "RoomMutableCellPersistentState + 3,X",
+      "evidence": "fourth packed mutable-cell-state byte while saving"
+    },
+    {
+      "instruction": "0xFE21",
+      "expected": "a:$0734",
+      "operand": "RoomMutableCellStateSnapshotB + 3",
+      "evidence": "fourth mutable-cell-state byte in snapshot B"
+    },
+    {
+      "instruction": "0xFE2D",
+      "expected": "a:$0594,X",
+      "operand": "RoomMutableCellPersistentState + 4,X",
+      "evidence": "fifth packed mutable-cell-state byte while saving"
+    },
+    {
+      "instruction": "0xFE2A",
+      "expected": "a:$0735",
+      "operand": "RoomMutableCellStateSnapshotB + 4",
+      "evidence": "fifth mutable-cell-state byte in snapshot B"
     }
   ]
 }

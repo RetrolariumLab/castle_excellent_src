@@ -23,8 +23,11 @@ Japanese peripheral contract have not yet been proven.
 `Reset` initializes persistent markers, then enters a frame loop synchronized
 by an NMI-owned countdown. `LoadRoom` at `$A35C` is the strongest high-level
 landmark in this region: it clears the 24 six-byte runtime object records,
-calls `DecodeRoom`, loads static and tile-derived objects, builds attribute
-tables, and finishes PPU setup.
+calls `DecodeRoom`, loads static and tile-derived objects, applies persistent
+state, resets all 23 NMI task requests, initializes both nametables and sprite
+buffers, writes the status area, builds and uploads both attribute tables,
+clears per-room runtime state, and selects the room audio track. The routine is
+now isolated in `src/game/rooms/load_room.asm` rather than preservation code.
 
 The indirect object dispatcher uses `ObjectHandlerTable` at `$AD93`. Most
 individual handlers remain generically named until object-specific traces
@@ -60,6 +63,14 @@ many unrolled `$2007` writes. Runtime CDL was essential here: vanilla recursive
 analysis missed several indirect entries even though every observed byte was
 executed as code.
 
+Room-load screen initialization at `$B64C-$B7FC` is separately promoted.
+`ClearRoomNametablesAndSprites` fills the two nametables, clears both 64-byte
+attribute tables, fills both OAM buffers with `$F0`, waits for vblank, and
+performs DMA. `InitializeRoomStatusDisplay` writes four terminated tile streams
+and formatted score tiles, then seeds 16 attribute bytes.
+`UploadRoomAttributeTables` copies the two 64-byte scratch tables to `$23C0`
+and `$27C0`. `ResetNmiTaskRequests` at `$9578` fills `$0785-$079B` with `$FF`.
+
 ## Room and object data pipeline (`$E45D-$F8FB`)
 
 The proven decoder subrange `$E45D-$E8DE` lives in
@@ -69,17 +80,53 @@ The immediately following `$E8DF-$EA35` range lives in
 `src/rendering/room_attributes.asm`; it builds both nametable attribute tables
 and requests their NMI uploads. The closed `$EB8F-$EC62` static-object range
 lives in `src/game/objects/room_loader.asm`. The intervening room UI and later
-transition/persistence logic remain preservation code until their mixed
-boundaries are resolved.
+transition logic remains preservation code until its mixed boundaries are
+resolved.
 
 `RoomCodebook`, `RoomPointerTable`, `ReadRoomBit`, `RefillRoomBitWindow`, and
 `DecodeRoom` recover 400 cells from CHR banks 2 or 3. `BuildRoomAttributeTables`
 uses the lower stack page as two 64-byte nametable attribute buffers.
 `LoadRoomObjects` expands terminated triples into the six-byte runtime pool;
-`SeekRoomObjectStream` locates a room in `RoomObjectStream`.
+`SeekRoomObjectStream` locates a zero-based room list by counting `$FF`
+terminators. Both routines now live in semantic object modules.
 
-The independent parser proves 100 terminators and the exact `$EF6B-$F8FB`
-object-stream boundary. The loader's type lookup logically spans 61 bytes from
+The independent parser proves 100 terminators, the exact `$EF6B-$F8FB`
+object-stream boundary, and a byte-for-byte 2,449-byte encode round trip.
+`RoomObjectStateOffsets` contains 101 cumulative offsets; each room width is
+exactly `ceil(object count / 8)`, proving one persistent bit per static object
+and 141 state bytes at `$0608-$0694`.
+
+`RoomMutableCellStateOffsets` is a second 101-entry table. For rooms 1-99 its
+width is `ceil(candidate cell count / 8)` for cells `$19,$1C,$1F,$22,$25,$29`
+and `$54`; room 100 explicitly reserves three bytes. The resulting 108 bytes
+live at `$0590-$05FB`. `LoadRoomPersistentState` expands both variable-width
+bitmaps into a nine-byte current-room state, while `SaveRoomStateSnapshotB`
+writes the corresponding snapshot back. Two nine-byte snapshot slots at
+`$0724` and `$072D` support room and sub-command transitions.
+
+`ApplyRoomPersistentState` consumes those active bitmaps after the static
+objects have been loaded. A set static-object bit clears the corresponding
+six-byte runtime record. Set mutable-cell bits select ordinals 1-39 in a
+row-major scan and replace each selected cell with either `$54/$55` or
+`$62/$63`, depending on its neighboring cell. The two candidate predicates
+cover the left/top values `$19,$1C,$1F,$22,$25,$29` and the paired right values
+`$1A,$1D,$20,$23,$26,$2A`.
+
+`RoomObjectCounts` agrees with all 100 terminated static-object lists.
+`RuntimeObjectOffsetByCount` maps counts 0-24 to six-byte record offsets, so
+cell-derived objects begin immediately after each room's static records. Five
+room-cell markers create runtime types `$A1-$A5`; the complete room set contains
+176 such markers. Static and cell-derived objects together peak at 22 records,
+within the 24-record pool.
+
+`LoadRoomObjectsAndState` at `$EC63` rotates the nine-byte state and 14-byte
+runtime snapshots before selecting the incoming room state. A matching room id
+restores snapshot B; otherwise the persistent stores are loaded. The selected
+state and 15 active runtime bytes are copied to load mirrors before execution
+falls through to `ApplyRoomPersistentState`. `SelectAndApplyRoomState` at
+`$EC8A` is also a standalone entry used after loading a saved game.
+
+The loader's type lookup logically spans 61 bytes from
 `$EB8F`, while its state lookup starts at `$EBC0`; their views intentionally
 overlap. Physical typed-data ranges remain non-overlapping. Address ordering
 alone must not be used to classify any other unobserved byte.

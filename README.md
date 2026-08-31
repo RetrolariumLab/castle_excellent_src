@@ -16,9 +16,14 @@ evidence, and tested decoders for game data.
 - The complete 32 KiB PRG is represented by one address-ordered ca65
   translation unit generated from pinned headless Ghidra/GhidraNes analysis.
   The proven semantic modules are the room decoder at `$E45D-$E8DE`, room
-  attribute construction at `$E8DF-$EA35`, and the static-object tables and
-  loader at `$EB8F-$EC62`; unresolved ranges remain explicitly named
-  preservation sources.
+  attribute construction at `$E8DF-$EA35`, the static-object tables and loader
+  at `$EB8F-$EC62`, the stream seeker at `$EDD2-$EDEE`, and object/state data
+  at `$EF06-$F8FB`. Persistent room-state offsets, snapshot restore/load, and
+  save paths are also semantic modules, together with bitmap application,
+  mutable-cell predicates, and cell-derived object creation. The top-level
+  room loader, NMI-request reset, room-screen initialization, and room-state
+  snapshot orchestration now form a semantic vertical slice. Unresolved ranges
+  remain explicitly named preservation sources.
 - All direct branches, jumps, and calls use labels; the first semantic names
   cover reset/interrupts, CHR switching, rooms, objects, and core data tables.
 - `make build` reconstructs a byte-identical image from the explicit iNES
@@ -27,16 +32,21 @@ evidence, and tested decoders for game data.
 - `scripts/room_data.py` independently implements the published prefix-code
   room decoder; the exact local reference validates as 100 rooms, 40,000 cells,
   200 nametable attribute tables, and the exactly bounded 783-record static
-  object stream.
+  object stream. The object stream round-trips all 2,449 bytes and its 101
+  cumulative offsets prove 141 bytes of packed object state. A second table
+  proves 108 bytes of mutable-cell state across all rooms. Five cell markers
+  create 176 additional runtime objects without overflowing the 24-slot pool.
 - `scripts/audio_data.py` validates the eight-set music table and all 21
   textual command streams, including their terminators and restart pointers.
-- `make format`, `make lint`, 66 unit tests, reproducible disassembly checks,
+- `scripts/room_screen_data.py` validates four status-screen tile streams,
+  their code-level pointer loads, and the 16 initial attribute bytes.
+- `make format`, `make lint`, 79 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,729 instructions after 20
+  disagreements. Evidence-refined Ghidra exports 9,729 instructions after 24
   evidence-backed data ranges remove 182 false-positive instructions.
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
@@ -98,11 +108,13 @@ make build           # assemble the complete iNES image from PRG source + CHR
 make verify-prg      # compare built and original PRG with CPU-address diagnostics
 make verify          # validate and compare every ROM region and extracted asset
 make rom-info        # print and validate original and built image identities
-make release-check   # quality, source regeneration, ROM, room, and audio checks
+make release-check   # quality, source regeneration, ROM, room, screen, and audio checks
 make rooms           # decode all 100 rooms as JSON
 make validate-rooms  # decode every room without writing JSON
 make audio           # inspect music track sets and textual streams as JSON
 make validate-audio  # validate music grammar, bounds, and restart pointers
+make screen-data     # inspect room status-screen tile and attribute data
+make validate-screen-data # validate status pointers, terminators, and bounds
 make clean           # remove build artifacts only
 ```
 
@@ -130,12 +142,21 @@ scripts/format_project.py  dependency-free formatting contract
 scripts/project.py         inspect, split, build-support, verify, and lint tools
 scripts/verify_rom.py      focused image/region comparison diagnostics
 scripts/room_data.py       100-room prefix-code decoder
+scripts/room_screen_data.py room status-screen data validator
 scripts/audio_data.py      music table and textual-stream validator
 src/main.asm               assembly entrypoint
 src/preservation/prg.asm   PRG entry region and ordered module includes
 src/game/rooms/decoder.asm proven room codebook, pointers, and decoder
+src/game/rooms/load_room.asm top-level room-loading orchestration
+src/game/rooms/state_orchestration.asm snapshot selection and rotation
+src/game/rooms/persistent_state_*.asm offsets plus apply/load/save paths
+src/game/rooms/mutable_cell_*.asm predicates and state restoration
 src/rendering/room_attributes.asm proven room attribute-table construction
+src/rendering/room_screen.asm nametable, status, attribute, and OAM setup
+src/system/nmi_tasks.asm   NMI task-request reset
 src/game/objects/room_loader.asm proven static-object expansion into RAM
+src/game/objects/stream_seek.asm proven terminated-list stream navigation
+src/game/objects/room_data.asm typed object lists and persistent-state offsets
 src/preservation/prg_*.asm unresolved address-bounded PRG regions
 src/graphics/chr.asm       private CHR include (graphics plus room streams)
 src/memory/                hardware and RAM symbol registries

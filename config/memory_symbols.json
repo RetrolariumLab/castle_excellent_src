@@ -26,6 +26,14 @@
       "name": "RuntimeObjectY"
     },
     {
+      "address": "0x004E",
+      "name": "RuntimeObjectState"
+    },
+    {
+      "address": "0x004F",
+      "name": "RuntimeObjectByte5"
+    },
+    {
       "address": "0x00DA",
       "name": "AudioTempoOffset"
     },
@@ -70,8 +78,72 @@
       "name": "RoomCells"
     },
     {
+      "address": "0x0590",
+      "name": "RoomMutableCellPersistentState"
+    },
+    {
+      "address": "0x0608",
+      "name": "RoomObjectPersistentState"
+    },
+    {
+      "address": "0x069E",
+      "name": "RoomVisitedFlags"
+    },
+    {
       "address": "0x0702",
       "name": "RoomBitLookahead"
+    },
+    {
+      "address": "0x0712",
+      "name": "CurrentRoomState"
+    },
+    {
+      "address": "0x0713",
+      "name": "CurrentRoomObjectState"
+    },
+    {
+      "address": "0x0716",
+      "name": "CurrentRoomMutableCellState"
+    },
+    {
+      "address": "0x071B",
+      "name": "RoomStateLoadMirror"
+    },
+    {
+      "address": "0x0724",
+      "name": "RoomStateSnapshotA"
+    },
+    {
+      "address": "0x0725",
+      "name": "RoomObjectStateSnapshotA"
+    },
+    {
+      "address": "0x0728",
+      "name": "RoomMutableCellStateSnapshotA"
+    },
+    {
+      "address": "0x072D",
+      "name": "RoomStateSnapshotB"
+    },
+    {
+      "address": "0x072E",
+      "name": "RoomObjectStateSnapshotB"
+    },
+    {
+      "address": "0x0731",
+      "name": "RoomMutableCellStateSnapshotB"
+    },
+    {
+      "address": "0x0736",
+      "name": "RoomRuntimeLoadMirror"
+    },
+    {
+      "address": "0x0745",
+      "name": "RoomRuntimeStateSnapshotA"
+    },
+    {
+      "address": "0x0754",
+      "name": "RoomRuntimeStateSnapshotB"
     },
     {
       "address": "0x0775",
@@ -80,6 +152,60 @@
     {
       "address": "0x0776",
       "name": "Controller2Buttons"
+    },
+    {
+      "address": "0x0785",
+      "name": "NmiTaskRequests"
+    },
+    {
+      "address": "0x079D",
+      "name": "StatusScoreTiles"
+    },
+    {
+      "address": "0x07A2",
+      "name": "StatusScoreTerminator"
+    },
+    {
+      "address": "0x000D",
+      "name": "RoomMusicTrack1Condition",
+      "start": "0xA38A",
+      "end": "0xA3AC"
+    },
+    {
+      "address": "0x000E",
+      "name": "RoomMusicTrack3Condition",
+      "start": "0xA38A",
+      "end": "0xA3AC"
+    },
+    {
+      "address": "0x0772",
+      "name": "SuppressRoomMusicSelection",
+      "start": "0xA38A",
+      "end": "0xA3AC"
+    },
+    {
+      "address": "0x07C7",
+      "name": "KeepRoomAudioPlaying",
+      "start": "0xA38A",
+      "end": "0xA3AC"
+    },
+    {
+      "address": "0x0021",
+      "name": "PpuTileStringPointerLo",
+      "start": "0xB6C9",
+      "end": "0xB77C"
+    },
+    {
+      "address": "0x0022",
+      "name": "PpuTileStringPointerHi",
+      "start": "0xB6C9",
+      "end": "0xB77C"
+    },
+    {
+      "address": "0x0005",
+      "name": "ActiveRoomRuntimeState",
+      "start": "0xEC63",
+      "end": "0xECB7"
     },
     {
       "address": "0x0016",
@@ -208,10 +334,100 @@
       "end": "0xEC63"
     },
     {
-      "address": "0x004E",
-      "name": "LoadedObjectInitialState",
-      "start": "0xEBE9",
-      "end": "0xEC63"
+      "address": "0x0016",
+      "name": "AppliedRoomObjectStateBits",
+      "start": "0xECB7",
+      "end": "0xECF5"
+    },
+    {
+      "address": "0x0019",
+      "name": "AppliedRoomMutableCellStateBits",
+      "start": "0xECB7",
+      "end": "0xECF5"
+    },
+    {
+      "address": "0x001E",
+      "name": "MutableCellStateBitIndex",
+      "start": "0xECD8",
+      "end": "0xECF5"
+    },
+    {
+      "address": "0x0016",
+      "name": "CellObjectRecordOffset",
+      "start": "0xECF5",
+      "end": "0xEDD2"
+    },
+    {
+      "address": "0x0017",
+      "name": "SpawnedCellObjectType",
+      "start": "0xED6D",
+      "end": "0xEDD2"
+    },
+    {
+      "address": "0x0018",
+      "name": "SpawnCellRow",
+      "start": "0xED6D",
+      "end": "0xEDD2"
+    },
+    {
+      "address": "0x0021",
+      "name": "RoomCellScanPointerLo",
+      "start": "0xECF5",
+      "end": "0xEDD2"
+    },
+    {
+      "address": "0x0022",
+      "name": "RoomCellScanPointerHi",
+      "start": "0xECF5",
+      "end": "0xEDD2"
+    },
+    {
+      "address": "0x0023",
+      "name": "SpawnCellColumnOffsetLo",
+      "start": "0xED6D",
+      "end": "0xEDD2"
+    },
+    {
+      "address": "0x0024",
+      "name": "SpawnCellColumnOffsetHi",
+      "start": "0xED6D",
+      "end": "0xEDD2"
+    },
+    {
+      "address": "0x0021",
+      "name": "SoughtRoomObjectPointerLo",
+      "start": "0xEDD2",
+      "end": "0xEDEF"
+    },
+    {
+      "address": "0x0022",
+      "name": "SoughtRoomObjectPointerHi",
+      "start": "0xEDD2",
+      "end": "0xEDEF"
+    },
+    {
+      "address": "0x0029",
+      "name": "MutableCellScanPointerLo",
+      "start": "0xEDEF",
+      "end": "0xEE56"
+    },
+    {
+      "address": "0x002A",
+      "name": "MutableCellScanPointerHi",
+      "start": "0xEDEF",
+      "end": "0xEE56"
+    },
+    {
+      "address": "0x0016",
+      "name": "LoadedRoomObjectStateBits",
+      "start": "0xEE56",
+      "end": "0xEF06"
+    },
+    {
+      "address": "0x0019",
+      "name": "LoadedRoomMutableCellStateBits",
+      "start": "0xEE56",
+      "end": "0xEF06"
     },
     {
       "address": "0x079A",

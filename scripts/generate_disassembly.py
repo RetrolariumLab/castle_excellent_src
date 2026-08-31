@@ -234,7 +234,7 @@ def load_operand_overrides(path: Path) -> dict[int, OperandOverride]:
             raise DisassemblyError(f"operand override is outside PRG: ${address:04X}")
         if not evidence.strip():
             raise DisassemblyError(f"operand override lacks evidence at ${address:04X}")
-        if not re.fullmatch(r"[#<>()>+,$ A-Za-z0-9_]+", operand):
+        if not re.fullmatch(r"[#<>()>+,$ A-Za-z0-9_-]+", operand):
             raise DisassemblyError(f"unsafe ca65 operand override at ${address:04X}")
         result[address] = OperandOverride(expected, operand, evidence)
     return result

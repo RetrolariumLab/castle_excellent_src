@@ -62,10 +62,112 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x8F10",
+      "name": "RuntimeObjectOffsetByCount",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9578",
+      "name": "ResetNmiTaskRequests",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x957C",
+      "name": "ClearNextNmiTaskRequest",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xA35C",
       "name": "LoadRoom",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA36A",
+      "name": "ClearRoomRuntimeObjects",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA38A",
+      "name": "SelectRoomAudio",
+      "kind": "routine",
       "confidence": "high"
+    },
+    {
+      "address": "0xA395",
+      "name": "CheckRoomMusicSuppression",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA39B",
+      "name": "CheckRoomMusicTrack3",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA3A2",
+      "name": "CheckRoomMusicTrack1",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA3A9",
+      "name": "SelectDefaultRoomMusic",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA3AC",
+      "name": "ResetRoomRuntimeState",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA497",
+      "name": "FormatPlayerScoreTiles",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA4A5",
+      "name": "FormatHighScoreTiles",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA6D8",
+      "name": "IsPersistentMutableCell",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA6F1",
+      "name": "IsPersistentMutableRightCell",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA709",
+      "name": "ReturnMutableCellPredicate",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xAB4A",
+      "name": "RoomObjectCounts",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xABAE",
+      "name": "RoomMutableCellStateOffsets",
+      "kind": "data",
+      "confidence": "confirmed"
     },
     {
       "address": "0xAD93",
@@ -74,10 +176,124 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xB64C",
+      "name": "ClearRoomNametablesAndSprites",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB663",
+      "name": "FillRoomNametables",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB68F",
+      "name": "ClearLeftNametableAttributes",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB6A6",
+      "name": "ClearRightNametableAttributes",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB6B0",
+      "name": "HideRoomSprites",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB6B9",
+      "name": "WaitForRoomVblankBeforeOamDma",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB6C9",
+      "name": "InitializeRoomStatusDisplay",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB761",
+      "name": "CopyInitialRoomAttributesToPpu",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB76F",
+      "name": "WriteTerminatedPpuTiles",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB771",
+      "name": "WriteNextPpuTile",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB77B",
+      "name": "ReturnFromPpuTileWrite",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB77C",
+      "name": "RoomStatusTilesAt208E",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB78B",
+      "name": "RoomStatusTilesAt2062",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB797",
+      "name": "RoomStatusTilesAt20A2",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB79E",
+      "name": "RoomStatusTilesAt206E",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xB7AD",
       "name": "InitialRoomAttributes",
       "kind": "data",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB7BD",
+      "name": "UploadRoomAttributeTables",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB7C3",
+      "name": "WaitForAttributeUploadVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB7D7",
+      "name": "UploadLeftRoomAttributes",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB7EF",
+      "name": "UploadRightRoomAttributes",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0xB875",
@@ -506,14 +722,302 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xEC63",
+      "name": "LoadRoomObjectsAndState",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC6B",
+      "name": "RotateRoomStateSnapshots",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC7C",
+      "name": "RotateRoomRuntimeSnapshots",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC8A",
+      "name": "SelectAndApplyRoomState",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC9A",
+      "name": "LoadPersistentStateForRoom",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC9D",
+      "name": "MirrorSelectedRoomState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xECA4",
+      "name": "CopyRoomStateLoadMirror",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xECAF",
+      "name": "CopyRoomRuntimeLoadMirror",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xECB7",
+      "name": "ApplyRoomPersistentState",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xECB9",
+      "name": "ApplyNextObjectStateBit",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xECCF",
+      "name": "AdvanceObjectStateBit",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xECDC",
+      "name": "ApplyNextMutableCellStateBit",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xECED",
+      "name": "AdvanceMutableCellStateBit",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED08",
+      "name": "ScanRoomCellObjectMarkers",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED1C",
+      "name": "CheckCellObjectMarker4D",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED2C",
+      "name": "CheckCellObjectMarker51",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED3C",
+      "name": "CheckCellObjectMarker49",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED4C",
+      "name": "CheckCellObjectMarker4A",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED5C",
+      "name": "AdvanceRoomCellMarkerScan",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED62",
+      "name": "CheckRoomCellMarkerScanEnd",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED6D",
+      "name": "SpawnRoomCellObject",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED7E",
+      "name": "DivideCellOffsetByRoomWidth",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xED9A",
+      "name": "ScaleCellObjectCoordinates",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEDCA",
+      "name": "AdvanceCellObjectRecord",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xEDD2",
       "name": "SeekRoomObjectStream",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
+      "address": "0xEDDD",
+      "name": "SelectRoomObjectList",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEDE0",
+      "name": "ScanRoomObjectList",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEDE8",
+      "name": "CheckRoomObjectListTerminator",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEDEE",
+      "name": "ReturnRoomObjectStreamPointer",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEDEF",
+      "name": "ApplyMutableCellStateBit",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEDF7",
+      "name": "ScanMutableCellCandidates",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE04",
+      "name": "SelectMutableCellCandidate",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE0D",
+      "name": "MoveToMutableCellLeftNeighbor",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE1F",
+      "name": "RestoreMutableCellBesideType16",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE25",
+      "name": "WriteMutableCellBesideType16",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE32",
+      "name": "RestoreStandaloneMutableCell",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE38",
+      "name": "WriteStandaloneMutableCell",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE45",
+      "name": "AdvanceMutableCellCandidateScan",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE4B",
+      "name": "CheckMutableCellCandidateScanEnd",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE56",
+      "name": "RestoreRoomStateSnapshotB",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE58",
+      "name": "RestoreSnapshotBObjectState",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE65",
+      "name": "RestoreSnapshotBMutableCellState",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE71",
+      "name": "RestoreRoomStateSnapshotA",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE73",
+      "name": "RestoreSnapshotAObjectState",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE80",
+      "name": "RestoreSnapshotAMutableCellState",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE8C",
+      "name": "LoadRoomPersistentState",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEE90",
+      "name": "ClearLoadedRoomStateBits",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEEC1",
+      "name": "LoadRoomMutableCellState",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEF05",
+      "name": "ReturnRoomPersistentStateLoaded",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xEF06",
-      "name": "RoomStateOffsetTable",
+      "name": "RoomObjectStateOffsets",
       "kind": "data",
       "confidence": "confirmed"
     },
@@ -521,6 +1025,24 @@
       "address": "0xEF6B",
       "name": "RoomObjectStream",
       "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFDC5",
+      "name": "SaveRoomStateSnapshotB",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFDF2",
+      "name": "SaveRoomMutableCellState",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFE30",
+      "name": "ReturnRoomPersistentStateSaved",
+      "kind": "label",
       "confidence": "confirmed"
     },
     {

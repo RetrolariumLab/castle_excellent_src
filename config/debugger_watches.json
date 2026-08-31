@@ -38,6 +38,60 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x0590",
+      "size": 108,
+      "name": "RoomMutableCellPersistentState",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0608",
+      "size": 141,
+      "name": "RoomObjectPersistentState",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x069E",
+      "size": 100,
+      "name": "RoomVisitedFlags",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0712",
+      "size": 9,
+      "name": "CurrentRoomState",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0724",
+      "size": 9,
+      "name": "RoomStateSnapshotA",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x072D",
+      "size": 9,
+      "name": "RoomStateSnapshotB",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x071B",
+      "size": 9,
+      "name": "RoomStateLoadMirror",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0736",
+      "size": 44,
+      "name": "RoomRuntimeStateMirrorsAndSnapshots",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0785",
+      "size": 23,
+      "name": "NmiTaskRequests",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x0702",
       "size": 16,
       "name": "RoomBitLookahead",

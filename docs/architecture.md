@@ -32,6 +32,13 @@ room index
   -> two adjacent nametables plus attribute tables
 ```
 
+At the top level, `LoadRoom` marks the one-based room as visited and clears the
+entire 24-record object pool before decoding. It then invokes the object/state
+pipeline, clears the 23 NMI task requests, initializes nametables and both OAM
+buffers, writes the status area, builds and uploads attributes, resets room
+runtime variables, and selects one of audio track sets 0, 1, or 3 unless room
+flags suppress the change.
+
 The logical room is 20x20 cells. One cell spans 16x8 pixels: X is doubled into
 two background tiles, while Y advances by one tile. The rendered playfield is
 therefore wider than one screen and uses two horizontal nametables.
@@ -49,6 +56,23 @@ occupies `$EF6B-$F8FB`. Loading expands each object into a six-byte record in
 `$004A-$00D9`. The `$90`-byte pool therefore contains 24 records; the original
 rooms use at most 18.
 
+A 101-entry cumulative offset table assigns `ceil(object count / 8)` bytes to
+each room. The resulting `$8D` bytes at `$0608-$0694` preserve one bit for each
+static object across room transitions.
+
+A parallel table assigns packed bits to seven mutable cell classes. Its
+108-byte store at `$0590-$05FB`, the object-bit store, and a one-byte room id
+form a nine-byte active record plus two transition snapshots. The load and save
+paths use the same cumulative offsets, preventing one room from consuming a
+neighbor's state bytes.
+
+The state-application path treats a set object bit as removed and clears that
+runtime record. Mutable-cell bits select candidates by one-based row-major
+ordinal and restore one of two two-cell visual forms. Afterward five logical
+cell markers become runtime types `$A1-$A5`; their records begin at the static
+object count multiplied by six. Across the original rooms the combined count
+peaks at 22 of the 24 available records.
+
 The encoded type indexes a logical table beginning at `$EB8F`. Types through
 `$3C` make that view overlap the state table beginning at `$EBC0`; the latter
 is also indexed directly, but only for encoded types `$12-$29`. The loader
@@ -60,11 +84,25 @@ two, or four hardware records in 8x16 sprite mode.
 
 ```text
 room object stream
+  + cell markers in decoded room
+  + persistent object/cell bitmaps
   -> 24 x 6-byte runtime records at $004A
   -> indirect behavior dispatcher
   -> staging OAM at $0300
   -> reordered DMA OAM at $0200
   -> write $02 to $4014
+```
+
+The state orchestration before object-state application is:
+
+```text
+load static objects
+  -> persist old snapshot B
+  -> current state / load mirror become snapshots B / A
+  -> live runtime / load mirror become runtime snapshots B / A
+  -> restore snapshot B when its room id matches, else load persistent state
+  -> refresh the nine-byte state and 15-byte runtime load mirrors
+  -> apply object and mutable-cell bits and spawn cell-derived objects
 ```
 
 ## Attribute scratch in the stack page

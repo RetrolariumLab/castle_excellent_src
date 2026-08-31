@@ -29,6 +29,14 @@
   independently reconstruct both 64-byte attribute buffers for all 100 rooms;
 - [x] promote `$EB8F-$EC62` into a semantic static-object loader and prove all
   100 object-list terminators, lookup-table overlap, and runtime-pool capacity;
+- [x] promote the `$EDD2-$EDEE` stream seeker and `$EF06-$F8FB` object data,
+  add an exact object-stream encoder, and prove one persistent bit per object;
+- [x] reconstruct the paired room-state loader/saver, both nine-byte snapshots,
+  and the 108-byte persistent mutable-cell bitmap with its 101 offsets;
+- [x] reconstruct persistent-state application, mutable-cell predicates,
+  object-count/stride tables, and all five cell-derived runtime-object types;
+- [x] reconstruct the top-level room-loading vertical slice, including NMI
+  request reset, screen initialization, status data, and snapshot rotation;
 - expand the first deterministic FCEUX CDL/Ghidra reconciliation into broad
   title, gameplay, transition, death, ending, and save/load scenarios;
 - classify every PRG byte as code, typed data, text, or padding;

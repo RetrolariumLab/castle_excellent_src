@@ -44,7 +44,7 @@ LoadNextRoomObject:
     LDA RuntimeObjectStateByEncodedType,Y
 
 StoreRoomObjectInitialState:
-    STA LoadedObjectInitialState,X
+    STA RuntimeObjectState,X
     LDA #$00
     STA RoomObjectXHighScratch
     LDY #$01

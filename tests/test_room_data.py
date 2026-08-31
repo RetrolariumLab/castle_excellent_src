@@ -95,6 +95,111 @@ class RoomTests(unittest.TestCase):
         with self.assertRaisesRegex(room_data.RoomDataError, "offset.*invalid"):
             room_data.decode_objects(bytes(prg), 0)
 
+    def test_object_stream_encoder_round_trips_terminated_triples(self) -> None:
+        rooms = [{"objects": []} for _ in range(room_data.ROOM_COUNT)]
+        rooms[0]["objects"] = [{"encoded_type": 0x12, "x": 3, "y": 4}]
+        encoded = room_data.encode_object_stream(rooms)
+        self.assertEqual(encoded[:5], bytes((0x12, 3, 4, 0xFF, 0xFF)))
+        self.assertEqual(encoded.count(0xFF), room_data.ROOM_COUNT)
+
+    def test_object_state_offsets_match_one_bit_per_static_object(self) -> None:
+        prg = bytearray(32_768)
+        rooms = [{"objects": []} for _ in range(room_data.ROOM_COUNT)]
+        rooms[0]["objects"] = [{}] * 8
+        rooms[1]["objects"] = [{}] * 9
+        offsets = [0, 1, 3] + [3] * (room_data.ROOM_COUNT - 2)
+        put_cpu(prg, room_data.ROOM_OBJECT_STATE_OFFSETS_CPU, bytes(offsets))
+        self.assertEqual(
+            room_data.parse_room_object_state_offsets(bytes(prg), rooms), offsets
+        )
+
+    def test_rejects_object_state_width_inconsistent_with_room_objects(self) -> None:
+        prg = bytearray(32_768)
+        rooms = [{"objects": []} for _ in range(room_data.ROOM_COUNT)]
+        rooms[0]["objects"] = [{}] * 9
+        offsets = [0, 1] + [1] * (room_data.ROOM_COUNT - 1)
+        put_cpu(prg, room_data.ROOM_OBJECT_STATE_OFFSETS_CPU, bytes(offsets))
+        with self.assertRaisesRegex(room_data.RoomDataError, "expected 2 for 9"):
+            room_data.parse_room_object_state_offsets(bytes(prg), rooms)
+
+    def test_mutable_cell_offsets_match_persistent_cell_count(self) -> None:
+        prg = bytearray(32_768)
+        empty_grid = [[0] * room_data.ROOM_WIDTH for _ in range(room_data.ROOM_HEIGHT)]
+        rooms = [{"cells": [row[:] for row in empty_grid]} for _ in range(room_data.ROOM_COUNT)]
+        for column, value in enumerate(sorted(room_data.PERSISTENT_MUTABLE_CELL_VALUES)):
+            rooms[0]["cells"][0][column] = value
+        offsets = [0, 1] + [1] * (room_data.ROOM_COUNT - 2) + [4]
+        put_cpu(prg, room_data.ROOM_MUTABLE_CELL_STATE_OFFSETS_CPU, bytes(offsets))
+        self.assertEqual(
+            room_data.parse_room_mutable_cell_state_offsets(bytes(prg), rooms), offsets
+        )
+
+    def test_final_room_reserves_three_mutable_state_bytes(self) -> None:
+        prg = bytearray(32_768)
+        empty_grid = [[0] * room_data.ROOM_WIDTH for _ in range(room_data.ROOM_HEIGHT)]
+        rooms = [{"cells": [row[:] for row in empty_grid]} for _ in range(room_data.ROOM_COUNT)]
+        offsets = [0] * room_data.ROOM_COUNT + [3]
+        put_cpu(prg, room_data.ROOM_MUTABLE_CELL_STATE_OFFSETS_CPU, bytes(offsets))
+        self.assertEqual(
+            room_data.parse_room_mutable_cell_state_offsets(bytes(prg), rooms)[-1], 3
+        )
+
+    def test_rejects_mutable_state_width_that_does_not_match_cells(self) -> None:
+        prg = bytearray(32_768)
+        empty_grid = [[0] * room_data.ROOM_WIDTH for _ in range(room_data.ROOM_HEIGHT)]
+        rooms = [{"cells": [row[:] for row in empty_grid]} for _ in range(room_data.ROOM_COUNT)]
+        rooms[0]["cells"][0][0] = 0x29
+        offsets = [0] * room_data.ROOM_COUNT + [3]
+        put_cpu(prg, room_data.ROOM_MUTABLE_CELL_STATE_OFFSETS_CPU, bytes(offsets))
+        with self.assertRaisesRegex(room_data.RoomDataError, "expected 1 for 1"):
+            room_data.parse_room_mutable_cell_state_offsets(bytes(prg), rooms)
+
+    def test_room_object_count_and_stride_tables_match_runtime_layout(self) -> None:
+        prg = bytearray(32_768)
+        rooms = [{"objects": []} for _ in range(room_data.ROOM_COUNT)]
+        rooms[0]["objects"] = [{}] * 3
+        counts = bytes((3,)) + bytes(room_data.ROOM_COUNT - 1)
+        put_cpu(prg, room_data.ROOM_OBJECT_COUNTS_CPU, counts)
+        put_cpu(
+            prg,
+            room_data.RUNTIME_OBJECT_OFFSETS_CPU,
+            bytes(count * 6 for count in range(room_data.RUNTIME_OBJECT_OFFSET_COUNT)),
+        )
+        self.assertEqual(room_data.parse_room_object_counts(bytes(prg), rooms)[0], 3)
+        self.assertEqual(room_data.parse_runtime_object_offsets(bytes(prg))[-1], 144)
+
+    def test_object_state_bits_remove_corresponding_static_records(self) -> None:
+        objects = [{"encoded_type": index} for index in range(9)]
+        active = room_data.apply_room_object_state(objects, bytes((0b00000010, 1)))
+        self.assertEqual([item["encoded_type"] for item in active], [0, 2, 3, 4, 5, 6, 7])
+
+    def test_mutable_cell_state_restores_both_visual_forms(self) -> None:
+        cells = bytearray(room_data.ROOM_SIZE)
+        cells[21] = 0x19
+        cells[20] = 0x16
+        restored = room_data.apply_room_mutable_cell_state(bytes(cells), bytes((1,)))
+        self.assertEqual((restored[21], restored[41]), (0x62, 0x63))
+        cells = bytearray(room_data.ROOM_SIZE)
+        cells[40] = 0x54
+        restored = room_data.apply_room_mutable_cell_state(bytes(cells), bytes((1,)))
+        self.assertEqual((restored[40], restored[60]), (0x54, 0x55))
+
+    def test_cell_markers_spawn_scaled_runtime_objects(self) -> None:
+        cells = bytearray(room_data.ROOM_SIZE)
+        cells[22] = 0x51
+        converted, records = room_data.spawn_room_cell_objects(bytes(cells), 2)
+        self.assertEqual(converted[22], 0x53)
+        self.assertEqual(
+            records,
+            [{
+                "runtime_offset": 12,
+                "runtime_type": 0xA3,
+                "pixel_x": 32,
+                "pixel_y": 8,
+                "initial_state": 0xFF,
+            }],
+        )
+
 
 class RoomAttributeTests(unittest.TestCase):
     def attribute_prg(self, value: int = 0, initial: int = 0) -> bytearray:

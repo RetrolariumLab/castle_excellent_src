@@ -45,6 +45,23 @@ upload attribute bytes to the left and right nametables. `room_data.py`
 independently applies the same mapping and validates 200 attribute tables
 across the 100 original rooms.
 
+## Room status-screen tiles
+
+Room-load UI data at `$B77C-$B7BC` contains four zero-terminated tile streams
+followed immediately by 16 initial attribute bytes:
+
+| PPU destination | PRG data | Tiles before terminator |
+| ---: | ---: | ---: |
+| `$208E` | `$B77C` | 14 |
+| `$2062` | `$B78B` | 11 |
+| `$20A2` | `$B797` | 6 |
+| `$206E` | `$B79E` | 14 |
+
+`WriteTerminatedPpuTiles` copies each stream through `$2007`. A fifth pointer
+targets formatted score tiles at RAM `$079D`; `$07A2` is set to zero before
+the copy. `scripts/room_screen_data.py` checks the four exact boundaries, all
+five immediate pointer loads, 45 tile bytes, and the 16-byte attribute tail.
+
 ## Static object stream
 
 The combined room-object stream occupies `$EF6B-$F8FB`. A room consists of:
@@ -56,6 +73,54 @@ The combined room-object stream occupies `$EF6B-$F8FB`. A room consists of:
 The stream contains exactly 100 terminated lists and 783 records. It uses 34
 encoded types in `$0E-$3C`; room 26 has the largest list at 18 records, below
 the 24-record runtime capacity.
+
+`RoomObjectStateOffsets` at `$EF06-$EF6A` contains 101 cumulative byte offsets.
+For every room, `offset[n+1] - offset[n]` equals
+`ceil(static_object_count[n] / 8)`. The table begins at zero and ends at `$8D`,
+so `$0608-$0694` stores 141 bytes with one persistent bit per static object.
+
+`RoomMutableCellStateOffsets` at `$ABAE-$AC12` has the same cumulative form.
+For rooms 1-99, its width is the ceiling of the count of persistent mutable
+cells divided by eight. Candidate values are `$19,$1C,$1F,$22,$25,$29,$54`;
+this set comes directly from the cell predicate used by the mutation code.
+Room 100 is the only format exception and reserves three bytes. The table ends
+at `$6C`, defining 108 bytes at `$0590-$05FB`.
+
+The active state and both snapshots are nine-byte records:
+
+```text
++0      one-based room id
++1..+3 packed static-object bits
++4..+8 packed mutable-cell bits
+```
+
+The loader clears unused bytes, copies only the width selected by each table,
+and mirrors the result into the active record. The saver performs the inverse
+operation from snapshot B.
+
+During room construction, a set static-object bit means that the matching
+six-byte runtime record is inactive and must be cleared. Mutable-cell bits use
+one-based ordinals 1-39 in a row-major scan. A set bit replaces the selected
+candidate with `$62` and the cell below with `$63` when its immediate paired
+neighbor is `$16`; otherwise it writes `$54/$55`. The companion predicate
+recognizes right-hand values `$1A,$1D,$20,$23,$26,$2A`.
+
+`RoomObjectCounts` at `$AB4A-$ABAD` exactly matches the 100 decoded static
+lists. `RuntimeObjectOffsetByCount` at `$8F10-$8F28` is the sequence
+`0,6,...,144`, allowing cell-derived objects to follow the static records.
+Five logical cell markers are converted as follows:
+
+| Cell | Runtime type | Initial state |
+| ---: | ---: | ---: |
+| `$4B` | `$A1` | `$00` |
+| `$4D` | `$A2` | `$00` |
+| `$51` | `$A3` | `$FF` |
+| `$49` | `$A4` | `$00` |
+| `$4A` | `$A5` | `$00` |
+
+Each marker cell becomes `$53`; its column and row are scaled to pixel X and Y
+by 16 and 8. The 100 rooms contain 176 markers. No room exceeds 22 combined
+static and cell-derived records, leaving two spare records in the runtime pool.
 
 `RuntimeObjectTypeByEncodedType` starts at `$EB8F` and is indexed directly by
 the encoded type. The logical 61-byte view therefore continues through
@@ -98,9 +163,17 @@ no static selector for record 6 is currently known. Their shared body at
 `$B895` copies the three pointers and two channel parameters to zero-page audio
 state and primes each duration counter to one tick.
 
-## Required round trips
+## Round-trip status
 
-Before room or object data becomes editable source, the project requires:
+The static object format has a lossless decoder and encoder. All 100 lists
+re-encode to the original 2,449 bytes, and the packed-state offset table is
+checked against every list's object count. The mutable-cell offset table is
+also checked against all 40,000 decoded cells and its final-room exception.
+Independent models apply both bitmap classes and reproduce the cell-marker
+conversion, coordinate scaling, object initialization, and pool-capacity
+contract.
+
+Before compressed room data becomes editable source, the project still requires:
 
 1. decode every room without overrun;
 2. encode it back to the original bitstream or to an explicitly relocated

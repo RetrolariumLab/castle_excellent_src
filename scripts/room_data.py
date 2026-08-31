@@ -20,6 +20,14 @@ CODEBOOK_CPU = 0xE45D
 ROOM_POINTERS_CPU = 0xE71C
 OBJECT_STREAM_CPU = 0xEF6B
 OBJECT_STREAM_END_CPU = 0xF8FC  # exclusive; follows the 100th $FF terminator
+ROOM_OBJECT_STATE_OFFSETS_CPU = 0xEF06
+ROOM_OBJECT_STATE_OFFSET_COUNT = ROOM_COUNT + 1
+ROOM_MUTABLE_CELL_STATE_OFFSETS_CPU = 0xABAE
+ROOM_MUTABLE_CELL_STATE_OFFSET_COUNT = ROOM_COUNT + 1
+FINAL_ROOM_MUTABLE_STATE_BYTES = 3
+ROOM_OBJECT_COUNTS_CPU = 0xAB4A
+RUNTIME_OBJECT_OFFSETS_CPU = 0x8F10
+RUNTIME_OBJECT_OFFSET_COUNT = 25
 RUNTIME_OBJECT_TYPES_CPU = 0xEB8F
 RUNTIME_OBJECT_TYPE_COUNT = 0x3D
 RUNTIME_OBJECT_STATES_CPU = 0xEBC0
@@ -35,6 +43,15 @@ ROOM_ATTRIBUTE_BUFFER_SIZE = 2 * ROOM_ATTRIBUTE_TABLE_SIZE
 ATTRIBUTE_PRESERVING_CELLS = frozenset(
     (0x09, 0x18, 0x1B, 0x1E, 0x21, 0x24, 0x27, 0x28, 0x2B, 0x2C, 0x2D, 0x2E, 0x53)
 )
+PERSISTENT_MUTABLE_CELL_VALUES = frozenset((0x19, 0x1C, 0x1F, 0x22, 0x25, 0x29, 0x54))
+PERSISTENT_MUTABLE_CELL_RIGHT_VALUES = frozenset((0x1A, 0x1D, 0x20, 0x23, 0x26, 0x2A))
+ROOM_CELL_OBJECT_TYPES = {
+    0x4B: 0xA1,
+    0x4D: 0xA2,
+    0x51: 0xA3,
+    0x49: 0xA4,
+    0x4A: 0xA5,
+}
 
 
 class RoomDataError(ValueError):
@@ -251,6 +268,193 @@ def parse_object_stream(prg: bytes) -> list[dict[str, object]]:
     return rooms
 
 
+def encode_object_stream(rooms: list[dict[str, object]]) -> bytes:
+    """Encode parsed room objects back to terminated (type, x, y) triples."""
+    if len(rooms) != ROOM_COUNT:
+        raise RoomDataError(f"object stream has {len(rooms)} rooms, expected {ROOM_COUNT}")
+    output = bytearray()
+    for room_index, room in enumerate(rooms):
+        objects = room.get("objects")
+        if not isinstance(objects, list):
+            raise RoomDataError(f"room {room_index + 1} has no object list")
+        if len(objects) > RUNTIME_OBJECT_RECORD_COUNT:
+            raise RoomDataError(
+                f"room {room_index + 1} exceeds {RUNTIME_OBJECT_RECORD_COUNT} runtime records"
+            )
+        for record in objects:
+            if not isinstance(record, dict):
+                raise RoomDataError(f"room {room_index + 1} has an invalid object record")
+            values = tuple(record.get(field) for field in ("encoded_type", "x", "y"))
+            if not all(isinstance(value, int) and 0 <= value <= 0xFF for value in values):
+                raise RoomDataError(f"room {room_index + 1} has a non-byte object field")
+            encoded_type, x, y = values
+            if encoded_type >= RUNTIME_OBJECT_TYPE_COUNT:
+                raise RoomDataError(f"object type offset ${encoded_type:02X} is invalid")
+            output.extend((encoded_type, x, y))
+        output.append(0xFF)
+    return bytes(output)
+
+
+def parse_room_object_state_offsets(
+    prg: bytes, rooms: list[dict[str, object]]
+) -> list[int]:
+    """Validate cumulative byte offsets for each room's packed object bitmap."""
+    start = cpu_offset(ROOM_OBJECT_STATE_OFFSETS_CPU)
+    end = start + ROOM_OBJECT_STATE_OFFSET_COUNT
+    offsets = list(prg[start:end])
+    if len(offsets) != ROOM_OBJECT_STATE_OFFSET_COUNT:
+        raise RoomDataError("truncated room object state offset table")
+    if len(rooms) != ROOM_COUNT or offsets[0] != 0:
+        raise RoomDataError("invalid room object state offset table origin")
+    for room_index, room in enumerate(rooms):
+        objects = room.get("objects")
+        if not isinstance(objects, list):
+            raise RoomDataError(f"room {room_index + 1} has no object list")
+        width = offsets[room_index + 1] - offsets[room_index]
+        expected = (len(objects) + 7) // 8
+        if width != expected:
+            raise RoomDataError(
+                f"room {room_index + 1} object state uses {width} bytes, "
+                f"expected {expected} for {len(objects)} objects"
+            )
+    return offsets
+
+
+def parse_room_mutable_cell_state_offsets(
+    prg: bytes, rooms: list[dict[str, object]]
+) -> list[int]:
+    """Validate packed state allocation for persistent mutable room cells."""
+    start = cpu_offset(ROOM_MUTABLE_CELL_STATE_OFFSETS_CPU)
+    end = start + ROOM_MUTABLE_CELL_STATE_OFFSET_COUNT
+    offsets = list(prg[start:end])
+    if len(offsets) != ROOM_MUTABLE_CELL_STATE_OFFSET_COUNT:
+        raise RoomDataError("truncated room mutable-cell state offset table")
+    if len(rooms) != ROOM_COUNT or offsets[0] != 0:
+        raise RoomDataError("invalid room mutable-cell state offset table origin")
+    for room_index, room in enumerate(rooms):
+        rows = room.get("cells")
+        if not isinstance(rows, list) or len(rows) != ROOM_HEIGHT:
+            raise RoomDataError(f"room {room_index + 1} has no decoded cell grid")
+        cells = [cell for row in rows if isinstance(row, list) for cell in row]
+        if len(cells) != ROOM_SIZE:
+            raise RoomDataError(f"room {room_index + 1} has an invalid cell grid")
+        mutable_count = sum(cell in PERSISTENT_MUTABLE_CELL_VALUES for cell in cells)
+        expected = (mutable_count + 7) // 8
+        if room_index == ROOM_COUNT - 1:
+            expected = max(expected, FINAL_ROOM_MUTABLE_STATE_BYTES)
+        width = offsets[room_index + 1] - offsets[room_index]
+        if width != expected:
+            raise RoomDataError(
+                f"room {room_index + 1} mutable-cell state uses {width} bytes, "
+                f"expected {expected} for {mutable_count} cells"
+            )
+    return offsets
+
+
+def parse_room_object_counts(
+    prg: bytes, rooms: list[dict[str, object]]
+) -> list[int]:
+    start = cpu_offset(ROOM_OBJECT_COUNTS_CPU)
+    counts = list(prg[start:start + ROOM_COUNT])
+    if len(counts) != ROOM_COUNT or len(rooms) != ROOM_COUNT:
+        raise RoomDataError("truncated room object count table")
+    expected = []
+    for room_index, room in enumerate(rooms):
+        objects = room.get("objects")
+        if not isinstance(objects, list):
+            raise RoomDataError(f"room {room_index + 1} has no object list")
+        expected.append(len(objects))
+    if counts != expected:
+        mismatch = next(index for index in range(ROOM_COUNT) if counts[index] != expected[index])
+        raise RoomDataError(
+            f"room {mismatch + 1} object count is {counts[mismatch]}, "
+            f"expected {expected[mismatch]}"
+        )
+    return counts
+
+
+def parse_runtime_object_offsets(prg: bytes) -> list[int]:
+    start = cpu_offset(RUNTIME_OBJECT_OFFSETS_CPU)
+    offsets = list(prg[start:start + RUNTIME_OBJECT_OFFSET_COUNT])
+    expected = [count * 6 for count in range(RUNTIME_OBJECT_OFFSET_COUNT)]
+    if offsets != expected:
+        raise RoomDataError("runtime object offset table is not count * 6")
+    return offsets
+
+
+def apply_room_object_state(
+    objects: list[dict[str, int]], state: bytes
+) -> list[dict[str, int]]:
+    required = (len(objects) + 7) // 8
+    if len(state) != required:
+        raise RoomDataError(
+            f"object state has {len(state)} bytes, expected {required}"
+        )
+    return [
+        record
+        for index, record in enumerate(objects)
+        if not state[index // 8] & (1 << (index & 7))
+    ]
+
+
+def apply_room_mutable_cell_state(cells: bytes, state: bytes) -> bytes:
+    """Apply the original 39-bit, one-based mutable-cell restoration loop."""
+    if len(cells) != ROOM_SIZE or len(state) > 5:
+        raise RoomDataError("invalid mutable-cell state input")
+    output = bytearray(cells)
+    padded_state = state + bytes(5 - len(state))
+    for ordinal in range(1, 0x28):
+        if not padded_state[(ordinal - 1) // 8] & (1 << ((ordinal - 1) & 7)):
+            continue
+        remaining = ordinal
+        target = None
+        for index, cell in enumerate(output):
+            if cell in PERSISTENT_MUTABLE_CELL_VALUES:
+                remaining -= 1
+                if remaining == 0:
+                    target = index
+                    break
+        if target is None:
+            continue
+        if target == 0 or target + ROOM_WIDTH >= ROOM_SIZE:
+            raise RoomDataError("mutable-cell target is outside its two-row neighborhood")
+        beside_type_16 = output[target - 1] == 0x16 or (
+            target + 1 < ROOM_SIZE and output[target + 1] == 0x16
+        )
+        output[target] = 0x62 if beside_type_16 else 0x54
+        output[target + ROOM_WIDTH] = 0x63 if beside_type_16 else 0x55
+    return bytes(output)
+
+
+def spawn_room_cell_objects(
+    cells: bytes, static_object_count: int
+) -> tuple[bytes, list[dict[str, int]]]:
+    """Convert five room-cell markers into runtime object records."""
+    if len(cells) != ROOM_SIZE or not 0 <= static_object_count <= RUNTIME_OBJECT_RECORD_COUNT:
+        raise RoomDataError("invalid room-cell object input")
+    output = bytearray(cells)
+    runtime_offset = static_object_count * 6
+    records: list[dict[str, int]] = []
+    for index, cell in enumerate(output):
+        runtime_type = ROOM_CELL_OBJECT_TYPES.get(cell)
+        if runtime_type is None:
+            continue
+        if runtime_offset >= RUNTIME_OBJECT_RECORD_COUNT * 6:
+            raise RoomDataError("cell-derived objects overflow the runtime object pool")
+        output[index] = 0x53
+        records.append(
+            {
+                "runtime_offset": runtime_offset,
+                "runtime_type": runtime_type,
+                "pixel_x": (index % ROOM_WIDTH) * 16,
+                "pixel_y": (index // ROOM_WIDTH) * 8,
+                "initial_state": 0xFF if runtime_type == 0xA3 else 0,
+            }
+        )
+        runtime_offset += 6
+    return bytes(output), records
+
+
 def decode_objects(prg: bytes, room_index: int) -> dict[str, object]:
     if not 0 <= room_index < ROOM_COUNT:
         raise RoomDataError(f"room index outside 0..{ROOM_COUNT - 1}: {room_index}")
@@ -299,11 +503,32 @@ def main() -> int:
         prg, chr_data = extract_rom(Path(args.image).read_bytes())
         if args.validate:
             object_rooms = parse_object_stream(prg)
+            object_counts = parse_room_object_counts(prg, object_rooms)
+            parse_runtime_object_offsets(prg)
+            encoded_objects = encode_object_stream(object_rooms)
+            original_objects = prg[
+                cpu_offset(OBJECT_STREAM_CPU):cpu_offset(OBJECT_STREAM_END_CPU)
+            ]
+            if encoded_objects != original_objects:
+                raise RoomDataError("room object stream does not round-trip exactly")
+            state_offsets = parse_room_object_state_offsets(prg, object_rooms)
             rooms = [decode_room(prg, chr_data, index) for index in range(ROOM_COUNT)]
+            mutable_offsets = parse_room_mutable_cell_state_offsets(prg, rooms)
             objects = sum(len(room["objects"]) for room in object_rooms)
+            cell_objects = 0
+            for room_index, room in enumerate(rooms):
+                flat_cells = bytes(cell for row in room["cells"] for cell in row)
+                _cells, spawned = spawn_room_cell_objects(
+                    flat_cells, object_counts[room_index]
+                )
+                cell_objects += len(spawned)
             print(
                 f"[OK] decoded {len(rooms)} rooms, 40,000 cells, "
-                f"{2 * len(rooms)} attribute tables, and {objects} objects"
+                f"{2 * len(rooms)} attribute tables, {objects} objects, "
+                f"{len(encoded_objects)} round-tripped object bytes, "
+                f"{state_offsets[-1]} object-state + "
+                f"{mutable_offsets[-1]} mutable-cell-state bytes, "
+                f"and {cell_objects} cell-derived objects"
             )
             return 0
         if args.room is None:

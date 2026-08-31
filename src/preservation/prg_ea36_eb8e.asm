@@ -59,7 +59,7 @@ Func_EA81:
 
 Label_EA9A:
     LDX $1F
-    LDA a:$069E,X
+    LDA RoomVisitedFlags,X
     BNE Label_EAA4
     JMP Label_EB18
 
@@ -190,14 +190,14 @@ Label_EB6B:
     RTS
 
 FinalizeRoomLoad:
-    JSR Func_B64C
+    JSR ClearRoomNametablesAndSprites
     JSR Func_A351
-    JSR Func_B6C9
+    JSR InitializeRoomStatusDisplay
     LDA #$FF
     LDX #$16
 
 Label_EB79:
-    STA a:$0785,X
+    STA NmiTaskRequests,X
     DEX
     BPL Label_EB79
     JSR ResetPpuScroll

@@ -16,9 +16,19 @@ LABELS := $(BUILD_DIR)/castle_excellent.lbl
 MAP := $(BUILD_DIR)/castle_excellent.map
 DEBUG := $(BUILD_DIR)/castle_excellent.dbg
 SOURCE_FILES := src/main.asm src/preservation/prg.asm src/graphics/chr.asm \
+	src/game/objects/runtime_record_offsets.asm src/preservation/prg_8f29_9577.asm \
+	src/system/nmi_tasks.asm src/preservation/prg_9583_a35b.asm \
+	src/game/rooms/load_room.asm src/preservation/prg_a3ac_a6d7.asm \
+	src/game/rooms/mutable_cell_predicates.asm src/preservation/prg_a70a_ab49.asm \
+	src/game/rooms/room_metadata.asm src/preservation/prg_ac13_b64b.asm \
+	src/rendering/room_screen.asm src/preservation/prg_b7fd_e45c.asm \
 	src/preservation/prg_ea36_eb8e.asm src/game/rooms/decoder.asm \
 	src/rendering/room_attributes.asm src/game/objects/room_loader.asm \
-	src/preservation/prg_ec63_ffff.asm \
+	src/game/rooms/state_orchestration.asm src/game/rooms/persistent_state_apply.asm \
+	src/game/objects/stream_seek.asm src/game/rooms/mutable_cell_state_apply.asm \
+	src/game/rooms/persistent_state_load.asm \
+	src/game/objects/room_data.asm src/preservation/prg_f8fc_fdc4.asm \
+	src/game/rooms/persistent_state_save.asm src/preservation/prg_fe31_ffff.asm \
 	src/memory/hardware.inc src/memory/ram.inc
 
 GHIDRA_FACTS := build/ghidra/instructions.tsv
@@ -54,7 +64,7 @@ TIMEOUT_FRAMES ?= 15000
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
 	trace-timeout trace-suite runtime-merge runtime-check runtime-promote \
-	reconstruction-check
+	reconstruction-check screen-data validate-screen-data
 
 all: verify
 
@@ -202,7 +212,13 @@ audio: $(ROM)
 validate-audio: $(ROM)
 	$(PYTHON) scripts/audio_data.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio
+screen-data: $(ROM)
+	$(PYTHON) scripts/room_screen_data.py --image "$(ROM)" --pretty
+
+validate-screen-data: $(ROM)
+	$(PYTHON) scripts/room_screen_data.py --image "$(ROM)" --validate
+
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data
 
 check: release-check
 
