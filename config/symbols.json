@@ -1,0 +1,557 @@
+{
+  "schema_version": 1,
+  "symbols": [
+    {
+      "address": "0x80FF",
+      "name": "ReadController1",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8111",
+      "name": "PollController1",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8129",
+      "name": "ReadController2",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x813B",
+      "name": "PollController2",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8158",
+      "name": "DisableNmi",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x815E",
+      "name": "EnableNmi",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8164",
+      "name": "DisableRendering",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x816A",
+      "name": "WaitForVblankAndEnableRendering",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8175",
+      "name": "SelectChrBank",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8225",
+      "name": "Reset",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA35C",
+      "name": "LoadRoom",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xAD93",
+      "name": "ObjectHandlerTable",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB7AD",
+      "name": "InitialRoomAttributes",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB875",
+      "name": "LoadAudioTrackSet0",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB879",
+      "name": "LoadAudioTrackSet1",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB87D",
+      "name": "LoadAudioTrackSet2",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB881",
+      "name": "LoadAudioTrackSet3",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB885",
+      "name": "LoadAudioTrackSet4",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB889",
+      "name": "LoadAudioTrackSet5",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB88D",
+      "name": "LoadAudioTrackSet7",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB895",
+      "name": "LoadAudioTrackSetByOffset",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB8C6",
+      "name": "AudioTrackTable",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB906",
+      "name": "StopAudioStreams",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB918",
+      "name": "ClearSoundRequests",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB923",
+      "name": "UpdateAudioStreams",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB92F",
+      "name": "UpdateAudioStream",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBABF",
+      "name": "ReadChannelSoundRequest",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBAD7",
+      "name": "AdvanceAudioStream",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBAE9",
+      "name": "ConfigureAudioChannel",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBB16",
+      "name": "NoteSemitoneOffsets",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBB1D",
+      "name": "NoteLengthTable",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBB55",
+      "name": "ApuPeriodTable",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBBE7",
+      "name": "MusicMmlData",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC53D",
+      "name": "RoomPaletteData",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
+      "address": "0xC55D",
+      "name": "ResetPpuScroll",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC569",
+      "name": "Nmi",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC588",
+      "name": "NmiFrame",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xC6B8",
+      "name": "Irq",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC6B9",
+      "name": "BuildDmaOam",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC7BD",
+      "name": "ReverseDmaOam",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE45D",
+      "name": "RoomCodebook",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE71C",
+      "name": "RoomPointerTable",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE7E4",
+      "name": "RoomBitMasks",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE7EC",
+      "name": "ReadRoomBit",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE816",
+      "name": "RestoreRoomBitFlags",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE818",
+      "name": "RefillRoomBitWindow",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xE821",
+      "name": "StoreRoomLookaheadBit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE830",
+      "name": "DecodeRoom",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE844",
+      "name": "LoadRoomStreamPointer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE85E",
+      "name": "DecodeNextRoomCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE866",
+      "name": "ReadRoomCodebookEntry",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE872",
+      "name": "CompareRoomCodeword",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE876",
+      "name": "CompareRoomCodewordBit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE885",
+      "name": "TrapOversizedRoomCodeword",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xE888",
+      "name": "SkipRoomCodeword",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE894",
+      "name": "TrapExhaustedRoomCodebook",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xE897",
+      "name": "AdvanceRoomCodebookPointer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE8A1",
+      "name": "ReadNextRoomCodebookEntry",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE8A4",
+      "name": "ConsumeMatchedRoomCodeword",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE8A6",
+      "name": "ShiftRoomBitLookahead",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE8CE",
+      "name": "CheckRoomDecodeComplete",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE8DF",
+      "name": "GetRoomAttributeMaskAndOffset",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE8F0",
+      "name": "MapRoomAttributePosition",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE913",
+      "name": "RoomAttributeQuadrantMasks",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE917",
+      "name": "BuildRoomAttributeTables",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE91A",
+      "name": "ClearRoomAttributeScratch",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE926",
+      "name": "CopyInitialRoomAttributes",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE931",
+      "name": "BeginRoomAttributeRow",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE957",
+      "name": "ProcessRoomAttributeCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE98D",
+      "name": "DiscardRoomAttributeMask",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE98E",
+      "name": "AdvanceRoomAttributeCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE9A7",
+      "name": "IsRoomCellAttributePreserving",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE9D1",
+      "name": "ReturnRoomCellAttributeClass",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE9D2",
+      "name": "RoomCellAttributeValues",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEB6C",
+      "name": "FinalizeRoomLoad",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xEB8F",
+      "name": "RuntimeObjectTypeByEncodedType",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEBC0",
+      "name": "RuntimeObjectStateByEncodedType",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEBE9",
+      "name": "LoadRoomObjects",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEBEC",
+      "name": "ClearRuntimeObjectRecords",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEBFB",
+      "name": "LoadNextRoomObject",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC16",
+      "name": "StoreRoomObjectInitialState",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC4F",
+      "name": "AdvanceRoomObjectStream",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC5A",
+      "name": "AdvanceRuntimeObjectRecord",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEC62",
+      "name": "ReturnRoomObjectsLoaded",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEDD2",
+      "name": "SeekRoomObjectStream",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEF06",
+      "name": "RoomStateOffsetTable",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEF6B",
+      "name": "RoomObjectStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFF30",
+      "name": "LeftTileByCell",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFF94",
+      "name": "RightTileByCell",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFFFA",
+      "name": "NmiVector",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFFFC",
+      "name": "ResetVector",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFFFE",
+      "name": "IrqVector",
+      "kind": "data",
+      "confidence": "confirmed"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "identity_status": "exact-local-reference",
+  "reference_rom": {
+    "name": "Castle Excellent (Japan)",
+    "catalog_id": "HSP-05",
+    "file_size": 65552,
+    "file_sha1": "42f7975da9a68a74e141353eb6e2bdc676fc1f77",
+    "file_md5": "289ffa4883c3211796f4f67b0bcd818a",
+    "file_crc32": "3089d649",
+    "payload_sha1": "a1af0db0a81f051ae273709202c8028a265728d4",
+    "payload_crc32": "7fa2cc55",
+    "header_size": 16,
+    "header_sha1": "25e101fc2089e014a69f817d5aea07909f1828bc",
+    "header_crc32": "15daa453",
+    "prg_size": 32768,
+    "prg_sha1": "099b3b7e1b3f335abcd29cd3aa013894d745beb2",
+    "prg_crc32": "9fa1c11f",
+    "chr_size": 32768,
+    "chr_sha1": "e6c57329c079eff1fd7fa66eb1a65dc02f4b5a7a",
+    "chr_crc32": "04a8ff2e",
+    "trainer_size": 0,
+    "mapper": 3,
+    "mirroring": "vertical",
+    "prg_cpu_base": "0x8000"
+  },
+  "known_variants": [
+    {
+      "name": "Castlequest (USA)",
+      "file_size": 65552,
+      "file_sha1": "600b0d2ae76722a62b42be02c0b0becd7ff0a178",
+      "file_md5": "11ba427c870a7ee72cfbb8e6adad19e1",
+      "file_crc32": "5dbb7c78",
+      "payload_sha1": "dc7f8edfb4eef817caa89df7b64e753134d33b2e",
+      "payload_crc32": "12906664",
+      "prg_sha1": "9acc75fff0142085b451179883def8c304e540f0",
+      "prg_crc32": "749dc135",
+      "chr_sha1": "7640fc1b2a5eccfe3d2467923cdb083567eea8ee",
+      "chr_crc32": "b7cc9af1",
+      "mapper": 3,
+      "mirroring": "vertical"
+    }
+  ],
+  "extracted_assets": [
+    {
+      "path": "header/castle_excellent.hdr",
+      "region": "header",
+      "size": 16,
+      "sha1": "25e101fc2089e014a69f817d5aea07909f1828bc",
+      "crc32": "15daa453"
+    },
+    {
+      "path": "prg/castle_excellent.prg",
+      "region": "prg",
+      "size": 32768,
+      "sha1": "099b3b7e1b3f335abcd29cd3aa013894d745beb2",
+      "crc32": "9fa1c11f"
+    },
+    {
+      "path": "chr/castle_excellent.chr",
+      "region": "chr",
+      "size": 32768,
+      "sha1": "e6c57329c079eff1fd7fa66eb1a65dc02f4b5a7a",
+      "crc32": "04a8ff2e"
+    }
+  ]
+}

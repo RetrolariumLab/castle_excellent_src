@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "fceux": {
+    "name": "oranguthang/fceux_automation",
+    "repository": "https://github.com/oranguthang/fceux_automation",
+    "commit": "ec507d86c57acd8979547bc35e9627fb199fac9a",
+    "source_directory": "../fceux_automation",
+    "files": [
+      {
+        "source": "vc/x64/Release/fceux64.exe",
+        "install": "fceux64.exe",
+        "size": 5499904,
+        "sha256": "97aadff4970e98a413377810a296c045fab717661dd8270f84d58190f43a232e"
+      },
+      {
+        "source": "vc/x64/Release/lua5.1.dll",
+        "install": "lua5.1.dll",
+        "size": 314880,
+        "sha256": "23719300fa4ae3116e97c313b838945bb2c1e02094daee8165939059aaad82c5"
+      },
+      {
+        "source": "vc/x64/Release/lua51.dll",
+        "install": "lua51.dll",
+        "size": 11776,
+        "sha256": "a85ced1c2078348684b74bcc20074f63a73d02881e5dcd002581ed757d8adf86"
+      }
+    ]
+  }
+}

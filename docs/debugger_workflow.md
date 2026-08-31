@@ -1,0 +1,23 @@
+# Debugger workflow
+
+Mesen 2 is the primary interactive debugger. Load the exact Japanese image and
+import the entries from `config/debugger_breakpoints.json` and
+`config/debugger_watches.json`.
+
+Initial high-value probes are:
+
+- execute `$8175` to observe CHR-bank selection;
+- execute `$E7EC` and log PPU address plus returned bit;
+- write `$0400-$058F` to capture room decoder output;
+- write `$004A-$00D9` to recover runtime object-record fields;
+- execute `$AD93`-derived indirect targets to classify object behavior;
+- write `$0300-$03FF` and `$0200-$02FF` to separate composition from OAM
+  reordering.
+
+The published addresses are Japanese-profile working addresses. They must not
+be reused for Castlequest USA without a revision alignment pass.
+
+The first Code/Data Log should cover reset, title, normal play, room changes,
+death, sub-command mode, ending, and the Japanese save/load paths. A normal
+completion route visits only a fraction of the 100 rooms, so targeted room
+entry and object-type scenarios are required for coverage.

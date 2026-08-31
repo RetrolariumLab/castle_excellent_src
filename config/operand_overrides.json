@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "overrides": [
+    {
+      "instruction": "0xE84C",
+      "expected": "a:$E71D,X",
+      "operand": "RoomPointerTable + 1,X",
+      "evidence": "odd byte of the interleaved little-endian room pointer table"
+    },
+    {
+      "instruction": "0xE85E",
+      "expected": "#$E4",
+      "operand": "#>RoomCodebook",
+      "evidence": "high byte loaded into RoomCodePointerHi"
+    },
+    {
+      "instruction": "0xE862",
+      "expected": "#$5D",
+      "operand": "#<RoomCodebook",
+      "evidence": "low byte loaded into RoomCodePointerLo"
+    },
+    {
+      "instruction": "0xE94D",
+      "expected": "#$00",
+      "operand": "#<RoomCells",
+      "evidence": "low byte added while constructing the decoded-room row pointer"
+    },
+    {
+      "instruction": "0xE953",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "high byte added while constructing the decoded-room row pointer"
+    },
+    {
+      "instruction": "0xE992",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "column loop covers all 20 decoded room cells"
+    },
+    {
+      "instruction": "0xE99A",
+      "expected": "#$14",
+      "operand": "#RoomHeight",
+      "evidence": "row loop covers all 20 decoded room rows"
+    },
+    {
+      "instruction": "0xEBEF",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "clear loop covers all 24 six-byte runtime object records"
+    },
+    {
+      "instruction": "0xEC5C",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "loader advances to the next six-byte runtime object record"
+    }
+  ]
+}

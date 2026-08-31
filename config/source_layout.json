@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "src/preservation/prg.asm",
+      "start": "0x8000",
+      "end": "0xE45D",
+      "title": "Preservation PRG before the room decoder",
+      "segment": "PRG",
+      "includes_after": [
+        "../game/rooms/decoder.asm",
+        "../rendering/room_attributes.asm",
+        "prg_ea36_eb8e.asm",
+        "../game/objects/room_loader.asm",
+        "prg_ec63_ffff.asm"
+      ]
+    },
+    {
+      "path": "src/game/rooms/decoder.asm",
+      "start": "0xE45D",
+      "end": "0xE8DF",
+      "title": "Room prefix-code tables and decoder"
+    },
+    {
+      "path": "src/rendering/room_attributes.asm",
+      "start": "0xE8DF",
+      "end": "0xEA36",
+      "title": "Room attribute addressing and table builder"
+    },
+    {
+      "path": "src/preservation/prg_ea36_eb8e.asm",
+      "start": "0xEA36",
+      "end": "0xEB8F",
+      "title": "Preservation PRG between room attributes and object loading"
+    },
+    {
+      "path": "src/game/objects/room_loader.asm",
+      "start": "0xEB8F",
+      "end": "0xEC63",
+      "title": "Static room object tables and runtime-record loader"
+    },
+    {
+      "path": "src/preservation/prg_ec63_ffff.asm",
+      "start": "0xEC63",
+      "end": "0x10000",
+      "title": "Preservation PRG after room object loading"
+    }
+  ]
+}

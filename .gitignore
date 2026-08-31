@@ -1,0 +1,28 @@
+# Build artifacts and original ROM images
+build/
+*.o
+*.nes
+*.chr
+*.hdr
+*.prg
+
+# Assets extracted from a legally obtained reference image
+assets/generated/
+
+# Local research repositories
+references/
+
+# Pinned but locally downloaded reverse-engineering toolchain
+tools/.cache/
+tools/ghidra/
+tools/fceux/
+tools/.install-*/
+
+# Python caches and editor state
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "breakpoints": [
+    {
+      "address": "0x8175",
+      "name": "SelectChrBank",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA35C",
+      "name": "LoadRoom",
+      "kind": "execute",
+      "confidence": "high"
+    },
+    {
+      "address": "0xB895",
+      "name": "LoadAudioTrackSetByOffset",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB923",
+      "name": "UpdateAudioStreams",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC6B9",
+      "name": "BuildDmaOam",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE7EC",
+      "name": "ReadRoomBit",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE830",
+      "name": "DecodeRoom",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE8DF",
+      "name": "GetRoomAttributeMaskAndOffset",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE917",
+      "name": "BuildRoomAttributeTables",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEBE9",
+      "name": "LoadRoomObjects",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEDD2",
+      "name": "SeekRoomObjectStream",
+      "kind": "execute",
+      "confidence": "confirmed"
+    }
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "schema_version": 1,
+  "symbols": [
+    {
+      "address": "0x0037",
+      "name": "CurrentRoomIndex"
+    },
+    {
+      "address": "0x0041",
+      "name": "CurrentObjectOffset"
+    },
+    {
+      "address": "0x004A",
+      "name": "RuntimeObjectRecords"
+    },
+    {
+      "address": "0x004B",
+      "name": "RuntimeObjectXLo"
+    },
+    {
+      "address": "0x004C",
+      "name": "RuntimeObjectXHi"
+    },
+    {
+      "address": "0x004D",
+      "name": "RuntimeObjectY"
+    },
+    {
+      "address": "0x00DA",
+      "name": "AudioTempoOffset"
+    },
+    {
+      "address": "0x00DB",
+      "name": "AudioStreamPointerLo"
+    },
+    {
+      "address": "0x00DC",
+      "name": "AudioStreamPointerHi"
+    },
+    {
+      "address": "0x00DD",
+      "name": "AudioStreamTicksRemaining"
+    },
+    {
+      "address": "0x00DE",
+      "name": "AudioStreamOctaveOffset"
+    },
+    {
+      "address": "0x00E7",
+      "name": "AudioPulseParameters"
+    },
+    {
+      "address": "0x00E9",
+      "name": "AudioDefaultLengthIndices"
+    },
+    {
+      "address": "0x0100",
+      "name": "RoomAttributeScratch"
+    },
+    {
+      "address": "0x0200",
+      "name": "OamDmaBuffer"
+    },
+    {
+      "address": "0x0300",
+      "name": "OamStagingBuffer"
+    },
+    {
+      "address": "0x0400",
+      "name": "RoomCells"
+    },
+    {
+      "address": "0x0702",
+      "name": "RoomBitLookahead"
+    },
+    {
+      "address": "0x0775",
+      "name": "Controller1Buttons"
+    },
+    {
+      "address": "0x0776",
+      "name": "Controller2Buttons"
+    },
+    {
+      "address": "0x0016",
+      "name": "RoomDecoderBitIndex",
+      "start": "0xE7EC",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0017",
+      "name": "RoomLookaheadWriteIndex",
+      "start": "0xE818",
+      "end": "0xE830"
+    },
+    {
+      "address": "0x0019",
+      "name": "DecodedRoomCell",
+      "start": "0xE830",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0021",
+      "name": "RoomStreamPointerLo",
+      "start": "0xE7EC",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0022",
+      "name": "RoomStreamPointerHi",
+      "start": "0xE7EC",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0023",
+      "name": "RoomCodePointerLo",
+      "start": "0xE830",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0024",
+      "name": "RoomCodePointerHi",
+      "start": "0xE830",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0025",
+      "name": "RoomOutputOffsetLo",
+      "start": "0xE830",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0026",
+      "name": "RoomOutputOffsetHi",
+      "start": "0xE830",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0029",
+      "name": "RoomOutputPointerLo",
+      "start": "0xE830",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x002A",
+      "name": "RoomOutputPointerHi",
+      "start": "0xE830",
+      "end": "0xE8DF"
+    },
+    {
+      "address": "0x0025",
+      "name": "RoomAttributeByteOffset",
+      "start": "0xE8DF",
+      "end": "0xE917"
+    },
+    {
+      "address": "0x0026",
+      "name": "RoomAttributeQuadrantIndex",
+      "start": "0xE8DF",
+      "end": "0xE917"
+    },
+    {
+      "address": "0x0016",
+      "name": "RoomAttributeRow",
+      "start": "0xE917",
+      "end": "0xEA36"
+    },
+    {
+      "address": "0x0017",
+      "name": "RoomAttributeColumn",
+      "start": "0xE917",
+      "end": "0xEA36"
+    },
+    {
+      "address": "0x0023",
+      "name": "RoomCellRowPointerLo",
+      "start": "0xE917",
+      "end": "0xEA36"
+    },
+    {
+      "address": "0x0024",
+      "name": "RoomCellRowPointerHi",
+      "start": "0xE917",
+      "end": "0xEA36"
+    },
+    {
+      "address": "0x0025",
+      "name": "RoomAttributePreservedBits",
+      "start": "0xE917",
+      "end": "0xEA36"
+    },
+    {
+      "address": "0x001A",
+      "name": "RoomObjectXHighScratch",
+      "start": "0xEBE9",
+      "end": "0xEC63"
+    },
+    {
+      "address": "0x0021",
+      "name": "RoomObjectStreamPointerLo",
+      "start": "0xEBE9",
+      "end": "0xEC63"
+    },
+    {
+      "address": "0x0022",
+      "name": "RoomObjectStreamPointerHi",
+      "start": "0xEBE9",
+      "end": "0xEC63"
+    },
+    {
+      "address": "0x004E",
+      "name": "LoadedObjectInitialState",
+      "start": "0xEBE9",
+      "end": "0xEC63"
+    },
+    {
+      "address": "0x079A",
+      "name": "NmiRoomAttributesLeftRequest"
+    },
+    {
+      "address": "0x079B",
+      "name": "NmiRoomAttributesRightRequest"
+    },
+    {
+      "address": "0x2000",
+      "name": "PPU_CTRL"
+    },
+    {
+      "address": "0x2001",
+      "name": "PPU_MASK"
+    },
+    {
+      "address": "0x2002",
+      "name": "PPU_STATUS"
+    },
+    {
+      "address": "0x2003",
+      "name": "OAM_ADDR"
+    },
+    {
+      "address": "0x2004",
+      "name": "OAM_DATA"
+    },
+    {
+      "address": "0x2005",
+      "name": "PPU_SCROLL"
+    },
+    {
+      "address": "0x2006",
+      "name": "PPU_ADDR"
+    },
+    {
+      "address": "0x2007",
+      "name": "PPU_DATA"
+    },
+    {
+      "address": "0x4000",
+      "name": "APU_PL1_VOL"
+    },
+    {
+      "address": "0x4001",
+      "name": "APU_PL1_SWEEP"
+    },
+    {
+      "address": "0x4002",
+      "name": "APU_PL1_LO"
+    },
+    {
+      "address": "0x4003",
+      "name": "APU_PL1_HI"
+    },
+    {
+      "address": "0x4004",
+      "name": "APU_PL2_VOL"
+    },
+    {
+      "address": "0x4005",
+      "name": "APU_PL2_SWEEP"
+    },
+    {
+      "address": "0x4006",
+      "name": "APU_PL2_LO"
+    },
+    {
+      "address": "0x4007",
+      "name": "APU_PL2_HI"
+    },
+    {
+      "address": "0x4008",
+      "name": "APU_TRI_LINEAR"
+    },
+    {
+      "address": "0x400A",
+      "name": "APU_TRI_LO"
+    },
+    {
+      "address": "0x400B",
+      "name": "APU_TRI_HI"
+    },
+    {
+      "address": "0x400C",
+      "name": "APU_NOISE_VOL"
+    },
+    {
+      "address": "0x400E",
+      "name": "APU_NOISE_LO"
+    },
+    {
+      "address": "0x400F",
+      "name": "APU_NOISE_HI"
+    },
+    {
+      "address": "0x4014",
+      "name": "OAM_DMA"
+    },
+    {
+      "address": "0x4015",
+      "name": "APU_STATUS"
+    },
+    {
+      "address": "0x4016",
+      "name": "JOYPAD1"
+    }
+  ]
+}

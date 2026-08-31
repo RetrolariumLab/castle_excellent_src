@@ -1,0 +1,22 @@
+# Castle Excellent typed PRG data v1
+# kind start end (inclusive CPU addresses) name
+table B8C6 B905 AudioTrackTable
+table BB16 BB1C NoteSemitoneOffsets
+table BB1D BB54 NoteLengthTable
+table BB55 BBE6 ApuPeriodTable
+text BBE7 C20C MusicMmlData
+table C53D C55C RoomPaletteData
+data E45D E71B RoomCodebook
+table E71C E7E3 RoomPointerTable
+table E7E4 E7EB RoomBitMasks
+table E913 E916 RoomAttributeQuadrantMasks
+table E9D2 EA35 RoomCellAttributeValues
+table EB8F EBBF RuntimeObjectTypeTableHead
+table EBC0 EBE8 RuntimeObjectOverlappingTypeStateTable
+table EF06 EF6A RoomStateOffsetTable
+data EF6B F8FB RoomObjectStream
+padding FEE8 FF2F PaddingBeforeTileTables
+table FF30 FF93 LeftTileByCell
+table FF94 FFF7 RightTileByCell
+padding FFF8 FFF9 PaddingBeforeVectors
+vectors FFFA FFFF InterruptVectors

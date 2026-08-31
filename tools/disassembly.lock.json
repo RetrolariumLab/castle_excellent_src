@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "ghidra": {
+    "version": "12.1.3",
+    "archive": "ghidra_12.1.3_PUBLIC_20260817.zip",
+    "url": "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_12.1.3_build/ghidra_12.1.3_PUBLIC_20260817.zip",
+    "size": 569445154,
+    "sha256": "93a5d11a9ad510622acaaf908c556a7b9b764d338e78a7567f3689bf5081fd54",
+    "install_directory": "ghidra_12.1.3_PUBLIC"
+  },
+  "nes_loader": {
+    "name": "GhidraNes",
+    "version": "v20260531",
+    "commit": "4c41964",
+    "archive": "ghidra_12.1_4c41964_20260531_GhidraNes.zip",
+    "url": "https://github.com/kylewlacy/GhidraNes/releases/download/v20260531/ghidra_12.1_4c41964_20260531_GhidraNes.zip",
+    "size": 67741,
+    "sha256": "d73b5671ed12904fc8daeda65ca6910d7e441cca3e2d9d0a19389e7f08b9caf3"
+  }
+}
