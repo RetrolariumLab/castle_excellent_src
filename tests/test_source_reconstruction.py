@@ -22,6 +22,10 @@ class SemanticModuleAuditTests(unittest.TestCase):
         self.assertEqual(len(issues), 1)
         self.assertIn("raw address operand", issues[0])
 
+    def test_named_array_offset_is_allowed(self) -> None:
+        source = "CopyOam:\n    LDA OamStagingBuffer + $21,Y\n"
+        self.assertEqual(audit_module_text(Path("src/rendering/oam.asm"), source), [])
+
 
 if __name__ == "__main__":
     unittest.main()

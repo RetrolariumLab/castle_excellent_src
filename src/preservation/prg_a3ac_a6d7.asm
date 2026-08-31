@@ -7,17 +7,17 @@ ResetRoomRuntimeState:
     LDA #$00
     STA $3B
     STA $3F
-    STA $F8
+    STA NmiTaskIndex
     STA $34
     STA $35
     STA a:$0774
     STA a:$07C6
     STA $3C
-    STA a:$076B
+    STA RoomFrameCounter
     STA $40
     RTS
 
-Func_A3C6:
+EnsureRoomAudioPlaying:
     LDA a:$07CC
     BNE Label_A3D1
     LDA AudioStreamPointerLo
@@ -27,9 +27,9 @@ Func_A3C6:
 Label_A3D1:
     RTS
 
-Func_A3D2:
+AnimateRoomCells:
     JSR Func_A41F
-    LDA a:$076B
+    LDA RoomFrameCounter
     LSR A
     BCC Label_A41A
     INC $40
@@ -75,7 +75,7 @@ Label_A41A:
     .byte $46, $47, $48, $45
 
 Func_A41F:
-    LDA a:$076B
+    LDA RoomFrameCounter
     LSR A
     BCC Label_A47E
     LDA #$04
@@ -137,9 +137,9 @@ Label_A47E:
 
 FormatPlayerScoreTiles:
     JSR Func_A563
-    LDA $01
+    LDA PlayerScoreLo
     STA $03
-    LDA $02
+    LDA PlayerScoreHi
     STA $04
     JMP Label_A4B0
 
@@ -200,37 +200,37 @@ Label_A4EB:
 
 Label_A4FC:
     LDA #$60
-    STA a:$07A5
-    STA a:$07A6
-    STA a:$07A7
+    STA StatusLivesTiles
+    STA StatusLivesTiles + $01
+    STA StatusLivesTiles + $02
     LDA $13
 
 Label_A509:
     CMP #$64
     BCC Label_A515
     SBC #$64
-    INC a:$07A7
+    INC StatusLivesTiles + $02
     JMP Label_A509
 
 Label_A515:
     CMP #$0A
     BCC Label_A521
     SBC #$0A
-    INC a:$07A6
+    INC StatusLivesTiles + $01
     JMP Label_A515
 
 Label_A521:
     CLC
     ADC #$60
-    STA a:$07A5
+    STA StatusLivesTiles
     LDX #$02
 
 Label_A529:
-    LDA a:$07A5,X
+    LDA StatusLivesTiles,X
     CMP #$60
     BNE Label_A538
     LDA #$FF
-    STA a:$07A5,X
+    STA StatusLivesTiles,X
     DEX
     BNE Label_A529
 
@@ -246,18 +246,18 @@ Label_A53A:
 Label_A542:
     CLC
     ADC #$60
-    STA a:$076C,X
+    STA StatusInventoryTiles,X
     DEX
     BPL Label_A53A
     LDA #$00
-    STA a:$07C8
+    STA StatusTilesBusy
     RTS
     .byte $27, $03, $00, $00, $00, $10, $E8, $64, $0A, $01, $01, $02, $04, $08, $10, $20
     .byte $40, $80
 
 Func_A563:
     LDA #$FF
-    STA a:$07C8
+    STA StatusTilesBusy
     LDA #$00
     LDX #$07
 

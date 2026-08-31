@@ -76,7 +76,7 @@
     .byte $6B, $92, $6B, $92, $6B, $92, $3D, $8D, $6B, $92, $B0, $8D, $B0, $8D, $B0, $8D
     .byte $B0, $8D, $B0, $8D, $B0, $8D, $6B, $92, $6B, $92
 
-Func_9386:
+UpdatePlayerCollisionState:
     LDA a:$0772
     BEQ Label_938E
     JMP Label_93F6
@@ -196,9 +196,9 @@ Label_944C:
     JSR InitializeRoomStatusDisplay
     JSR BuildRoomAttributeTables
     JSR UploadRoomAttributeTables
-    JSR Func_C43D
+    JSR UpdateHorizontalScroll
     LDA #$FF
-    STA a:$07C4
+    STA PauseMode
     JSR WaitForVblankAndEnableRendering
     JMP EnableNmi
 
@@ -337,7 +337,7 @@ Func_9520:
 
 Func_952D:
     LDA #$FF
-    STA a:$07C4
+    STA PauseMode
     LDA $10
     STA a:$0741
     LDA $11

@@ -6,6 +6,10 @@ import the entries from `config/debugger_breakpoints.json` and
 
 Initial high-value probes are:
 
+- execute `$80FF`, `$8111`, and `$813B` to distinguish NMI-safe controller
+  wrappers from direct serial polling;
+- write `$0020` to observe the assembled controller byte before later input
+  state copies it elsewhere;
 - execute `$8175` to observe CHR-bank selection;
 - execute `$A35C`, `$EC63`, and `$EC8A` to distinguish full room load,
   snapshot rotation, and saved-game state selection;

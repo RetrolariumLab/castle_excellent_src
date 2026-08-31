@@ -12,6 +12,82 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   recorded in `assets/manifest.json`
 - Evidence: local Japanese reference inspected on 2026-08-31
 
+### INPUT-001 - controller serial format
+
+- Status: resolved
+- Known: both ports are strobed through `$4016`; eight reads use D0 first and
+  D1 only when D0 is clear; ROR produces standard NES bit order in `$20`
+- Evidence: semantic `$80FF-$8157` module, runtime execution of both pollers,
+  and exhaustive reconstruction of all 256 masks on D0 and D1
+- Residual: `$8135-$813A` encodes a plausible second no-NMI wrapper but remains
+  raw because no call target or runtime trace reaches it
+
+### SYS-001 - reset signature and frame gate
+
+- Status: resolved
+- Known: ROM `$82C9-$82CD` is `POWER`; Reset compares/copies `POW` at
+  `$077E-$0780`, clears score and the 16-bit reset counter only on mismatch,
+  then increments the counter on every reset
+- Frame gate: the foreground writes two to `$FC`; NMI decrements nonzero values,
+  and the main loop waits for zero before the next update
+- Evidence: semantic `$8225-$82CD`, typed ROM text, independent cold/warm/carry
+  model, exact image validation, and runtime execution of Reset/NMI
+
+### SYS-002 - NMI task scheduler
+
+- Status: resolved
+- Known: 23 high bytes at `$C88E-$C8A4` and 23 low bytes at `$C8A5-$C8BB`
+  form the indirect task handlers; `$F8` selects the current task
+- Scheduling: common frame completion clears the current request, scans forward
+  for the next nonzero request, and wraps to task zero at index 23
+- Frame work: OAM DMA/interlock, scroll latch, real/demo input, modulo counters,
+  music, effects, and register restoration are all in `$C55D-$C6B8`
+- Evidence: semantic module, typed tables, independent scheduler/table model,
+  byte-identical build, and all three runtime CDL scenarios
+
+### RENDER-001 - OAM staging-to-DMA order
+
+- Status: resolved
+- Known: `$0300-$03FF` is an 8x8 matrix of four-byte sprite records;
+  `$C79D-$C7AB` selects a frame-rotated column for each 32-byte DMA block
+- Transform: all 64 records are transposed into `$0200-$02FF`; a separate path
+  reverses record order while preserving each record's four byte fields
+- Bound: table indexes are `frame 0-7 + block 0-7`, so 0-14 are reachable and
+  the sixteenth physical byte at `$C7AC` is not
+- Evidence: semantic `$C6B9-$C803`, typed table/padding byte, independent model
+  of every frame and record, runtime CDL, and byte-identical build
+
+### RENDER-002 - NMI status-tile upload
+
+- Status: resolved
+- Known: task zero writes score to `$2096`, inventory counters to `$2087`, and
+  lives to `$20A8`; `$07C8` prevents reads during foreground formatting
+- Transform: source orders are `0-4`, `0,1,5,4,3,2`, and `1,0`; a busy buffer
+  delegates to the first 20-cell room-row task at `$C8BC`
+- Evidence: semantic `$C804-$C8BB`, sized RAM buffers, exact handler tables,
+  independent write-order model, runtime CDL, and byte-identical build
+
+### RENDER-003 - NMI room-row upload layout
+
+- Status: resolved
+- Known: tasks 1-20 cover rows 0-19 of the 20x20 decoded room at `$0400-$058F`
+- Transform: each task expands 20 cell ids through the two 100-byte tile tables;
+  14 metatiles go to the left nametable and 6 to the right
+- Bound: handlers occupy `$C8BC-$E1F7`, are exactly `$143` bytes each, and write
+  destinations from `$20E4/$24E0` through `$2344/$2740`
+- Evidence: four semantic modules, exact independent encoder for all 6,460 code
+  bytes, 400 lookups, 800 PPU tile writes, runtime CDL, and byte-identical build
+
+### UI-001 - castle map geometry
+
+- Status: resolved
+- Known: 100 zero-based room flags map to a 10x10 grid; the current room id is
+  one-based and uses the same quotient/remainder coordinates
+- Output: visited rooms use 2x2 background markers; the current room uses the
+  first four-byte OAM record while all remaining staging bytes are hidden
+- Evidence: semantic `$EA36-$EB6B`, exhaustive 100-room coordinate model,
+  runtime CDL, and byte-identical build
+
 ### DATA-001 - prefix-code table bounds
 
 - Status: resolved
@@ -34,9 +110,9 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   preserve their existing quadrant
 - Output: two 64-byte buffers at `$0100-$017F`; NMI task requests 21 and 22
   upload them to nametable attribute addresses `$23C8` and `$27C8`
-- Evidence: static builder at `$E8DF-$E9D1`, NMI handlers at `$E1F8/$E358`,
-  independent construction of 200 tables from all 100 decoded rooms, and the
-  byte-identical source build
+- Evidence: semantic builder at `$E8DF-$E9D1`, semantic NMI handlers at
+  `$E1F8-$E45C`, independent construction of 200 tables from all 100 decoded
+  rooms, exact upload encoders, and the byte-identical source build
 
 ### OBJ-001 - six-byte runtime record
 

@@ -16,6 +16,79 @@ The published routine at `$8175` selects CHR bank 0-3. The room loader selects
 bank 2 for zero-based room indexes below `$43` and bank 3 for the remainder,
 then restores bank 0 after decoding.
 
+`SelectChrBank` loads one of the bytes `$00,$01,$02,$03` from its ROM table and
+writes it back to the same indexed ROM address. The data driven onto the CPU
+bus therefore matches the selected latch value, preserving CNROM operation on
+boards with bus conflicts.
+
+## Reset and frame pacing
+
+Reset waits for two PPU vblanks before setting the stack pointer. It compares
+RAM `$077E-$0780` with the first three bytes, `POW`, of the ROM text `POWER` at
+`$82C9-$82CD`. A mismatch is a cold boot: the sentinel, two-byte player score,
+and two-byte reset counter are initialized. Both cold and warm paths then
+increment the counter before entering the title and room-loading sequence.
+
+The main loop initializes `$FC` to two and waits for NMI to decrement it to
+zero. NMI uses a saturating decrement, so the foreground executes one complete
+game update per two NMI ticks. Castle-map mode skips all frame work; pause mode
+keeps scrolling, sprite construction, and sub-command input active while
+skipping player, object, collision, and room-cell simulation.
+
+NMI dispatches one of 23 PPU tasks through separate high- and low-byte tables.
+After the selected task reaches the common frame handler, it performs OAM DMA,
+rebuilds the DMA buffer when the staging buffer is free, applies a pending
+horizontal-scroll latch, clears the completed request, and scans forward for
+the next nonzero request. Reaching the end wraps directly to task zero.
+
+The same handler polls both controllers during play or obtains controller 1
+from the demo stream during attract mode; a second unconditional physical poll
+allows Start to leave the demo. It also advances counters modulo
+`3,5,6,7,3,10,11,30` and updates music and sound effects only while unpaused.
+
+The OAM builder views the 64 staging records as an 8x8 matrix. For each of eight
+32-byte output blocks it selects a column from the staging matrix and writes
+those eight sprites contiguously. The selected column advances with the low
+three bits of the global frame counter, distributing sprite priority across
+frames. A separate routine reverses all 64 records without reversing bytes
+inside a record. The rotation table contains 16 physical bytes, although the
+sum of frame 0-7 and block 0-7 can reach only index 14.
+
+NMI task zero uploads live HUD tiles only when `StatusTilesBusy` is clear. It
+writes five score tiles at `$2096`, six inventory-counter tiles at `$2087` in
+source order `0,1,5,4,3,2`, and two lives tiles at `$20A8` in source order
+`1,0`. When the foreground formatter owns those buffers, the handler delegates
+to task one's first 20-cell room-row upload instead of reading partial data.
+
+Tasks 1-20 upload one decoded room row each. Every fixed-size handler reads 20
+consecutive values from the 400-byte `RoomCells` matrix and maps each through
+`LeftTileByCell` and `RightTileByCell`. Columns 0-13 produce 28 tiles in the
+left nametable; columns 14-19 produce 12 tiles in the right nametable. The first
+destinations are `$20E4/$24E0`, each later task advances both by one 32-byte
+nametable row, and the last pair is `$2344/$2740`.
+
+Tasks 21 and 22 finish the room transfer with nametable attributes. The left
+task copies scratch offsets `$08-$3F` directly to `$23C8`. The right task reads
+four meaningful bytes from each eight-byte scratch row, repeats the fourth byte
+across the unused right edge for the first six rows, keeps four bytes in the
+last row, and writes 52 bytes at `$27C8`. Its short delay balances the smaller
+right-side workload before both paths rejoin `NmiFrame`.
+
+The castle map is a 10x10 projection of the 100 room flags. A visited room
+writes tiles `$07-$0A` as a 2x2 marker whose top-left address is
+`$20C6 + row*$40 + column*2`. The current one-based room selects an 8x16 OAM
+marker at `Y=$33+row*$10`, `X=$34+column*$10`. Select opens the map when the map
+item is available; A, B, or Select returns through normal room finalization.
+
+## Controller input
+
+Both controller pollers pulse `$4016` high then low and consume eight serial
+samples. Each sample uses D0 when set; if D0 is clear, a second shift selects
+D1. Eight rotations place A, B, Select, Start, Up, Down, Left, and Right in bits
+0-7 of `$20`. The NMI-safe wrappers return that byte in A. Controller 1 also
+has a wrapper for callers that already control NMI; controller 2's poller
+itself enables NMI before returning.
+
 ## Room pipeline
 
 ```text

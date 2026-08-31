@@ -4,6 +4,25 @@ All CPU addresses below refer to the Japanese PRG mapped at `$8000-$FFFF`.
 The descriptions began with the published trace and were checked against the
 exact Japanese reference image identified in `assets/manifest.json`.
 
+## Controller button byte
+
+The serial pollers produce this one-byte layout at `$20`:
+
+| Bit | Mask | Button |
+| ---: | ---: | --- |
+| 0 | `$01` | A |
+| 1 | `$02` | B |
+| 2 | `$04` | Select |
+| 3 | `$08` | Start |
+| 4 | `$10` | Up |
+| 5 | `$20` | Down |
+| 6 | `$40` | Left |
+| 7 | `$80` | Right |
+
+Each serial read chooses a set D0 bit first and otherwise falls back to D1.
+`scripts/controller_input.py` exhaustively reconstructs every mask on both data
+lines and is part of `make release-check`.
+
 ## Room pointers and compressed streams
 
 - 100 little-endian PPU pointers begin at `$E71C`.

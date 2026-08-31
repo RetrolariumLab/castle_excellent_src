@@ -44,6 +44,7 @@ class MemorySymbol:
     name: str
     start: int
     end: int
+    size: int = 1
 
 
 @dataclass(frozen=True)
@@ -146,10 +147,13 @@ def load_memory_symbols(path: Path) -> list[MemorySymbol]:
         name = str(item["name"])
         start = int(str(item.get("start", PRG_START)), 0)
         end = int(str(item.get("end", PRG_END)), 0)
+        size = int(str(item.get("size", 1)), 0)
         if not 0 <= address < PRG_START:
             raise DisassemblyError(f"memory symbol is outside CPU RAM/I/O: {name}")
         if not PRG_START <= start < end <= PRG_END:
             raise DisassemblyError(f"invalid scope for memory symbol {name}")
+        if size < 1 or address + size > PRG_START:
+            raise DisassemblyError(f"invalid size for memory symbol {name}: {size}")
         if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name):
             raise DisassemblyError(f"invalid ca65 memory symbol name: {name!r}")
         if name.lower() in names:
@@ -160,7 +164,7 @@ def load_memory_symbols(path: Path) -> list[MemorySymbol]:
                     f"overlapping memory-symbol scopes at ${address:04X}: "
                     f"{existing.name} and {name}"
                 )
-        result.append(MemorySymbol(address, name, start, end))
+        result.append(MemorySymbol(address, name, start, end, size))
         names.add(name.lower())
     return result
 
@@ -292,23 +296,28 @@ def memory_operand(
     def replace(match: re.Match[str]) -> str:
         address = int(match.group(1), 16)
         matches = [
-            symbol
+            (symbol, address - symbol.address)
             for symbol in symbols
-            if symbol.address == address and symbol.start <= fact.address < symbol.end
+            if symbol.address <= address < symbol.address + symbol.size
+            and symbol.start <= fact.address < symbol.end
         ]
+        exact = [candidate for candidate in matches if candidate[1] == 0]
+        if exact:
+            matches = exact
         if len(matches) > 1:
             raise DisassemblyError(
                 f"ambiguous memory symbol at ${fact.address:04X} for ${address:04X}"
             )
-        return matches[0].name if matches else match.group(0)
+        if not matches:
+            return match.group(0)
+        symbol, offset = matches[0]
+        return symbol.name if offset == 0 else f"{symbol.name} + ${offset:02X}"
 
     result = re.sub(r"\$([0-9A-F]{2,4})", replace, operand)
-    for symbol in symbols:
-        if (
-            symbol.address >= 0x100
-            and symbol.start <= fact.address < symbol.end
-        ):
-            result = result.replace(f"a:{symbol.name}", symbol.name)
+    if result != operand and result.startswith("a:"):
+        original_address = re.search(r"\$([0-9A-F]{2,4})", operand)
+        if original_address is not None and int(original_address.group(1), 16) >= 0x100:
+            result = result[2:]
     return result
 
 

@@ -28,3 +28,24 @@ APU_STATUS = $4015
 JOYPAD1 = $4016
 JOYPAD2 = $4017
 APU_FRAME = $4017
+
+ControllerSerialBitCount = 8
+ControllerButtonA = $01
+ControllerButtonB = $02
+ControllerButtonSelect = $04
+ControllerButtonStart = $08
+ControllerButtonUp = $10
+ControllerButtonDown = $20
+ControllerButtonLeft = $40
+ControllerButtonRight = $80
+CastleMapExitButtons = ControllerButtonA | ControllerButtonB | ControllerButtonSelect
+
+PpuCtrlGameplayNoNmi = $30
+PpuCtrlGameplayNmi = $B0
+PpuCtrlCastleMapNmi = $B8
+PpuMaskRenderingDisabled = $00
+PpuMaskGameplay = $1E
+ChrBankCount = 4
+PowerOnSignatureCheckedBytes = 3
+NmiFramesPerMainUpdate = 2
+OamDmaBufferPage = $02

@@ -1,8 +1,14 @@
 ; Evidence-backed RAM aliases from the published Castle Excellent analysis
 ; These definitions do not yet rewrite operands in the raw preservation payload
 
+PlayerScoreLo = $0001
+PlayerScoreHi = $0002
+
 CurrentRoomIndex = $0037
 CurrentObjectOffset = $0041
+
+; Contextual result buffer for controller polling at $80FF-$8157
+PolledControllerButtons = $0020
 
 AudioTempoOffset = $00DA
 AudioStreamPointerLo = $00DB
@@ -14,8 +20,41 @@ AudioStreamCount = 3
 AudioPulseParameters = $00E7
 AudioDefaultLengthIndices = $00E9
 
+; Frame and NMI scheduler state
+FrameCounter = $0000
+NmiTaskIndex = $00F8
+NmiTaskHandlerPointerLo = $00F9
+NmiTaskHandlerPointerHi = $00FA
+OamStagingBusy = $00FB
+NmiFrameCountdown = $00FC
+
+FrameCounterModulo3A = $0763
+FrameCounterModulo5 = $0764
+FrameCounterModulo6 = $0765
+FrameCounterModulo7 = $0766
+FrameCounterModulo3B = $0767
+FrameCounterModulo10 = $0768
+FrameCounterModulo11 = $0769
+FrameCounterModulo30 = $076A
+RoomFrameCounter = $076B
+StatusInventoryTiles = $076C
+StatusInventoryTileCount = 6
+
+; Contextual horizontal-scroll latches in the NMI frame handler
+PendingScrollX = $0034
+AppliedScrollX = $0035
+ScrollUpdatePending = $0036
 Controller1Buttons = $0775
 Controller2Buttons = $0776
+PreviousController1Buttons = $0777
+PreviousController2Buttons = $0778
+PowerOnSignatureRam = $077E
+ResetCounterLo = $0783
+ResetCounterHi = $0784
+PauseMode = $07C4
+CastleMapMode = $07C5
+DemoPlaybackActive = $07C7
+PhysicalController1Buttons = $07CE
 
 RuntimeObjectRecords = $004A
 RuntimeObjectXLo = $004B
@@ -34,6 +73,15 @@ InitialRoomAttributeCount = $10
 
 OamDmaBuffer = $0200
 OamStagingBuffer = $0300
+OamSpriteSize = 4
+OamSpriteCount = 64
+OamBufferSize = $100
+OamInterleaveBlockSize = $20
+OamInterleaveBlockCount = 8
+OamRotationFrameCount = 8
+
+; Contextual OAM interleave scratch at $C6B9-$C79C
+OamOutputBlockIndex = $0020
 
 RoomCells = $0400
 RoomWidth = 20
@@ -71,13 +119,25 @@ RoomRuntimeLoadMirrorSize = 15
 NmiTaskRequests = $0785
 NmiTaskRequestCount = 23
 StatusScoreTiles = $079D
+StatusScoreTileCount = 5
 StatusScoreTerminator = $07A2
+StatusLivesTiles = $07A5
+StatusLivesFormattedTileCount = 3
+StatusLivesUploadedTileCount = 2
+StatusTilesBusy = $07C8
+
+CastleMapRoomCount = 100
+CastleMapColumns = 10
+CastleMapModeActive = $1E
+CastleMapAvailable = $000F
+CastleMapRoomIndex = $001F
+CastleMapPpuAddressLo = $0021
+CastleMapPpuAddressHi = $0022
 
 ; Contextual room-audio selection aliases at $A38A-$A3AB
 RoomMusicTrack1Condition = $000D
 RoomMusicTrack3Condition = $000E
 SuppressRoomMusicSelection = $0772
-KeepRoomAudioPlaying = $07C7
 
 ; Contextual zero-terminated PPU tile pointer at $B6C9-$B77B
 PpuTileStringPointerLo = $0021

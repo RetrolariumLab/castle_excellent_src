@@ -3,9 +3,9 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-Func_AC13:
+BuildFrameSprites:
     LDA #$FF
-    STA $FB
+    STA OamStagingBusy
     LDX #$00
     LDA #$F0
 
@@ -45,13 +45,13 @@ Func_AC50:
     CMP #$90
     BCC Label_AC2F
     LDA #$00
-    STA $FB
+    STA OamStagingBusy
     RTS
 
 Func_AC60:
     LDA a:$0772
     BEQ Label_AC9E
-    LDA a:$076B
+    LDA RoomFrameCounter
     LSR A
     LSR A
     AND #$03
@@ -119,7 +119,7 @@ Label_ACCE:
     JMP Label_AD4F
 
 Label_ACDD:
-    LDA $00
+    LDA FrameCounter
     LSR A
     LSR A
     LSR A
@@ -162,7 +162,7 @@ Label_AD18:
     JMP Label_AD4F
 
 Label_AD27:
-    LDA $00
+    LDA FrameCounter
     LSR A
     LSR A
     LSR A
@@ -204,30 +204,30 @@ Label_AD5A:
 Label_AD5F:
     BMI Label_AD7B
     LDA OamStagingBuffer
-    STA a:$0308
-    LDA a:$0303
+    STA OamStagingBuffer + $08
+    LDA OamStagingBuffer + $03
     CLC
     ADC #$0F
-    STA a:$030B
+    STA OamStagingBuffer + $0B
     LDA #$CA
-    STA a:$0309
+    STA OamStagingBuffer + $09
     LDA #$03
-    STA a:$030A
+    STA OamStagingBuffer + $0A
     RTS
 
 Label_AD7B:
     LDA OamStagingBuffer
-    STA a:$0308
-    LDA a:$0303
+    STA OamStagingBuffer + $08
+    LDA OamStagingBuffer + $03
     SEC
     SBC #$07
-    STA a:$030B
+    STA OamStagingBuffer + $0B
     LDA #$CA
-    STA a:$0309
+    STA OamStagingBuffer + $09
     LDA #$43
 
 ObjectHandlerTable = * + 2  ; overlapping entry $AD93
-    STA a:$030A
+    STA OamStagingBuffer + $0A
     RTS
     .byte $E7, $AD, $08, $AE, $12, $AE, $19, $AE, $75, $AE, $BB, $AE, $1E, $AF, $6A, $AF
     .byte $B0, $AF, $F4, $AF, $FB, $AF, $02, $B0, $09, $B0, $10, $B0, $17, $B0, $2B, $B0
@@ -250,7 +250,7 @@ Label_AE0C:
     .byte $4C, $0C, $AE
     LDA RuntimeObjectState,X
     BMI Label_AE9A
-    LDA $00
+    LDA FrameCounter
     LSR A
     LSR A
     AND #$03
@@ -272,7 +272,7 @@ Label_AE93:
     JMP Label_AE0C
 
 Label_AE9A:
-    LDA $00
+    LDA FrameCounter
     LSR A
     LSR A
     AND #$03
@@ -292,7 +292,7 @@ Label_AEB4:
     LDX #$B5
     LDY #$26
     JMP Label_AE0C
-    LDA a:$076B
+    LDA RoomFrameCounter
     LSR A
     LSR A
     LSR A
@@ -334,7 +334,7 @@ Label_AEF5:
     JMP Label_AE0C
 
 Label_AEFC:
-    LDA a:$076B
+    LDA RoomFrameCounter
     LSR A
     LSR A
     AND #$03
@@ -356,7 +356,7 @@ Label_AF17:
     JMP Label_AE0C
     LDA RuntimeObjectState,X
     BMI Label_AF46
-    LDA $00
+    LDA FrameCounter
     CLC
     ADC RuntimeObjectByte5,X
     LSR A
@@ -380,7 +380,7 @@ Label_AF3F:
     JMP Label_AE0C
 
 Label_AF46:
-    LDA $00
+    LDA FrameCounter
     CLC
     ADC RuntimeObjectByte5,X
     LSR A
@@ -404,7 +404,7 @@ Label_AF63:
     JMP Label_AE0C
     LDA RuntimeObjectState,X
     BMI Label_AF8F
-    LDA $00
+    LDA FrameCounter
     LSR A
     LSR A
     AND #$03
@@ -426,7 +426,7 @@ Label_AF88:
     JMP Label_AE0C
 
 Label_AF8F:
-    LDA $00
+    LDA FrameCounter
     LSR A
     LSR A
     AND #$03
@@ -448,7 +448,7 @@ Label_AFA9:
     JMP Label_AE0C
     LDA RuntimeObjectState,X
     BPL Label_AFD3
-    LDA $00
+    LDA FrameCounter
     LSR A
     LSR A
     AND #$03
@@ -465,7 +465,7 @@ Label_AFC3:
     .byte $A2, $B5, $A0, $8C, $4C, $0C, $AE
 
 Label_AFD3:
-    LDA $00
+    LDA FrameCounter
     LSR A
     LSR A
     AND #$03
@@ -500,7 +500,7 @@ Label_AFED:
     LDX #$B5
     LDY #$D0
     JMP Label_AE0C
-    LDA $00
+    LDA FrameCounter
     AND #$08
     BNE Label_B024
     LDX #$B5
@@ -556,12 +556,12 @@ Label_B02F:
     LDX #$B5
     LDY #$FC
     JMP Label_AE0C
-    LDA a:$076B
+    LDA RoomFrameCounter
     BMI Label_B098
     JMP Func_AC50
 
 Label_B098:
-    LDA a:$076B
+    LDA RoomFrameCounter
     LSR A
     BCC Label_B0A5
     LDX #$B6
@@ -572,7 +572,7 @@ Label_B0A5:
     LDX #$B6
     LDY #$0C
     JMP Label_AE0C
-    LDX a:$0763
+    LDX FrameCounterModulo3A
     BNE Label_B0B8
     LDX #$B5
     LDY #$FC
@@ -763,12 +763,12 @@ Func_B1D6:
     LDX $16
     LDY #$00
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$01
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -801,12 +801,12 @@ Label_B21F:
     LDX $16
     LDY #$02
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$03
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -844,10 +844,10 @@ Func_B265:
     LDX $16
     LDY #$00
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$01
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -855,7 +855,7 @@ Func_B265:
     LDX $16
     STA OamStagingBuffer,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     INX
     INX
     INX
@@ -887,12 +887,12 @@ Func_B2AF:
     LDX $16
     LDY #$00
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$01
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -925,12 +925,12 @@ Label_B2F8:
     LDX $16
     LDY #$02
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$03
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -963,12 +963,12 @@ Label_B33D:
     LDX $16
     LDY #$04
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$05
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -1001,12 +1001,12 @@ Label_B382:
     LDX $16
     LDY #$06
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$07
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -1044,12 +1044,12 @@ Func_B3C8:
     LDX $16
     LDY #$00
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$01
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -1082,12 +1082,12 @@ Label_B411:
     LDX $16
     LDY #$02
     LDA ($21),Y
-    STA a:$0301,X
+    STA OamStagingBuffer + $01,X
     LDY #$03
     LDA ($21),Y
-    STA a:$0302,X
+    STA OamStagingBuffer + $02,X
     LDA $1B
-    STA a:$0303,X
+    STA OamStagingBuffer + $03,X
     LDX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -1127,29 +1127,29 @@ Func_B457:
     TXA
     LDY #$00
     LDA ($21),Y
-    STA a:$0301
+    STA OamStagingBuffer + $01
     LDY #$01
     LDA ($21),Y
-    STA a:$0302
+    STA OamStagingBuffer + $02
     LDY #$02
     LDA ($21),Y
-    STA a:$0305
+    STA OamStagingBuffer + $05
     LDY #$03
     LDA ($21),Y
-    STA a:$0306
+    STA OamStagingBuffer + $06
     LDA $3A
     CLC
     ADC #$27
     STA OamStagingBuffer
-    STA a:$0304
+    STA OamStagingBuffer + $04
     LDA $1B
-    STA a:$0303
+    STA OamStagingBuffer + $03
     CLC
     ADC #$08
-    STA a:$0307
+    STA OamStagingBuffer + $07
     BCC Label_B4B5
     LDA #$F0
-    STA a:$0304
+    STA OamStagingBuffer + $04
 
 Label_B4B5:
     RTS

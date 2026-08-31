@@ -27,7 +27,7 @@ ClearRoomRuntimeObjects:
     JSR ResetRoomRuntimeState
 
 SelectRoomAudio:
-    LDA KeepRoomAudioPlaying
+    LDA DemoPlaybackActive
     BNE CheckRoomMusicSuppression
     JSR StopAudioStreams
     JSR ClearSoundRequests

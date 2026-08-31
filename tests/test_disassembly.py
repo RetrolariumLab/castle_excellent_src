@@ -92,6 +92,16 @@ class InstructionFormattingTests(unittest.TestCase):
             "    LDA RoomBitLookahead,X",
         )
 
+    def test_memory_operand_uses_offset_within_named_array(self) -> None:
+        fact = self.fact(0xC6D3, b"\xB9\x21\x03", "LDA", "0x0321,Y")
+        symbols = [
+            disasm.MemorySymbol(0x0300, "OamStagingBuffer", 0x8000, 0x10000, 0x100)
+        ]
+        self.assertEqual(
+            disasm.format_instruction(fact, {}, symbols),
+            "    LDA OamStagingBuffer + $21,Y",
+        )
+
     def test_memory_operand_preserves_forced_low_absolute_addressing(self) -> None:
         fact = self.fact(0x9000, b"\xAD\x37\x00", "LDA", "0x0037")
         symbols = [

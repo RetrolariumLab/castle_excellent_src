@@ -23,6 +23,20 @@ class PipelineError(ValueError):
     pass
 
 
+def clear_project_state(project_dir: Path, project_name: str) -> None:
+    """Remove only Ghidra's disposable project pair, preserving exported facts."""
+    marker = project_dir / f"{project_name}.gpr"
+    repository = project_dir / f"{project_name}.rep"
+    if marker.exists():
+        if not marker.is_file():
+            raise PipelineError(f"Ghidra project marker is not a file: {marker}")
+        marker.unlink()
+    if repository.exists():
+        if not repository.is_dir():
+            raise PipelineError(f"Ghidra project repository is not a directory: {repository}")
+        shutil.rmtree(repository)
+
+
 def validate_reference(path: Path) -> None:
     manifest = project.load_manifest(ROOT / "assets" / "manifest.json")
     project.validate_image(path.read_bytes(), manifest)
@@ -35,6 +49,7 @@ def run_headless(image: Path, scripts: list[tuple[str, list[str]]]) -> None:
         raise PipelineError(f"reference ROM not found: {image}")
     validate_reference(image)
     PROJECT_DIR.mkdir(parents=True, exist_ok=True)
+    clear_project_state(PROJECT_DIR, "castle_excellent")
     staged_image = PROJECT_DIR / "input.nes"
     shutil.copyfile(image, staged_image)
     command = [

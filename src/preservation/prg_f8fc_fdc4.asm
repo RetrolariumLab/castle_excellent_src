@@ -3,14 +3,14 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-Func_F8FC:
+RunTitleScreen:
     LDA #$18
-    JSR Func_F973
+    JSR CopyChrNametablePagesToVram
     LDA #$C5
     STA $22
     LDA #$0D
     STA $21
-    JSR Func_C4CD
+    JSR UploadPaletteFromPointer
     LDY #$01
     JSR SelectChrBank
     JSR ResetPpuScroll
@@ -18,7 +18,7 @@ Func_F8FC:
     STX $21
     STX $22
     DEX
-    STX a:$07C7
+    STX DemoPlaybackActive
     JSR Func_B7FD
     JSR LoadAudioTrackSet5
     SEI
@@ -30,9 +30,9 @@ Label_F925:
     STA PPU_MASK
     LDA #$38
     STA PPU_CTRL
-    JSR Func_810B
+    JSR ReadController1WithoutNmiControl
     EOR #$FF
-    STA a:$0777
+    STA PreviousController1Buttons
 
 Label_F93C:
     LDA PPU_STATUS
@@ -46,18 +46,18 @@ Label_F94A:
     LDA $22
     CMP #$03
     BCS Label_F968
-    JSR Func_810B
+    JSR ReadController1WithoutNmiControl
     TAX
-    AND a:$0777
+    AND PreviousController1Buttons
     AND #$08
     PHA
     TXA
     EOR #$FF
-    STA a:$0777
+    STA PreviousController1Buttons
     PLA
     BEQ Label_F93C
     LDA #$00
-    STA a:$07C7
+    STA DemoPlaybackActive
 
 Label_F968:
     JSR DisableNmi
@@ -65,7 +65,7 @@ Label_F968:
     LDY #$00
     JMP SelectChrBank
 
-Func_F973:
+CopyChrNametablePagesToVram:
     STA $16
     LDA #$20
     STA $17
@@ -94,24 +94,24 @@ Label_F983:
     BCC Label_F983
     RTS
 
-Func_F9AD:
+HandleSubCommandInput:
     LDA a:$07CC
     BEQ Label_F9B3
     RTS
 
 Label_F9B3:
-    LDA a:$07C7
+    LDA DemoPlaybackActive
     BEQ Label_F9B9
     RTS
 
 Label_F9B9:
-    LDA a:$0778
+    LDA PreviousController2Buttons
     EOR #$FF
     AND Controller2Buttons
     AND #$03
     BNE Label_F9CC
     LDA Controller2Buttons
-    STA a:$0778
+    STA PreviousController2Buttons
     RTS
 
 Label_F9CC:
@@ -251,7 +251,7 @@ Label_FAF5:
     LDA #$08
     STA PPU_MASK
     JSR DisableNmi
-    JSR Func_810B
+    JSR ReadController1WithoutNmiControl
     PHA
     AND $1C
     TAY
@@ -305,8 +305,8 @@ Label_FB4E:
 
 Func_FB51:
     LDA #$FF
-    STA a:$07C4
-    STA a:$0778
+    STA PauseMode
+    STA PreviousController2Buttons
     JSR StopAudioStreams
     JSR ClearSoundRequests
     JMP FinalizeRoomLoad
@@ -428,7 +428,7 @@ Label_FC3D:
     LDX #$78
 
 Label_FC55:
-    LDA a:$058F,X
+    LDA RoomCells + $18F,X
     JSR Func_81C2
     DEX
     BNE Label_FC55
@@ -481,10 +481,10 @@ Func_FCA2:
     JSR Func_FCEA
 
 Label_FCD5:
-    JSR Func_810B
+    JSR ReadController1WithoutNmiControl
     AND #$03
     BEQ Label_FCD5
-    JSR Func_A2B1
+    JSR InitializeNewGame
     LDA #$00
     STA APU_STATUS
     STA a:$07CD
@@ -541,7 +541,7 @@ Label_FD3A:
 Label_FD48:
     JSR Func_81D6
     BCS Label_FD03
-    STA a:$058F,X
+    STA RoomCells + $18F,X
     DEX
     BNE Label_FD48
     LDX #$96
@@ -590,7 +590,7 @@ Label_FD96:
     JSR BuildRoomAttributeTables
     JSR LoadRoomObjects
     JSR SelectAndApplyRoomState
-    JSR Func_C43D
+    JSR UpdateHorizontalScroll
     LDA $3A
     SEC
     SBC #$10

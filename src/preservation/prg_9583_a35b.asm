@@ -3,7 +3,7 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-Func_9583:
+UpdateRuntimeObjects:
     LDX #$00
     STX $43
 
@@ -84,7 +84,7 @@ Func_9791:
     JMP Label_9786
 
 Label_9796:
-    LDA a:$076B
+    LDA RoomFrameCounter
     AND #$1F
     CMP #$1F
     BEQ Label_97A0
@@ -199,7 +199,7 @@ Label_9862:
     JMP Label_994E
 
 Label_9869:
-    LDA a:$076B
+    LDA RoomFrameCounter
     AND #$1F
     CMP #$1F
     BEQ Label_9873
@@ -819,7 +819,7 @@ Label_9C60:
     RTS
 
 Label_9C65:
-    LDA a:$076B
+    LDA RoomFrameCounter
     AND #$3F
     BEQ Label_9C6D
     RTS
@@ -877,7 +877,7 @@ Label_9CB2:
 
 Label_9CC5:
     RTS
-    LDA a:$076B
+    LDA RoomFrameCounter
     LSR A
     LSR A
     AND #$01
@@ -972,7 +972,7 @@ Label_9D64:
 
 Label_9D6C:
     LDX $43
-    LDA a:$076B
+    LDA RoomFrameCounter
     AND #$01
     BEQ Label_9D76
     RTS
@@ -1193,7 +1193,7 @@ Func_9EA8:
 Label_9ECA:
     RTS
     JSR Func_9B00
-    LDA a:$076B
+    LDA RoomFrameCounter
     CMP #$E0
     BNE Label_9ECA
     LDX $43
@@ -1369,14 +1369,14 @@ Label_9FBA:
     RTS
 
 Label_9FF8:
-    LDA $00
+    LDA FrameCounter
     AND #$01
     BEQ Label_A000
     LDA #$FF
 
 Label_A000:
     STA RuntimeObjectState,X
-    LDA a:$076A
+    LDA FrameCounterModulo30
     LSR A
     TAY
     LDA a:$A00D,Y
@@ -1399,7 +1399,7 @@ Label_A024:
 
 Label_A032:
     RTS
-    LDA a:$076B
+    LDA RoomFrameCounter
     LSR A
     BCC Label_A03F
     LDA RuntimeObjectY,X
@@ -1770,10 +1770,10 @@ Label_A2A9:
     .byte $98, $4A
     LSR A
     LSR A
-    STA $F8
+    STA NmiTaskIndex
     RTS
 
-Func_A2B1:
+InitializeNewGame:
     LDA #$47
     STA CurrentRoomIndex
     LDA #$03
@@ -1788,8 +1788,8 @@ Func_A2B1:
     STA $0B
     STA $0C
     STA a:$0772
-    STA a:$07C4
-    STA a:$07C5
+    STA PauseMode
+    STA CastleMapMode
     STA $0F
     STA $0D
     STA $0E
@@ -1803,7 +1803,7 @@ Func_A2B1:
     STA a:$07D2
     STA a:$07D3
     LDA #$FF
-    STA a:$07C8
+    STA StatusTilesBusy
     LDA #$00
     STA $05
     STA $06
@@ -1828,7 +1828,7 @@ Label_A31B:
     LDX #$78
 
 Label_A328:
-    STA a:$058F,X
+    STA RoomCells + $18F,X
     DEX
     BNE Label_A328
     LDX #$96
@@ -1855,9 +1855,9 @@ Label_A340:
     STA $3A
     STA $12
 
-Func_A351:
+UploadRoomPalette:
     LDA #$C5
     STA $22
     LDA #$3D
     STA $21
-    JMP Func_C4CD
+    JMP UploadPaletteFromPointer

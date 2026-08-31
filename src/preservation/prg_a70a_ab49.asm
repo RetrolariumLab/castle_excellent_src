@@ -205,10 +205,10 @@ Label_A820:
     .byte $0A, $14, $1E, $28, $32, $3C, $46, $50, $5A, $64, $01, $0B, $15, $1F, $29, $33
     .byte $3D, $47, $51, $5B
 
-Func_A835:
+UpdatePlayerCellState:
     LDA $0E
     BEQ Label_A847
-    LDA a:$076B
+    LDA RoomFrameCounter
     AND #$1F
     BNE Label_A847
     DEC $0E
@@ -218,7 +218,7 @@ Func_A835:
 Label_A847:
     LDA $0D
     BEQ Label_A859
-    LDA a:$076B
+    LDA RoomFrameCounter
     AND #$1F
     BNE Label_A859
     DEC $0D
@@ -324,24 +324,24 @@ Label_A8DE:
 Label_A8E2:
     RTS
 
-Func_A8E3:
+HandlePauseInput:
     LDA Controller1Buttons
     AND #$03
     BEQ Label_A8F6
-    LDA a:$0777
+    LDA PreviousController1Buttons
     AND #$03
     BNE Label_A8F6
-    LDA a:$07C4
+    LDA PauseMode
     BNE Label_A912
 
 Label_A8F6:
     LDA Controller1Buttons
     AND #$08
     BEQ Label_A91E
-    LDA a:$0777
+    LDA PreviousController1Buttons
     AND #$08
     BNE Label_A91E
-    LDA a:$07C4
+    LDA PauseMode
     BNE Label_A912
     LDA #$00
     STA APU_STATUS
@@ -352,13 +352,13 @@ Label_A912:
     LDA #$00
 
 Label_A914:
-    STA a:$07C4
+    STA PauseMode
     LDA Controller1Buttons
-    STA a:$0777
+    STA PreviousController1Buttons
     RTS
 
 Label_A91E:
-    LDA a:$07C4
+    LDA PauseMode
     BNE Label_A924
     RTS
 
@@ -395,12 +395,12 @@ Label_A94D:
 
 Label_A953:
     LDA Controller1Buttons
-    STA a:$0777
+    STA PreviousController1Buttons
     RTS
     .byte $01, $01, $01, $01, $01, $01
-    ORA ($01,X)
-    ORA ($01,X)
-    ORA ($01,X)
+    ORA (PlayerScoreLo,X)
+    ORA (PlayerScoreLo,X)
+    ORA (PlayerScoreLo,X)
     BRK
     .byte $01, $01, $00, $01, $01, $01, $01, $00, $01, $00, $00, $01, $00, $00, $00, $01
     .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00

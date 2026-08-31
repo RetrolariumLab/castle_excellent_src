@@ -46,7 +46,12 @@ def audit_module_text(path: Path, text: str) -> list[str]:
         if instruction is None:
             continue
         operand = (instruction.group("operand") or "").strip()
-        if RAW_ADDRESS_RE.search(operand):
+        named_offsets_removed = re.sub(
+            r"\b[A-Za-z_][A-Za-z0-9_]*\s*[+-]\s*\$[0-9A-F]{2,4}",
+            "NamedExpression",
+            operand,
+        )
+        if RAW_ADDRESS_RE.search(named_offsets_removed):
             issues.append(
                 f"{path.as_posix()}:{line_number}: raw address operand in semantic module: "
                 f"{operand}"

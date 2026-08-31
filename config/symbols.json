@@ -8,9 +8,27 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x810B",
+      "name": "ReadController1WithoutNmiControl",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8111",
       "name": "PollController1",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x811C",
+      "name": "ReadNextController1Bit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8123",
+      "name": "ShiftController1Bit",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
@@ -20,9 +38,27 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x8135",
+      "name": "UnreferencedController2ReadWrapperBytes",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
       "address": "0x813B",
       "name": "PollController2",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8146",
+      "name": "ReadNextController2Bit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x814D",
+      "name": "ShiftController2Bit",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
@@ -56,16 +92,106 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x817C",
+      "name": "ChrBankSelectValues",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8225",
       "name": "Reset",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
+      "address": "0x822C",
+      "name": "WaitForFirstResetVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8231",
+      "name": "WaitForSecondResetVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x823C",
+      "name": "CheckPowerOnSignature",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8249",
+      "name": "InitializeColdBootState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x824B",
+      "name": "CopyPowerOnSignature",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8260",
+      "name": "IncrementResetCounter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8268",
+      "name": "StartNewGame",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8277",
+      "name": "WaitForRoomLoadVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8282",
+      "name": "MainFrameLoop",
+      "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x82AE",
+      "name": "RenderMainFrame",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x82C3",
+      "name": "WaitForMainFrame",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x82C9",
+      "name": "PowerOnSignature",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x82CE",
+      "name": "UpdatePlayerInputAndMovement",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
       "address": "0x8F10",
       "name": "RuntimeObjectOffsetByCount",
       "kind": "data",
       "confidence": "confirmed"
+    },
+    {
+      "address": "0x9386",
+      "name": "UpdatePlayerCollisionState",
+      "kind": "routine",
+      "confidence": "high"
     },
     {
       "address": "0x9578",
@@ -77,6 +203,24 @@
       "address": "0x957C",
       "name": "ClearNextNmiTaskRequest",
       "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9583",
+      "name": "UpdateRuntimeObjects",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA2B1",
+      "name": "InitializeNewGame",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA351",
+      "name": "UploadRoomPalette",
+      "kind": "routine",
       "confidence": "confirmed"
     },
     {
@@ -128,6 +272,18 @@
       "confidence": "high"
     },
     {
+      "address": "0xA3C6",
+      "name": "EnsureRoomAudioPlaying",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA3D2",
+      "name": "AnimateRoomCells",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
       "address": "0xA497",
       "name": "FormatPlayerScoreTiles",
       "kind": "routine",
@@ -158,6 +314,18 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xA835",
+      "name": "UpdatePlayerCellState",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA8E3",
+      "name": "HandlePauseInput",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xAB4A",
       "name": "RoomObjectCounts",
       "kind": "data",
@@ -167,6 +335,12 @@
       "address": "0xABAE",
       "name": "RoomMutableCellStateOffsets",
       "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xAC13",
+      "name": "BuildFrameSprites",
+      "kind": "routine",
       "confidence": "confirmed"
     },
     {
@@ -296,6 +470,12 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xB80A",
+      "name": "ReadDemoController1",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xB875",
       "name": "LoadAudioTrackSet0",
       "kind": "routine",
@@ -416,6 +596,24 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xC2F9",
+      "name": "UpdateSoundEffects",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xC43D",
+      "name": "UpdateHorizontalScroll",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC4CD",
+      "name": "UploadPaletteFromPointer",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xC53D",
       "name": "RoomPaletteData",
       "kind": "data",
@@ -440,6 +638,132 @@
       "confidence": "high"
     },
     {
+      "address": "0xC5A9",
+      "name": "RebuildOamDmaBuffer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC5B8",
+      "name": "WaitForOamBuildTiming",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xC5BE",
+      "name": "UpdateScrollLatch",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC5C6",
+      "name": "ApplyHorizontalScroll",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC5DA",
+      "name": "AdvanceNmiTaskScheduler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC5E7",
+      "name": "WrapNmiTaskIndex",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC5ED",
+      "name": "FindNextPendingNmiTask",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC5F9",
+      "name": "TickMainFrameCountdown",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC5FF",
+      "name": "PollFrameControllers",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC613",
+      "name": "ReadDemoPlaybackInput",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC61E",
+      "name": "ReadPhysicalControllerInput",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC633",
+      "name": "TickModulo5Counter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC642",
+      "name": "TickModulo6Counter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC651",
+      "name": "TickModulo7Counter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC660",
+      "name": "TickSecondModulo3Counter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC66F",
+      "name": "TickModulo10Counter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC67E",
+      "name": "TickModulo11Counter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC68D",
+      "name": "TickModulo30Counter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC69C",
+      "name": "UpdateFrameAudio",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC6A7",
+      "name": "MaybeReverseDmaOam",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xC6B3",
+      "name": "RestoreNmiRegisters",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xC6B8",
       "name": "Irq",
       "kind": "routine",
@@ -452,10 +776,220 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xC6BB",
+      "name": "CopyNextOamInterleaveBlock",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC798",
+      "name": "FinishDmaOamBuild",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC79D",
+      "name": "OamRotationOffsets",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC7AC",
+      "name": "UnusedOamRotationOffset",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
+      "address": "0xC7AD",
+      "name": "ReusePreviousDmaOam",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xC7B4",
+      "name": "WaitForPreviousOamTiming",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
       "address": "0xC7BD",
       "name": "ReverseDmaOam",
       "kind": "routine",
       "confidence": "confirmed"
+    },
+    {
+      "address": "0xC7C1",
+      "name": "SwapNextOamSpritePair",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC804",
+      "name": "UploadStatusTiles",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC80C",
+      "name": "WriteStatusTiles",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC885",
+      "name": "WaitForStatusUploadTiming",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xC88E",
+      "name": "NmiTaskHandlerHighBytes",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC8A5",
+      "name": "NmiTaskHandlerLowBytes",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC8BC",
+      "name": "UploadRoomCellRow00",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC9FF",
+      "name": "UploadRoomCellRow01",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xCB42",
+      "name": "UploadRoomCellRow02",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xCC85",
+      "name": "UploadRoomCellRow03",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xCDC8",
+      "name": "UploadRoomCellRow04",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xCF0B",
+      "name": "UploadRoomCellRow05",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xD04E",
+      "name": "UploadRoomCellRow06",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xD191",
+      "name": "UploadRoomCellRow07",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xD2D4",
+      "name": "UploadRoomCellRow08",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xD417",
+      "name": "UploadRoomCellRow09",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xD55A",
+      "name": "UploadRoomCellRow10",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xD69D",
+      "name": "UploadRoomCellRow11",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xD7E0",
+      "name": "UploadRoomCellRow12",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xD923",
+      "name": "UploadRoomCellRow13",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xDA66",
+      "name": "UploadRoomCellRow14",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xDBA9",
+      "name": "UploadRoomCellRow15",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xDCEC",
+      "name": "UploadRoomCellRow16",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xDE2F",
+      "name": "UploadRoomCellRow17",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xDF72",
+      "name": "UploadRoomCellRow18",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE0B5",
+      "name": "UploadRoomCellRow19",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE1F8",
+      "name": "UploadLeftRoomAttributesTask",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE358",
+      "name": "UploadRightRoomAttributesTask",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE457",
+      "name": "WaitForRightAttributeUploadTiming",
+      "kind": "local",
+      "confidence": "high"
     },
     {
       "address": "0xE45D",
@@ -662,10 +1196,118 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xEA36",
+      "name": "HandleCastleMapInput",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEA3B",
+      "name": "ProcessCastleMapButton",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEA62",
+      "name": "RestoreCastleMapNmi",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xEA67",
+      "name": "ReturnFromCastleMapInput",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEA68",
+      "name": "CheckCastleMapExit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEA81",
+      "name": "DrawCastleMap",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEA9A",
+      "name": "ProcessNextCastleMapRoom",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEAA4",
+      "name": "PositionVisitedRoomMarker",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEAA7",
+      "name": "DivideMapRoomIndexByTen",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEAB0",
+      "name": "ComputeMapRoomMarkerAddress",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEAF0",
+      "name": "DrawMapRoomMarkerBottom",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEB18",
+      "name": "AdvanceCastleMapRoom",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEB23",
+      "name": "InitializeCastleMapPlayerMarker",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEB27",
+      "name": "HideRemainingCastleMapSprites",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEB34",
+      "name": "DivideCurrentRoomByTen",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEB3E",
+      "name": "PositionCurrentRoomMapSprite",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEB6B",
+      "name": "ReturnFromCastleMapDraw",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xEB6C",
       "name": "FinalizeRoomLoad",
       "kind": "routine",
       "confidence": "high"
+    },
+    {
+      "address": "0xEB79",
+      "name": "RequestAllNmiTasks",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0xEB8F",
@@ -1026,6 +1668,24 @@
       "name": "RoomObjectStream",
       "kind": "data",
       "confidence": "confirmed"
+    },
+    {
+      "address": "0xF973",
+      "name": "CopyChrNametablePagesToVram",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xF8FC",
+      "name": "RunTitleScreen",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xF9AD",
+      "name": "HandleSubCommandInput",
+      "kind": "routine",
+      "confidence": "high"
     },
     {
       "address": "0xFDC5",

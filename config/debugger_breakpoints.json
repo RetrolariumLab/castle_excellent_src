@@ -2,8 +2,38 @@
   "schema_version": 1,
   "breakpoints": [
     {
+      "address": "0x80FF",
+      "name": "ReadController1",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8111",
+      "name": "PollController1",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x813B",
+      "name": "PollController2",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8175",
       "name": "SelectChrBank",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8225",
+      "name": "Reset",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8282",
+      "name": "MainFrameLoop",
       "kind": "execute",
       "confidence": "confirmed"
     },
@@ -52,6 +82,72 @@
     {
       "address": "0xC6B9",
       "name": "BuildDmaOam",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC7BD",
+      "name": "ReverseDmaOam",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC804",
+      "name": "UploadStatusTiles",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC8BC",
+      "name": "UploadRoomCellRow00",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE0B5",
+      "name": "UploadRoomCellRow19",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE1F8",
+      "name": "UploadLeftRoomAttributesTask",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xE358",
+      "name": "UploadRightRoomAttributesTask",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEA36",
+      "name": "HandleCastleMapInput",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEA81",
+      "name": "DrawCastleMap",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xEB6C",
+      "name": "FinalizeRoomLoad",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC569",
+      "name": "Nmi",
+      "kind": "execute",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC588",
+      "name": "NmiFrame",
       "kind": "execute",
       "confidence": "confirmed"
     },

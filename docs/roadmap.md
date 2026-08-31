@@ -37,6 +37,22 @@
   object-count/stride tables, and all five cell-derived runtime-object types;
 - [x] reconstruct the top-level room-loading vertical slice, including NMI
   request reset, screen initialization, status data, and snapshot rotation;
+- [x] reconstruct both controller pollers, fixed PPU mode helpers, and the
+  four-entry CNROM bank-select table with exhaustive input-model checks;
+- [x] reconstruct Reset and the NMI-paced main loop, including cold/warm boot,
+  the `POWER`/`POW` signature contract, and the two-NMI frame gate;
+- [x] reconstruct the common NMI frame handler, 23-task request scheduler,
+  OAM/scroll interlock, controller paths, modular counters, and audio tick;
+- [x] reconstruct OAM staging-to-DMA transposition, eight-frame sprite-priority
+  rotation, full record reversal, and sized RAM-array operand generation;
+- [x] reconstruct the NMI status task, its foreground-formatting interlock,
+  three HUD PPU writes, and exact 23-entry handler layout;
+- [x] reconstruct all 20 NMI room-row tasks, the 14+6 nametable split, 400 cell
+  lookups, and 800 tile writes with an exact independent machine-code model;
+- [x] reconstruct both NMI attribute tasks, including 56-byte left upload,
+  28-to-52-byte right-edge expansion, and timing compensation;
+- [x] reconstruct castle-map input, all 100 visited/current marker positions,
+  and the room-display finalizer that requests all 23 NMI tasks;
 - expand the first deterministic FCEUX CDL/Ghidra reconciliation into broad
   title, gameplay, transition, death, ending, and save/load scenarios;
 - classify every PRG byte as code, typed data, text, or padding;

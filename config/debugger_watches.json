@@ -2,9 +2,27 @@
   "schema_version": 1,
   "watches": [
     {
+      "address": "0x0001",
+      "size": 2,
+      "name": "PlayerScore",
+      "confidence": "high"
+    },
+    {
+      "address": "0x0020",
+      "size": 1,
+      "name": "PolledControllerButtons",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x00DB",
       "size": 17,
       "name": "AudioInterpreterState",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x00F8",
+      "size": 5,
+      "name": "NmiSchedulerState",
       "confidence": "confirmed"
     },
     {
@@ -89,6 +107,30 @@
       "address": "0x0785",
       "size": 23,
       "name": "NmiTaskRequests",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0763",
+      "size": 8,
+      "name": "NmiModuloFrameCounters",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x077E",
+      "size": 3,
+      "name": "PowerOnSignatureRam",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0783",
+      "size": 2,
+      "name": "ResetCounter",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x00FC",
+      "size": 1,
+      "name": "NmiFrameCountdown",
       "confidence": "confirmed"
     },
     {

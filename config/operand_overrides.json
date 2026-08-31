@@ -2,10 +2,148 @@
   "schema_version": 1,
   "overrides": [
     {
+      "instruction": "0xEA3E",
+      "expected": "#$04",
+      "operand": "#ControllerButtonSelect",
+      "evidence": "Select opens the castle map when the map item is available"
+    },
+    {
+      "instruction": "0xEA52",
+      "expected": "#$1E",
+      "operand": "#CastleMapModeActive",
+      "evidence": "the map input path stores the active castle-map mode value"
+    },
+    {
+      "instruction": "0xEA62",
+      "expected": "#$B8",
+      "operand": "#PpuCtrlCastleMapNmi",
+      "evidence": "castle-map rendering restores the map-specific NMI PPU control"
+    },
+    {
+      "instruction": "0xEA75",
+      "expected": "#$07",
+      "operand": "#CastleMapExitButtons",
+      "evidence": "A, B, or Select closes the active castle map"
+    },
+    {
+      "instruction": "0xEAA7",
+      "expected": "#$0A",
+      "operand": "#CastleMapColumns",
+      "evidence": "visited room indices are divided into a ten-column grid"
+    },
+    {
+      "instruction": "0xEB1C",
+      "expected": "#$64",
+      "operand": "#CastleMapRoomCount",
+      "evidence": "the map iterates all 100 room-visited flags"
+    },
+    {
+      "instruction": "0xEB23",
+      "expected": "#$04",
+      "operand": "#OamSpriteSize",
+      "evidence": "map sprite clearing preserves the first four-byte marker record"
+    },
+    {
+      "instruction": "0xEB34",
+      "expected": "#$0A",
+      "operand": "#CastleMapColumns",
+      "evidence": "the current room is divided into a ten-column grid"
+    },
+    {
+      "instruction": "0xEB77",
+      "expected": "#$16",
+      "operand": "#NmiTaskRequestCount - 1",
+      "evidence": "room finalization requests all 23 NMI tasks in descending order"
+    },
+    {
+      "instruction": "0xEB85",
+      "expected": "#$B8",
+      "operand": "#PpuCtrlCastleMapNmi",
+      "evidence": "room finalization restores the same 8x16-sprite NMI control value"
+    },
+    {
+      "instruction": "0x8227",
+      "expected": "#$00",
+      "operand": "#PpuMaskRenderingDisabled",
+      "evidence": "reset disables rendering and NMI before waiting for two vblanks"
+    },
+    {
+      "instruction": "0x823A",
+      "expected": "#$02",
+      "operand": "#PowerOnSignatureCheckedBytes - 1",
+      "evidence": "Reset compares the three RAM bytes POW against the ROM signature"
+    },
+    {
+      "instruction": "0x8249",
+      "expected": "#$02",
+      "operand": "#PowerOnSignatureCheckedBytes - 1",
+      "evidence": "cold boot copies the same three checked signature bytes into RAM"
+    },
+    {
+      "instruction": "0x8282",
+      "expected": "#$02",
+      "operand": "#NmiFramesPerMainUpdate",
+      "evidence": "the main loop waits for two NMI decrements before its next update"
+    },
+    {
+      "instruction": "0x82BF",
+      "expected": "#$08",
+      "operand": "#ControllerButtonStart",
+      "evidence": "physical Start exits demo playback and restarts game initialization"
+    },
+    {
       "instruction": "0xE84C",
       "expected": "a:$E71D,X",
       "operand": "RoomPointerTable + 1,X",
       "evidence": "odd byte of the interleaved little-endian room pointer table"
+    },
+    {
+      "instruction": "0xC56E",
+      "expected": "#$B0",
+      "operand": "#PpuCtrlGameplayNmi",
+      "evidence": "NMI restores the fixed gameplay PPUCTRL mode on entry"
+    },
+    {
+      "instruction": "0xC58D",
+      "expected": "#$02",
+      "operand": "#OamDmaBufferPage",
+      "evidence": "OAM DMA reads the final sprite buffer at CPU page $02"
+    },
+    {
+      "instruction": "0xC592",
+      "expected": "#$B0",
+      "operand": "#PpuCtrlGameplayNmi",
+      "evidence": "the frame handler restores gameplay PPUCTRL after OAM DMA"
+    },
+    {
+      "instruction": "0xC5E3",
+      "expected": "#$16",
+      "operand": "#NmiTaskRequestCount - 1",
+      "evidence": "task index 22 is the final request and wraps directly to zero"
+    },
+    {
+      "instruction": "0xC5EE",
+      "expected": "#$17",
+      "operand": "#NmiTaskRequestCount",
+      "evidence": "the scheduler scans exactly 23 NMI task request bytes"
+    },
+    {
+      "instruction": "0xC6C5",
+      "expected": "#$07",
+      "operand": "#OamRotationFrameCount - 1",
+      "evidence": "OAM interleave rotates across eight consecutive NMI frames"
+    },
+    {
+      "instruction": "0xC790",
+      "expected": "#$20",
+      "operand": "#OamInterleaveBlockSize",
+      "evidence": "each output block contains eight four-byte hardware sprites"
+    },
+    {
+      "instruction": "0xC7BF",
+      "expected": "#$FC",
+      "operand": "#OamBufferSize - OamSpriteSize",
+      "evidence": "sprite reversal begins at the final four-byte OAM record"
     },
     {
       "instruction": "0xE85E",
@@ -378,6 +516,42 @@
       "expected": "#$16",
       "operand": "#NmiTaskRequestCount - 1",
       "evidence": "reset loop covers all 23 NMI task-request bytes at $0785-$079B"
+    },
+    {
+      "instruction": "0x811A",
+      "expected": "#$08",
+      "operand": "#ControllerSerialBitCount",
+      "evidence": "controller 1 polling shifts the standard eight serial button bits"
+    },
+    {
+      "instruction": "0x8144",
+      "expected": "#$08",
+      "operand": "#ControllerSerialBitCount",
+      "evidence": "controller 2 polling shifts the standard eight serial button bits"
+    },
+    {
+      "instruction": "0x8158",
+      "expected": "#$30",
+      "operand": "#PpuCtrlGameplayNoNmi",
+      "evidence": "DisableNmi preserves gameplay PPU mode while clearing the NMI-enable bit"
+    },
+    {
+      "instruction": "0x815E",
+      "expected": "#$B0",
+      "operand": "#PpuCtrlGameplayNmi",
+      "evidence": "EnableNmi restores the same gameplay PPU mode with NMI enabled"
+    },
+    {
+      "instruction": "0x8164",
+      "expected": "#$00",
+      "operand": "#PpuMaskRenderingDisabled",
+      "evidence": "DisableRendering clears every PPUMASK output-enable bit"
+    },
+    {
+      "instruction": "0x816F",
+      "expected": "#$1E",
+      "operand": "#PpuMaskGameplay",
+      "evidence": "vblank helper enables background and sprites in both leftmost columns"
     },
     {
       "instruction": "0xA363",

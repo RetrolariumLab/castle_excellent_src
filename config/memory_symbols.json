@@ -2,6 +2,18 @@
   "schema_version": 1,
   "symbols": [
     {
+      "address": "0x0000",
+      "name": "FrameCounter"
+    },
+    {
+      "address": "0x0001",
+      "name": "PlayerScoreLo"
+    },
+    {
+      "address": "0x0002",
+      "name": "PlayerScoreHi"
+    },
+    {
       "address": "0x0037",
       "name": "CurrentRoomIndex"
     },
@@ -62,20 +74,44 @@
       "name": "AudioDefaultLengthIndices"
     },
     {
+      "address": "0x00F8",
+      "name": "NmiTaskIndex"
+    },
+    {
+      "address": "0x00F9",
+      "name": "NmiTaskHandlerPointerLo"
+    },
+    {
+      "address": "0x00FA",
+      "name": "NmiTaskHandlerPointerHi"
+    },
+    {
+      "address": "0x00FB",
+      "name": "OamStagingBusy"
+    },
+    {
+      "address": "0x00FC",
+      "name": "NmiFrameCountdown"
+    },
+    {
       "address": "0x0100",
-      "name": "RoomAttributeScratch"
+      "name": "RoomAttributeScratch",
+      "size": 128
     },
     {
       "address": "0x0200",
-      "name": "OamDmaBuffer"
+      "name": "OamDmaBuffer",
+      "size": 256
     },
     {
       "address": "0x0300",
-      "name": "OamStagingBuffer"
+      "name": "OamStagingBuffer",
+      "size": 256
     },
     {
       "address": "0x0400",
-      "name": "RoomCells"
+      "name": "RoomCells",
+      "size": 400
     },
     {
       "address": "0x0590",
@@ -146,6 +182,47 @@
       "name": "RoomRuntimeStateSnapshotB"
     },
     {
+      "address": "0x0763",
+      "name": "FrameCounterModulo3A"
+    },
+    {
+      "address": "0x0764",
+      "name": "FrameCounterModulo5"
+    },
+    {
+      "address": "0x0765",
+      "name": "FrameCounterModulo6"
+    },
+    {
+      "address": "0x0766",
+      "name": "FrameCounterModulo7"
+    },
+    {
+      "address": "0x0767",
+      "name": "FrameCounterModulo3B"
+    },
+    {
+      "address": "0x0768",
+      "name": "FrameCounterModulo10"
+    },
+    {
+      "address": "0x0769",
+      "name": "FrameCounterModulo11"
+    },
+    {
+      "address": "0x076A",
+      "name": "FrameCounterModulo30"
+    },
+    {
+      "address": "0x076B",
+      "name": "RoomFrameCounter"
+    },
+    {
+      "address": "0x076C",
+      "name": "StatusInventoryTiles",
+      "size": 6
+    },
+    {
       "address": "0x0775",
       "name": "Controller1Buttons"
     },
@@ -154,16 +231,122 @@
       "name": "Controller2Buttons"
     },
     {
+      "address": "0x0777",
+      "name": "PreviousController1Buttons"
+    },
+    {
+      "address": "0x0778",
+      "name": "PreviousController2Buttons"
+    },
+    {
+      "address": "0x077E",
+      "name": "PowerOnSignatureRam"
+    },
+    {
+      "address": "0x0783",
+      "name": "ResetCounterLo"
+    },
+    {
+      "address": "0x0784",
+      "name": "ResetCounterHi"
+    },
+    {
       "address": "0x0785",
       "name": "NmiTaskRequests"
     },
     {
       "address": "0x079D",
-      "name": "StatusScoreTiles"
+      "name": "StatusScoreTiles",
+      "size": 5
     },
     {
       "address": "0x07A2",
       "name": "StatusScoreTerminator"
+    },
+    {
+      "address": "0x07A5",
+      "name": "StatusLivesTiles",
+      "size": 3
+    },
+    {
+      "address": "0x07C4",
+      "name": "PauseMode"
+    },
+    {
+      "address": "0x07C5",
+      "name": "CastleMapMode"
+    },
+    {
+      "address": "0x07C7",
+      "name": "DemoPlaybackActive"
+    },
+    {
+      "address": "0x07C8",
+      "name": "StatusTilesBusy"
+    },
+    {
+      "address": "0x07CE",
+      "name": "PhysicalController1Buttons"
+    },
+    {
+      "address": "0x0034",
+      "name": "PendingScrollX",
+      "start": "0xC55D",
+      "end": "0xC804"
+    },
+    {
+      "address": "0x0035",
+      "name": "AppliedScrollX",
+      "start": "0xC55D",
+      "end": "0xC804"
+    },
+    {
+      "address": "0x0036",
+      "name": "ScrollUpdatePending",
+      "start": "0xC55D",
+      "end": "0xC804"
+    },
+    {
+      "address": "0x0020",
+      "name": "OamOutputBlockIndex",
+      "start": "0xC6B9",
+      "end": "0xC79D"
+    },
+    {
+      "address": "0x0020",
+      "name": "PolledControllerButtons",
+      "start": "0x80FF",
+      "end": "0x8158"
+    },
+    {
+      "address": "0x000F",
+      "name": "CastleMapAvailable",
+      "start": "0xEA36",
+      "end": "0xEA81"
+    },
+    {
+      "address": "0x001F",
+      "name": "CastleMapRoomIndex",
+      "start": "0xEA81",
+      "end": "0xEB23"
+    },
+    {
+      "address": "0x0021",
+      "name": "CastleMapPpuAddressLo",
+      "start": "0xEA81",
+      "end": "0xEB23"
+    },
+    {
+      "address": "0x0022",
+      "name": "CastleMapPpuAddressHi",
+      "start": "0xEA81",
+      "end": "0xEB23"
+    },
+    {
+      "address": "0x4017",
+      "name": "JOYPAD2",
+      "start": "0x80FF",
+      "end": "0x8158"
     },
     {
       "address": "0x000D",
@@ -180,12 +363,6 @@
     {
       "address": "0x0772",
       "name": "SuppressRoomMusicSelection",
-      "start": "0xA38A",
-      "end": "0xA3AC"
-    },
-    {
-      "address": "0x07C7",
-      "name": "KeepRoomAudioPlaying",
       "start": "0xA38A",
       "end": "0xA3AC"
     },

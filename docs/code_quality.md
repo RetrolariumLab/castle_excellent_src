@@ -14,7 +14,7 @@ The quality targets follow the same contract as the sibling
 - `make test` runs the Python unit-test suite
 - `make quality-check` runs lint and tests without requiring a reference ROM
 - `make release-check` adds deterministic disassembly, byte-identical ROM,
-  room-data, room-screen-data, and audio-data verification
+  room-data, room-screen-data, controller-input, and audio-data verification
 - `make check` is the full release check
 
 The address-ordered PRG translation unit is split only at boundaries recorded

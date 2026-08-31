@@ -4,10 +4,15 @@
     {
       "path": "src/preservation/prg.asm",
       "start": "0x8000",
-      "end": "0x8F10",
-      "title": "Preservation PRG before runtime object offset data",
+      "end": "0x80FF",
+      "title": "Preservation PRG before controller input",
       "segment": "PRG",
       "includes_after": [
+        "../input/controllers.asm",
+        "../system/ppu.asm",
+        "prg_8180_8224.asm",
+        "../system/startup.asm",
+        "prg_82ce_8f0f.asm",
         "../game/objects/runtime_record_offsets.asm",
         "prg_8f29_9577.asm",
         "../system/nmi_tasks.asm",
@@ -19,10 +24,19 @@
         "../game/rooms/room_metadata.asm",
         "prg_ac13_b64b.asm",
         "../rendering/room_screen.asm",
-        "prg_b7fd_e45c.asm",
+        "prg_b7fd_c55c.asm",
+        "../system/nmi.asm",
+        "../rendering/oam_dma.asm",
+        "../rendering/status_upload.asm",
+        "../rendering/room_rows_00_04.asm",
+        "../rendering/room_rows_05_09.asm",
+        "../rendering/room_rows_10_14.asm",
+        "../rendering/room_rows_15_19.asm",
+        "../rendering/room_attribute_upload.asm",
         "../game/rooms/decoder.asm",
         "../rendering/room_attributes.asm",
-        "prg_ea36_eb8e.asm",
+        "../ui/castle_map.asm",
+        "../game/rooms/finalize_room.asm",
         "../game/objects/room_loader.asm",
         "../game/rooms/state_orchestration.asm",
         "../game/rooms/persistent_state_apply.asm",
@@ -34,6 +48,36 @@
         "../game/rooms/persistent_state_save.asm",
         "prg_fe31_ffff.asm"
       ]
+    },
+    {
+      "path": "src/input/controllers.asm",
+      "start": "0x80FF",
+      "end": "0x8158",
+      "title": "Controller wrappers and serial polling"
+    },
+    {
+      "path": "src/system/ppu.asm",
+      "start": "0x8158",
+      "end": "0x8180",
+      "title": "PPU state helpers and CNROM bank selection"
+    },
+    {
+      "path": "src/preservation/prg_8180_8224.asm",
+      "start": "0x8180",
+      "end": "0x8225",
+      "title": "Preservation PRG between PPU helpers and reset"
+    },
+    {
+      "path": "src/system/startup.asm",
+      "start": "0x8225",
+      "end": "0x82CE",
+      "title": "Reset initialization and NMI-paced main loop"
+    },
+    {
+      "path": "src/preservation/prg_82ce_8f0f.asm",
+      "start": "0x82CE",
+      "end": "0x8F10",
+      "title": "Preservation PRG after the main loop"
     },
     {
       "path": "src/game/objects/runtime_record_offsets.asm",
@@ -102,10 +146,58 @@
       "title": "Room nametable, status, attribute, and sprite initialization"
     },
     {
-      "path": "src/preservation/prg_b7fd_e45c.asm",
+      "path": "src/preservation/prg_b7fd_c55c.asm",
       "start": "0xB7FD",
+      "end": "0xC55D",
+      "title": "Preservation PRG before the NMI frame handler"
+    },
+    {
+      "path": "src/system/nmi.asm",
+      "start": "0xC55D",
+      "end": "0xC6B9",
+      "title": "NMI frame handler and scheduler"
+    },
+    {
+      "path": "src/rendering/oam_dma.asm",
+      "start": "0xC6B9",
+      "end": "0xC804",
+      "title": "OAM DMA construction and sprite-order transforms"
+    },
+    {
+      "path": "src/rendering/status_upload.asm",
+      "start": "0xC804",
+      "end": "0xC8BC",
+      "title": "NMI status upload and task handler tables"
+    },
+    {
+      "path": "src/rendering/room_rows_00_04.asm",
+      "start": "0xC8BC",
+      "end": "0xCF0B",
+      "title": "NMI room-row tile upload tasks 00-04"
+    },
+    {
+      "path": "src/rendering/room_rows_05_09.asm",
+      "start": "0xCF0B",
+      "end": "0xD55A",
+      "title": "NMI room-row tile upload tasks 05-09"
+    },
+    {
+      "path": "src/rendering/room_rows_10_14.asm",
+      "start": "0xD55A",
+      "end": "0xDBA9",
+      "title": "NMI room-row tile upload tasks 10-14"
+    },
+    {
+      "path": "src/rendering/room_rows_15_19.asm",
+      "start": "0xDBA9",
+      "end": "0xE1F8",
+      "title": "NMI room-row tile upload tasks 15-19"
+    },
+    {
+      "path": "src/rendering/room_attribute_upload.asm",
+      "start": "0xE1F8",
       "end": "0xE45D",
-      "title": "Preservation PRG after room-screen initialization"
+      "title": "NMI left and right room attribute upload tasks"
     },
     {
       "path": "src/game/rooms/decoder.asm",
@@ -120,10 +212,16 @@
       "title": "Room attribute addressing and table builder"
     },
     {
-      "path": "src/preservation/prg_ea36_eb8e.asm",
+      "path": "src/ui/castle_map.asm",
       "start": "0xEA36",
+      "end": "0xEB6C",
+      "title": "Castle map input, visited-room drawing, and player marker"
+    },
+    {
+      "path": "src/game/rooms/finalize_room.asm",
+      "start": "0xEB6C",
       "end": "0xEB8F",
-      "title": "Preservation PRG between room attributes and object loading"
+      "title": "Room-screen finalization and NMI task requests"
     },
     {
       "path": "src/game/objects/room_loader.asm",

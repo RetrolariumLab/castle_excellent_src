@@ -1,5 +1,7 @@
 # Castle Excellent typed PRG data v1
 # kind start end (inclusive CPU addresses) name
+table 817C 817F ChrBankSelectValues
+text 82C9 82CD PowerOnSignature
 table 8F10 8F28 RuntimeObjectOffsetByCount
 table AB4A ABAD RoomObjectCounts
 table ABAE AC12 RoomMutableCellStateOffsets
@@ -10,6 +12,10 @@ table BB1D BB54 NoteLengthTable
 table BB55 BBE6 ApuPeriodTable
 text BBE7 C20C MusicMmlData
 table C53D C55C RoomPaletteData
+table C79D C7AB OamRotationOffsets
+data C7AC C7AC UnusedOamRotationOffset
+table C88E C8A4 NmiTaskHandlerHighBytes
+table C8A5 C8BB NmiTaskHandlerLowBytes
 data E45D E71B RoomCodebook
 table E71C E7E3 RoomPointerTable
 table E7E4 E7EB RoomBitMasks

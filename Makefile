@@ -16,14 +16,23 @@ LABELS := $(BUILD_DIR)/castle_excellent.lbl
 MAP := $(BUILD_DIR)/castle_excellent.map
 DEBUG := $(BUILD_DIR)/castle_excellent.dbg
 SOURCE_FILES := src/main.asm src/preservation/prg.asm src/graphics/chr.asm \
+	src/input/controllers.asm src/system/ppu.asm \
+	src/preservation/prg_8180_8224.asm src/system/startup.asm \
+	src/preservation/prg_82ce_8f0f.asm \
 	src/game/objects/runtime_record_offsets.asm src/preservation/prg_8f29_9577.asm \
 	src/system/nmi_tasks.asm src/preservation/prg_9583_a35b.asm \
 	src/game/rooms/load_room.asm src/preservation/prg_a3ac_a6d7.asm \
 	src/game/rooms/mutable_cell_predicates.asm src/preservation/prg_a70a_ab49.asm \
 	src/game/rooms/room_metadata.asm src/preservation/prg_ac13_b64b.asm \
-	src/rendering/room_screen.asm src/preservation/prg_b7fd_e45c.asm \
-	src/preservation/prg_ea36_eb8e.asm src/game/rooms/decoder.asm \
-	src/rendering/room_attributes.asm src/game/objects/room_loader.asm \
+	src/rendering/room_screen.asm src/preservation/prg_b7fd_c55c.asm \
+	src/system/nmi.asm src/rendering/oam_dma.asm \
+	src/rendering/status_upload.asm src/rendering/room_rows_00_04.asm \
+	src/rendering/room_rows_05_09.asm src/rendering/room_rows_10_14.asm \
+	src/rendering/room_rows_15_19.asm \
+	src/rendering/room_attribute_upload.asm \
+	src/game/rooms/decoder.asm src/rendering/room_attributes.asm \
+	src/ui/castle_map.asm src/game/rooms/finalize_room.asm \
+	src/game/objects/room_loader.asm \
 	src/game/rooms/state_orchestration.asm src/game/rooms/persistent_state_apply.asm \
 	src/game/objects/stream_seek.asm src/game/rooms/mutable_cell_state_apply.asm \
 	src/game/rooms/persistent_state_load.asm \
@@ -64,7 +73,11 @@ TIMEOUT_FRAMES ?= 15000
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
 	trace-timeout trace-suite runtime-merge runtime-check runtime-promote \
-	reconstruction-check screen-data validate-screen-data
+	reconstruction-check screen-data validate-screen-data validate-input \
+	startup-state validate-startup nmi-state validate-nmi oam-state validate-oam \
+	status-state validate-status room-row-state validate-room-rows \
+	attribute-upload-state validate-attribute-upload castle-map-state \
+	validate-castle-map
 
 all: verify
 
@@ -218,7 +231,52 @@ screen-data: $(ROM)
 validate-screen-data: $(ROM)
 	$(PYTHON) scripts/room_screen_data.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data
+validate-input:
+	$(PYTHON) scripts/controller_input.py --validate
+
+startup-state: $(ROM)
+	$(PYTHON) scripts/startup_state.py --image "$(ROM)" --pretty
+
+validate-startup: $(ROM)
+	$(PYTHON) scripts/startup_state.py --image "$(ROM)" --validate
+
+nmi-state: $(ROM)
+	$(PYTHON) scripts/nmi_scheduler.py --image "$(ROM)" --pretty
+
+validate-nmi: $(ROM)
+	$(PYTHON) scripts/nmi_scheduler.py --image "$(ROM)" --validate
+
+oam-state: $(ROM)
+	$(PYTHON) scripts/oam_dma.py --image "$(ROM)" --pretty
+
+validate-oam: $(ROM)
+	$(PYTHON) scripts/oam_dma.py --image "$(ROM)" --validate
+
+status-state: $(ROM)
+	$(PYTHON) scripts/status_upload.py --image "$(ROM)" --pretty
+
+validate-status: $(ROM)
+	$(PYTHON) scripts/status_upload.py --image "$(ROM)" --validate
+
+room-row-state: $(ROM)
+	$(PYTHON) scripts/room_row_upload.py --image "$(ROM)" --pretty
+
+validate-room-rows: $(ROM)
+	$(PYTHON) scripts/room_row_upload.py --image "$(ROM)" --validate
+
+attribute-upload-state: $(ROM)
+	$(PYTHON) scripts/room_attribute_upload.py --image "$(ROM)" --pretty
+
+validate-attribute-upload: $(ROM)
+	$(PYTHON) scripts/room_attribute_upload.py --image "$(ROM)" --validate
+
+castle-map-state:
+	$(PYTHON) scripts/castle_map.py --pretty
+
+validate-castle-map:
+	$(PYTHON) scripts/castle_map.py --validate
+
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map
 
 check: release-check
 
