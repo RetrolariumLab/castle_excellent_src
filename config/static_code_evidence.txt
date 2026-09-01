@@ -1,0 +1,18 @@
+# Castle Excellent static code-entry evidence v1
+# rom_sha1 42f7975da9a68a74e141353eb6e2bdc676fc1f77
+# kind start end (inclusive CPU addresses)
+#
+# The collision-handler pointer table based at $9155 selects each address below
+# for both halves of one persistent mutable-cell pair:
+#   $9187/$9189 -> $A5DD for cell types $19/$1A
+#   $918D/$918F -> $A5E7 for cell types $1C/$1D
+#   $9193/$9195 -> $A5F1 for cell types $1F/$20
+#   $9199/$919B -> $A5FB for cell types $22/$23
+#   $919F/$91A1 -> $A605 for cell types $25/$26
+#   $91A7/$91A9 -> $A60F for cell types $29/$2A
+code A5DD A5E6
+code A5E7 A5F0
+code A5F1 A5FA
+code A5FB A604
+code A605 A60E
+code A60F A615

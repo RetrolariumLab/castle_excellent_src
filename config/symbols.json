@@ -752,6 +752,18 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xA6CA",
+      "name": "ClassifyCollisionCellPairIndex",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA6D5",
+      "name": "ReturnOrdinaryCollisionCellPair",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xA70A",
       "name": "RestoreMutableCellByOrdinal",
       "kind": "routine",

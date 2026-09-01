@@ -209,6 +209,11 @@ is `$54,$55,$62`, or `$63`; those four mutable visual forms return `$53` with
 only carry forced clear. Thus visual restoration does not make the cell solid
 to these callers.
 
+A separate collision-table helper at `$A6CA` receives the doubled lookup index
+in X. It returns Y=`$00` with Z set only for indexes `$8A-$91`, corresponding
+to both index phases of room-cell types `$45-$48`; every other index returns
+Y=`$FF` with Z clear. Its three callers consume the Z flag immediately.
+
 `UpdateRuntimeObjects` then scans offsets `0,6,...,138` across the 24-record
 pool. It clears the shared update flag before every slot, masks type byte bit 7,
 and skips a zero result or Y at/after `$A0`. Valid indexes 1-41 select an

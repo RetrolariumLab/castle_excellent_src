@@ -71,6 +71,9 @@ pointer and divides by five to recover row 0-19. It marks task `row + 1`, and
 the paired entry also marks `row + 2`; all 400 pointers are covered by the
 independent model. Two seven-byte code-shaped shims have no known entry or
 pointer and remain explicitly typed as unreferenced data.
+The adjacent `$A6CA-$A6D7` helper classifies the doubled collision lookup index:
+Y is zero exactly for `$8A-$91`, covering both index phases of cell types
+`$45-$48`, and `$FF` otherwise. Callers branch directly on the resulting Z flag.
 
 The adjacent `$94DB-$952C` module provides the common 16-bit X probes used by
 player collision, object collision, and room-cell lookup. Player X lives at

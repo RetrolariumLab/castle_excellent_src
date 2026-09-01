@@ -1572,6 +1572,30 @@
       "expected": "a:$0735",
       "operand": "RoomMutableCellStateSnapshotB + 4",
       "evidence": "fifth mutable-cell-state byte in snapshot B"
+    },
+    {
+      "instruction": "0xA6CA",
+      "expected": "#$8A",
+      "operand": "#CollisionCellPairIndexFirst",
+      "evidence": "first doubled cell index corresponding to room-cell type $45"
+    },
+    {
+      "instruction": "0xA6CE",
+      "expected": "#$92",
+      "operand": "#CollisionCellPairIndexEnd",
+      "evidence": "exclusive doubled-cell-index bound after room-cell type $48"
+    },
+    {
+      "instruction": "0xA6D2",
+      "expected": "#$00",
+      "operand": "#CollisionCellPairMatched",
+      "evidence": "Y zero and the resulting Z flag identify indexes $8A-$91"
+    },
+    {
+      "instruction": "0xA6D5",
+      "expected": "#$FF",
+      "operand": "#CollisionCellPairNotMatched",
+      "evidence": "Y nonzero and the resulting Z flag reject every other index"
     }
   ]
 }

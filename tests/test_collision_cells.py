@@ -6,6 +6,19 @@ from scripts import collision_cells
 
 
 class CollisionCellTests(unittest.TestCase):
+    def test_cell_pair_index_filter_matches_exactly_8a_through_91(self) -> None:
+        matches = [
+            value
+            for value in range(0x100)
+            if collision_cells.collision_cell_pair_index_matches(value)
+        ]
+        self.assertEqual(matches, list(range(0x8A, 0x92)))
+
+    def test_cell_pair_index_filter_rejects_non_bytes(self) -> None:
+        for value in (-1, 0x100):
+            with self.assertRaises(collision_cells.CollisionCellError):
+                collision_cells.collision_cell_pair_index_matches(value)
+
     def test_runtime_type_filter_matches_exactly_90_through_95(self) -> None:
         matches = [
             value

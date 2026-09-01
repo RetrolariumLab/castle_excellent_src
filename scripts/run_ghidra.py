@@ -100,11 +100,16 @@ def command_inspect(args: argparse.Namespace) -> None:
 def command_export_facts(args: argparse.Namespace) -> None:
     output = Path(args.output).resolve()
     scripts: list[tuple[str, list[str]]] = []
+    if args.static_evidence:
+        evidence = Path(args.static_evidence).resolve()
+        if not evidence.is_file():
+            raise PipelineError(f"static code evidence not found: {evidence}")
+        scripts.append(("ApplyCodeEvidence.java", [str(evidence), "static"]))
     if args.runtime_evidence:
         evidence = Path(args.runtime_evidence).resolve()
         if not evidence.is_file():
             raise PipelineError(f"runtime evidence not found: {evidence}")
-        scripts.append(("ApplyRuntimeEvidence.java", [str(evidence)]))
+        scripts.append(("ApplyCodeEvidence.java", [str(evidence), "runtime"]))
     if args.data_ranges:
         data_ranges = Path(args.data_ranges).resolve()
         if not data_ranges.is_file():
@@ -128,6 +133,7 @@ def main() -> int:
     facts = subparsers.add_parser("export-facts")
     facts.add_argument("--image", required=True)
     facts.add_argument("--output", default="build/ghidra/instructions.tsv")
+    facts.add_argument("--static-evidence")
     facts.add_argument("--runtime-evidence")
     facts.add_argument("--data-ranges")
     facts.set_defaults(handler=command_export_facts)

@@ -66,30 +66,68 @@ def load_prg_data_ranges(path: Path) -> list[tuple[str, int, int, str]]:
     return ranges
 
 
-def validate_runtime_data_separation(
-    data_ranges: list[tuple[str, int, int, str]], evidence_path: Path
-) -> None:
+def load_code_evidence(
+    evidence_path: Path, provenance: str
+) -> list[tuple[int, int]]:
     try:
         lines = evidence_path.read_text(encoding="utf-8").splitlines()
     except OSError as exc:
-        raise ProjectError(f"cannot read runtime evidence {evidence_path}: {exc}") from exc
+        raise ProjectError(
+            f"cannot read {provenance} code evidence {evidence_path}: {exc}"
+        ) from exc
+    ranges: list[tuple[int, int]] = []
+    previous_end = 0x7FFF
     for line_number, raw in enumerate(lines, 1):
         fields = raw.split()
-        if not fields or fields[0].startswith("#") or fields[0] != "code":
+        if not fields or fields[0].startswith("#"):
             continue
         if len(fields) != 3:
-            raise ProjectError(f"invalid runtime evidence at {evidence_path}:{line_number}")
+            raise ProjectError(
+                f"invalid {provenance} code evidence at {evidence_path}:{line_number}"
+            )
+        if fields[0] != "code":
+            continue
         try:
             start, end = int(fields[1], 16), int(fields[2], 16)
         except ValueError as exc:
             raise ProjectError(
-                f"invalid runtime address at {evidence_path}:{line_number}"
+                f"invalid {provenance} code address at {evidence_path}:{line_number}"
             ) from exc
+        if not 0x8000 <= start <= end <= 0xFFFF:
+            raise ProjectError(
+                f"{provenance} code range is out of bounds at "
+                f"{evidence_path}:{line_number}"
+            )
+        if start <= previous_end:
+            raise ProjectError(
+                f"{provenance} code ranges overlap or are unsorted at "
+                f"{evidence_path}:{line_number}"
+            )
+        ranges.append((start, end))
+        previous_end = end
+    if not ranges:
+        raise ProjectError(f"{provenance} code evidence is empty: {evidence_path}")
+    return ranges
+
+
+def validate_code_data_separation(
+    data_ranges: list[tuple[str, int, int, str]],
+    evidence_path: Path,
+    provenance: str,
+) -> None:
+    for start, end in load_code_evidence(evidence_path, provenance):
         for _kind, data_start, data_end, name in data_ranges:
             if max(start, data_start) <= min(end, data_end):
                 raise ProjectError(
-                    f"runtime code ${start:04X}-${end:04X} overlaps typed data {name}"
+                    f"{provenance} code ${start:04X}-${end:04X} overlaps typed data {name}"
                 )
+
+
+def validate_runtime_data_separation(
+    data_ranges: list[tuple[str, int, int, str]], evidence_path: Path
+) -> None:
+    """Backward-compatible runtime-evidence validation entrypoint."""
+    validate_code_data_separation(data_ranges, evidence_path, "runtime")
 
 
 def digest(data: bytes, algorithm: str = "sha1") -> str:
@@ -317,6 +355,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         "config/operand_overrides.json",
         "config/source_layout.json",
         "config/symbols.json",
+        "config/static_code_evidence.txt",
         "config/runtime_evidence.txt",
         "config/prg_data_ranges.txt",
         "docs/code_quality.md",
@@ -350,7 +389,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         "src/game/rooms/cell_coordinates.asm",
         "src/preservation/prg_a5dd_a66c.asm",
         "src/game/rooms/mutable_cell_lookup.asm",
-        "src/preservation/prg_a6ca_a6d7.asm",
+        "src/game/collision/cell_pair_index.asm",
         "src/game/rooms/mutable_cell_predicates.asm",
         "src/game/rooms/mutable_cell_restore.asm",
         "src/preservation/prg_a7db_ab49.asm",
@@ -414,6 +453,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         "scripts/room_data.py",
         "scripts/room_screen_data.py",
         "scripts/audio_data.py",
+        "tools/ghidra_scripts/ApplyCodeEvidence.java",
         "tools/ghidra_scripts/ClearKnownData.java",
     )
     missing = [name for name in required if not (ROOT / name).is_file()]
@@ -444,9 +484,10 @@ def command_lint(_args: argparse.Namespace) -> None:
         if not (ROOT / region.path).is_file():
             raise ProjectError(f"source-layout module not found: {region.path}")
     data_ranges = load_prg_data_ranges(ROOT / "config/prg_data_ranges.txt")
-    validate_runtime_data_separation(
-        data_ranges, ROOT / "config/runtime_evidence.txt"
+    validate_code_data_separation(
+        data_ranges, ROOT / "config/static_code_evidence.txt", "static"
     )
+    validate_code_data_separation(data_ranges, ROOT / "config/runtime_evidence.txt", "runtime")
     for relative in (
         "config/symbols.json",
         "tools/disassembly.lock.json",
@@ -497,7 +538,7 @@ def command_lint(_args: argparse.Namespace) -> None:
             '.include "../game/rooms/cell_coordinates.asm"',
             '.include "../preservation/prg_a5dd_a66c.asm"',
             '.include "../game/rooms/mutable_cell_lookup.asm"',
-            '.include "../preservation/prg_a6ca_a6d7.asm"',
+            '.include "../game/collision/cell_pair_index.asm"',
             '.include "../game/rooms/mutable_cell_predicates.asm"',
             '.include "../game/rooms/mutable_cell_restore.asm"',
             '.include "../preservation/prg_a7db_ab49.asm"',
@@ -697,6 +738,10 @@ def command_lint(_args: argparse.Namespace) -> None:
         "src/game/rooms/mutable_cell_lookup.asm": (
             "FindMutableCellOrdinalAtPosition:",
             "ReturnMutableCellOrdinal:",
+        ),
+        "src/game/collision/cell_pair_index.asm": (
+            "ClassifyCollisionCellPairIndex:",
+            "ReturnOrdinaryCollisionCellPair:",
         ),
         "src/game/rooms/mutable_cell_restore.asm": (
             "RestoreMutableCellByOrdinal:",

@@ -1487,7 +1487,7 @@ Label_A0F3:
     TAX
     LDA a:$AA22,X
     BEQ Label_A13C
-    JSR Func_A6CA
+    JSR ClassifyCollisionCellPairIndex
     BNE Label_A134
     LDY $40
     BPL Label_A134
@@ -1587,7 +1587,7 @@ Label_A1AD:
     ROL A
     TAX
     LDA a:$AA22,X
-    JSR Func_A6CA
+    JSR ClassifyCollisionCellPairIndex
     BNE Label_A1CC
     LDA $40
     BPL Label_A1CC

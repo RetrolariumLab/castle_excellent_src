@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Model Castle Excellent's runtime-type and mutable-cell collision filters."""
+"""Model Castle Excellent's evidence-backed collision-cell filters."""
 
 from __future__ import annotations
 
@@ -13,6 +13,8 @@ RUNTIME_TYPE_FIRST = 0x90
 RUNTIME_TYPE_END = 0x96
 NORMALIZED_EMPTY_CELL = 0x53
 MUTABLE_COLLISION_CELLS = frozenset((0x54, 0x55, 0x62, 0x63))
+CELL_PAIR_INDEX_FIRST = 0x8A
+CELL_PAIR_INDEX_END = 0x92
 CARRY_FLAG = 0x01
 
 
@@ -41,6 +43,12 @@ def runtime_type_matches_90_to_95(runtime_type: int) -> bool:
     return RUNTIME_TYPE_FIRST <= runtime_type < RUNTIME_TYPE_END
 
 
+def collision_cell_pair_index_matches(index: int) -> bool:
+    """Reproduce $A6CA's Y=0/Z=1 case for pair indexes $8A-$91."""
+    _validate_byte(index, "collision-cell pair index")
+    return CELL_PAIR_INDEX_FIRST <= index < CELL_PAIR_INDEX_END
+
+
 def normalize_collision_sample(cell: int, status: int) -> CollisionSample:
     """Reproduce $955D after the lower sampler has returned A and P."""
     _validate_byte(cell, "room cell")
@@ -56,6 +64,13 @@ def validate_collision_cell_contract() -> dict[str, object]:
     )
     if matching_types != tuple(range(RUNTIME_TYPE_FIRST, RUNTIME_TYPE_END)):
         raise CollisionCellError("runtime-type carry contract is not exactly $90-$95")
+    matching_pair_indexes = tuple(
+        value for value in range(0x100) if collision_cell_pair_index_matches(value)
+    )
+    if matching_pair_indexes != tuple(
+        range(CELL_PAIR_INDEX_FIRST, CELL_PAIR_INDEX_END)
+    ):
+        raise CollisionCellError("cell-pair index contract is not exactly $8A-$91")
     normalized_count = 0
     for cell in range(0x100):
         for status in range(0x100):
@@ -70,6 +85,7 @@ def validate_collision_cell_contract() -> dict[str, object]:
                 raise CollisionCellError("ordinary collision sample changed")
     return {
         "matching_runtime_types": list(matching_types),
+        "matching_cell_pair_indexes": list(matching_pair_indexes),
         "mutable_collision_cells": sorted(MUTABLE_COLLISION_CELLS),
         "normalized_cell": NORMALIZED_EMPTY_CELL,
         "sample_status_cases_checked": 0x10000,
@@ -90,7 +106,10 @@ def main() -> int:
     if args.pretty:
         print(json.dumps(document, indent=2))
     else:
-        print("[OK] exhaustively validated runtime-type and collision-cell filters")
+        print(
+            "[OK] exhaustively validated runtime-type, cell-pair-index, "
+            "and collision-cell filters"
+        )
     return 0
 
 

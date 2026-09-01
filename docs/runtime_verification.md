@@ -43,10 +43,11 @@ the generated assembly source.
 
 `make runtime-promote` converts the ignored binary CDL into tracked address
 ranges in `config/runtime_evidence.txt`. These ranges contain no ROM bytes.
-Headless Ghidra applies execution-proven code ranges before exporting its facts,
-then clears separately proven data ranges before exporting its facts, so the
-refined classification remains reproducible from a clean checkout. Repository
-lint rejects any code/data evidence overlap.
+Headless Ghidra applies them after the independent pointer/control-flow ranges
+in `config/static_code_evidence.txt`, then clears separately proven data ranges
+before exporting its facts. This keeps the refined classification reproducible
+from a clean checkout without misrepresenting static proof as execution.
+Repository lint rejects typed-data overlap with either code-evidence class.
 
 The Lua scenario initializes the Win32 logger window before resetting its
 buffers. This ordering is required by the FCEUX backend: `DoCDLogger()` owns the

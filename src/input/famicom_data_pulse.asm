@@ -205,7 +205,7 @@ ReturnPulseByteStatus:
 .include "../game/rooms/cell_coordinates.asm"
 .include "../preservation/prg_a5dd_a66c.asm"
 .include "../game/rooms/mutable_cell_lookup.asm"
-.include "../preservation/prg_a6ca_a6d7.asm"
+.include "../game/collision/cell_pair_index.asm"
 .include "../game/rooms/mutable_cell_predicates.asm"
 .include "../game/rooms/mutable_cell_restore.asm"
 .include "../preservation/prg_a7db_ab49.asm"

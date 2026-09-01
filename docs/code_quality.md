@@ -8,7 +8,8 @@ The quality targets follow the same contract as the sibling
 - `make format-check` checks assembly formatting without changing files
 - `make lint-asm` checks the shared assembly style contract
 - `make lint-source` checks repository structure, manifests, source contracts,
-  debugger JSON, and the tracked-binary policy
+  debugger JSON, typed-data/static/runtime evidence separation, and the
+  tracked-binary policy
 - `make lint-project` is a compatibility alias for `make lint-source`
 - `make lint` runs every linter
 - `make test` runs the Python unit-test suite
@@ -16,7 +17,7 @@ The quality targets follow the same contract as the sibling
 - `make release-check` adds deterministic disassembly, byte-identical ROM,
   room-data, room-screen-data, controller-input, audio-data, and Famicom
   data-I/O, save-payload, mutable-room-cell, and exhaustive coordinate-helper
-  verification, plus transition-state, collision-cell flag, and runtime-object
+  verification, plus transition-state, collision-cell/index flag, and runtime-object
   dispatcher contracts, exact new-game initialization, room-runtime reset,
   exhaustive room-cell animation mapping/cadence checks, and exhaustive HUD
   decimal/life/inventory formatting

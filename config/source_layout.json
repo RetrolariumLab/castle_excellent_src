@@ -32,7 +32,7 @@
         "../game/rooms/cell_coordinates.asm",
         "../preservation/prg_a5dd_a66c.asm",
         "../game/rooms/mutable_cell_lookup.asm",
-        "../preservation/prg_a6ca_a6d7.asm",
+        "../game/collision/cell_pair_index.asm",
         "../game/rooms/mutable_cell_predicates.asm",
         "../game/rooms/mutable_cell_restore.asm",
         "../preservation/prg_a7db_ab49.asm",
@@ -210,10 +210,10 @@
       "title": "Mutable room-cell lookup and ordinal calculation"
     },
     {
-      "path": "src/preservation/prg_a6ca_a6d7.asm",
+      "path": "src/game/collision/cell_pair_index.asm",
       "start": "0xA6CA",
       "end": "0xA6D8",
-      "title": "Preservation PRG between mutable-cell lookup and predicates"
+      "title": "Collision-cell pair lookup-index classification"
     },
     {
       "path": "src/game/rooms/mutable_cell_predicates.asm",

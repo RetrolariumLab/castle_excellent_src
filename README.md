@@ -28,8 +28,8 @@ evidence, and tested decoders for game data.
   Their pointer-to-row helper and current/next NMI task requests are semantic
   too. Player and runtime-object 16-bit X-coordinate helpers now have explicit
   A=high/X=low contracts. Room-transition completion now names its player/state
-  mirrors and rendering-resume order; adjacent collision helpers identify
-  runtime types `$90-$95` and normalize four mutable visual cells. The runtime
+  mirrors and rendering-resume order; collision helpers identify runtime types
+  `$90-$95`, doubled cell indexes `$8A-$91`, and four mutable visual cells. The runtime
   object dispatcher and all 42 handler pointers now expose the exact 24-record
   scan, type mask, visibility cutoff, and manual indirect-call return. New-game
   initialization now covers the starting room, lives/player state, persistent
@@ -98,8 +98,9 @@ evidence, and tested decoders for game data.
   offsets, carry, borrow, register order, and 16-bit wrapping.
 - `scripts/room_transition.py` validates transition mirroring and the exact
   rendering-resume call order.
-- `scripts/collision_cells.py` exhaustively validates all type bytes and all
-  65,536 room-cell/status combinations without losing sampler flags.
+- `scripts/collision_cells.py` exhaustively validates all runtime-type and
+  doubled cell-index bytes plus all 65,536 room-cell/status combinations
+  without losing sampler flags.
 - `scripts/runtime_object_dispatch.py` verifies all 42 handler pointers and
   models selection across the complete 24-record runtime pool.
 - `scripts/new_game_state.py` validates starting state, exact clear ranges,
@@ -109,15 +110,18 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 190 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 195 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
+  A separate static registry feeds pointer-table and direct-control-flow proof
+  into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,728 instructions after 43
-  evidence-backed data ranges remove 183 false-positive instructions. The
-  source layout owns 16,694 PRG bytes semantically (50.95%).
+  disagreements. Evidence-refined Ghidra exports 9,747 instructions after six
+  static code ranges recover five untraced handlers and 43 evidence-backed data
+  ranges remove 183 false-positive instructions. The
+  source layout owns 16,708 PRG bytes semantically (50.99%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -200,8 +204,8 @@ make attribute-upload-state # inspect both attribute transfers as JSON
 make validate-attribute-upload # validate 108 attribute PPU writes
 make transition-state # inspect room-transition mirrors and rendering resume
 make validate-transition # validate the room-transition completion contract
-make collision-state # inspect runtime-type and collision-cell filters
-make validate-collision # exhaustively validate collision normalization
+make collision-state # inspect runtime-type, cell-index, and collision filters
+make validate-collision # exhaustively validate collision classification
 make object-dispatch-state # inspect handler pointers and record traversal
 make validate-object-dispatch # validate the runtime-object frame dispatcher
 make new-game-state # inspect new-game initialization as JSON
@@ -235,6 +239,7 @@ config/symbols.json        evidence-ranked initial semantic naming
 config/memory_symbols.json global and address-scoped RAM/I/O operand naming
 config/operand_overrides.json evidence-backed relocatable operand expressions
 config/source_layout.json  contiguous generated PRG source-region contract
+config/static_code_evidence.txt pointer/control-flow-proven code ranges
 config/runtime_evidence.txt tracked code/data ranges observed by FCEUX
 config/prg_data_ranges.txt typed data ranges removed from Ghidra code output
 config/debugger_*.json     initial Mesen breakpoints and RAM watches
@@ -278,6 +283,7 @@ src/game/rooms/state_orchestration.asm snapshot selection and rotation
 src/game/rooms/persistent_state_*.asm offsets plus apply/load/save paths
 src/game/rooms/cell_coordinates.asm pixel, tile, and room-cell addressing
 src/game/rooms/mutable_cell_*.asm lookup, predicates, and state restoration
+src/game/collision/*.asm collision sampling and cell-index classification
 src/rendering/room_attributes.asm proven room attribute-table construction
 src/rendering/room_screen.asm nametable, status, attribute, and OAM setup
 src/system/nmi_tasks.asm   NMI task-request reset

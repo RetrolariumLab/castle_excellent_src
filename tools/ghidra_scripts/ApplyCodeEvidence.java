@@ -1,4 +1,4 @@
-// Apply execution-proven code ranges before exporting instruction facts.
+// Apply evidence-backed code ranges before exporting instruction facts.
 //@category CastleExcellent
 
 import ghidra.app.cmd.disassemble.DisassembleCommand;
@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ApplyRuntimeEvidence extends GhidraScript {
+public class ApplyCodeEvidence extends GhidraScript {
     private MemoryBlock findPrg() {
         for (MemoryBlock block : currentProgram.getMemory().getBlocks()) {
             if (block.isInitialized() && block.isExecute() && block.getSize() == 0x8000 &&
@@ -28,9 +28,10 @@ public class ApplyRuntimeEvidence extends GhidraScript {
     @Override
     public void run() throws Exception {
         String[] args = getScriptArgs();
-        if (args.length != 1) {
-            throw new IllegalArgumentException("expected runtime evidence path");
+        if (args.length != 2) {
+            throw new IllegalArgumentException("expected evidence path and provenance label");
         }
+        String provenance = args[1];
         List<String> lines = Files.readAllLines(
             Path.of(args[0]).toAbsolutePath(), StandardCharsets.UTF_8
         );
@@ -93,7 +94,7 @@ public class ApplyRuntimeEvidence extends GhidraScript {
                 command.applyTo(currentProgram, monitor);
                 Instruction instruction = listing.getInstructionAt(address);
                 if (instruction == null) {
-                    printerr("could not disassemble execution-proven address " + address);
+                    printerr("could not disassemble evidence-backed address " + address);
                     offset++;
                 } else {
                     created++;
@@ -101,6 +102,9 @@ public class ApplyRuntimeEvidence extends GhidraScript {
                 }
             }
         }
-        println("[OK] applied " + codeRanges.size() + " runtime code ranges; created " + created + " instructions");
+        println(
+            "[OK] applied " + codeRanges.size() + " " + provenance +
+            " code ranges; created " + created + " instructions"
+        );
     }
 }

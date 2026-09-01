@@ -123,6 +123,10 @@ IncrementingAnimatedCellFirst = $56
 IncrementingAnimatedCellEnd = $62
 IncrementingAnimatedCellRedrawEnd = $5A
 RoomCellSlowAnimationDividerMask = $03
+CollisionCellPairIndexFirst = $8A
+CollisionCellPairIndexEnd = $92
+CollisionCellPairMatched = $00
+CollisionCellPairNotMatched = $FF
 
 RoomMutableCellPersistentState = $0590
 RoomMutableCellPersistentStateBytes = $6C

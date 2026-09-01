@@ -49,6 +49,8 @@
   their register order, offsets, carry, borrow, and wraparound;
 - [x] reconstruct room-transition completion, runtime-type filtering, and
   mutable-cell collision normalization with exhaustive flag-preservation tests;
+- [x] reconstruct the `$A6CA-$A6D7` doubled cell-index classifier and prove
+  its exact `$8A-$91` match domain across every possible X value;
 - [x] reconstruct the 24-record runtime-object update dispatcher, its manual
   indirect-call convention, and all 42 handler pointers;
 - [x] reconstruct new-game state initialization, physical persistent-region

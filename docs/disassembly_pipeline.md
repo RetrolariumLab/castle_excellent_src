@@ -15,8 +15,9 @@ tools/disassembly.lock.json
   -> headless NES ROM import
   -> PRG0::$8000-$FFFF; CHR mapping skipped
   -> Ghidra recursive 6502 analysis
+  -> config/static_code_evidence.txt pointer/control-flow-proven code ranges
   -> config/runtime_evidence.txt code ranges from pinned FCEUX CDL
-  -> clear conflicting auto-data and disassemble execution-proven ranges
+  -> clear conflicting auto-data and disassemble both evidence classes
   -> config/prg_data_ranges.txt evidence-backed typed data ranges
   -> clear false-positive instructions from proven data
   -> build/ghidra/instructions.tsv
@@ -75,10 +76,14 @@ make check             # full analysis, tests, build, identity, and room gate
 ## Evidence boundary
 
 Ghidra's code classification is a preservation starting point, not proof that
-every emitted mnemonic is executable code. The tracked FCEUX evidence repairs
-false negatives observed by the deterministic runtime scenario suite.
+every emitted mnemonic is executable code. `config/static_code_evidence.txt`
+records entry points proven by ROM-resident pointer tables or direct control
+flow but not yet reached by the runtime suite. The tracked FCEUX evidence
+independently repairs false negatives observed during deterministic scenarios.
 `config/prg_data_ranges.txt` handles the opposite case: format proofs and
 static consumers establish ranges that must be emitted as data even when
 recursive or switch analysis mistakes them for instructions. Lint rejects an
-overlap between these ranges and any execution-proven code byte. Unclassified
-regions still require broader traces and byte-level proofs before final types.
+overlap between typed data and either code-evidence class. Static and runtime
+code ranges may overlap when independent evidence corroborates an entry.
+Unclassified regions still require broader traces and byte-level proofs before
+final types.

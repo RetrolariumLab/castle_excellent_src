@@ -1212,7 +1212,7 @@ Label_8DF0:
     TAX
     LDA a:$A95A,X
     BEQ Label_8E2B
-    JSR Func_A6CA
+    JSR ClassifyCollisionCellPairIndex
     BNE Label_8E1C
     LDY $40
     BPL Label_8E1C

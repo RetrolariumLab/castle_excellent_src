@@ -152,6 +152,36 @@ class PrgDataRangeTests(unittest.TestCase):
             with self.assertRaisesRegex(project.ProjectError, "overlaps typed data"):
                 project.validate_runtime_data_separation(ranges, evidence)
 
+    def test_loads_sorted_static_code_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            evidence = Path(directory) / "static.txt"
+            evidence.write_text(
+                "# pointer-table provenance\ncode A000 A00F\ncode A100 A10F\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                project.load_code_evidence(evidence, "static"),
+                [(0xA000, 0xA00F), (0xA100, 0xA10F)],
+            )
+
+    def test_rejects_unsorted_static_code_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            evidence = Path(directory) / "static.txt"
+            evidence.write_text(
+                "code A100 A10F\ncode A000 A00F\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(project.ProjectError, "unsorted"):
+                project.load_code_evidence(evidence, "static")
+
+    def test_rejects_static_code_in_typed_data(self) -> None:
+        ranges = [("table", 0xA000, 0xA0FF, "LookupTable")]
+        with tempfile.TemporaryDirectory() as directory:
+            evidence = Path(directory) / "static.txt"
+            evidence.write_text("code A080 A090\n", encoding="utf-8")
+            with self.assertRaisesRegex(project.ProjectError, "static code"):
+                project.validate_code_data_separation(ranges, evidence, "static")
+
 
 if __name__ == "__main__":
     unittest.main()

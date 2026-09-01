@@ -199,6 +199,16 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   types, all 65,536 cell/status combinations, deterministic regeneration, and
   byte-identical build
 
+### COLLISION-002 - doubled cell-pair lookup index
+
+- Status: resolved
+- Known: `$A6CA-$A6D7` returns Y zero/Z set exactly for X indexes `$8A-$91`
+  and Y `$FF`/Z clear for every other byte value
+- Interpretation: the match range represents both lookup phases of room-cell
+  types `$45-$48`, because callers form X as twice the cell value plus one bit
+- Evidence: semantic routine, three direct call sites, runtime execution of
+  both return paths, exhaustive 256-value model, and byte-identical build
+
 ### OBJ-003 - runtime-object frame dispatcher
 
 - Status: resolved

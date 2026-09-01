@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 46 semantic and 10 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 47 semantic and 9 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -24,7 +24,8 @@ formats round-trip, and static and runtime gates protect the claims.
 
 A preservation range may move into a semantic module only when:
 
-1. its start and end are backed by instruction/data evidence;
+1. its start and end are backed by runtime, static control-flow, or typed-data
+   evidence with explicit provenance;
 2. the source layout still covers `$8000-$FFFF` exactly once;
 3. no boundary splits an instruction or typed table;
 4. RAM and routine names separate proof from inference;
@@ -32,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 16,694 PRG bytes (50.95%): `$E45D-$E8DE`
+The promoted ranges currently cover 16,708 PRG bytes (50.99%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -81,6 +82,9 @@ matching persistent bitmap bit and requests the affected row and both room
 attribute uploads. An independent model checks the full 40x20 tile domain,
 both candidate families, ordinal-to-bit mapping, both restored forms, and the
 `$949C-$94DA` pointer-to-row/NMI-request helpers across all 400 cell addresses.
+The adjacent `$A6CA-$A6D7` classifier returns Y zero, and therefore Z set,
+exactly for doubled cell indexes `$8A-$91`; these encode both lookup phases for
+room-cell types `$45-$48`. Its full 256-byte input domain is checked independently.
 
 The coordinate slice adds `$94DB-$952C`. Two player entries add 7 or 15 to the
 16-bit position at `$38/$39`; six runtime-object entries return X, X plus

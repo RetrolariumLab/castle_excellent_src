@@ -3,14 +3,29 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-    .byte $A5, $09, $20, $58, $A6, $C6, $09, $4C, $16, $A6, $A5, $08, $20, $58, $A6, $C6
-    .byte $08, $4C, $16, $A6, $A5, $0A, $20, $58, $A6, $C6, $0A, $4C, $16, $A6
+    LDA $09
+    JSR Func_A658
+    DEC $09
+    JMP Label_A616
+    LDA $08
+    JSR Func_A658
+    DEC $08
+    JMP Label_A616
+    LDA $0A
+    JSR Func_A658
+    DEC $0A
+    JMP Label_A616
     LDA $07
     JSR Func_A658
     DEC $07
     JMP Label_A616
-    .byte $A5, $05, $20, $58, $A6, $C6, $05, $4C, $16, $A6, $A5, $06, $20, $58, $A6, $C6
-    .byte $06
+    LDA $05
+    JSR Func_A658
+    DEC $05
+    JMP Label_A616
+    LDA $06
+    JSR Func_A658
+    DEC $06
 
 Label_A616:
     LDA $1E

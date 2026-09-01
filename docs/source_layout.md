@@ -30,7 +30,7 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/rooms/cell_coordinates.asm` | `$A58A-$A5DC` | pixel/tile conversion and 20x20 room-cell addressing |
 | `src/preservation/prg_a5dd_a66c.asm` | `$A5DD-$A66C` | unresolved gameplay helpers before mutable-cell lookup |
 | `src/game/rooms/mutable_cell_lookup.asm` | `$A66D-$A6C9` | mutable-cell anchor lookup and one-based ordinal calculation |
-| `src/preservation/prg_a6ca_a6d7.asm` | `$A6CA-$A6D7` | unresolved helper between lookup and predicates |
+| `src/game/collision/cell_pair_index.asm` | `$A6CA-$A6D7` | doubled cell-index classifier for cell types `$45-$48` |
 | `src/game/rooms/mutable_cell_predicates.asm` | `$A6D8-$A709` | persistent mutable-cell predicates |
 | `src/game/rooms/mutable_cell_restore.asm` | `$A70A-$A7DA` | ordinal restoration, persistence bit, and render requests |
 | `src/preservation/prg_a7db_ab49.asm` | `$A7DB-$AB49` | unresolved room manipulation helpers |
