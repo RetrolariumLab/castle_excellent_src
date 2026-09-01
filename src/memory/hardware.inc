@@ -57,6 +57,8 @@ ControllerButtonLeft = $40
 ControllerButtonRight = $80
 CastleMapExitButtons = ControllerButtonA | ControllerButtonB | ControllerButtonSelect
 SaveLoadAcknowledgeButtons = ControllerButtonA | ControllerButtonB
+PauseResumeButtons = ControllerButtonA | ControllerButtonB
+ApuChannelsDisabled = $00
 
 PpuCtrlGameplayNoNmi = $30
 PpuCtrlGameplayNmi = $B0

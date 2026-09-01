@@ -25,6 +25,12 @@ evidence, and tested decoders for game data.
   snapshot orchestration now form a semantic vertical slice. Pixel-to-tile
   conversion, room-cell addressing, mutable-anchor lookup, and ordinal-based
   restoration are reconstructed with their persistence/render side effects.
+  Six inventory-backed handlers now connect persistent cell pairs to all six
+  counters, player-motion/alignment guards, boundary delay, and opening sound.
+  Four room-transition helpers now expose the one-based 10x10 castle grid,
+  including both ten-entry horizontal edge tables and boundary-safe movement.
+  Player protection countdowns and the exact bottom-center hazard probe now
+  expose three lethal cell forms, 32-frame decay, and room-music restoration.
   Their pointer-to-row helper and current/next NMI task requests are semantic
   too. Player and runtime-object 16-bit X-coordinate helpers now have explicit
   A=high/X=low contracts. Room-transition completion now names its player/state
@@ -94,6 +100,17 @@ evidence, and tested decoders for game data.
   payload and validates the exact `GNUTUEDEB`/`BEDEUTUN` ROM/wire signature.
 - `scripts/room_cell_coordinates.py` models the 40x20 tile-to-cell mapping,
   mutable ordinals, restored forms, and persistent-state bit selection.
+- `scripts/mutable_cell_actions.py` proves all 12 collision-table pointers,
+  six inventory-slot mappings, handler templates, readiness guards, probe
+  adjustment, and signed-direction horizontal boundary behavior.
+- `scripts/room_navigation.py` proves the exact navigation machine code and
+  both edge tables, then checks every direction from all 100 one-based rooms.
+- `scripts/player_hazard_state.py` proves both protection countdowns, exact
+  routine bytes, all 400 room-cell probes, and full X/Y/cell input domains.
+- `scripts/object_player_proximity.py` proves the shared 15-call interaction
+  predicate, both exclusive distance limits, and its original page-delta alias.
+- `scripts/pause_input.py` proves pause/resume edges, APU shutdown, paused
+  scroll priority and saturation across complete button and byte domains.
 - `scripts/x_coordinates.py` exhaustively validates all player/object X helper
   offsets, carry, borrow, register order, and 16-bit wrapping.
 - `scripts/room_transition.py` validates transition mirroring and the exact
@@ -110,7 +127,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 195 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 237 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -119,9 +136,9 @@ evidence, and tested decoders for game data.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
   disagreements. Evidence-refined Ghidra exports 9,747 instructions after six
-  static code ranges recover five untraced handlers and 43 evidence-backed data
+  static code ranges recover five untraced handlers and 45 evidence-backed data
   ranges remove 183 false-positive instructions. The
-  source layout owns 16,708 PRG bytes semantically (50.99%).
+  source layout owns 17,235 PRG bytes semantically (52.60%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -224,6 +241,16 @@ make save-data       # inspect the 394-byte save-payload layout as JSON
 make validate-save-data # validate payload codec and ROM signature
 make room-cell-state # inspect room-cell coordinate and ordinal contracts
 make validate-room-cells # validate mutable-cell lookup and restoration
+make mutable-cell-action-state # inspect inventory-backed cell actions
+make validate-mutable-cell-actions # validate all action mappings and guards
+make room-navigation-state # inspect the one-based 10x10 castle grid
+make validate-room-navigation # validate every room movement and edge table
+make player-hazard-state # inspect protection timers and hazard contact
+make validate-player-hazard # validate all timer/probe/cell input domains
+make object-player-proximity # inspect the object/player carry predicate
+make validate-object-player-proximity # validate every proven distance domain
+make pause-input-state # inspect pause edges and paused scrolling
+make validate-pause-input # validate all pause button/mode/scroll domains
 make x-coordinate-state # inspect 16-bit X helper contracts as JSON
 make validate-x-coordinates # exhaustively validate coordinate arithmetic
 make clean           # remove build artifacts only
@@ -259,6 +286,10 @@ scripts/controller_input.py controller serial-polling model
 scripts/famicom_data_io.py pulse and expansion data-transport model
 scripts/save_data.py     394-byte save-payload codec and validator
 scripts/room_cell_coordinates.py room-cell coordinate and mutation model
+scripts/room_navigation.py one-based 10x10 castle navigation model
+scripts/player_hazard_state.py protection countdown and hazard-probe model
+scripts/object_player_proximity.py runtime-object/player proximity model
+scripts/pause_input.py     pause toggle and paused-scroll model
 scripts/x_coordinates.py exhaustive player/object X-coordinate model
 scripts/audio_data.py      music table and textual-stream validator
 src/main.asm               assembly entrypoint
@@ -266,6 +297,7 @@ src/input/famicom_data_pulse.asm PRG entry, pulse transport, and module order
 src/input/famicom_data_io.asm shared dispatch and expansion serial transport
 src/game/save_load.asm  save/load payload, validation, and room restoration
 src/input/controllers.asm  controller wrappers and eight-bit serial polling
+src/input/pause.asm        pause/resume edges and paused horizontal scrolling
 src/system/ppu.asm         PPU mode helpers and CNROM bank selection
 src/system/startup.asm     reset signature, initialization, and main frame loop
 src/system/nmi.asm         NMI task scheduler, input, OAM, scroll, and audio tick
@@ -282,7 +314,10 @@ src/game/rooms/load_room.asm top-level room-loading orchestration
 src/game/rooms/state_orchestration.asm snapshot selection and rotation
 src/game/rooms/persistent_state_*.asm offsets plus apply/load/save paths
 src/game/rooms/cell_coordinates.asm pixel, tile, and room-cell addressing
-src/game/rooms/mutable_cell_*.asm lookup, predicates, and state restoration
+src/game/rooms/mutable_cell_*.asm actions, lookup, predicates, and restoration
+src/game/rooms/navigation.asm boundary-safe castle room movement
+src/game/player/hazard_state.asm protection decay and hazard-cell contact
+src/game/objects/player_proximity.asm shared object/player interaction predicate
 src/game/collision/*.asm collision sampling and cell-index classification
 src/rendering/room_attributes.asm proven room attribute-table construction
 src/rendering/room_screen.asm nametable, status, attribute, and OAM setup

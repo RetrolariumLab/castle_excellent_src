@@ -26,7 +26,7 @@ RotateRoomRuntimeSnapshots:
     BPL RotateRoomRuntimeSnapshots
 
 SelectAndApplyRoomState:
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     CPX RoomStateSnapshotB
     BNE LoadPersistentStateForRoom
     STX CurrentRoomState
@@ -37,7 +37,7 @@ LoadPersistentStateForRoom:
     JSR LoadRoomPersistentState
 
 MirrorSelectedRoomState:
-    LDA CurrentRoomIndex
+    LDA CurrentRoomNumber
     STA CurrentRoomState
     LDX #RoomStateRecordSize - 1
 

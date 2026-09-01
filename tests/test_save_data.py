@@ -7,7 +7,7 @@ from scripts import save_data
 
 def patterned_state() -> save_data.SaveState:
     return save_data.SaveState(
-        room_index=37,
+        room_number=37,
         player_lives=0xA5,
         runtime_state=bytes(range(save_data.RUNTIME_STATE_SIZE)),
         mutable_region=bytes(range(save_data.MUTABLE_REGION_SIZE)),
@@ -60,7 +60,7 @@ class SaveDataTests(unittest.TestCase):
     def test_rejects_wrong_region_size(self) -> None:
         state = patterned_state()
         bad = save_data.SaveState(
-            room_index=state.room_index,
+            room_number=state.room_number,
             player_lives=state.player_lives,
             runtime_state=state.runtime_state,
             mutable_region=state.mutable_region[:-1],

@@ -428,6 +428,12 @@
       "confidence": "high"
     },
     {
+      "address": "0x8ECB",
+      "name": "PrepareRoomCellSampleAddress",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
       "address": "0x8F10",
       "name": "RuntimeObjectOffsetByCount",
       "kind": "data",
@@ -694,6 +700,96 @@
     {
       "address": "0xA5DC",
       "name": "ReturnRoomCellPointer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA5DD",
+      "name": "TryOpenMutableCell19",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA5E7",
+      "name": "TryOpenMutableCell1C",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA5F1",
+      "name": "TryOpenMutableCell1F",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA5FB",
+      "name": "TryOpenMutableCell22",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA605",
+      "name": "TryOpenMutableCell25",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA60F",
+      "name": "TryOpenMutableCell29",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA616",
+      "name": "OpenPersistentMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA63B",
+      "name": "CheckLeftMutableCellBoundary",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA645",
+      "name": "SetMutableCellActionDelay",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA649",
+      "name": "PlayMutableCellOpenSound",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA64D",
+      "name": "GetActivePlayerMotionState",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA655",
+      "name": "ReturnActivePlayerMotionState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA658",
+      "name": "RequireMutableCellActionReady",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA661",
+      "name": "AbortMutableCellAction",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA664",
+      "name": "CheckMutableCellActionAlignment",
       "kind": "local",
       "confidence": "confirmed"
     },
@@ -1148,15 +1244,243 @@
       "confidence": "confirmed"
     },
     {
-      "address": "0xA835",
-      "name": "UpdatePlayerCellState",
+      "address": "0xA7DB",
+      "name": "MoveToRoomAbove",
       "kind": "routine",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7E5",
+      "name": "ReturnFromVerticalRoomMove",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7E6",
+      "name": "MoveToRoomBelow",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7F0",
+      "name": "ReturnFromRoomMoveDown",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7F1",
+      "name": "MoveToRoomRight",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7FD",
+      "name": "ReturnFromRoomMoveRight",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7FE",
+      "name": "MoveToRoomLeft",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA80A",
+      "name": "ReturnFromRoomMoveLeft",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA80B",
+      "name": "FindRightmostCastleRoom",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA80D",
+      "name": "ScanRightmostCastleRooms",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA815",
+      "name": "ReturnRoomEdgeSearch",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA816",
+      "name": "FindLeftmostCastleRoom",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA818",
+      "name": "ScanLeftmostCastleRooms",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA820",
+      "name": "ReturnLeftRoomEdgeSearch",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA821",
+      "name": "RightmostCastleRoomNumbers",
+      "kind": "table",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA82B",
+      "name": "LeftmostCastleRoomNumbers",
+      "kind": "table",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA835",
+      "name": "UpdatePlayerProtectionAndHazardState",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA847",
+      "name": "TickHazardProtectionCountdown",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA859",
+      "name": "UpdatePlayerHazardCellContact",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA87E",
+      "name": "UseNonHazardRoomCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA883",
+      "name": "SamplePlayerHazardRoomCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA891",
+      "name": "ClassifyPlayerHazardRoomCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA899",
+      "name": "CheckRestoredHazardRoomCellTop",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA89F",
+      "name": "CheckRestoredHazardRoomCellBottom",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA8A5",
+      "name": "StorePlayerHazardCellContact",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA8A9",
+      "name": "IsCurrentObjectNearPlayer",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA8B9",
+      "name": "CompareObjectPlayerYDistance",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA8DA",
+      "name": "CheckObjectPlayerXDistanceHigh",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA8DE",
+      "name": "CompareObjectPlayerXDistance",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA8E2",
+      "name": "ReturnObjectPlayerProximityResult",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0xA8E3",
       "name": "HandlePauseInput",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA8F6",
+      "name": "CheckPauseStartEdge",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA912",
+      "name": "LeavePauseMode",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA914",
+      "name": "StorePauseMode",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA91E",
+      "name": "CheckPausedScrollInput",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA924",
+      "name": "UpdatePausedScroll",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA934",
+      "name": "StorePausedScrollLeft",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA93D",
+      "name": "CheckPausedScrollRight",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA94D",
+      "name": "StorePausedScrollRight",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA953",
+      "name": "RememberPauseButtons",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
@@ -1428,6 +1752,12 @@
       "name": "MusicMmlData",
       "kind": "data",
       "confidence": "confirmed"
+    },
+    {
+      "address": "0xC2BD",
+      "name": "StartMutableCellOpenSoundEffect",
+      "kind": "routine",
+      "confidence": "high"
     },
     {
       "address": "0xC2F9",

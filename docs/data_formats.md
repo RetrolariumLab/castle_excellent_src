@@ -11,7 +11,7 @@ transport-specific preamble:
 
 | Offset | Size | Contents | RAM traversal |
 | ---: | ---: | --- | --- |
-| 0 | 1 | current one-based room index | `$0037` |
+| 0 | 1 | current one-based room number | `$0037` |
 | 1 | 1 | player lives | `$0013` / mirror `$0744` |
 | 2 | 14 | active runtime state | ascending `$0005-$0012` |
 | 16 | 120 | mutable save region | descending `$0607-$0590` |
@@ -101,6 +101,21 @@ writes `$62/$63` when either horizontal neighbor is `$16`, otherwise
 `scripts/room_cell_coordinates.py` independently models
 these conversions, predicates, writes, and bit selection.
 
+The collision handler table at `$9155` maps each original cell pair to an
+inventory-backed action:
+
+| Anchor/right cell | Handler | Inventory index |
+| --- | ---: | ---: |
+| `$19/$1A` | `$A5DD` | 4 |
+| `$1C/$1D` | `$A5E7` | 3 |
+| `$1F/$20` | `$A5F1` | 5 |
+| `$22/$23` | `$A5FB` | 2 |
+| `$25/$26` | `$A605` | 0 |
+| `$29/$2A` | `$A60F` | 1 |
+
+Each handler decrements its counter only after the shared motion/alignment
+guard succeeds, then enters the ordinal-based persistent restoration path.
+
 An absolute room-cell pointer is converted back to its row by shifting right
 twice, masking with `$7F`, and dividing by five. This is equivalent to
 `floor((address - $0400) / 20)` throughout the 400-byte room matrix. The NMI
@@ -188,6 +203,17 @@ one-based ordinals 1-39 in a row-major scan. A set bit replaces the selected
 candidate with `$62` and the cell below with `$63` when its immediate paired
 neighbor is `$16`; otherwise it writes `$54/$55`. The companion predicate
 recognizes right-hand values `$1A,$1D,$20,$23,$26,$2A`.
+
+The castle uses one-based row-major room numbers in a 10x10 grid.
+`RightmostCastleRoomNumbers` at `$A821-$A82A` contains
+`10,20,...,100`; `LeftmostCastleRoomNumbers` at `$A82B-$A834` contains
+`1,11,...,91`. The descending lookup returns the matching zero-based row in X,
+or `$FF` when the room is not on that edge.
+
+Player hazard contact is a derived runtime view over the room grid rather than
+an encoded room field. A bottom-center pixel probe classifies original cell
+`$16` and both restored forms `$62/$63` as active (`$FF` at RAM `$077C`);
+every other cell and every out-of-room coordinate clears the flag.
 
 `RoomObjectCounts` at `$AB4A-$ABAD` exactly matches the 100 decoded static
 lists. `RuntimeObjectOffsetByCount` at `$8F10-$8F28` is the sequence

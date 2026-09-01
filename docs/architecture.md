@@ -35,6 +35,12 @@ game update per two NMI ticks. Castle-map mode skips all frame work; pause mode
 keeps scrolling, sprite construction, and sub-command input active while
 skipping player, object, collision, and room-cell simulation.
 
+`HandlePauseInput` is edge-triggered against the saved controller-1 mask. Start
+enters or leaves pause; entering writes zero to `APU_STATUS`. A or B can also
+resume. While paused, Left/Right move the pending horizontal scroll by four,
+clamped to `$00-$80`, and set the NMI latch request. Left wins if both are held.
+Unpaused idle frames deliberately leave the saved edge mask unchanged.
+
 NMI dispatches one of 23 PPU tasks through separate high- and low-byte tables.
 After the selected task reaches the common frame handler, it performs OAM DMA,
 rebuilds the DMA buffer when the staging buffer is free, applies a pending
@@ -134,7 +140,7 @@ a carry check, an original behavior retained by the reconstruction.
 ## Room pipeline
 
 ```text
-room index
+one-based room number
   -> pointer table at PRG $E71C
   -> CHR bank 2 or 3 bitstream
   -> buffered PPU reads through $2007
@@ -153,6 +159,26 @@ pipeline, clears the 23 NMI task requests, initializes nametables and both OAM
 buffers, writes the status area, builds and uploads attributes, resets room
 runtime variables, and selects one of audio track sets 0, 1, or 3 unless room
 flags suppress the change.
+
+The room graph is a regular 10x10 row-major grid numbered 1-100. Moving up or
+down subtracts or adds ten except in the first or last row. Horizontal moves
+change the number by one; `RightmostCastleRoomNumbers` and
+`LeftmostCastleRoomNumbers` stop movement at each row edge, preventing a wrap
+from room 10 to 11 or from room 11 to 10.
+
+Each player frame also updates two protection countdowns. Nonzero values decay
+once every 32 room frames, and expiry restores the room's normal audio choice.
+The player hazard probe samples the bottom-center point `(X+7,Y+8)`, maps it
+into the 20x20 logical grid after visible-bound checks, and stores `$FF` only
+for cells `$16,$62,$63`. The collision path turns that flag into death unless
+the hazard-protection countdown is active; the second countdown guards the
+shared death entry more generally.
+
+Object interaction handlers share `IsCurrentObjectNearPlayer`. It compares the
+player with `(object X, object Y+16)` and returns carry clear only inside the
+exclusive `<5` X and `<4` Y window. Its 16-bit negative-X normalization has an
+original page-boundary quirk: a player exactly `$0100` pixels to the right can
+alias to zero distance. The reconstruction retains that behavior explicitly.
 
 The logical room is 20x20 cells. One cell spans 16x8 pixels: X is doubled into
 two background tiles, while Y advances by one tile. The rendered playfield is
@@ -256,6 +282,14 @@ A parallel table assigns packed bits to seven mutable cell classes. Its
 form a nine-byte active record plus two transition snapshots. The load and save
 paths use the same cumulative offsets, preventing one room from consuming a
 neighbor's state bytes.
+
+During collision dispatch, cell families `$19/$1A`, `$1C/$1D`, `$1F/$20`,
+`$22/$23`, `$25/$26`, and `$29/$2A` select six handlers at `$A5DD-$A60F`.
+They consume inventory indexes `4,3,5,2,0,1` respectively. A shared guard uses
+an intentional two-return-address stack unwind to abort the indirect collision
+handler when the counter is zero, motion is active, or player Y is not aligned
+to remainder eight. The success path opens the corresponding persistent cell
+through the existing ordinal pipeline and preserves the mutation in snapshots.
 
 The state-application path treats a set object bit as removed and clears that
 runtime record. Mutable-cell bits select candidates by one-based row-major

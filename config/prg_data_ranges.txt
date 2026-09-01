@@ -13,6 +13,8 @@ table A551 A55A DecimalPlaceValueBytes
 table A55B A562 MutableCellStateBitMasks
 data A573 A589 UnreferencedBitIndexHelperBytes
 data A596 A5A3 UnreferencedTileToPixelConversionBytes
+table A821 A82A RightmostCastleRoomNumbers
+table A82B A834 LeftmostCastleRoomNumbers
 table AB4A ABAD RoomObjectCounts
 table ABAE AC12 RoomMutableCellStateOffsets
 table B77C B7BC RoomStatusAndInitialAttributeData

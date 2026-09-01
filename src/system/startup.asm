@@ -72,7 +72,7 @@ MainFrameLoop:
     LDA PauseMode
     BNE RenderMainFrame
     JSR UpdatePlayerInputAndMovement
-    JSR UpdatePlayerCellState
+    JSR UpdatePlayerProtectionAndHazardState
     JSR EnsureRoomAudioPlaying
     JSR UpdateRuntimeObjects
     JSR UpdatePlayerCollisionState

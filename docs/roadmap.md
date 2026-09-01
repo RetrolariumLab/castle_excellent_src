@@ -51,6 +51,16 @@
   mutable-cell collision normalization with exhaustive flag-preservation tests;
 - [x] reconstruct the `$A6CA-$A6D7` doubled cell-index classifier and prove
   its exact `$8A-$91` match domain across every possible X value;
+- [x] reconstruct all six inventory-backed persistent-cell actions, their
+  pointer-table provenance, stack-unwind guard, alignment, and boundary delay;
+- [x] reconstruct one-based movement across the 10x10 castle room grid and
+  prove both ten-entry horizontal edge tables across all 100 rooms;
+- [x] reconstruct player protection countdown decay, room-audio restoration,
+  and bottom-center hazard contact across all coordinates and room cells;
+- [x] reconstruct the shared runtime-object/player proximity predicate, all 15
+  call sites, exclusive thresholds, and original negative-page alias behavior;
+- [x] reconstruct pause/resume edge handling, APU shutdown, and paused
+  four-pixel horizontal scrolling across complete input/state domains;
 - [x] reconstruct the 24-record runtime-object update dispatcher, its manual
   indirect-call convention, and all 42 handler pointers;
 - [x] reconstruct new-game state initialization, physical persistent-region

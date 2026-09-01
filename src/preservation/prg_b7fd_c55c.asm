@@ -681,7 +681,7 @@ Func_C29A:
     STA NoiseSoundEffectBusy
     RTS
 
-Func_C2BD:
+StartMutableCellOpenSoundEffect:
     LDA #$0F
     STA APU_STATUS
     LDA #$05

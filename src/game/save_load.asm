@@ -28,7 +28,7 @@ BeginSaveTransfer:
     STA PPU_ADDR
     JSR ShowBackgroundOnlyMessage
     JSR SendDataPreamble
-    LDA CurrentRoomIndex
+    LDA CurrentRoomNumber
     JSR SendDataByte
     LDA RoomRuntimeLoadMirror + $0E
     JSR SendDataByte
@@ -149,7 +149,7 @@ LoadGameState:
     JSR ShowBackgroundOnlyMessage
     JSR ReceiveDataByte
     BCS HandleLoadFailure
-    STA CurrentRoomIndex
+    STA CurrentRoomNumber
     STA CurrentRoomState
     JSR ReceiveDataByte
     STA PlayerLives
@@ -210,7 +210,7 @@ VerifySaveDataSignature:
 RebuildLoadedRoom:
     LDA #$00
     STA PlayerTransitionCountdown
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     DEX
     JSR DecodeRoom
     JSR BuildRoomAttributeTables

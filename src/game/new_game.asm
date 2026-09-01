@@ -5,7 +5,7 @@
 
 InitializeNewGame:
     LDA #InitialRoomNumber
-    STA CurrentRoomIndex
+    STA CurrentRoomNumber
     LDA #InitialPlayerLives
     STA PlayerLives
     LDA #$00
@@ -79,7 +79,7 @@ ClearNewGameVisitedRooms:
     STA RoomVisitedFlags - 1,X
     DEX
     BNE ClearNewGameVisitedRooms
-    LDA CurrentRoomIndex
+    LDA CurrentRoomNumber
     STA CurrentRoomState
     LDA #InitialPlayerY
     STA PlayerY

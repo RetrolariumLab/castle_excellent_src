@@ -264,6 +264,79 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   scoped scan/update pointers, all 256 cell values, 65,536 frame/counter cases,
   all 20 redraw rows, deterministic regeneration, and byte-identical build
 
+### GAME-004 - inventory-backed persistent-cell actions
+
+- Status: resolved
+- Dispatch: collision table `$9155` maps cell pairs
+  `$19/$1A,$1C/$1D,$1F/$20,$22/$23,$25/$26,$29/$2A` to six handlers and
+  inventory indexes `4,3,5,2,0,1`
+- Guard: the selected count must be nonzero, normalized motion and its phase
+  must both be zero, and player Y must equal eight modulo 16; failure unwinds
+  both the helper and indirect collision-handler return addresses
+- Success: decrements only the selected count, moves probe Y up 16 pixels,
+  opens/persists the mutable-cell ordinal, and starts one triangle/noise effect
+- Boundary: facing left below X `$0011` or nonnegative at/above `$0120` installs
+  a nine-frame movement delay; all other successful actions preserve the delay
+- Evidence: 12 pointer-table entries, six exact handler templates, separate
+  static code provenance, semantic `$A5DD-$A66C`, exhaustive byte-domain model,
+  deterministic regeneration, and byte-identical build
+
+### GAME-005 - castle room navigation
+
+- Status: resolved
+- Layout: one-based rooms 1-100 form a 10x10 row-major grid; vertical movement
+  changes the room number by ten and horizontal movement changes it by one
+- Boundaries: rooms 1-10 stop upward movement, rooms 91-100 stop downward
+  movement, and exact tables `$A821-$A82A` / `$A82B-$A834` contain every
+  rightmost / leftmost room number
+- Search contract: the descending table helper returns the zero-based row in X
+  with Z set on a match, or X `$FF` with Z clear otherwise
+- Evidence: six direct transition call sites, semantic `$A7DB-$A834`, exact
+  routine bytes and ROM tables, all four directions from all 100 rooms,
+  deterministic regeneration, and byte-identical build
+
+### GAME-006 - player protection and hazard-cell contact
+
+- Status: resolved
+- Timers: `$000D` protects against the room-cell hazard and `$000E` guards the
+  shared death entry; each nonzero value decrements when room frame modulo 32
+  is zero and independently calls `SelectRoomAudio` when it reaches zero
+- Probe: `(PlayerX+7,PlayerY+8)` uses 16-bit/8-bit wrapping, accepts probe Y
+  `$10-$AF` and X below `$0140`, then samples the rebased 20x20 room grid
+- Cells: `$16,$62,$63` write active `$FF` to `$077C`; every other cell and
+  out-of-room coordinate writes zero
+- Dead read: `$A859` reads the previous `$077C` value, but the immediately
+  following player-Y load replaces both A and flags before any consumer
+- Evidence: collision/death consumers, semantic `$A835-$A8A8`, exact routine
+  bytes, all countdown/frame, X, Y, cell-value, and 400 cell-index domains,
+  deterministic regeneration, and byte-identical build
+
+### GAME-007 - runtime-object/player interaction proximity
+
+- Status: resolved
+- Point: compares player coordinates with `(RuntimeObjectX,RuntimeObjectY+16)`
+- Result: carry clear only for vertical distance `<4` and normalized X distance
+  `<5`; all 15 direct callers branch on this contract
+- Compatibility: the original negative X normalization omits high-byte carry,
+  so `object X - player X == -$0100` normalizes to zero
+- Evidence: semantic `$A8A9-$A8E2`, exact routine and call-site bytes, every Y
+  pair, every negative 16-bit X delta, all 102,400 room-width X pairs, all 64
+  page-alias pairs, deterministic regeneration, and byte-identical build
+
+### GAME-008 - pause input and paused scrolling
+
+- Status: resolved
+- Toggle: a new Start edge enters or leaves pause; a new A/B edge resumes only
+- Audio: entering pause writes zero to `$4015`; NMI also skips stream/SFX
+  updates while `$07C4` is nonzero
+- Scroll: paused Left/Right changes `$34` by four, Left first, with the valid
+  domain saturated to `$00-$80`; movement writes `$FF` to `$36` for NMI
+- Edge history: toggle and paused paths copy current buttons to `$0777`, while
+  an unpaused idle return intentionally preserves the previous mask
+- Evidence: semantic `$A8E3-$A959`, main-loop and NMI consumers, exact routine
+  bytes, 131,072 button pairs, all pause-mode and scroll bytes, deterministic
+  regeneration, and byte-identical build
+
 ### DATA-004 - persistent room-state bitmaps
 
 - Status: resolved

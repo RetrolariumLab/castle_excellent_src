@@ -148,7 +148,7 @@ HideRemainingCastleMapSprites:
     STA OamStagingBuffer,X
     INX
     BNE HideRemainingCastleMapSprites
-    LDA CurrentRoomIndex
+    LDA CurrentRoomNumber
     SEC
     SBC #$01
     LDX #$00

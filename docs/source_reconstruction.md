@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 47 semantic and 9 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 52 semantic and 8 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 16,708 PRG bytes (50.99%): `$E45D-$E8DE`
+The promoted ranges currently cover 17,235 PRG bytes (52.60%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -85,6 +85,49 @@ both candidate families, ordinal-to-bit mapping, both restored forms, and the
 The adjacent `$A6CA-$A6D7` classifier returns Y zero, and therefore Z set,
 exactly for doubled cell indexes `$8A-$91`; these encode both lookup phases for
 room-cell types `$45-$48`. Its full 256-byte input domain is checked independently.
+
+The inventory-backed mutable-cell slice adds `$A5DD-$A66C`. The collision
+table maps both halves of six persistent cell pairs to six entry points, which
+consume inventory indexes `4,3,5,2,0,1` for anchors
+`$19,$1C,$1F,$22,$25,$29`. A shared stack-unwind guard rejects a zero count,
+active motion, or player Y not congruent to eight modulo 16. Success moves the
+collision probe 16 pixels upward, restores and persists the selected cell,
+plays the dedicated triangle/noise effect, and installs a nine-frame movement
+delay only when facing outward beyond X `$0011/$0120`. Static pointer proof,
+exact handler templates, and independent readiness/boundary models cover the
+complete range.
+
+The castle-navigation slice adds `$A7DB-$A834`. It establishes `$0037` as a
+one-based room number over a 10x10 row-major grid. Up/down movement uses a
+ten-room stride and saturates in the first/last row. Left/right movement uses
+two exact ten-entry edge tables so it cannot wrap between neighboring rows.
+The ROM-backed model checks the routine bytes, table contents, helper return
+indexes, and all four directions from every room 1-100.
+
+The player-hazard slice adds `$A835-$A8A8`. Two nonzero protection countdowns
+decrement once per 32 room frames; each independently reselects room audio on
+expiry. The bottom-center probe adds `(7,8)`, rejects wrapped coordinates
+outside the 320x160-pixel room, rebases Y by 16, and marks contact only for
+cells `$16,$62,$63`. The prior `$077C` load is proven dead because player Y
+immediately replaces A. The independent model covers both complete timer byte
+domains, all 65,536 player X values, all 256 Y and cell values, and all 400
+room-cell indexes.
+
+The runtime-object/player proximity slice adds `$A8A9-$A8E2`. It offsets the
+current object's Y by 16 and returns carry clear only for vertical distance
+below four and normalized 16-bit horizontal distance below five. All 15 direct
+call sites use that carry contract. The original negative-X normalization does
+not propagate the low-byte carry into the high byte, so `-$0100` aliases to
+zero; the independent model preserves and proves all 64 such pairs within the
+320-pixel room instead of silently correcting them.
+
+The pause-input slice adds `$A8E3-$A959`. A new Start edge toggles pause; entry
+disables all APU channels, while a new A/B edge also resumes. During pause,
+Left takes priority and subtracts four with a zero floor; Right adds four and
+saturates at `$80` in the valid scroll domain. Either direction sets the NMI
+scroll-latch request. The exact model covers 131,072 current/previous button
+pairs, every pause-mode byte, every scroll byte, and the original out-of-domain
+Right wrap at `$FC-$FF`.
 
 The coordinate slice adds `$94DB-$952C`. Two player entries add 7 or 15 to the
 16-bit position at `$38/$39`; six runtime-object entries return X, X plus

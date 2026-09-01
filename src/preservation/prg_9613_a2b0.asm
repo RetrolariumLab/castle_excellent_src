@@ -563,7 +563,7 @@ Func_9B00:
     ADC #$0E
     TAY
     JSR GetRuntimeObjectXPlus7
-    JSR Func_8ECB
+    JSR PrepareRoomCellSampleAddress
     LDY $29
     LDA ($2B),Y
     CMP #$16
@@ -782,7 +782,7 @@ Label_9C65:
     RTS
 
 Label_9C6D:
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     LDA a:$AB49,X
     TAY
     LDX RuntimeObjectOffsetByCount,Y
@@ -864,7 +864,7 @@ Label_9CF5:
     STX CurrentObjectOffset
     LDA RuntimeObjectByte5,X
     BNE Label_9D1E
-    JSR Func_A64D
+    JSR GetActivePlayerMotionState
     CMP #$14
     BCS Label_9D07
     JMP Func_9B00
@@ -1215,7 +1215,7 @@ Label_9EF8:
     ADC #$00
     JSR SampleRoomCollisionCell
     BCS Label_9F73
-    LDY CurrentRoomIndex
+    LDY CurrentRoomNumber
     LDX a:$AB49,Y
     LDA RuntimeObjectOffsetByCount,X
     TAX
@@ -1574,7 +1574,7 @@ Func_A1A3:
     RTS
 
 Label_A1AD:
-    JSR Func_8ECB
+    JSR PrepareRoomCellSampleAddress
     LDY $29
     LDA ($2B),Y
     TAX

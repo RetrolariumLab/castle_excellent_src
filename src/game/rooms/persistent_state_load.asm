@@ -49,7 +49,7 @@ ClearLoadedRoomStateBits:
     STA LoadedRoomObjectStateBits,X
     DEX
     BPL ClearLoadedRoomStateBits
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     LDA RoomObjectStateOffsets,X
     SEC
     SBC RoomObjectStateOffsets - 1,X
@@ -71,7 +71,7 @@ ClearLoadedRoomStateBits:
     STA CurrentRoomObjectState + 2
 
 LoadRoomMutableCellState:
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     LDA RoomMutableCellStateOffsets,X
     SEC
     SBC RoomMutableCellStateOffsets - 1,X

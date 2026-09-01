@@ -5,7 +5,7 @@
 
 LoadRoom:
     JSR DisableNmi
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     LDA #$FF
     STA RoomVisitedFlags - 1,X
     LDA #$00
@@ -15,7 +15,7 @@ ClearRoomRuntimeObjects:
     STA RuntimeObjectRecords - 1,X
     DEX
     BNE ClearRoomRuntimeObjects
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     DEX
     JSR DecodeRoom
     JSR LoadRoomObjectsAndState
@@ -38,12 +38,12 @@ CheckRoomMusicSuppression:
     RTS
 
 CheckRoomMusicTrack3:
-    LDA RoomMusicTrack3Condition
+    LDA RoomInvulnerabilityMusicCondition
     BEQ CheckRoomMusicTrack1
     JMP LoadAudioTrackSet3
 
 CheckRoomMusicTrack1:
-    LDA RoomMusicTrack1Condition
+    LDA RoomHazardProtectionMusicCondition
     BEQ SelectDefaultRoomMusic
     JMP LoadAudioTrackSet1
 

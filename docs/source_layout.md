@@ -28,12 +28,16 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/rendering/status_format.asm` | `$A497-$A572` | score, lives, inventory, and HUD interlock formatting |
 | `src/data/unreferenced_bit_index_helper.asm` | `$A573-$A589` | typed code-shaped bytes with no proven entry |
 | `src/game/rooms/cell_coordinates.asm` | `$A58A-$A5DC` | pixel/tile conversion and 20x20 room-cell addressing |
-| `src/preservation/prg_a5dd_a66c.asm` | `$A5DD-$A66C` | unresolved gameplay helpers before mutable-cell lookup |
+| `src/game/rooms/mutable_cell_actions.asm` | `$A5DD-$A66C` | six inventory-backed persistent-cell action handlers |
 | `src/game/rooms/mutable_cell_lookup.asm` | `$A66D-$A6C9` | mutable-cell anchor lookup and one-based ordinal calculation |
 | `src/game/collision/cell_pair_index.asm` | `$A6CA-$A6D7` | doubled cell-index classifier for cell types `$45-$48` |
 | `src/game/rooms/mutable_cell_predicates.asm` | `$A6D8-$A709` | persistent mutable-cell predicates |
 | `src/game/rooms/mutable_cell_restore.asm` | `$A70A-$A7DA` | ordinal restoration, persistence bit, and render requests |
-| `src/preservation/prg_a7db_ab49.asm` | `$A7DB-$AB49` | unresolved room manipulation helpers |
+| `src/game/rooms/navigation.asm` | `$A7DB-$A834` | one-based 10x10 castle navigation and edge tables |
+| `src/game/player/hazard_state.asm` | `$A835-$A8A8` | protection countdowns and player hazard-cell contact |
+| `src/game/objects/player_proximity.asm` | `$A8A9-$A8E2` | runtime-object/player interaction proximity predicate |
+| `src/input/pause.asm` | `$A8E3-$A959` | pause/resume edges and paused horizontal-scroll input |
+| `src/preservation/prg_a95a_ab49.asm` | `$A95A-$AB49` | unresolved collision tables and helpers |
 | `src/game/rooms/room_metadata.asm` | `$AB4A-$AC12` | object counts and mutable-state offsets |
 | `src/preservation/prg_ac13_b64b.asm` | `$AC13-$B64B` | unresolved object handlers and sprite data |
 | `src/rendering/room_screen.asm` | `$B64C-$B7FC` | room nametable, status, attribute, and OAM initialization |
@@ -65,9 +69,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 56 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 60 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 55 in CPU-address order. Ghidra-defined instructions are emitted
+following 59 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

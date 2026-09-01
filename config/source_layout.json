@@ -30,12 +30,16 @@
         "../rendering/status_format.asm",
         "../data/unreferenced_bit_index_helper.asm",
         "../game/rooms/cell_coordinates.asm",
-        "../preservation/prg_a5dd_a66c.asm",
+        "../game/rooms/mutable_cell_actions.asm",
         "../game/rooms/mutable_cell_lookup.asm",
         "../game/collision/cell_pair_index.asm",
         "../game/rooms/mutable_cell_predicates.asm",
         "../game/rooms/mutable_cell_restore.asm",
-        "../preservation/prg_a7db_ab49.asm",
+        "../game/rooms/navigation.asm",
+        "../game/player/hazard_state.asm",
+        "../game/objects/player_proximity.asm",
+        "pause.asm",
+        "../preservation/prg_a95a_ab49.asm",
         "../game/rooms/room_metadata.asm",
         "../preservation/prg_ac13_b64b.asm",
         "../rendering/room_screen.asm",
@@ -198,10 +202,10 @@
       "title": "Pixel, tile, and room-cell coordinate conversion"
     },
     {
-      "path": "src/preservation/prg_a5dd_a66c.asm",
+      "path": "src/game/rooms/mutable_cell_actions.asm",
       "start": "0xA5DD",
       "end": "0xA66D",
-      "title": "Preservation PRG before mutable-cell lookup"
+      "title": "Inventory-backed persistent mutable-cell actions"
     },
     {
       "path": "src/game/rooms/mutable_cell_lookup.asm",
@@ -228,10 +232,34 @@
       "title": "Mutable room-cell restoration and render requests"
     },
     {
-      "path": "src/preservation/prg_a7db_ab49.asm",
+      "path": "src/game/rooms/navigation.asm",
       "start": "0xA7DB",
+      "end": "0xA835",
+      "title": "Ten-by-ten castle room navigation"
+    },
+    {
+      "path": "src/game/player/hazard_state.asm",
+      "start": "0xA835",
+      "end": "0xA8A9",
+      "title": "Player protection countdowns and hazard-cell contact"
+    },
+    {
+      "path": "src/game/objects/player_proximity.asm",
+      "start": "0xA8A9",
+      "end": "0xA8E3",
+      "title": "Runtime-object proximity to the player"
+    },
+    {
+      "path": "src/input/pause.asm",
+      "start": "0xA8E3",
+      "end": "0xA95A",
+      "title": "Pause toggle and paused horizontal-scroll input"
+    },
+    {
+      "path": "src/preservation/prg_a95a_ab49.asm",
+      "start": "0xA95A",
       "end": "0xAB4A",
-      "title": "Preservation PRG after mutable-cell restoration"
+      "title": "Preservation collision tables and helpers"
     },
     {
       "path": "src/game/rooms/room_metadata.asm",

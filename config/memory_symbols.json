@@ -19,7 +19,7 @@
     },
     {
       "address": "0x0037",
-      "name": "CurrentRoomIndex"
+      "name": "CurrentRoomNumber"
     },
     {
       "address": "0x0038",
@@ -462,6 +462,66 @@
       "end": "0x8158"
     },
     {
+      "address": "0x000E",
+      "name": "PlayerDeathInvulnerabilityCountdown",
+      "start": "0x8DB0",
+      "end": "0x8DD3"
+    },
+    {
+      "address": "0x000D",
+      "name": "PlayerCollisionHazardProtectionCountdown",
+      "start": "0x9386",
+      "end": "0x9423"
+    },
+    {
+      "address": "0x077C",
+      "name": "PlayerCollisionHazardCellContact",
+      "start": "0x9386",
+      "end": "0x93F6"
+    },
+    {
+      "address": "0x000D",
+      "name": "PlayerHazardProtectionCountdown",
+      "start": "0xA835",
+      "end": "0xA8A9"
+    },
+    {
+      "address": "0x000E",
+      "name": "PlayerInvulnerabilityCountdown",
+      "start": "0xA835",
+      "end": "0xA8A9"
+    },
+    {
+      "address": "0x077C",
+      "name": "PlayerOnHazardCell",
+      "start": "0xA835",
+      "end": "0xA8A9"
+    },
+    {
+      "address": "0x0025",
+      "name": "ObjectPlayerDeltaXLo",
+      "start": "0xA8A9",
+      "end": "0xA8E3"
+    },
+    {
+      "address": "0x0026",
+      "name": "ObjectPlayerDeltaXHi",
+      "start": "0xA8A9",
+      "end": "0xA8E3"
+    },
+    {
+      "address": "0x0034",
+      "name": "PausedScrollX",
+      "start": "0xA8E3",
+      "end": "0xA95A"
+    },
+    {
+      "address": "0x0036",
+      "name": "PausedScrollUpdatePending",
+      "start": "0xA8E3",
+      "end": "0xA95A"
+    },
+    {
       "address": "0x0005",
       "name": "NewGameRuntimeState",
       "size": 14,
@@ -633,13 +693,13 @@
     },
     {
       "address": "0x000D",
-      "name": "RoomMusicTrack1Condition",
+      "name": "RoomHazardProtectionMusicCondition",
       "start": "0xA38A",
       "end": "0xA3AC"
     },
     {
       "address": "0x000E",
-      "name": "RoomMusicTrack3Condition",
+      "name": "RoomInvulnerabilityMusicCondition",
       "start": "0xA38A",
       "end": "0xA3AC"
     },
@@ -693,6 +753,55 @@
       "end": "0xA6CA"
     },
     {
+      "address": "0x0005",
+      "name": "MutableCellActionInventoryCounts",
+      "size": 6,
+      "start": "0xA5DD",
+      "end": "0xA616"
+    },
+    {
+      "address": "0x001E",
+      "name": "MutableCellActionProbeY",
+      "start": "0xA616",
+      "end": "0xA62B"
+    },
+    {
+      "address": "0x0021",
+      "name": "MutableCellActionProbeXLo",
+      "start": "0xA616",
+      "end": "0xA62B"
+    },
+    {
+      "address": "0x0022",
+      "name": "MutableCellActionProbeXHi",
+      "start": "0xA616",
+      "end": "0xA62B"
+    },
+    {
+      "address": "0x003B",
+      "name": "MutableCellActionDirection",
+      "start": "0xA62B",
+      "end": "0xA649"
+    },
+    {
+      "address": "0x003F",
+      "name": "MutableCellActionMovementDelay",
+      "start": "0xA645",
+      "end": "0xA649"
+    },
+    {
+      "address": "0x003C",
+      "name": "MutableCellActionMotionState",
+      "start": "0xA64D",
+      "end": "0xA658"
+    },
+    {
+      "address": "0x003E",
+      "name": "MutableCellActionMotionPhase",
+      "start": "0xA658",
+      "end": "0xA661"
+    },
+    {
       "address": "0x002C",
       "name": "RoomCellPointerHi",
       "start": "0xA5A4",
@@ -721,6 +830,18 @@
       "name": "MutableCellRestorePointerLo",
       "start": "0xA70A",
       "end": "0xA7DB"
+    },
+    {
+      "address": "0x0029",
+      "name": "HazardCellColumnOffset",
+      "start": "0xA883",
+      "end": "0xA891"
+    },
+    {
+      "address": "0x002B",
+      "name": "HazardCellRowPointerLo",
+      "start": "0xA883",
+      "end": "0xA891"
     },
     {
       "address": "0x002A",

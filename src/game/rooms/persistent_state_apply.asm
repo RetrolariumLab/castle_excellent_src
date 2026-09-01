@@ -44,7 +44,7 @@ AdvanceMutableCellStateBit:
     LDX MutableCellStateBitIndex
     CPX #RoomMutableCellStateBitLimit
     BCC ApplyNextMutableCellStateBit
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     LDA RoomObjectCounts - 1,X
     TAX
     LDA RuntimeObjectOffsetByCount,X

@@ -20,7 +20,11 @@ The quality targets follow the same contract as the sibling
   verification, plus transition-state, collision-cell/index flag, and runtime-object
   dispatcher contracts, exact new-game initialization, room-runtime reset,
   exhaustive room-cell animation mapping/cadence checks, and exhaustive HUD
-  decimal/life/inventory formatting
+  decimal/life/inventory formatting, plus inventory-backed mutable-cell action
+  pointer, guard, and boundary checks, all 100 castle-room navigation cases,
+  exhaustive player protection/hazard-probe domains, and the shared
+  object/player proximity predicate across all proven coordinate domains, plus
+  pause edges and paused scrolling across complete button/state byte domains
 - `make check` is the full release check
 
 The address-ordered PRG translation unit is split only at boundaries recorded

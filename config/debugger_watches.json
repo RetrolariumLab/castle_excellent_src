@@ -14,9 +14,27 @@
       "confidence": "high"
     },
     {
+      "address": "0x000D",
+      "size": 2,
+      "name": "PlayerProtectionCountdowns",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0005",
+      "size": 6,
+      "name": "PlayerInventoryCounts",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x0020",
       "size": 1,
       "name": "PolledControllerButtons",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0034",
+      "size": 3,
+      "name": "HorizontalScrollState",
       "confidence": "confirmed"
     },
     {
@@ -125,6 +143,24 @@
       "address": "0x077E",
       "size": 3,
       "name": "PowerOnSignatureRam",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x077C",
+      "size": 1,
+      "name": "PlayerOnHazardCell",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x0775",
+      "size": 4,
+      "name": "ControllerButtonHistory",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x07C4",
+      "size": 1,
+      "name": "PauseMode",
       "confidence": "confirmed"
     },
     {

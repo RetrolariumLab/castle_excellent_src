@@ -375,7 +375,7 @@ Label_FBDD:
     JMP UpdateSubCommandMenu
 
 Label_FBE5:
-    STA CurrentRoomIndex
+    STA CurrentRoomNumber
     JSR RestoreRoomStateSnapshotA
     LDX #$0D
 

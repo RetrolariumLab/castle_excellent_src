@@ -105,11 +105,11 @@ class InstructionFormattingTests(unittest.TestCase):
     def test_memory_operand_preserves_forced_low_absolute_addressing(self) -> None:
         fact = self.fact(0x9000, b"\xAD\x37\x00", "LDA", "0x0037")
         symbols = [
-            disasm.MemorySymbol(0x0037, "CurrentRoomIndex", 0x8000, 0x10000)
+            disasm.MemorySymbol(0x0037, "CurrentRoomNumber", 0x8000, 0x10000)
         ]
         self.assertEqual(
             disasm.format_instruction(fact, {}, symbols),
-            "    LDA a:CurrentRoomIndex",
+            "    LDA a:CurrentRoomNumber",
         )
 
     def test_contextual_memory_symbol_is_scoped_by_instruction(self) -> None:

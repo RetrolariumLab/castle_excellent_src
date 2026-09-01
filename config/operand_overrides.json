@@ -368,6 +368,228 @@
       "evidence": "high byte of the decoded 20-by-20 room-cell buffer"
     },
     {
+      "instruction": "0xA619",
+      "expected": "#$10",
+      "operand": "#MutableCellActionProbeYOffset",
+      "evidence": "the selected persistent-cell anchor is one 16-pixel pair above the collision probe"
+    },
+    {
+      "instruction": "0xA7DD",
+      "expected": "#$0B",
+      "operand": "#FirstRoomWithAboveNeighbor",
+      "evidence": "one-based rooms 1-10 occupy the top row and have no room above"
+    },
+    {
+      "instruction": "0xA7E1",
+      "expected": "#$0A",
+      "operand": "#CastleRoomColumns",
+      "evidence": "moving vertically changes the one-based room number by one ten-room row"
+    },
+    {
+      "instruction": "0xA7E8",
+      "expected": "#$5B",
+      "operand": "#FirstBottomRowRoomNumber",
+      "evidence": "one-based rooms 91-100 occupy the bottom row and have no room below"
+    },
+    {
+      "instruction": "0xA7EC",
+      "expected": "#$0A",
+      "operand": "#CastleRoomColumns",
+      "evidence": "moving vertically changes the one-based room number by one ten-room row"
+    },
+    {
+      "instruction": "0xA7F9",
+      "expected": "#$01",
+      "operand": "#AdjacentRoomNumberStep",
+      "evidence": "horizontally adjacent one-based room numbers differ by one"
+    },
+    {
+      "instruction": "0xA806",
+      "expected": "#$01",
+      "operand": "#AdjacentRoomNumberStep",
+      "evidence": "horizontally adjacent one-based room numbers differ by one"
+    },
+    {
+      "instruction": "0xA80B",
+      "expected": "#$09",
+      "operand": "#(CastleRoomRows - 1)",
+      "evidence": "the descending edge-table scan starts at the tenth row"
+    },
+    {
+      "instruction": "0xA816",
+      "expected": "#$09",
+      "operand": "#(CastleRoomRows - 1)",
+      "evidence": "the descending edge-table scan starts at the tenth row"
+    },
+    {
+      "instruction": "0xA83C",
+      "expected": "#$1F",
+      "operand": "#PlayerProtectionTickMask",
+      "evidence": "nonzero invulnerability decrements once every 32 room frames"
+    },
+    {
+      "instruction": "0xA84E",
+      "expected": "#$1F",
+      "operand": "#PlayerProtectionTickMask",
+      "evidence": "nonzero hazard protection decrements once every 32 room frames"
+    },
+    {
+      "instruction": "0xA85F",
+      "expected": "#$08",
+      "operand": "#PlayerHazardProbeYOffset",
+      "evidence": "the hazard-contact probe begins eight pixels below player Y"
+    },
+    {
+      "instruction": "0xA862",
+      "expected": "#$10",
+      "operand": "#PlayerHazardProbeTopBoundary",
+      "evidence": "probe Y values below 16 cannot address the visible room grid"
+    },
+    {
+      "instruction": "0xA866",
+      "expected": "#$B0",
+      "operand": "#PlayerHazardProbeBottomBoundary",
+      "evidence": "probe Y values 176 and above cannot address the 20-row room grid"
+    },
+    {
+      "instruction": "0xA86D",
+      "expected": "#$07",
+      "operand": "#<PlayerHazardProbeXOffset",
+      "evidence": "the hazard probe uses the player's horizontal center offset"
+    },
+    {
+      "instruction": "0xA872",
+      "expected": "#$00",
+      "operand": "#>PlayerHazardProbeXOffset",
+      "evidence": "carry from the seven-pixel low-byte addition extends into X high"
+    },
+    {
+      "instruction": "0xA876",
+      "expected": "#$01",
+      "operand": "#PlayerHazardProbeRightBoundaryHi",
+      "evidence": "the 320-pixel room width has high byte one"
+    },
+    {
+      "instruction": "0xA87A",
+      "expected": "#$40",
+      "operand": "#PlayerHazardProbeRightBoundaryLo",
+      "evidence": "the 320-pixel room width has low byte $40"
+    },
+    {
+      "instruction": "0xA87E",
+      "expected": "#$00",
+      "operand": "#PlayerHazardContactInactive",
+      "evidence": "out-of-room probes classify as no hazard contact"
+    },
+    {
+      "instruction": "0xA886",
+      "expected": "#$10",
+      "operand": "#PlayerHazardProbeRoomYOffset",
+      "evidence": "the validated probe coordinate is rebased by 16 pixels before sampling"
+    },
+    {
+      "instruction": "0xA891",
+      "expected": "#$00",
+      "operand": "#PlayerHazardContactInactive",
+      "evidence": "ordinary cells begin with the inactive contact flag"
+    },
+    {
+      "instruction": "0xA893",
+      "expected": "#$16",
+      "operand": "#HazardRoomCell",
+      "evidence": "cell $16 activates the hazard-contact flag"
+    },
+    {
+      "instruction": "0xA897",
+      "expected": "#$FF",
+      "operand": "#PlayerHazardContactActive",
+      "evidence": "hazard contact is represented by $FF"
+    },
+    {
+      "instruction": "0xA899",
+      "expected": "#$62",
+      "operand": "#RestoredHazardRoomCellTop",
+      "evidence": "restored cell $62 retains hazard behavior"
+    },
+    {
+      "instruction": "0xA89D",
+      "expected": "#$FF",
+      "operand": "#PlayerHazardContactActive",
+      "evidence": "restored hazard contact is represented by $FF"
+    },
+    {
+      "instruction": "0xA89F",
+      "expected": "#$63",
+      "operand": "#RestoredHazardRoomCellBottom",
+      "evidence": "restored cell $63 retains hazard behavior"
+    },
+    {
+      "instruction": "0xA8A3",
+      "expected": "#$FF",
+      "operand": "#PlayerHazardContactActive",
+      "evidence": "restored hazard contact is represented by $FF"
+    },
+    {
+      "instruction": "0xA631",
+      "expected": "#$20",
+      "operand": "#MutableCellActionRightBoundaryLo",
+      "evidence": "low byte of the right-facing player-X boundary $0120"
+    },
+    {
+      "instruction": "0xA635",
+      "expected": "#$01",
+      "operand": "#MutableCellActionRightBoundaryHi",
+      "evidence": "high byte of the right-facing player-X boundary $0120"
+    },
+    {
+      "instruction": "0xA63D",
+      "expected": "#$11",
+      "operand": "#MutableCellActionLeftBoundaryLo",
+      "evidence": "low byte of the left-facing player-X boundary $0011"
+    },
+    {
+      "instruction": "0xA641",
+      "expected": "#$00",
+      "operand": "#MutableCellActionLeftBoundaryHi",
+      "evidence": "high byte of the left-facing player-X boundary $0011"
+    },
+    {
+      "instruction": "0xA645",
+      "expected": "#$09",
+      "operand": "#MutableCellActionDelayFrames",
+      "evidence": "opening at the facing screen edge installs a nine-frame movement delay"
+    },
+    {
+      "instruction": "0xA64F",
+      "expected": "#$21",
+      "operand": "#PlayerMotionInactiveThreshold",
+      "evidence": "motion-state values $21 and above normalize to the inactive value"
+    },
+    {
+      "instruction": "0xA653",
+      "expected": "#$00",
+      "operand": "#PlayerMotionInactive",
+      "evidence": "out-of-range motion states normalize to zero"
+    },
+    {
+      "instruction": "0xA655",
+      "expected": "#$00",
+      "operand": "#PlayerMotionInactive",
+      "evidence": "ORA zero preserves A while refreshing its N and Z flags"
+    },
+    {
+      "instruction": "0xA666",
+      "expected": "#$0F",
+      "operand": "#MutableCellActionAlignmentMask",
+      "evidence": "only the player's position within a 16-pixel vertical cell pair is tested"
+    },
+    {
+      "instruction": "0xA668",
+      "expected": "#$08",
+      "operand": "#MutableCellActionAlignedRemainder",
+      "evidence": "the action is permitted at vertical remainder eight"
+    },
+    {
       "instruction": "0xA70A",
       "expected": "#$04",
       "operand": "#>RoomCells",
@@ -977,7 +1199,7 @@
       "instruction": "0xECF7",
       "expected": "a:$AB49,X",
       "operand": "RoomObjectCounts - 1,X",
-      "evidence": "one-based room index selects the room's static object count"
+      "evidence": "one-based room number selects the room's static object count"
     },
     {
       "instruction": "0xED00",
@@ -1091,13 +1313,13 @@
       "instruction": "0xEE9B",
       "expected": "a:$EF05,X",
       "operand": "RoomObjectStateOffsets - 1,X",
-      "evidence": "previous cumulative object-state offset for the one-based room index"
+      "evidence": "previous cumulative object-state offset for the one-based room number"
     },
     {
       "instruction": "0xEE9F",
       "expected": "a:$EF05,X",
       "operand": "RoomObjectStateOffsets - 1,X",
-      "evidence": "starting cumulative object-state offset for the one-based room index"
+      "evidence": "starting cumulative object-state offset for the one-based room number"
     },
     {
       "instruction": "0xEEAE",
@@ -1337,7 +1559,7 @@
       "instruction": "0xA363",
       "expected": "a:$069D,X",
       "operand": "RoomVisitedFlags - 1,X",
-      "evidence": "one-based room index marks one of 100 room-visited flags"
+      "evidence": "one-based room number marks one of 100 room-visited flags"
     },
     {
       "instruction": "0xA33E",
@@ -1596,6 +1818,114 @@
       "expected": "#$FF",
       "operand": "#CollisionCellPairNotMatched",
       "evidence": "Y nonzero and the resulting Z flag reject every other index"
+    },
+    {
+      "instruction": "0xA8AE",
+      "expected": "#$10",
+      "operand": "#ObjectPlayerProximityYOffset",
+      "evidence": "the interaction point is sixteen pixels below the runtime-object Y coordinate"
+    },
+    {
+      "instruction": "0xA8B9",
+      "expected": "#$04",
+      "operand": "#ObjectPlayerProximityYLimit",
+      "evidence": "carry is clear only for vertical distances zero through three"
+    },
+    {
+      "instruction": "0xA8E0",
+      "expected": "#$05",
+      "operand": "#ObjectPlayerProximityXLimit",
+      "evidence": "carry is clear only for normalized horizontal distances zero through four"
+    },
+    {
+      "instruction": "0xA8E6",
+      "expected": "#$03",
+      "operand": "#PauseResumeButtons",
+      "evidence": "a new A or B press resumes an active pause"
+    },
+    {
+      "instruction": "0xA8ED",
+      "expected": "#$03",
+      "operand": "#PauseResumeButtons",
+      "evidence": "previous A/B state provides the resume edge detector"
+    },
+    {
+      "instruction": "0xA8F9",
+      "expected": "#$08",
+      "operand": "#ControllerButtonStart",
+      "evidence": "Start is the primary pause toggle"
+    },
+    {
+      "instruction": "0xA900",
+      "expected": "#$08",
+      "operand": "#ControllerButtonStart",
+      "evidence": "previous Start state provides the pause-toggle edge detector"
+    },
+    {
+      "instruction": "0xA909",
+      "expected": "#$00",
+      "operand": "#ApuChannelsDisabled",
+      "evidence": "entering pause disables every APU channel through $4015"
+    },
+    {
+      "instruction": "0xA90E",
+      "expected": "#$FF",
+      "operand": "#PauseModeActive",
+      "evidence": "a new Start press enters active pause mode"
+    },
+    {
+      "instruction": "0xA912",
+      "expected": "#$00",
+      "operand": "#PauseModeInactive",
+      "evidence": "Start or A/B resume clears pause mode"
+    },
+    {
+      "instruction": "0xA927",
+      "expected": "#$40",
+      "operand": "#ControllerButtonLeft",
+      "evidence": "paused Left input has priority over Right"
+    },
+    {
+      "instruction": "0xA92E",
+      "expected": "#$04",
+      "operand": "#PauseScrollStep",
+      "evidence": "paused horizontal scrolling moves four pixels per main update"
+    },
+    {
+      "instruction": "0xA932",
+      "expected": "#$00",
+      "operand": "#PauseScrollMinimum",
+      "evidence": "paused Left scrolling saturates at the left edge"
+    },
+    {
+      "instruction": "0xA936",
+      "expected": "#$FF",
+      "operand": "#PauseScrollUpdateRequested",
+      "evidence": "a paused Left scroll requests NMI latch application"
+    },
+    {
+      "instruction": "0xA940",
+      "expected": "#$80",
+      "operand": "#ControllerButtonRight",
+      "evidence": "paused Right input advances the horizontal scroll"
+    },
+    {
+      "instruction": "0xA947",
+      "expected": "#$04",
+      "operand": "#PauseScrollStep",
+      "evidence": "paused horizontal scrolling moves four pixels per main update"
+    },
+    {
+      "instruction": "0xA94B",
+      "expected": "#$80",
+      "operand": "#PauseScrollMaximum",
+      "evidence": "paused Right scrolling saturates at the right edge"
+    },
+    {
+      "instruction": "0xA94F",
+      "expected": "#$FF",
+      "operand": "#PauseScrollUpdateRequested",
+      "evidence": "a paused Right scroll requests NMI latch application"
     }
   ]
 }

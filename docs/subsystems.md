@@ -35,7 +35,7 @@ input data is sampled from bit 2 of `$4017`. The receiver discards the first
 preamble byte, verifies `$AA,$55`, and reports failure in carry. Common byte
 wrappers preserve X. Higher code at `$FBFE-$FDC4` now lives in
 `src/game/save_load.asm`. It saves or loads a fixed 394-byte payload containing
-the room index, runtime state, 120 mutable-region bytes, 150 object-region
+the one-based room number, runtime state, 120 mutable-region bytes, 150 object-region
 bytes, 100 visited flags, and an eight-byte signature. The exact external accessory remains deliberately
 unnamed until hardware evidence distinguishes the two Japanese interfaces.
 
@@ -49,6 +49,13 @@ counter state only after a signature mismatch, and increments a persistent
 object, collision, room-cell animation, scrolling, sprite, and sub-command
 phases. NMI owns a saturating countdown initialized to two, so each main update
 is separated by two NMI ticks.
+
+`HandlePauseInput` at `$A8E3-$A959` detects new A/B and Start presses against
+the saved controller mask. Start enters pause and disables every APU channel;
+Start or A/B resumes. Paused Left/Right adjust the pending horizontal scroll in
+four-pixel steps, request NMI application, and keep simulation stopped while
+the normal render tail continues. Left has priority and the valid scroll domain
+saturates at `$00-$80`.
 
 `LoadRoom` at `$A35C` is the next strong high-level landmark in this region: it
 clears the 24 six-byte runtime object records,
@@ -71,6 +78,37 @@ pointer and divides by five to recover row 0-19. It marks task `row + 1`, and
 the paired entry also marks `row + 2`; all 400 pointers are covered by the
 independent model. Two seven-byte code-shaped shims have no known entry or
 pointer and remain explicitly typed as unreferenced data.
+
+`$A7DB-$A834` now owns castle-room navigation. Rooms are one-based in a 10x10
+row-major grid. Vertical transitions use a ten-room stride, while two exact
+ten-byte tables identify the left and right edge of every row before changing
+the room number horizontally. The standalone model checks the exact routine
+bytes, both ROM tables, all four corners, and every direction from all 100
+rooms.
+
+`$A835-$A8A8` updates player protection and hazard contact once per simulation
+frame. The two protection values use 32-frame countdown units and independently
+call `SelectRoomAudio` on expiry. A bottom-center `(7,8)` probe rejects Y
+outside `$10-$AF` and X outside the 320-pixel room, then classifies exactly
+`$16,$62,$63` as hazardous. The preceding read of the old contact flag is dead:
+the next load replaces A before any flag consumer. The ROM-backed model covers
+all timer, X, Y, cell-value, and 400-cell-index domains.
+
+`$A8A9-$A8E2` is the shared runtime-object/player proximity predicate used by
+15 interaction handlers. It tests the point `(object X, object Y+16)` against
+exclusive limits of five horizontal and four vertical pixels and returns the
+result in carry. The independent model checks every Y pair, every negative
+16-bit X delta, and every X pair across the 320-pixel room. It also records the
+64 room-width cases where the original missing high-byte carry makes a
+negative `$0100` delta appear near.
+
+`$A5DD-$A66C` connects the six original persistent-cell families to all six
+inventory counters. Both halves of each family share one handler. The common
+guard requires a nonzero counter, inactive normalized motion, an empty motion
+phase, and player Y remainder eight within a 16-pixel pair. Success decrements
+only the selected counter, probes 16 pixels upward, opens/persists the mutable
+cell, and plays its dedicated sound. Facing outward at X below `$0011` or at
+or above `$0120` additionally installs a nine-frame movement delay.
 The adjacent `$A6CA-$A6D7` helper classifies the doubled collision lookup index:
 Y is zero exactly for `$8A-$91`, covering both index phases of cell types
 `$45-$48`, and `$FF` otherwise. Callers branch directly on the resulting Z flag.

@@ -14,7 +14,7 @@ Label_82D4:
     JMP Label_867A
 
 Label_82DB:
-    JSR Func_A64D
+    JSR GetActivePlayerMotionState
     AND #$03
     BNE Label_82FA
     LDA Controller1Buttons
@@ -61,7 +61,7 @@ Label_8320:
     JSR Func_C20D
 
 Label_8331:
-    JSR Func_A64D
+    JSR GetActivePlayerMotionState
     BNE Label_8339
     JMP Label_83A4
 
@@ -271,7 +271,7 @@ Label_847B:
 Label_8490:
     LDA a:$0779
     BEQ Label_849F
-    JSR Func_A64D
+    JSR GetActivePlayerMotionState
     ORA $3E
     BNE Label_849F
     JMP Label_85CA
@@ -565,7 +565,7 @@ Label_867A:
     STA PlayerXLo
     STA $10
     JSR Func_8758
-    JSR Func_A7DB
+    JSR MoveToRoomAbove
     LDA #$00
     STA a:$07CD
     JSR LoadRoom
@@ -583,7 +583,7 @@ Label_86A0:
     STA PlayerXLo
     STA $10
     JSR Func_8758
-    JSR Func_A7E6
+    JSR MoveToRoomBelow
     LDA #$00
     STA a:$07CD
     JSR LoadRoom
@@ -591,8 +591,8 @@ Label_86A0:
     JMP FinishRoomTransition
 
 Label_86C6:
-    LDA CurrentRoomIndex
-    JSR Func_A816
+    LDA CurrentRoomNumber
+    JSR FindLeftmostCastleRoom
     BNE Label_86D6
     LDA #$00
     STA PlayerXLo
@@ -609,7 +609,7 @@ Label_86D6:
     LDA PlayerY
     STA $12
     JSR Func_8758
-    JSR Func_A7FE
+    JSR MoveToRoomLeft
     LDA #$00
     STA a:$07CD
     JSR LoadRoom
@@ -629,8 +629,8 @@ Label_870C:
     JMP FinishRoomTransition
 
 Label_870F:
-    LDA CurrentRoomIndex
-    JSR Func_A80B
+    LDA CurrentRoomNumber
+    JSR FindRightmostCastleRoom
     BNE Label_8721
     LDA #$01
     STA PlayerXHi
@@ -647,7 +647,7 @@ Label_8721:
     LDA PlayerY
     STA $12
     JSR Func_8758
-    JSR Func_A7F1
+    JSR MoveToRoomRight
     LDA #$00
     STA a:$07CD
     JSR LoadRoom
@@ -685,7 +685,7 @@ Label_8761:
     TAX
     CPX #$90
     BCC Label_875A
-    LDA CurrentRoomIndex
+    LDA CurrentRoomNumber
     STA CurrentRoomState
     LDA $16
     STA CurrentRoomObjectState
@@ -740,7 +740,7 @@ Label_89E0:
     LDY RuntimeObjectY,X
     DEY
     JSR GetRuntimeObjectXPlus7
-    JSR Func_8ECB
+    JSR PrepareRoomCellSampleAddress
     LDY $29
     LDA ($2B),Y
     CMP #$41
@@ -862,7 +862,7 @@ Func_8AC2:
     LDY RuntimeObjectY,X
     DEY
     JSR GetRuntimeObjectXPlus8
-    JSR Func_8ECB
+    JSR PrepareRoomCellSampleAddress
     LDY $29
     LDA ($2B),Y
     CMP #$41
@@ -889,7 +889,7 @@ Label_8AEB:
     DEY
     DEY
     JSR GetRuntimeObjectX
-    JSR Func_8ECB
+    JSR PrepareRoomCellSampleAddress
     LDY $29
     LDA ($2B),Y
     CMP #$52
@@ -1064,13 +1064,13 @@ Label_8C11:
     .byte $A9, $A8, $B0, $54, $E6, $05, $A9, $0A, $20, $04, $8D, $4C, $69, $8C, $20, $A9
     .byte $A8, $B0, $45, $E6, $09, $A9, $0A, $20, $04, $8D, $4C, $69, $8C, $20, $A9, $A8
     .byte $B0, $36, $E6, $08, $A9, $0A, $20, $04, $8D, $4C, $69, $8C
-    JSR Func_A8A9
+    JSR IsCurrentObjectNearPlayer
     BCS Label_8C7A
     INC $0A
     LDA #$0A
     JSR Func_8D04
     JMP Label_8C69
-    JSR Func_A8A9
+    JSR IsCurrentObjectNearPlayer
     BCS Label_8C7A
     INC $07
     LDA #$0A
@@ -1148,7 +1148,7 @@ Func_8D2A:
     .byte $10, $01, $60
 
 Label_8DB0:
-    LDA $0E
+    LDA PlayerDeathInvulnerabilityCountdown
     ORA PlayerTransitionCountdown
     BEQ Label_8DB8
     RTS
@@ -1196,7 +1196,7 @@ Label_8DF0:
     SBC #$10
     TAY
     PLA
-    JSR Func_8ECB
+    JSR PrepareRoomCellSampleAddress
     LDY $29
     LDA ($2B),Y
     CMP #$53
@@ -1332,7 +1332,7 @@ Label_8EC2:
     STY a:$07CB
     RTS
 
-Func_8ECB:
+PrepareRoomCellSampleAddress:
     STA $28
     STA $2A
     STX $27

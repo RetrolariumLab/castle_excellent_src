@@ -121,9 +121,9 @@ Label_938E:
     JSR GetPlayerXPlus15
     JSR Func_8DD3
     JSR Func_9477
-    LDA a:$077C
+    LDA PlayerCollisionHazardCellContact
     BEQ Label_93F5
-    LDA $0D
+    LDA PlayerCollisionHazardProtectionCountdown
     BNE Label_93F5
     JMP Label_8DB0
 
@@ -146,9 +146,9 @@ Label_93FC:
     ORA a:$07CD
     BEQ Label_9423
     LDA $14
-    CMP $0D
+    CMP PlayerCollisionHazardProtectionCountdown
     BCS Label_9417
-    LDA $0D
+    LDA PlayerCollisionHazardProtectionCountdown
 
 Label_9417:
     LDY a:$07CD
@@ -158,7 +158,7 @@ Label_9417:
 Label_941E:
     CLC
     ADC #$0A
-    STA $0D
+    STA PlayerCollisionHazardProtectionCountdown
 
 Label_9423:
     LDA #$00
@@ -171,7 +171,7 @@ Label_9423:
 
 Label_9434:
     JSR Func_8758
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     DEX
     JSR DecodeRoom
     JSR LoadRoomObjects

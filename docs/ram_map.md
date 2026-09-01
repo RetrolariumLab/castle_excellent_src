@@ -6,19 +6,25 @@
 | `$0001-$0002` | 2 | high score, little-endian | confirmed | cold-boot clear, formatter, and conditional update from current score |
 | `$0005-$000A` | 6 | player inventory counters | confirmed | new-game clear and six-tile saturating HUD formatter |
 | `$000B-$000C` | 2 | current player score, little-endian | confirmed | new-game clear, point awards, formatter, and high-score comparison |
+| `$000D` | 1 | hazard-protection countdown, 32-frame units | confirmed | hazard death guard, audio selection, transition carryover, and `$A847` decay |
+| `$000E` | 1 | general invulnerability countdown, 32-frame units | confirmed | death guard, audio selection, and `$A835` decay |
 | `$0005-$0012` | 14 | save/load runtime state, scoped to `$FBFE-$FDC4` | confirmed | symmetric payload send/receive |
 | `$0013` | 1 | player lives | confirmed | new-game value 3, HUD decimal formatter, save/load, save cost, death decrement, and game-over branch |
 | `$0017` | 1 | data-I/O shift byte, scoped to `$8000-$8224` | confirmed | both transmitters and receivers |
 | `$001A` | 1 | saved X for data-I/O wrappers, scoped to `$8000-$8224` | confirmed | byte send/receive entry points |
 | `$001F` | 1 | data transport selector, scoped to `$8000-$8224` | confirmed | sign dispatches pulse vs expansion path |
 | `$0020` | 1 | polled controller buttons, scoped to `$80FF-$8157` | confirmed | both eight-bit serial pollers |
+| `$0034` | 1 | pending horizontal scroll X | confirmed | paused four-pixel adjustment and NMI latch application |
+| `$0035` | 1 | applied horizontal scroll X | confirmed | NMI copy from pending latch and PPU scroll write |
+| `$0036` | 1 | horizontal-scroll update pending | confirmed | pause/OAM producers and NMI clear after application |
 | `$0038-$0039` | 2 | player X in pixels, little-endian | confirmed | movement, collision probes, save/load restoration, and 16-bit helpers |
 | `$003A` | 1 | player Y in pixels | confirmed | movement, collision probes, and save/load restoration |
+| `$003B-$003F` | 5 | mutable-cell action direction/motion/delay view | high | `$A5DD-$A66C` guard and horizontal-boundary behavior |
 | `$00F8` | 1 | current NMI task index | confirmed | high/low handler dispatch and request scan |
 | `$00F9-$00FA` | 2 | NMI task handler pointer, little-endian | confirmed | indirect NMI jump |
 | `$00FB` | 1 | OAM staging busy flag | high | foreground sprite build and NMI DMA-buffer rebuild interlock |
 | `$00FC` | 1 | NMI frame countdown | confirmed | main-loop load/wait and saturating NMI decrement |
-| `$0037` | 1 | current room index | high | object-loader trace |
+| `$0037` | 1 | current one-based room number | confirmed | loader indexing, visited flags, transition helpers, and all 100 navigation cases |
 | `$0041` | 1 | current object-record offset | high | sprite dispatch trace |
 | `$0043` | 1 | current runtime-object update offset | confirmed | `$9583` initializes it and advances by six through all 24 records; handlers reuse it |
 | `$004A-$00D9` | `$90` | 24 six-byte object records | confirmed | clear/load loops |
@@ -43,13 +49,14 @@
 | `$0772` | 1 | player transition/respawn countdown | confirmed | death loads `$80`, frame update decrements to player/room restoration, load/new-game clear it |
 | `$0775-$0776` | 2 | controller 1/2 button masks | confirmed | NMI polling and named controller bit order |
 | `$0777-$0778` | 2 | previous controller 1/2 masks | high | edge-triggered input consumers |
+| `$077C` | 1 | player touching hazard cell `$16/$62/$63` | confirmed | bottom-center room probe and collision-to-death path |
 | `$077E-$0780` | 3 | power-on signature RAM (`POW`) | confirmed | reset compare/copy loop and ROM signature |
 | `$0783-$0784` | 2 | reset counter, little-endian | confirmed | cold-boot clear and carry increment on every reset |
 | `$0785-$079B` | 23 | NMI task requests | confirmed | reset loop and indexed NMI dispatch |
 | `$079D-$07A4` | 8 | score-format buffer: five tiles, terminator, two cleared tail bytes | confirmed | formatter lock/clear and score conversion |
 | `$07A2` | 1 | score tile terminator during room load | confirmed | explicit zero before PPU copy |
 | `$07A5-$07A7` | 3 | formatted lives tiles | confirmed | lives formatter and two-tile NMI upload |
-| `$07C4` | 1 | pause mode | confirmed | Start edge toggles simulation and audio updates |
+| `$07C4` | 1 | pause mode | confirmed | Start edge toggles, A/B resumes, and nonzero suppresses simulation/audio updates |
 | `$07C5` | 1 | castle-map mode | confirmed | Select opens map and suppresses normal NMI/main-loop work |
 | `$07C7` | 1 | demo playback active | high | title loop, alternate NMI input, and physical Start exit |
 | `$07C8` | 1 | status-tile formatter busy flag | confirmed | formatter interlock and NMI fallback to room-row upload |
@@ -116,6 +123,13 @@ decimal-place subtraction. The status formatter proves `$05-$0A` as six
 inventory counters in its own scoped operand view and uses `$07C8=$FF/$00` as
 the foreground/NMI lock/ready protocol.
 
+Within `$A5DD-$A66C`, `$05-$0A` are the same six inventory counters. `$1E` is
+the collision probe Y moved upward by 16 pixels; `$21-$22` are its 16-bit X;
+`$3B` supplies signed facing direction; `$3C/$3E` gate active motion; and `$3F`
+receives a nine-frame movement delay only at the outward horizontal bounds.
+These scratch names remain scoped because their broader player-movement roles
+are not yet fully reconstructed.
+
 Room-cell lookup contextually names `$2B-$2C` as the pointer into the 400-byte
 matrix and `$21-$22` as the saved tile column/row. Mutable-cell restoration
 uses `$1F` for the original ordinal, `$29-$2A` for its scan pointer, and
@@ -133,6 +147,10 @@ pixels, and `+4` runtime state. They use contextual aliases for `$1A` as the X
 high-byte scratch and `$21-$22` as the static-object stream pointer within
 `$EBE9-$EC62`. Record `+5` is named only as `RuntimeObjectByte5`; its semantic
 meaning remains intentionally open.
+
+Within `$A8A9-$A8E2`, `$25-$26` are the low/high scratch pair holding the
+normalized runtime-object/player X delta. The aliases are scoped to the shared
+proximity predicate because both bytes have unrelated uses elsewhere.
 
 `$079A` and `$079B` are the NMI task requests for the left and right room
 attribute uploads. They are entries 21 and 22 of the task-request array at

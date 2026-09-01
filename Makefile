@@ -28,10 +28,12 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/rooms/load_room.asm src/game/rooms/runtime_reset.asm \
 	src/game/rooms/cell_animation.asm src/rendering/status_format.asm \
 	src/data/unreferenced_bit_index_helper.asm \
-	src/game/rooms/cell_coordinates.asm src/preservation/prg_a5dd_a66c.asm \
+	src/game/rooms/cell_coordinates.asm src/game/rooms/mutable_cell_actions.asm \
 	src/game/rooms/mutable_cell_lookup.asm src/game/collision/cell_pair_index.asm \
 	src/game/rooms/mutable_cell_predicates.asm \
-	src/game/rooms/mutable_cell_restore.asm src/preservation/prg_a7db_ab49.asm \
+	src/game/rooms/mutable_cell_restore.asm src/game/rooms/navigation.asm \
+	src/game/player/hazard_state.asm src/game/objects/player_proximity.asm \
+	src/input/pause.asm src/preservation/prg_a95a_ab49.asm \
 	src/game/rooms/room_metadata.asm src/preservation/prg_ac13_b64b.asm \
 	src/rendering/room_screen.asm src/preservation/prg_b7fd_c55c.asm \
 	src/system/nmi.asm src/rendering/oam_dma.asm \
@@ -94,7 +96,11 @@ TIMEOUT_FRAMES ?= 15000
 	collision-state validate-collision object-dispatch-state \
 	validate-object-dispatch new-game-state validate-new-game \
 	room-runtime-state validate-room-runtime room-cell-animation-state \
-	validate-room-cell-animation hud-format-state validate-hud-format
+	validate-room-cell-animation hud-format-state validate-hud-format \
+	mutable-cell-action-state validate-mutable-cell-actions \
+	room-navigation-state validate-room-navigation \
+	player-hazard-state validate-player-hazard object-player-proximity \
+	validate-object-player-proximity pause-input-state validate-pause-input
 
 all: verify
 
@@ -359,7 +365,37 @@ hud-format-state: $(ROM)
 validate-hud-format: $(ROM)
 	$(PYTHON) scripts/status_format.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format
+mutable-cell-action-state: $(ROM)
+	$(PYTHON) scripts/mutable_cell_actions.py --image "$(ROM)" --pretty
+
+validate-mutable-cell-actions: $(ROM)
+	$(PYTHON) scripts/mutable_cell_actions.py --image "$(ROM)" --validate
+
+room-navigation-state: $(ROM)
+	$(PYTHON) scripts/room_navigation.py --image "$(ROM)" --pretty
+
+validate-room-navigation: $(ROM)
+	$(PYTHON) scripts/room_navigation.py --image "$(ROM)" --validate
+
+player-hazard-state: $(ROM)
+	$(PYTHON) scripts/player_hazard_state.py --image "$(ROM)" --pretty
+
+validate-player-hazard: $(ROM)
+	$(PYTHON) scripts/player_hazard_state.py --image "$(ROM)" --validate
+
+object-player-proximity: $(ROM)
+	$(PYTHON) scripts/object_player_proximity.py --image "$(ROM)" --pretty
+
+validate-object-player-proximity: $(ROM)
+	$(PYTHON) scripts/object_player_proximity.py --image "$(ROM)" --validate
+
+pause-input-state: $(ROM)
+	$(PYTHON) scripts/pause_input.py --image "$(ROM)" --pretty
+
+validate-pause-input: $(ROM)
+	$(PYTHON) scripts/pause_input.py --image "$(ROM)" --validate
+
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-hazard validate-object-player-proximity validate-pause-input
 
 check: release-check
 

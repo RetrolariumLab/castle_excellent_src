@@ -23,7 +23,7 @@ ClearRuntimeObjectRecords:
     INX
     CPX #RuntimeObjectRecordBytes
     BCC ClearRuntimeObjectRecords
-    LDX CurrentRoomIndex
+    LDX CurrentRoomNumber
     DEX
     JSR SeekRoomObjectStream
     LDX #$00
