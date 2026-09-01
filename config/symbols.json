@@ -596,9 +596,33 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x9587",
+      "name": "DispatchNextRuntimeObject",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x95B3",
+      "name": "AdvanceRuntimeObjectUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x95BF",
+      "name": "RuntimeObjectHandlerPointers",
+      "kind": "table",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xA0C4",
       "name": "SampleRoomCollisionCell",
       "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA2A9",
+      "name": "ReturnFromRuntimeObjectHandler",
+      "kind": "local",
       "confidence": "high"
     },
     {
@@ -606,6 +630,36 @@
       "name": "InitializeNewGame",
       "kind": "routine",
       "confidence": "high"
+    },
+    {
+      "address": "0xA31B",
+      "name": "CopyInitialRuntimeState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA328",
+      "name": "ClearNewGameMutableState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA330",
+      "name": "ClearNewGameObjectState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA338",
+      "name": "ClearNewGameRoomState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA340",
+      "name": "ClearNewGameVisitedRooms",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0xA55B",
@@ -848,22 +902,220 @@
       "confidence": "high"
     },
     {
+      "address": "0xA3D1",
+      "name": "ReturnWithoutRoomAudioRestart",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xA3D2",
       "name": "AnimateRoomCells",
       "kind": "routine",
       "confidence": "high"
     },
     {
-      "address": "0xA497",
-      "name": "FormatPlayerScoreTiles",
+      "address": "0xA3ED",
+      "name": "ScanSlowAnimatedRoomCells",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA40A",
+      "name": "AdvanceSlowRoomCellScan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA410",
+      "name": "CheckSlowRoomCellScanEnd",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA41A",
+      "name": "ReturnRoomCellAnimation",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA41B",
+      "name": "SlowRoomCellAnimationFrames",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA41F",
+      "name": "AnimateFastRoomCells",
       "kind": "routine",
       "confidence": "high"
     },
     {
-      "address": "0xA4A5",
-      "name": "FormatHighScoreTiles",
+      "address": "0xA42D",
+      "name": "ScanFastAnimatedRoomCells",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA451",
+      "name": "CheckIncrementingAnimationRange",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA46E",
+      "name": "AdvanceFastRoomCellScan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA474",
+      "name": "CheckFastRoomCellScanEnd",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA47E",
+      "name": "ReturnFastRoomCellAnimation",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA47F",
+      "name": "DecrementingRoomCellAnimationFrames",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA48B",
+      "name": "IncrementingRoomCellAnimationFrames",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA497",
+      "name": "FormatHighScoreStatusTiles",
       "kind": "routine",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA4A5",
+      "name": "FormatPlayerStatusTiles",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA4B0",
+      "name": "FormatSelectedScore",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA4B2",
+      "name": "StartNextScoreDigit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA4B3",
+      "name": "SubtractScorePlaceValue",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA4C8",
+      "name": "RestoreScoreRemainder",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA4DD",
+      "name": "EncodeScoreDigitTiles",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA4EB",
+      "name": "BlankLeadingScoreZeroes",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA4FC",
+      "name": "FormatLivesStatusTiles",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA509",
+      "name": "CountLifeHundreds",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA515",
+      "name": "CountLifeTens",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA521",
+      "name": "EncodeLifeOnes",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA529",
+      "name": "BlankLeadingLifeZeroes",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA538",
+      "name": "FormatInventoryStatusTiles",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA53A",
+      "name": "ClampNextInventoryValue",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA542",
+      "name": "EncodeInventoryTile",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA551",
+      "name": "DecimalPlaceValueHighBytes",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA556",
+      "name": "DecimalPlaceValueLowBytes",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA563",
+      "name": "BeginStatusTileFormatting",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA56C",
+      "name": "ClearStatusScoreBuffer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA573",
+      "name": "UnreferencedBitIndexHelperBytes",
+      "kind": "data",
+      "confidence": "confirmed"
     },
     {
       "address": "0xA6D8",

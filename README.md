@@ -29,7 +29,17 @@ evidence, and tested decoders for game data.
   too. Player and runtime-object 16-bit X-coordinate helpers now have explicit
   A=high/X=low contracts. Room-transition completion now names its player/state
   mirrors and rendering-resume order; adjacent collision helpers identify
-  runtime types `$90-$95` and normalize four mutable visual cells. Controller
+  runtime types `$90-$95` and normalize four mutable visual cells. The runtime
+  object dispatcher and all 42 handler pointers now expose the exact 24-record
+  scan, type mask, visibility cutoff, and manual indirect-call return. New-game
+  initialization now covers the starting room, lives/player state, persistent
+  stores, partial snapshot invalidation, and room-palette upload. Room-runtime
+  reset and the guarded room-audio restart are semantic too. The complete
+  400-cell animation pass now names both opposite-direction fast phase tables,
+  the intermittent four-frame family, scan pointers, cadence, and row-redraw
+  requests. HUD formatting now distinguishes the persistent high score from
+  the current player score and owns five-digit decimal conversion, lives,
+  inventory saturation, and the foreground/NMI interlock. Controller
   polling, both Famicom save-data
   transports, PPU mode helpers, and CNROM bank
   selection are also semantic platform modules. The 394-byte save/load payload,
@@ -69,6 +79,9 @@ evidence, and tested decoders for game data.
   rotations, the unused sixteenth table byte, and whole-record reversal.
 - `scripts/status_upload.py` validates the HUD interlock, destinations, and
   source order for score, inventory, and lives tiles.
+- `scripts/status_format.py` exhaustively validates all 65,536 score values,
+  all 256 life counts, 1,536 inventory position/value cases, and the exact
+  decimal/bit-mask/helper bytes interleaved with the formatter.
 - `scripts/room_row_upload.py` validates all 20 unrolled handlers, 400 cell
   lookups, and 800 left/right metatile writes byte-for-byte against the ROM.
 - `scripts/room_attribute_upload.py` validates both final NMI tasks, including
@@ -87,14 +100,24 @@ evidence, and tested decoders for game data.
   rendering-resume call order.
 - `scripts/collision_cells.py` exhaustively validates all type bytes and all
   65,536 room-cell/status combinations without losing sampler flags.
-- `make format`, `make lint`, 158 unit tests, reproducible disassembly checks,
+- `scripts/runtime_object_dispatch.py` verifies all 42 handler pointers and
+  models selection across the complete 24-record runtime pool.
+- `scripts/new_game_state.py` validates starting state, exact clear ranges,
+  preserved mirror/snapshot tails, and the `$C53D` room-palette pointer.
+- `scripts/room_runtime_reset.py` validates ten reset fields and exhaustively
+  checks the game-over/audio-pointer restart guard.
+- `scripts/room_cell_animation.py` validates all 256 cell values, the three
+  exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
+  coverage across all 20 room rows.
+- `make format`, `make lint`, 190 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,728 instructions after 37
-  evidence-backed data ranges remove 183 false-positive instructions.
+  disagreements. Evidence-refined Ghidra exports 9,728 instructions after 43
+  evidence-backed data ranges remove 183 false-positive instructions. The
+  source layout owns 16,694 PRG bytes semantically (50.95%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -179,6 +202,16 @@ make transition-state # inspect room-transition mirrors and rendering resume
 make validate-transition # validate the room-transition completion contract
 make collision-state # inspect runtime-type and collision-cell filters
 make validate-collision # exhaustively validate collision normalization
+make object-dispatch-state # inspect handler pointers and record traversal
+make validate-object-dispatch # validate the runtime-object frame dispatcher
+make new-game-state # inspect new-game initialization as JSON
+make validate-new-game # validate state ordering, clears, and room palette
+make room-runtime-state # inspect reset ownership and audio restart guard
+make validate-room-runtime # exhaustively validate the room-runtime contract
+make room-cell-animation-state # inspect room-cell animation tables and cadence
+make validate-room-cell-animation # validate every animation mapping and row
+make hud-format-state # inspect decimal HUD tiles and source-buffer order
+make validate-hud-format # exhaustively validate HUD formatting and ROM tables
 make castle-map-state # inspect the 10x10 map marker geometry
 make validate-castle-map # validate all 100 map positions
 make data-io-state   # inspect pulse and expansion serial contracts as JSON

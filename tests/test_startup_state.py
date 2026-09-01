@@ -16,7 +16,7 @@ class StartupStateTests(unittest.TestCase):
             result.state, startup_state.ResetState(b"POW", 0, 0, 1, 0)
         )
 
-    def test_warm_reset_preserves_score_and_increments_counter(self) -> None:
+    def test_warm_reset_preserves_high_score_and_increments_counter(self) -> None:
         state = startup_state.ResetState(b"POW", 0x12, 0x34, 0x56, 0x78)
         result = startup_state.apply_reset(state)
         self.assertFalse(result.cold_boot)

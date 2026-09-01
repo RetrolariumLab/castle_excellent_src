@@ -1,50 +1,7 @@
-; Preservation PRG before room loading
-; CPU range $9583-$A35B
+; Preservation runtime-object handlers
+; CPU range $9613-$A2B0
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
-
-UpdateRuntimeObjects:
-    LDX #$00
-    STX $43
-
-Label_9587:
-    LDA #$00
-    STA a:$07C6
-    LDX $43
-    LDA RuntimeObjectRecords,X
-    AND #$7F
-    BEQ Label_95B3
-    LDA RuntimeObjectY,X
-    CMP #$A0
-    BCS Label_95B3
-    LDA RuntimeObjectRecords,X
-    ASL A
-    TAX
-    LDA a:$95BF,X
-    STA $31
-    LDA a:$95C0,X
-    STA $32
-    LDA #$95
-    PHA
-    LDA #$B2
-    PHA
-    LDX $43
-    JMP ($0031)
-
-Label_95B3:
-    LDA $43
-    CLC
-    ADC #$06
-    STA $43
-    CMP #$90
-    BCC Label_9587
-    RTS
-    .byte $A9, $A2, $C6, $9C, $A9, $A2, $A9, $A2, $D8, $9C, $00, $9B, $A9, $A2, $3B, $9C
-    .byte $CB, $9E, $65, $9D, $74, $96, $74, $96, $74, $96, $74, $96, $5C, $96, $74, $96
-    .byte $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2
-    .byte $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2
-    .byte $F3, $9F, $96, $97, $69, $98, $37, $9A, $A9, $A2, $A9, $A2, $74, $9F, $A9, $A2
-    .byte $1C, $A0, $33, $A0
 
 Func_9613:
     .byte $A5, $46, $18, $69, $10, $38, $E5, $3A, $90, $3D, $E9, $10, $B0, $39, $A5, $44
@@ -80,7 +37,7 @@ Label_9786:
     JMP Func_C233
 
 Func_9791:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     JMP Label_9786
 
 Label_9796:
@@ -117,7 +74,7 @@ Label_97A7:
     LDA $2C
     STA $45
     JSR RequestRoomCellRowUpdates
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$08
@@ -125,13 +82,13 @@ Label_97A7:
     RTS
 
 Label_97DE:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$FF
     STA RuntimeObjectState,X
     JMP Label_9796
 
 Label_97E7:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
@@ -144,14 +101,14 @@ Label_97E7:
     LDA $2C
     STA $45
     JSR RequestRoomCellRowUpdates
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$00
     STA RuntimeObjectState,X
     JMP Label_9796
 
 Label_980E:
     JSR Func_9A2C
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     BEQ Label_97E7
     SEC
@@ -174,7 +131,7 @@ Label_980E:
     LDA $2C
     STA $45
     JSR RequestRoomCellRowUpdates
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     TAY
     DEY
@@ -237,7 +194,7 @@ Label_987A:
     LDA $2C
     STA $45
     JSR RequestRoomCellRowUpdates
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$08
@@ -245,13 +202,13 @@ Label_987A:
     RTS
 
 Label_98B9:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$FF
     STA RuntimeObjectState,X
     JMP Label_9869
 
 Label_98C2:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
@@ -266,14 +223,14 @@ Label_98C2:
     LDA $2C
     STA $45
     JSR RequestRoomCellRowUpdates
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$00
     STA RuntimeObjectState,X
     JMP Label_9869
 
 Label_98EC:
     JSR Func_9A2C
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     BEQ Label_98C2
     SEC
@@ -302,7 +259,7 @@ Label_98EC:
     LDA $2C
     STA $45
     JSR RequestRoomCellRowUpdates
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     TAY
     DEY
@@ -326,7 +283,7 @@ Label_994A:
     STA $47
 
 Label_994E:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     JSR Func_9A1F
     LDA #$FF
     STA a:$07AB,Y
@@ -485,7 +442,7 @@ Label_9A30:
     BCS Label_9A66
     JSR Func_9ABC
     BCS Label_9A66
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectXLo,X
     CLC
     ADC #$02
@@ -510,13 +467,13 @@ Label_9A66:
     BCS Label_9A77
     JSR Func_9ADE
     BCS Label_9A77
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$FF
     STA RuntimeObjectState,X
     RTS
 
 Label_9A77:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$FF
     STA RuntimeObjectByte5,X
     RTS
@@ -526,7 +483,7 @@ Label_9A7E:
     BCS Label_9A9C
     JSR Func_9ADE
     BCS Label_9A9C
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectXLo,X
     STA $44
     SEC
@@ -543,13 +500,13 @@ Label_9A9C:
     BCS Label_9A77
     JSR Func_9ABC
     BCS Label_9A77
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$00
     STA RuntimeObjectState,X
     RTS
 
 Func_9AAD:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXPlus17
     JSR Func_9AF1
@@ -557,7 +514,7 @@ Func_9AAD:
     JMP SampleNormalizedRoomCollisionCell
 
 Func_9ABC:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$07
@@ -568,7 +525,7 @@ Func_9ABC:
     JMP SampleNormalizedRoomCollisionCell
 
 Func_9ACF:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXMinus2
     JSR Func_9AF1
@@ -576,7 +533,7 @@ Func_9ACF:
     JMP SampleNormalizedRoomCollisionCell
 
 Func_9ADE:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$07
@@ -599,7 +556,7 @@ Label_9AFF:
     RTS
 
 Func_9B00:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -614,7 +571,7 @@ Func_9B00:
     JMP Func_9791
 
 Label_9B1B:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA a:$07C6
     BMI Label_9B8B
     LDA RuntimeObjectY,X
@@ -628,7 +585,7 @@ Label_9B1B:
 
 Label_9B33:
     BCS Label_9B8B
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -648,7 +605,7 @@ Label_9B33:
 
 Label_9B55:
     BCS Label_9B8B
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -668,7 +625,7 @@ Label_9B55:
 
 Label_9B77:
     BCS Label_9B8B
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     INC RuntimeObjectY,X
     INC RuntimeObjectY,X
     LDA RuntimeObjectY,X
@@ -686,7 +643,7 @@ Label_9B8B:
     JMP Func_9791
 
 Label_9B92:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
     LDA RuntimeObjectState,X
     BPL Label_9B9D
@@ -697,7 +654,7 @@ Label_9B9D:
     BCS Label_9BE5
     LDA a:$07C6
     BNE Label_9BC4
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -715,7 +672,7 @@ Label_9B9D:
     BCC Label_9BE5
 
 Label_9BC4:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
     LDA RuntimeObjectXLo,X
     CMP #$2F
@@ -736,7 +693,7 @@ Label_9BDF:
     RTS
 
 Label_9BE5:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$FF
     STA RuntimeObjectState,X
     BNE Label_9BDF
@@ -746,7 +703,7 @@ Label_9BED:
     BCS Label_9C31
     LDA a:$07C6
     BNE Label_9C14
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
     LDA RuntimeObjectY,X
     CLC
@@ -764,7 +721,7 @@ Label_9BED:
     BCC Label_9C31
 
 Label_9C14:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectXHi,X
     BNE Label_9C20
     LDA RuntimeObjectXLo,X
@@ -783,7 +740,7 @@ Label_9C20:
     RTS
 
 Label_9C31:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$00
     STA RuntimeObjectState,X
     STA a:$07C6
@@ -795,7 +752,7 @@ Label_9C31:
 
 Label_9C42:
     JSR Func_9B00
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$10
@@ -842,7 +799,7 @@ Label_9C76:
     RTS
 
 Label_9C84:
-    LDY $43
+    LDY CurrentRuntimeObjectOffset
     LDA #$03
     STA a:RuntimeObjectByte5,Y
     LDA #$A6
@@ -893,7 +850,7 @@ Label_9CC5:
     LDA $21
     CMP #$50
     BCS Label_9CF5
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA PlayerY
     SEC
     SBC #$10
@@ -903,7 +860,7 @@ Label_9CC5:
     STA a:$07C6
 
 Label_9CF5:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
     LDA RuntimeObjectByte5,X
     BNE Label_9D1E
@@ -923,7 +880,7 @@ Label_9D07:
     JMP Func_9B00
 
 Label_9D18:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$0C
     STA RuntimeObjectByte5,X
 
@@ -932,7 +889,7 @@ Label_9D1E:
     LDA #$FF
     STA a:$07C6
     JSR Func_9B00
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
@@ -940,7 +897,7 @@ Label_9D1E:
     JSR SampleRoomCollisionCell
     BCS Label_9D64
     BMI Label_9D64
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
@@ -948,7 +905,7 @@ Label_9D1E:
     JSR SampleRoomCollisionCell
     BCS Label_9D64
     BMI Label_9D64
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
@@ -956,7 +913,7 @@ Label_9D1E:
     JSR SampleRoomCollisionCell
     BCS Label_9D64
     BMI Label_9D64
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     CPY #$02
     BCC Label_9D64
@@ -971,7 +928,7 @@ Label_9D64:
     JSR Func_C29A
 
 Label_9D6C:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RoomFrameCounter
     AND #$01
     BEQ Label_9D76
@@ -998,7 +955,7 @@ Label_9D8F:
     BMI Label_9DAD
     JSR Func_9E7D
     BCS Label_9DA6
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectXLo,X
     CLC
     ADC #$02
@@ -1010,7 +967,7 @@ Label_9DA5:
     RTS
 
 Label_9DA6:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA #$FF
     STA RuntimeObjectByte5,X
     RTS
@@ -1018,7 +975,7 @@ Label_9DA6:
 Label_9DAD:
     JSR Func_9E52
     BCS Label_9DA6
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectXLo,X
     SEC
     SBC #$02
@@ -1041,13 +998,13 @@ Label_9DC9:
     BMI Label_9DE6
     JSR Func_9DF2
     BCS Label_9DD9
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     DEC RuntimeObjectY,X
     DEC RuntimeObjectY,X
     RTS
 
 Label_9DD9:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectState,X
     EOR #$FF
     STA RuntimeObjectState,X
@@ -1058,13 +1015,13 @@ Label_9DD9:
 Label_9DE6:
     JSR Func_9E1F
     BCS Label_9DD9
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     INC RuntimeObjectY,X
     INC RuntimeObjectY,X
     RTS
 
 Func_9DF2:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
@@ -1073,14 +1030,14 @@ Func_9DF2:
     JSR GetRuntimeObjectX
     JSR SampleRoomCollisionCell
     BCS Label_9E1E
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
     JSR GetRuntimeObjectXPlus7
     JSR SampleRoomCollisionCell
     BCS Label_9E1E
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
@@ -1091,7 +1048,7 @@ Label_9E1E:
     RTS
 
 Func_9E1F:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$11
@@ -1101,7 +1058,7 @@ Func_9E1F:
     JSR GetRuntimeObjectX
     JSR SampleRoomCollisionCell
     BCS Label_9E51
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$11
@@ -1109,7 +1066,7 @@ Func_9E1F:
     JSR GetRuntimeObjectXPlus7
     JSR SampleRoomCollisionCell
     BCS Label_9E51
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$11
@@ -1121,12 +1078,12 @@ Label_9E51:
     RTS
 
 Func_9E52:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXMinus2
     JSR SampleRoomCollisionCell
     BCS Label_9E7C
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$07
@@ -1134,7 +1091,7 @@ Func_9E52:
     JSR GetRuntimeObjectXMinus2
     JSR SampleRoomCollisionCell
     BCS Label_9E7C
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$0F
@@ -1146,12 +1103,12 @@ Label_9E7C:
     RTS
 
 Func_9E7D:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXPlus17
     JSR SampleRoomCollisionCell
     BCS Label_9EA7
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$07
@@ -1159,7 +1116,7 @@ Func_9E7D:
     JSR GetRuntimeObjectXPlus17
     JSR SampleRoomCollisionCell
     BCS Label_9EA7
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
     ADC #$0F
@@ -1196,7 +1153,7 @@ Label_9ECA:
     LDA RoomFrameCounter
     CMP #$E0
     BNE Label_9ECA
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectState,X
     BMI Label_9EEB
     LDA RuntimeObjectXLo,X
@@ -1317,7 +1274,7 @@ Label_9F89:
     JSR SampleRoomCollisionCell
     BCS Label_9FB5
     BMI Label_9FB5
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectXLo,X
     CLC
     ADC #$03
@@ -1329,7 +1286,7 @@ Label_9FB4:
     RTS
 
 Label_9FB5:
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     JMP Label_A024
 
 Label_9FBA:
@@ -1358,7 +1315,7 @@ Label_9FBA:
     JSR SampleRoomCollisionCell
     BCS Label_9FB5
     BMI Label_9FB5
-    LDX $43
+    LDX CurrentRuntimeObjectOffset
     LDA $21
     STA RuntimeObjectXLo,X
     LDA $22
@@ -1707,7 +1664,7 @@ Label_A239:
 
 Func_A247:
     CPX #$90
-    BCS Label_A2A9
+    BCS ReturnFromRuntimeObjectHandler
     LDA RuntimeObjectRecords,X
     BPL Label_A2A0
     CMP #$A8
@@ -1765,99 +1722,10 @@ Label_A2A0:
     CPX #$90
     BCC Func_A247
 
-Label_A2A9:
+ReturnFromRuntimeObjectHandler:
     RTS
     .byte $98, $4A
     LSR A
     LSR A
     STA NmiTaskIndex
     RTS
-
-InitializeNewGame:
-    LDA #$47
-    STA CurrentRoomIndex
-    LDA #$03
-    STA $13
-    LDA #$00
-    STA a:$07CC
-    STA a:$07CB
-    STA CurrentRoomState
-    STA RoomStateLoadMirror
-    STA RoomStateSnapshotA
-    STA RoomStateSnapshotB
-    STA $0B
-    STA $0C
-    STA a:$0772
-    STA PauseMode
-    STA CastleMapMode
-    STA $0F
-    STA $0D
-    STA $0E
-    STA a:$077C
-    STA $3C
-    STA a:$07C9
-    STA a:$07CA
-    STA a:$07CD
-    STA a:$07D0
-    STA a:$07D1
-    STA a:$07D2
-    STA a:$07D3
-    LDA #$FF
-    STA StatusTilesBusy
-    LDA #$00
-    STA $05
-    STA $06
-    STA $07
-    STA $08
-    STA $0A
-    STA $09
-    LDA #$00
-    STA PlayerXHi
-    STA $11
-    STA PlayerXLo
-    STA $10
-    STA $14
-    LDX #$0D
-
-Label_A31B:
-    LDA $05,X
-    STA RoomRuntimeLoadMirror,X
-    STA RoomRuntimeStateSnapshotA,X
-    DEX
-    BPL Label_A31B
-    LDX #$78
-
-Label_A328:
-    STA RoomCells + $18F,X
-    DEX
-    BNE Label_A328
-    LDX #$96
-
-Label_A330:
-    STA a:$0607,X
-    DEX
-    BNE Label_A330
-    LDX #$1B
-
-Label_A338:
-    STA a:$0711,X
-    DEX
-    BNE Label_A338
-    LDX #RoomVisitedFlagCount
-
-Label_A340:
-    STA RoomVisitedFlags - 1,X
-    DEX
-    BNE Label_A340
-    LDA CurrentRoomIndex
-    STA CurrentRoomState
-    LDA #$98
-    STA PlayerY
-    STA $12
-
-UploadRoomPalette:
-    LDA #$C5
-    STA $22
-    LDA #$3D
-    STA $21
-    JMP UploadPaletteFromPointer

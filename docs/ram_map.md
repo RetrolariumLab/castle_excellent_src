@@ -3,9 +3,11 @@
 | Range | Size | Working name | Confidence | Evidence |
 | --- | ---: | --- | --- | --- |
 | `$0000` | 1 | global NMI frame counter | high | increment in common NMI frame path and OAM order selection |
-| `$0001-$0002` | 2 | player score, little-endian | high | cold-boot clear and score formatter |
+| `$0001-$0002` | 2 | high score, little-endian | confirmed | cold-boot clear, formatter, and conditional update from current score |
+| `$0005-$000A` | 6 | player inventory counters | confirmed | new-game clear and six-tile saturating HUD formatter |
+| `$000B-$000C` | 2 | current player score, little-endian | confirmed | new-game clear, point awards, formatter, and high-score comparison |
 | `$0005-$0012` | 14 | save/load runtime state, scoped to `$FBFE-$FDC4` | confirmed | symmetric payload send/receive |
-| `$0013` | 1 | save/load runtime tail, scoped to `$FBFE-$FDC4` | confirmed | payload byte one |
+| `$0013` | 1 | player lives | confirmed | new-game value 3, HUD decimal formatter, save/load, save cost, death decrement, and game-over branch |
 | `$0017` | 1 | data-I/O shift byte, scoped to `$8000-$8224` | confirmed | both transmitters and receivers |
 | `$001A` | 1 | saved X for data-I/O wrappers, scoped to `$8000-$8224` | confirmed | byte send/receive entry points |
 | `$001F` | 1 | data transport selector, scoped to `$8000-$8224` | confirmed | sign dispatches pulse vs expansion path |
@@ -18,6 +20,7 @@
 | `$00FC` | 1 | NMI frame countdown | confirmed | main-loop load/wait and saturating NMI decrement |
 | `$0037` | 1 | current room index | high | object-loader trace |
 | `$0041` | 1 | current object-record offset | high | sprite dispatch trace |
+| `$0043` | 1 | current runtime-object update offset | confirmed | `$9583` initializes it and advances by six through all 24 records; handlers reuse it |
 | `$004A-$00D9` | `$90` | 24 six-byte object records | confirmed | clear/load loops |
 | `$0100-$017F` | `$80` | left/right room attribute buffers | confirmed | builder + NMI uploads to `$23C8/$27C8` |
 | `$0200-$02FF` | `$100` | final OAM DMA buffer | confirmed | `$4014 = $02` |
@@ -37,19 +40,22 @@
 | `$0763-$076A` | 8 | frame counters modulo `3,5,6,7,3,10,11,30` | confirmed | common NMI counter chain |
 | `$076B` | 1 | room frame counter | high | one increment per unpaused simulation update and animation consumers |
 | `$076C-$0771` | 6 | formatted inventory counter tiles | confirmed | formatter and NMI upload to `$2087-$208C` |
+| `$0772` | 1 | player transition/respawn countdown | confirmed | death loads `$80`, frame update decrements to player/room restoration, load/new-game clear it |
 | `$0775-$0776` | 2 | controller 1/2 button masks | confirmed | NMI polling and named controller bit order |
 | `$0777-$0778` | 2 | previous controller 1/2 masks | high | edge-triggered input consumers |
 | `$077E-$0780` | 3 | power-on signature RAM (`POW`) | confirmed | reset compare/copy loop and ROM signature |
 | `$0783-$0784` | 2 | reset counter, little-endian | confirmed | cold-boot clear and carry increment on every reset |
 | `$0785-$079B` | 23 | NMI task requests | confirmed | reset loop and indexed NMI dispatch |
-| `$079D-$07A1` | 5 | formatted score tiles | high | room status pointer and formatter |
+| `$079D-$07A4` | 8 | score-format buffer: five tiles, terminator, two cleared tail bytes | confirmed | formatter lock/clear and score conversion |
 | `$07A2` | 1 | score tile terminator during room load | confirmed | explicit zero before PPU copy |
 | `$07A5-$07A7` | 3 | formatted lives tiles | confirmed | lives formatter and two-tile NMI upload |
 | `$07C4` | 1 | pause mode | confirmed | Start edge toggles simulation and audio updates |
 | `$07C5` | 1 | castle-map mode | confirmed | Select opens map and suppresses normal NMI/main-loop work |
 | `$07C7` | 1 | demo playback active | high | title loop, alternate NMI input, and physical Start exit |
 | `$07C8` | 1 | status-tile formatter busy flag | confirmed | formatter interlock and NMI fallback to room-row upload |
+| `$07CC` | 1 | game-over active | confirmed | set when death consumes the final life; blocks sub-command/audio paths and selects ending behavior |
 | `$07CE` | 1 | physical controller 1 buttons | confirmed | unconditional NMI poll used to exit demo playback |
+| `$07D0-$07D3` | 4 | pulse 1, pulse 2, triangle, and noise sound-effect busy flags | confirmed | channel-specific SFX starters and common sound-effect updater |
 
 The room decoder also gives contextual names to shared zero-page scratch:
 `$16` bit index, `$17` lookahead write index, `$19` decoded cell, `$21-$22`
@@ -79,6 +85,36 @@ bytes copied into `RoomRuntimeLoadMirror + $0B..$0D`. Bytes `$0D-$0E` are two
 additional transition-state values copied to `$14-$15`. These seven names are
 strictly scoped to transition completion because the same scratch addresses
 serve unrelated code elsewhere.
+
+Within `$9583-$95BE`, `$31-$32` are the little-endian runtime-object handler
+pointer and `$07C6` is the shared update flag cleared before each record. The
+pointer aliases remain scoped to the dispatcher; `$0043` is global because the
+selected handlers repeatedly recover the same current six-byte record offset.
+
+Within `$A2B1-$A350`, `$05-$12` are treated as one 14-byte new-game runtime
+record. Scoped names also cover its transition byte, player motion/cell state,
+collision probe state, and two motion counters without asserting those scratch
+meanings outside initialization. The routine copies the 14-byte record before
+writing initial Y `$98`, preserves load-mirror byte 14, and invalidates snapshot
+B by clearing only `$072D`. `$21-$22` are separately scoped to the `$A351`
+room-palette pointer setup.
+
+Within `$A3AC-$A3C5`, scoped aliases identify two player movement state bytes,
+a movement delay and latch, both scroll reset bytes, the object-update shared
+flag, and the room animation counter. The routine also clears the global NMI
+task index and room frame counter. These reset names describe proven ownership
+without claiming complete semantics for the movement fields elsewhere.
+
+Within `$A3D2-$A47E`, `$21-$22` are the pointer that scans `RoomCells`, `$40`
+is the intermittent room-cell animation counter, and `$44-$45` receive the
+current cell address before the row-update helper consumes them. The animation
+counter advances only on odd room simulation frames; its sign bit gates the
+slow `$45-$48` family.
+
+Within `$A497-$A4DA`, `$03-$04` are the 16-bit remainder consumed by repeated
+decimal-place subtraction. The status formatter proves `$05-$0A` as six
+inventory counters in its own scoped operand view and uses `$07C8=$FF/$00` as
+the foreground/NMI lock/ready protocol.
 
 Room-cell lookup contextually names `$2B-$2C` as the pointer into the 400-byte
 matrix and `$21-$22` as the saved tile column/row. Mutable-cell restoration

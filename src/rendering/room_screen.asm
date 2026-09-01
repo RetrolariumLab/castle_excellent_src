@@ -90,7 +90,7 @@ InitializeRoomStatusDisplay:
     LDA #<RoomStatusTilesAt206E
     STA PpuTileStringPointerLo
     JSR WriteTerminatedPpuTiles
-    JSR FormatPlayerScoreTiles
+    JSR FormatHighScoreStatusTiles
     LDA PPU_STATUS
     LDA #$20
     STA PPU_ADDR
@@ -103,7 +103,7 @@ InitializeRoomStatusDisplay:
     LDA #<StatusScoreTiles
     STA PpuTileStringPointerLo
     JSR WriteTerminatedPpuTiles
-    JSR FormatHighScoreTiles
+    JSR FormatPlayerStatusTiles
     LDA PPU_STATUS
     LDA #$20
     STA PPU_ADDR

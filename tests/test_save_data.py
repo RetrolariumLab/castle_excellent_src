@@ -8,7 +8,7 @@ from scripts import save_data
 def patterned_state() -> save_data.SaveState:
     return save_data.SaveState(
         room_index=37,
-        runtime_tail=0xA5,
+        player_lives=0xA5,
         runtime_state=bytes(range(save_data.RUNTIME_STATE_SIZE)),
         mutable_region=bytes(range(save_data.MUTABLE_REGION_SIZE)),
         object_region=bytes(value & 0xFF for value in range(save_data.OBJECT_REGION_SIZE)),
@@ -61,7 +61,7 @@ class SaveDataTests(unittest.TestCase):
         state = patterned_state()
         bad = save_data.SaveState(
             room_index=state.room_index,
-            runtime_tail=state.runtime_tail,
+            player_lives=state.player_lives,
             runtime_state=state.runtime_state,
             mutable_region=state.mutable_region[:-1],
             object_region=state.object_region,

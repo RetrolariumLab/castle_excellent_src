@@ -77,7 +77,7 @@
     .byte $B0, $8D, $B0, $8D, $B0, $8D, $6B, $92, $6B, $92
 
 UpdatePlayerCollisionState:
-    LDA a:$0772
+    LDA PlayerTransitionCountdown
     BEQ Label_938E
     JMP Label_93F6
 
@@ -131,7 +131,7 @@ Label_93F5:
     RTS
 
 Label_93F6:
-    DEC a:$0772
+    DEC PlayerTransitionCountdown
     BEQ Label_93FC
     RTS
 
@@ -162,10 +162,10 @@ Label_941E:
 
 Label_9423:
     LDA #$00
-    STA a:$0772
-    LDA $13
+    STA PlayerTransitionCountdown
+    LDA PlayerLives
     BNE Label_9434
-    LDA a:$07CC
+    LDA GameOverActive
     BEQ Label_9434
     JMP Func_FE31
 

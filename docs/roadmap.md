@@ -49,6 +49,16 @@
   their register order, offsets, carry, borrow, and wraparound;
 - [x] reconstruct room-transition completion, runtime-type filtering, and
   mutable-cell collision normalization with exhaustive flag-preservation tests;
+- [x] reconstruct the 24-record runtime-object update dispatcher, its manual
+  indirect-call convention, and all 42 handler pointers;
+- [x] reconstruct new-game state initialization, physical persistent-region
+  clears, partial mirror/snapshot writes, lives, and room-palette fallthrough;
+- [x] reconstruct room-runtime reset ownership and the game-over/stream-pointer
+  guard that conditionally restarts room audio;
+- [x] reconstruct both full-room cell-animation scans, opposite four-phase
+  directions, intermittent cadence, and NMI row-redraw requests;
+- [x] reconstruct high-score/current-score identity, five-digit HUD conversion,
+  life and inventory formatting, and the foreground/NMI buffer interlock;
 - [x] reconstruct Reset and the NMI-paced main loop, including cold/warm boot,
   the `POWER`/`POW` signature contract, and the two-NMI frame gate;
 - [x] reconstruct the common NMI frame handler, 23-task request scheduler,

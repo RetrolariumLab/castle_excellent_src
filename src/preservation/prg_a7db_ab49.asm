@@ -264,9 +264,9 @@ Label_A953:
     STA PreviousController1Buttons
     RTS
     .byte $01, $01, $01, $01, $01, $01
-    ORA (PlayerScoreLo,X)
-    ORA (PlayerScoreLo,X)
-    ORA (PlayerScoreLo,X)
+    ORA (HighScoreLo,X)
+    ORA (HighScoreLo,X)
+    ORA (HighScoreLo,X)
     BRK
     .byte $01, $01, $00, $01, $01, $01, $01, $00, $01, $00, $00, $01, $00, $00, $00, $01
     .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00

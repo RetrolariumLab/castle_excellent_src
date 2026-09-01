@@ -7,11 +7,15 @@
     },
     {
       "address": "0x0001",
-      "name": "PlayerScoreLo"
+      "name": "HighScoreLo"
     },
     {
       "address": "0x0002",
-      "name": "PlayerScoreHi"
+      "name": "HighScoreHi"
+    },
+    {
+      "address": "0x0013",
+      "name": "PlayerLives"
     },
     {
       "address": "0x0037",
@@ -32,6 +36,10 @@
     {
       "address": "0x0041",
       "name": "CurrentObjectOffset"
+    },
+    {
+      "address": "0x0043",
+      "name": "CurrentRuntimeObjectOffset"
     },
     {
       "address": "0x004A",
@@ -237,6 +245,10 @@
       "size": 6
     },
     {
+      "address": "0x0772",
+      "name": "PlayerTransitionCountdown"
+    },
+    {
       "address": "0x0775",
       "name": "Controller1Buttons"
     },
@@ -300,8 +312,28 @@
       "name": "StatusTilesBusy"
     },
     {
+      "address": "0x07CC",
+      "name": "GameOverActive"
+    },
+    {
       "address": "0x07CE",
       "name": "PhysicalController1Buttons"
+    },
+    {
+      "address": "0x07D0",
+      "name": "Pulse1SoundEffectBusy"
+    },
+    {
+      "address": "0x07D1",
+      "name": "Pulse2SoundEffectBusy"
+    },
+    {
+      "address": "0x07D2",
+      "name": "TriangleSoundEffectBusy"
+    },
+    {
+      "address": "0x07D3",
+      "name": "NoiseSoundEffectBusy"
     },
     {
       "address": "0x0017",
@@ -352,14 +384,32 @@
       "end": "0x8217"
     },
     {
+      "address": "0x0031",
+      "name": "RuntimeObjectHandlerPointerLo",
+      "start": "0x9583",
+      "end": "0x95BF"
+    },
+    {
+      "address": "0x0032",
+      "name": "RuntimeObjectHandlerPointerHi",
+      "start": "0x9583",
+      "end": "0x95BF"
+    },
+    {
+      "address": "0x07C6",
+      "name": "RuntimeObjectUpdateSharedFlag",
+      "start": "0x9583",
+      "end": "0x95BF"
+    },
+    {
       "address": "0x0034",
-      "name": "PendingScrollX",
+      "name": "ResetPendingScrollX",
       "start": "0xC55D",
       "end": "0xC804"
     },
     {
       "address": "0x0035",
-      "name": "AppliedScrollX",
+      "name": "ResetAppliedScrollX",
       "start": "0xC55D",
       "end": "0xC804"
     },
@@ -412,6 +462,176 @@
       "end": "0x8158"
     },
     {
+      "address": "0x0005",
+      "name": "NewGameRuntimeState",
+      "size": 14,
+      "start": "0xA2B1",
+      "end": "0xA351"
+    },
+    {
+      "address": "0x0014",
+      "name": "NewGameTransitionState",
+      "start": "0xA2B1",
+      "end": "0xA351"
+    },
+    {
+      "address": "0x003C",
+      "name": "NewGamePlayerMotionState",
+      "start": "0xA2B1",
+      "end": "0xA351"
+    },
+    {
+      "address": "0x077C",
+      "name": "NewGamePlayerCellState",
+      "start": "0xA2B1",
+      "end": "0xA351"
+    },
+    {
+      "address": "0x07C9",
+      "name": "NewGamePlayerMotionCounterA",
+      "start": "0xA2B1",
+      "end": "0xA351"
+    },
+    {
+      "address": "0x07CA",
+      "name": "NewGamePlayerMotionCounterB",
+      "start": "0xA2B1",
+      "end": "0xA351"
+    },
+    {
+      "address": "0x07CB",
+      "name": "NewGameCollisionProbeState",
+      "start": "0xA2B1",
+      "end": "0xA351"
+    },
+    {
+      "address": "0x07CD",
+      "name": "NewGameScreenState",
+      "start": "0xA2B1",
+      "end": "0xA351"
+    },
+    {
+      "address": "0x003B",
+      "name": "ResetPlayerMovementStateA",
+      "start": "0xA3AC",
+      "end": "0xA3C6"
+    },
+    {
+      "address": "0x003F",
+      "name": "ResetPlayerMovementDelay",
+      "start": "0xA3AC",
+      "end": "0xA3C6"
+    },
+    {
+      "address": "0x0034",
+      "name": "PendingScrollX",
+      "start": "0xA3AC",
+      "end": "0xA3C6"
+    },
+    {
+      "address": "0x0035",
+      "name": "AppliedScrollX",
+      "start": "0xA3AC",
+      "end": "0xA3C6"
+    },
+    {
+      "address": "0x0774",
+      "name": "ResetPlayerMovementLatch",
+      "start": "0xA3AC",
+      "end": "0xA3C6"
+    },
+    {
+      "address": "0x07C6",
+      "name": "ResetRuntimeObjectUpdateSharedFlag",
+      "start": "0xA3AC",
+      "end": "0xA3C6"
+    },
+    {
+      "address": "0x003C",
+      "name": "ResetPlayerMovementStateB",
+      "start": "0xA3AC",
+      "end": "0xA3C6"
+    },
+    {
+      "address": "0x0040",
+      "name": "ResetRoomCellAnimationCounter",
+      "start": "0xA3AC",
+      "end": "0xA3C6"
+    },
+    {
+      "address": "0x0021",
+      "name": "AnimatedRoomCellPointerLo",
+      "start": "0xA3D2",
+      "end": "0xA47F"
+    },
+    {
+      "address": "0x0022",
+      "name": "AnimatedRoomCellPointerHi",
+      "start": "0xA3D2",
+      "end": "0xA47F"
+    },
+    {
+      "address": "0x0040",
+      "name": "RoomCellAnimationCounter",
+      "start": "0xA3D2",
+      "end": "0xA41B"
+    },
+    {
+      "address": "0x0044",
+      "name": "AnimatedRoomCellUpdateAddressLo",
+      "start": "0xA3D2",
+      "end": "0xA47F"
+    },
+    {
+      "address": "0x0045",
+      "name": "AnimatedRoomCellUpdateAddressHi",
+      "start": "0xA3D2",
+      "end": "0xA47F"
+    },
+    {
+      "address": "0x0021",
+      "name": "RoomPalettePointerLo",
+      "start": "0xA351",
+      "end": "0xA35C"
+    },
+    {
+      "address": "0x0003",
+      "name": "ScoreRemainderLo",
+      "start": "0xA497",
+      "end": "0xA4DB"
+    },
+    {
+      "address": "0x0004",
+      "name": "ScoreRemainderHi",
+      "start": "0xA497",
+      "end": "0xA4DB"
+    },
+    {
+      "address": "0x000B",
+      "name": "PlayerScoreLo",
+      "start": "0xA4A5",
+      "end": "0xA4B0"
+    },
+    {
+      "address": "0x000C",
+      "name": "PlayerScoreHi",
+      "start": "0xA4A5",
+      "end": "0xA4B0"
+    },
+    {
+      "address": "0x0005",
+      "name": "PlayerInventoryCounts",
+      "size": 6,
+      "start": "0xA538",
+      "end": "0xA54B"
+    },
+    {
+      "address": "0x0022",
+      "name": "RoomPalettePointerHi",
+      "start": "0xA351",
+      "end": "0xA35C"
+    },
+    {
       "address": "0x000D",
       "name": "RoomMusicTrack1Condition",
       "start": "0xA38A",
@@ -420,12 +640,6 @@
     {
       "address": "0x000E",
       "name": "RoomMusicTrack3Condition",
-      "start": "0xA38A",
-      "end": "0xA3AC"
-    },
-    {
-      "address": "0x0772",
-      "name": "SuppressRoomMusicSelection",
       "start": "0xA38A",
       "end": "0xA3AC"
     },
@@ -455,12 +669,6 @@
       "end": "0xFDC5"
     },
     {
-      "address": "0x0013",
-      "name": "ActiveRoomRuntimeTail",
-      "start": "0xFBFE",
-      "end": "0xFDC5"
-    },
-    {
       "address": "0x0021",
       "name": "SaveLoadPpuStringPointerLo",
       "start": "0xFBFE",
@@ -470,12 +678,6 @@
       "address": "0x0022",
       "name": "SaveLoadPpuStringPointerHi",
       "start": "0xFBFE",
-      "end": "0xFDC5"
-    },
-    {
-      "address": "0x0772",
-      "name": "SaveLoadMusicSelectionState",
-      "start": "0xFD96",
       "end": "0xFDC5"
     },
     {

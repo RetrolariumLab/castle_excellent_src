@@ -26,7 +26,7 @@ payload, full image, and extracted CHR.
 | `check-assets` | alias for `verify-assets` |
 | `verify` | aggregate of every target above |
 | `rom-info` | print and validate identities for original and built images |
-| `release-check` | lint, tests, source regeneration, ROM, room, screen, input, audio, data-I/O, save-payload, mutable-cell, coordinate, transition, and collision checks |
+| `release-check` | lint, tests, source regeneration, ROM, room, screen, input, audio, data-I/O, save-payload, mutable-cell, coordinate, transition, collision, object-dispatch, new-game, room-runtime, room-cell-animation, and HUD-format checks |
 | `check` | alias for `release-check` |
 
 Focused region targets compare only their named output region. For example,

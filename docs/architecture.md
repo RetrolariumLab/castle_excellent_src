@@ -25,7 +25,7 @@ boards with bus conflicts.
 
 Reset waits for two PPU vblanks before setting the stack pointer. It compares
 RAM `$077E-$0780` with the first three bytes, `POW`, of the ROM text `POWER` at
-`$82C9-$82CD`. A mismatch is a cold boot: the sentinel, two-byte player score,
+`$82C9-$82CD`. A mismatch is a cold boot: the sentinel, two-byte high score,
 and two-byte reset counter are initialized. Both cold and warm paths then
 increment the counter before entering the title and room-loading sequence.
 
@@ -59,6 +59,14 @@ writes five score tiles at `$2096`, six inventory-counter tiles at `$2087` in
 source order `0,1,5,4,3,2`, and two lives tiles at `$20A8` in source order
 `1,0`. When the foreground formatter owns those buffers, the handler delegates
 to task one's first 20-cell room-row upload instead of reading partial data.
+
+The foreground formatter at `$A497-$A572` acquires that interlock, clears the
+eight-byte score buffer, and selects either high score `$0001-$0002` or current
+player score `$000B-$000C`. Repeated 16-bit subtraction by
+`10000,1000,100,10,1` produces five digit tiles with leading blank tiles. Its
+shared tail stores lives as ones/tens/hundreds scratch digits (NMI uploads only
+tens then ones), converts six inventory counts to single tiles saturated at
+nine, and finally releases the interlock.
 
 Tasks 1-20 upload one decoded room row each. Every fixed-size handler reads 20
 consecutive values from the 400-byte `RoomCells` matrix and maps each through
@@ -110,7 +118,7 @@ This proves the software protocol but not the exact external accessory, so
 module and symbol names remain peripheral-neutral.
 
 The wire payload after the transport preamble is exactly 394 bytes. Its first
-two bytes are current room and runtime-tail state, followed by 14 runtime bytes.
+two bytes are current room and player lives, followed by 14 runtime bytes.
 The next blocks read RAM in descending address order: 120 bytes from
 `$0607-$0590`, 150 from `$069D-$0608`, and 100 visited flags from
 `$0701-$069E`. Eight bytes `BEDEUTUN` terminate the payload. ROM stores the
@@ -120,7 +128,7 @@ nine-byte reverse text `GNUTUEDEB` at `$FC99`; the loops use indexes 8 through
 Load mirrors these traversals and validates the signature before rebuilding
 the room, objects, attributes, scroll, and mutable cell beneath the restored
 player position. Carry errors are checked for the room byte and every repeated
-region byte. The single runtime-tail byte at payload offset 1 is stored without
+region byte. The single lives byte at payload offset 1 is stored without
 a carry check, an original behavior retained by the reconstruction.
 
 ## Room pipeline
@@ -200,6 +208,39 @@ wrapper preserves the lower room-cell sampler's complete A/P result unless A
 is `$54,$55,$62`, or `$63`; those four mutable visual forms return `$53` with
 only carry forced clear. Thus visual restoration does not make the cell solid
 to these callers.
+
+`UpdateRuntimeObjects` then scans offsets `0,6,...,138` across the 24-record
+pool. It clears the shared update flag before every slot, masks type byte bit 7,
+and skips a zero result or Y at/after `$A0`. Valid indexes 1-41 select an
+interleaved little-endian pointer from the 42-entry table at `$95BF`. The code
+implements an indirect subroutine call by pushing `$95B2`, one byte before
+`AdvanceRuntimeObjectUpdate`, and jumping through `$31/$32`; the handler's
+`RTS` therefore lands at `$95B3` and continues with the next six-byte record.
+
+`InitializeNewGame` at `$A2B1` establishes one-based room `$47`, three lives,
+X zero, and Y `$98`. It resets pause/map/game-over and four sound-effect busy
+flags, copies 14 zero runtime bytes into the load mirror and snapshot A, clears
+120 mutable-state bytes, 150 object-state bytes, and all 100 visited flags, and
+then falls through to `UploadRoomPalette`. Two original partial-write details
+are preserved: load-mirror byte 14 is not touched, and snapshot B is invalidated
+by clearing only its room id while its eight payload bytes remain unchanged.
+The active runtime Y byte becomes `$98` only after the zero runtime image has
+already been copied to both mirrors. Palette upload tail-jumps through pointer
+`$C53D`, the typed `RoomPaletteData` table.
+
+`ResetRoomRuntimeState` clears ten fields spanning player movement, the current
+NMI task, both scroll bytes, the object-update shared flag, room frame count,
+and room animation count. `EnsureRoomAudioPlaying` then leaves audio untouched
+during game over or while either stream-pointer byte is nonzero; only the
+all-zero pointer in normal play tail-calls `SelectRoomAudio`.
+
+`AnimateRoomCells` then performs two address-ordered scans of the 400-byte room
+matrix on odd simulation frames. `AnimateFastRoomCells` rotates twelve cell
+values at `$35-$40` by decrementing each four-phase group and twelve values at
+`$56-$61` by incrementing them. The outer scan rotates `$45-$48` only when the
+incremented room-animation counter is nonnegative and divisible by four. Row
+redraws are queued through `RequestRoomCellRowUpdate`; only the leading group
+of each multi-cell fast family needs to queue the shared row.
 
 A 101-entry cumulative offset table assigns `ceil(object count / 8)` bytes to
 each room. The resulting `$8D` bytes at `$0608-$0694` preserve one bit for each

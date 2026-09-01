@@ -22,8 +22,12 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/objects/runtime_record_offsets.asm src/preservation/prg_8f29_949b.asm \
 	src/rendering/room_cell_updates.asm src/game/x_coordinates.asm \
 	src/game/rooms/finish_transition.asm src/game/collision/cell_samples.asm \
-	src/system/nmi_tasks.asm src/preservation/prg_9583_a35b.asm \
-	src/game/rooms/load_room.asm src/preservation/prg_a3ac_a589.asm \
+	src/system/nmi_tasks.asm src/game/objects/update_dispatch.asm \
+	src/preservation/prg_9613_a2b0.asm src/game/new_game.asm \
+	src/rendering/room_palette.asm \
+	src/game/rooms/load_room.asm src/game/rooms/runtime_reset.asm \
+	src/game/rooms/cell_animation.asm src/rendering/status_format.asm \
+	src/data/unreferenced_bit_index_helper.asm \
 	src/game/rooms/cell_coordinates.asm src/preservation/prg_a5dd_a66c.asm \
 	src/game/rooms/mutable_cell_lookup.asm src/preservation/prg_a6ca_a6d7.asm \
 	src/game/rooms/mutable_cell_predicates.asm \
@@ -86,7 +90,10 @@ TIMEOUT_FRAMES ?= 15000
 	validate-castle-map data-io-state validate-data-io save-data \
 	validate-save-data room-cell-state validate-room-cells x-coordinate-state \
 	validate-x-coordinates transition-state validate-transition \
-	collision-state validate-collision
+	collision-state validate-collision object-dispatch-state \
+	validate-object-dispatch new-game-state validate-new-game \
+	room-runtime-state validate-room-runtime room-cell-animation-state \
+	validate-room-cell-animation hud-format-state validate-hud-format
 
 all: verify
 
@@ -321,7 +328,37 @@ collision-state:
 validate-collision:
 	$(PYTHON) scripts/collision_cells.py --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision
+object-dispatch-state: $(ROM)
+	$(PYTHON) scripts/runtime_object_dispatch.py --image "$(ROM)" --pretty
+
+validate-object-dispatch: $(ROM)
+	$(PYTHON) scripts/runtime_object_dispatch.py --image "$(ROM)" --validate
+
+new-game-state: $(ROM)
+	$(PYTHON) scripts/new_game_state.py --image "$(ROM)" --pretty
+
+validate-new-game: $(ROM)
+	$(PYTHON) scripts/new_game_state.py --image "$(ROM)" --validate
+
+room-runtime-state:
+	$(PYTHON) scripts/room_runtime_reset.py --pretty
+
+validate-room-runtime:
+	$(PYTHON) scripts/room_runtime_reset.py --validate
+
+room-cell-animation-state: $(ROM)
+	$(PYTHON) scripts/room_cell_animation.py --image "$(ROM)" --pretty
+
+validate-room-cell-animation: $(ROM)
+	$(PYTHON) scripts/room_cell_animation.py --image "$(ROM)" --validate
+
+hud-format-state: $(ROM)
+	$(PYTHON) scripts/status_format.py --image "$(ROM)" --pretty
+
+validate-hud-format: $(ROM)
+	$(PYTHON) scripts/status_format.py --image "$(ROM)" --validate
+
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format
 
 check: release-check
 

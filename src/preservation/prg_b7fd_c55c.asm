@@ -603,7 +603,7 @@ Func_C20D:
     LDA #$0F
     STA APU_STATUS
     LDA #$01
-    STA a:$07D0
+    STA Pulse1SoundEffectBusy
     STA $EC
     LDA #$DF
     STA APU_PL1_VOL
@@ -614,15 +614,15 @@ Func_C20D:
     LDA #$A0
     STA APU_PL1_HI
     LDA #$00
-    STA a:$07D0
+    STA Pulse1SoundEffectBusy
     RTS
 
 Func_C233:
     LDA #$0F
     STA APU_STATUS
     LDA #$02
-    STA a:$07D1
-    STA a:$07D3
+    STA Pulse2SoundEffectBusy
+    STA NoiseSoundEffectBusy
     STA $EF
     STA $F5
     LDA #$83
@@ -641,15 +641,15 @@ Func_C233:
     STA APU_NOISE_HI
     LDA #$00
     STA $F0
-    STA a:$07D1
-    STA a:$07D3
+    STA Pulse2SoundEffectBusy
+    STA NoiseSoundEffectBusy
     RTS
 
 Func_C272:
     LDA #$0F
     STA APU_STATUS
     LDA #$03
-    STA a:$07D1
+    STA Pulse2SoundEffectBusy
     STA $EF
     LDA #$40
     STA APU_PL2_VOL
@@ -661,14 +661,14 @@ Func_C272:
     STA APU_PL2_HI
     LDA #$00
     STA $F0
-    STA a:$07D1
+    STA Pulse2SoundEffectBusy
     RTS
 
 Func_C29A:
     LDA #$0F
     STA APU_STATUS
     LDA #$04
-    STA a:$07D3
+    STA NoiseSoundEffectBusy
     STA $F5
     LDA #$18
     STA APU_NOISE_VOL
@@ -678,15 +678,15 @@ Func_C29A:
     STA APU_NOISE_HI
     LDA #$00
     STA $F6
-    STA a:$07D3
+    STA NoiseSoundEffectBusy
     RTS
 
 Func_C2BD:
     LDA #$0F
     STA APU_STATUS
     LDA #$05
-    STA a:$07D2
-    STA a:$07D3
+    STA TriangleSoundEffectBusy
+    STA NoiseSoundEffectBusy
     STA $F2
     STA $F5
     LDA #$30
@@ -704,14 +704,14 @@ Func_C2BD:
     LDA #$00
     STA $F3
     STA $F6
-    STA a:$07D2
-    STA a:$07D3
+    STA TriangleSoundEffectBusy
+    STA NoiseSoundEffectBusy
     RTS
 
 UpdateSoundEffects:
     LDA #$0F
     STA APU_STATUS
-    LDA a:$07D0
+    LDA Pulse1SoundEffectBusy
     BNE Label_C318
     LDA $EC
     BEQ Label_C318
@@ -725,7 +725,7 @@ UpdateSoundEffects:
     BEQ Label_C318
 
 Label_C318:
-    LDA a:$07D1
+    LDA Pulse2SoundEffectBusy
     BNE Label_C354
     LDA $EF
     BEQ Label_C354
@@ -758,7 +758,7 @@ Label_C347:
     STA $EF
 
 Label_C354:
-    LDA a:$07D2
+    LDA TriangleSoundEffectBusy
     BNE Label_C3B5
     LDA $F2
     BEQ Label_C3B5
@@ -808,7 +808,7 @@ Label_C3A3:
     JMP Label_C3B5
 
 Label_C3B5:
-    LDA a:$07D3
+    LDA NoiseSoundEffectBusy
     BNE Label_C428
     LDA $F5
     BEQ Label_C428

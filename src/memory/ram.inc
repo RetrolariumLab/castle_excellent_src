@@ -1,14 +1,24 @@
 ; Evidence-backed RAM aliases from the published Castle Excellent analysis
 ; These definitions do not yet rewrite operands in the raw preservation payload
 
-PlayerScoreLo = $0001
-PlayerScoreHi = $0002
+HighScoreLo = $0001
+HighScoreHi = $0002
+PlayerInventoryCounts = $0005
+PlayerScoreLo = $000B
+PlayerScoreHi = $000C
+PlayerLives = $0013
 
 CurrentRoomIndex = $0037
 PlayerXLo = $0038
 PlayerXHi = $0039
 PlayerY = $003A
 CurrentObjectOffset = $0041
+CurrentRuntimeObjectOffset = $0043
+
+; Contextual runtime-object dispatcher state at $9583-$95BE
+RuntimeObjectHandlerPointerLo = $0031
+RuntimeObjectHandlerPointerHi = $0032
+RuntimeObjectUpdateSharedFlag = $07C6
 
 ; Contextual result buffer for controller polling at $80FF-$8157
 PolledControllerButtons = $0020
@@ -49,6 +59,7 @@ FrameCounterModulo10 = $0768
 FrameCounterModulo11 = $0769
 FrameCounterModulo30 = $076A
 RoomFrameCounter = $076B
+PlayerTransitionCountdown = $0772
 StatusInventoryTiles = $076C
 StatusInventoryTileCount = 6
 
@@ -77,6 +88,8 @@ RuntimeObjectByte5 = $004F
 RuntimeObjectRecordSize = $06
 RuntimeObjectRecordBytes = $90
 RuntimeObjectRecordCount = 24
+RuntimeObjectTypeIndexMask = $7F
+RuntimeObjectVisibleYLimit = $A0
 
 RoomAttributeScratch = $0100
 RoomAttributeScratchSize = $80
@@ -101,6 +114,15 @@ RoomHeight = 20
 RoomCellCount = 400
 RoomCellPointerRowMask = $7F
 RoomCellPointerRowDivisor = 5
+DecrementingAnimatedCellFirst = $35
+DecrementingAnimatedCellEnd = $41
+DecrementingAnimatedCellRedrawEnd = $39
+SlowAnimatedCellFirst = $45
+SlowAnimatedCellEnd = $49
+IncrementingAnimatedCellFirst = $56
+IncrementingAnimatedCellEnd = $62
+IncrementingAnimatedCellRedrawEnd = $5A
+RoomCellSlowAnimationDividerMask = $03
 
 RoomMutableCellPersistentState = $0590
 RoomMutableCellPersistentStateBytes = $6C
@@ -132,10 +154,8 @@ RoomRuntimeLoadMirrorSize = 15
 
 ; Contextual save/load serialization views at $FBFE-$FDC4
 SaveLoadRuntimeState = $0005
-ActiveRoomRuntimeTail = $0013
 SaveLoadPpuStringPointerLo = $0021
 SaveLoadPpuStringPointerHi = $0022
-SaveLoadMusicSelectionState = $0772
 SaveLoadScreenState = $07CD
 SaveRuntimeStateSize = 14
 SaveMutableRegion = $0590
@@ -143,6 +163,11 @@ SaveMutableRegionSize = $78
 SaveObjectRegion = $0608
 SaveObjectRegionSize = $96
 SaveDataSignatureSize = 8
+NewGameRuntimeStateSize = 14
+NewGameRoomStateClearSize = 27
+InitialRoomNumber = $47
+InitialPlayerLives = 3
+InitialPlayerY = $98
 
 ; Contextual room-cell coordinate and mutable restoration scratch
 RoomCellPointerLo = $002B
@@ -169,11 +194,24 @@ NmiTaskRequestCount = 23
 NmiTaskPending = $FF
 StatusScoreTiles = $079D
 StatusScoreTileCount = 5
+StatusScoreBufferSize = 8
 StatusScoreTerminator = $07A2
 StatusLivesTiles = $07A5
 StatusLivesFormattedTileCount = 3
 StatusLivesUploadedTileCount = 2
 StatusTilesBusy = $07C8
+StatusTilesReady = $00
+StatusTilesLocked = $FF
+StatusDigitTileZero = $60
+StatusBlankTile = $FF
+StatusInventoryMaxValue = 9
+DecimalHundreds = 100
+DecimalTens = 10
+GameOverActive = $07CC
+Pulse1SoundEffectBusy = $07D0
+Pulse2SoundEffectBusy = $07D1
+TriangleSoundEffectBusy = $07D2
+NoiseSoundEffectBusy = $07D3
 
 CastleMapRoomCount = 100
 CastleMapColumns = 10
@@ -186,7 +224,41 @@ CastleMapPpuAddressHi = $0022
 ; Contextual room-audio selection aliases at $A38A-$A3AB
 RoomMusicTrack1Condition = $000D
 RoomMusicTrack3Condition = $000E
-SuppressRoomMusicSelection = $0772
+
+; Contextual new-game state at $A2B1-$A350
+NewGameRuntimeState = $0005
+NewGameTransitionState = $0014
+NewGamePlayerMotionState = $003C
+NewGamePlayerCellState = $077C
+NewGamePlayerMotionCounterA = $07C9
+NewGamePlayerMotionCounterB = $07CA
+NewGameCollisionProbeState = $07CB
+NewGameScreenState = $07CD
+
+; Contextual room-palette pointer at $A351-$A35B
+RoomPalettePointerLo = $0021
+RoomPalettePointerHi = $0022
+
+; Contextual room-runtime reset state at $A3AC-$A3C5
+ResetPlayerMovementStateA = $003B
+ResetPlayerMovementDelay = $003F
+ResetPendingScrollX = $0034
+ResetAppliedScrollX = $0035
+ResetPlayerMovementLatch = $0774
+ResetRuntimeObjectUpdateSharedFlag = $07C6
+ResetPlayerMovementStateB = $003C
+ResetRoomCellAnimationCounter = $0040
+
+; Contextual room-cell animation scan at $A3D2-$A47E
+AnimatedRoomCellPointerLo = $0021
+AnimatedRoomCellPointerHi = $0022
+RoomCellAnimationCounter = $0040
+AnimatedRoomCellUpdateAddressLo = $0044
+AnimatedRoomCellUpdateAddressHi = $0045
+
+; Contextual 16-bit decimal remainder at $A497-$A4DA
+ScoreRemainderLo = $0003
+ScoreRemainderHi = $0004
 
 ; Contextual zero-terminated PPU tile pointer at $B6C9-$B77B
 PpuTileStringPointerLo = $0021

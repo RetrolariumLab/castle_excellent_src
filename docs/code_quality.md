@@ -16,7 +16,10 @@ The quality targets follow the same contract as the sibling
 - `make release-check` adds deterministic disassembly, byte-identical ROM,
   room-data, room-screen-data, controller-input, audio-data, and Famicom
   data-I/O, save-payload, mutable-room-cell, and exhaustive coordinate-helper
-  verification, plus transition-state and collision-cell flag contracts
+  verification, plus transition-state, collision-cell flag, and runtime-object
+  dispatcher contracts, exact new-game initialization, room-runtime reset,
+  exhaustive room-cell animation mapping/cadence checks, and exhaustive HUD
+  decimal/life/inventory formatting
 - `make check` is the full release check
 
 The address-ordered PRG translation unit is split only at boundaries recorded

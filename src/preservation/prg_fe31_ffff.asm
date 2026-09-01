@@ -53,14 +53,14 @@ Label_FE79:
 
 Func_FED5:
     LDA $0B
-    CMP PlayerScoreLo
+    CMP HighScoreLo
     LDA $0C
-    SBC PlayerScoreHi
+    SBC HighScoreHi
     BCC Label_FEE7
     LDA $0B
-    STA PlayerScoreLo
+    STA HighScoreLo
     LDA $0C
-    STA PlayerScoreHi
+    STA HighScoreHi
 
 Label_FEE7:
     RTS

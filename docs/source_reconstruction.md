@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 39 semantic and 11 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 46 semantic and 10 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -32,7 +32,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 15,901 PRG bytes (48.53%): `$E45D-$E8DE`
+The promoted ranges currently cover 16,694 PRG bytes (50.95%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -98,9 +98,56 @@ complete processor status for ordinary cells and clears only carry for mapped
 cells. Independent models check every type byte and all 65,536 cell/status
 combinations.
 
+The object-dispatch slice adds `$9583-$9612`. It walks all 24 six-byte runtime
+records, clears the shared per-object update flag, strips the active high bit
+from each type, and skips zero types or Y positions at/after `$A0`. The
+remaining 1-41 type indexes select one of 42 interleaved little-endian handler
+pointers. A manual indirect call pushes `AdvanceRuntimeObjectUpdate - 1` before
+jumping through zero page, so each handler's `RTS` resumes the six-byte scan.
+The independent model verifies the exact table, both possible high-bit forms,
+the visibility boundary, and every record offset.
+
+The new-game slice adds `$A2B1-$A35B`. It selects one-based room `$47`, sets
+three lives and player position `(0,$98)`, resets gameplay, transition,
+game-over, collision, and sound-effect state, and clears the 120-byte mutable,
+150-byte object, and 100-byte visited-room stores. It invalidates snapshot B by
+clearing only its room id, preserving the remaining eight bytes. The 14-byte
+runtime state is copied to the load mirror and snapshot A before active Y is
+changed to `$98`; load-mirror byte 14 is likewise untouched. Fallthrough then
+uploads the typed room palette at `$C53D`. An independent model preserves and
+tests these non-obvious ordering and partial-clear contracts.
+
+The room-runtime reset slice adds `$A3AC-$A3D1`. It clears ten movement,
+scroll, scheduler, object-update, frame, and animation fields. The adjacent
+audio guard tail-calls `SelectRoomAudio` only when game-over is zero and the
+16-bit audio stream pointer is null. Its model checks all 65,536 pointer values,
+all 255 nonzero game-over values, exact reset ownership, and preservation of
+unrelated state.
+
+The room-cell animation slice adds `$A3D2-$A496`. On odd room simulation
+frames it scans all 400 cells and rotates three four-phase groups in
+`$35-$40` backward while rotating three groups in `$56-$61` forward. Only the
+first group of each family requests its row because the remaining grouped
+cells share that row upload. A second scan rotates `$45-$48` after each fourth
+odd frame while the incremented 8-bit animation counter is nonnegative; the
+negative half-cycle deliberately pauses that family. The model verifies all
+256 cell values, the exact 28 ROM table bytes, all 65,536 frame/counter pairs,
+and request coverage for rows 0-19.
+
+The HUD-format slice adds `$A497-$A572`. Cold-boot-cleared `$0001-$0002` is
+now proven as the persistent high score, while new-game-cleared and
+point-awarded `$000B-$000C` is the current player score. Either entry converts
+its 16-bit value through the typed `10000,1000,100,10,1` table into five digit
+tiles and blanks leading zeroes. The shared tail formats the 8-bit life count
+in ones/tens/hundreds scratch order, saturates all six inventory counters at
+nine, and releases the NMI interlock only after every buffer write. The model
+exhausts 65,536 scores, 256 life counts, and 1,536 inventory cases. The
+unreferenced code-shaped `$A573-$A589` tail is separately typed as data because
+neither static nor runtime evidence reaches it.
+
 The startup slice adds `$8225-$82CD`. `Reset` waits for two vblanks, establishes
 the stack, compares the three-byte RAM sentinel `POW` with the five-byte ROM
-signature `POWER`, clears score and reset-counter state only on a cold boot,
+signature `POWER`, clears high-score and reset-counter state only on a cold boot,
 then increments the 16-bit reset counter. The main loop names its map, pause,
 simulation, scroll, sprite, and sub-command phases. It loads a countdown of two;
 NMI decrements that byte to zero before the next main update. The independent

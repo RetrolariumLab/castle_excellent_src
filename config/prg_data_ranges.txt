@@ -5,7 +5,13 @@ text 82C9 82CD PowerOnSignature
 table 8F10 8F28 RuntimeObjectOffsetByCount
 data 94A5 94AB UnreferencedSingleRowIndexShimBytes
 data 94BC 94C2 UnreferencedAdjacentRowIndexShimBytes
+table 95BF 9612 RuntimeObjectHandlerPointers
+table A41B A41E SlowRoomCellAnimationFrames
+table A47F A48A DecrementingRoomCellAnimationFrames
+table A48B A496 IncrementingRoomCellAnimationFrames
+table A551 A55A DecimalPlaceValueBytes
 table A55B A562 MutableCellStateBitMasks
+data A573 A589 UnreferencedBitIndexHelperBytes
 data A596 A5A3 UnreferencedTileToPixelConversionBytes
 table AB4A ABAD RoomObjectCounts
 table ABAE AC12 RoomMutableCellStateOffsets

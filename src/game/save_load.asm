@@ -5,7 +5,7 @@
 
 SaveGameState:
     JSR DisableNmi
-    LDA ActiveRoomRuntimeTail
+    LDA PlayerLives
     BNE CheckSaveStateAvailable
     JMP UpdateSubCommandMenu
 
@@ -15,7 +15,7 @@ CheckSaveStateAvailable:
     JMP UpdateSubCommandMenu
 
 BeginSaveTransfer:
-    DEC ActiveRoomRuntimeTail
+    DEC PlayerLives
     JSR ClearRoomNametablesAndSprites
     LDA #>SaveTransferMessage
     STA SaveLoadPpuStringPointerHi
@@ -152,7 +152,7 @@ LoadGameState:
     STA CurrentRoomIndex
     STA CurrentRoomState
     JSR ReceiveDataByte
-    STA ActiveRoomRuntimeTail
+    STA PlayerLives
     LDX #$00
 
 ReceiveSavedRuntimeState:
@@ -209,7 +209,7 @@ VerifySaveDataSignature:
 
 RebuildLoadedRoom:
     LDA #$00
-    STA SaveLoadMusicSelectionState
+    STA PlayerTransitionCountdown
     LDX CurrentRoomIndex
     DEX
     JSR DecodeRoom

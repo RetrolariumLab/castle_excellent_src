@@ -4,6 +4,12 @@
     {
       "address": "0x0001",
       "size": 2,
+      "name": "HighScore",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x000B",
+      "size": 2,
       "name": "PlayerScore",
       "confidence": "high"
     },

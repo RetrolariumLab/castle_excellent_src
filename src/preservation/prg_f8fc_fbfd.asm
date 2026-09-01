@@ -95,7 +95,7 @@ Label_F983:
     RTS
 
 HandleSubCommandInput:
-    LDA a:$07CC
+    LDA GameOverActive
     BEQ Label_F9B3
     RTS
 
@@ -338,7 +338,7 @@ SaveTransferMessage:
     .byte $83, $71, $86, $79, $7E, $77, $00
 
 Label_FBAC:
-    LDA $13
+    LDA PlayerLives
     BNE Label_FBB3
     JMP UpdateSubCommandMenu
 
@@ -359,13 +359,13 @@ Label_FBC0:
     STA PlayerXHi
     LDA $12
     STA PlayerY
-    DEC $13
+    DEC PlayerLives
     LDA #$00
     STA a:$07CD
     JMP RebuildLoadedRoom
 
 Label_FBD6:
-    LDA $13
+    LDA PlayerLives
     BNE Label_FBDD
     JMP UpdateSubCommandMenu
 

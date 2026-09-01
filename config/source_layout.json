@@ -20,9 +20,15 @@
         "../game/rooms/finish_transition.asm",
         "../game/collision/cell_samples.asm",
         "../system/nmi_tasks.asm",
-        "../preservation/prg_9583_a35b.asm",
+        "../game/objects/update_dispatch.asm",
+        "../preservation/prg_9613_a2b0.asm",
+        "../game/new_game.asm",
+        "../rendering/room_palette.asm",
         "../game/rooms/load_room.asm",
-        "../preservation/prg_a3ac_a589.asm",
+        "../game/rooms/runtime_reset.asm",
+        "../game/rooms/cell_animation.asm",
+        "../rendering/status_format.asm",
+        "../data/unreferenced_bit_index_helper.asm",
         "../game/rooms/cell_coordinates.asm",
         "../preservation/prg_a5dd_a66c.asm",
         "../game/rooms/mutable_cell_lookup.asm",
@@ -132,10 +138,28 @@
       "title": "NMI task-request reset"
     },
     {
-      "path": "src/preservation/prg_9583_a35b.asm",
+      "path": "src/game/objects/update_dispatch.asm",
       "start": "0x9583",
+      "end": "0x9613",
+      "title": "Runtime-object update dispatcher and handler table"
+    },
+    {
+      "path": "src/preservation/prg_9613_a2b0.asm",
+      "start": "0x9613",
+      "end": "0xA2B1",
+      "title": "Preservation runtime-object handlers"
+    },
+    {
+      "path": "src/game/new_game.asm",
+      "start": "0xA2B1",
+      "end": "0xA351",
+      "title": "New-game state and persistent-region initialization"
+    },
+    {
+      "path": "src/rendering/room_palette.asm",
+      "start": "0xA351",
       "end": "0xA35C",
-      "title": "Preservation PRG before room loading"
+      "title": "Room palette pointer setup and upload"
     },
     {
       "path": "src/game/rooms/load_room.asm",
@@ -144,10 +168,28 @@
       "title": "Top-level room loading and audio selection"
     },
     {
-      "path": "src/preservation/prg_a3ac_a589.asm",
+      "path": "src/game/rooms/runtime_reset.asm",
       "start": "0xA3AC",
+      "end": "0xA3D2",
+      "title": "Room-runtime reset and conditional room-audio restart"
+    },
+    {
+      "path": "src/game/rooms/cell_animation.asm",
+      "start": "0xA3D2",
+      "end": "0xA497",
+      "title": "Room-cell animation scans and frame tables"
+    },
+    {
+      "path": "src/rendering/status_format.asm",
+      "start": "0xA497",
+      "end": "0xA573",
+      "title": "HUD score, lives, and inventory formatting"
+    },
+    {
+      "path": "src/data/unreferenced_bit_index_helper.asm",
+      "start": "0xA573",
       "end": "0xA58A",
-      "title": "Preservation PRG before room-cell coordinate helpers"
+      "title": "Unreferenced bit-index helper bytes"
     },
     {
       "path": "src/game/rooms/cell_coordinates.asm",

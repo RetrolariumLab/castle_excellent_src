@@ -43,7 +43,7 @@ unnamed until hardware evidence distinguishes the two Japanese interfaces.
 
 `Reset` and the main loop at `$8225-$82CD` now live in
 `src/system/startup.asm`. Reset waits for two vblanks, establishes the stack,
-checks the `POW` RAM sentinel against the `POWER` ROM text, clears score and
+checks the `POW` RAM sentinel against the `POWER` ROM text, clears high score and
 counter state only after a signature mismatch, and increments a persistent
 16-bit reset counter. The main loop runs map and pause input first, then player,
 object, collision, room-cell animation, scrolling, sprite, and sub-command
@@ -86,6 +86,46 @@ module returns carry clear exactly for types `$90-$95`; its sampler wrapper
 maps mutable forms `$54/$55/$62/$63` to `$53`, preserving every incoming status
 bit except the deliberately cleared carry. Independent models cover every
 input byte and every cell/status pair.
+
+`$9583-$9612` now owns the frame-level runtime-object dispatcher. It visits all
+24 records at six-byte offsets, clears the shared update flag for each, ignores
+inactive type zero and Y positions at/after `$A0`, and indexes 42 handler
+pointers with `type & $7F`. Its indirect call is a deliberate synthetic JSR:
+the dispatcher pushes the byte before its advance label and jumps through the
+zero-page pointer, letting every handler return into the next-record scan.
+The exact pointer table and selection domain are independently validated.
+
+At the other end of the object-handler preservation range, `$A2B1-$A35B` is
+now split into new-game and palette modules. Initialization selects room `$47`,
+sets three lives and player `(X,Y)=(0,$98)`, resets gameplay and all four SFX
+busy flags, and clears the two physical save regions plus every visited flag.
+It copies a zero 14-byte runtime image before updating active Y, preserves load
+mirror byte 14, and invalidates snapshot B by clearing only its room id. The
+fallthrough palette module passes typed table `$C53D` to the shared uploader.
+The independent model checks the exact loop sizes, operand bytes, ordering, and
+both preserved tails.
+
+The following `$A3AC-$A3D1` module owns room-runtime reset and audio continuity.
+It clears ten explicitly scoped runtime fields. Its audio helper restarts room
+music only when `GameOverActive == 0` and both audio stream pointer bytes are
+zero; otherwise it returns without changing the current audio state. The model
+exhausts the complete 16-bit pointer domain and every nonzero game-over value.
+
+`$A3D2-$A496` is now the semantic room-cell animation module. Both passes walk
+exactly `$0400-$058F`. On odd room frames the fast pass rotates three
+decrementing four-phase groups in `$35-$40` and three incrementing groups in
+`$56-$61`; their leading groups queue the containing NMI row. The intermittent
+pass rotates `$45-$48` every fourth odd frame during the nonnegative half of
+its 8-bit counter. Three typed tables contain the exact 28 replacement bytes,
+and the independent model checks their complete value and cadence domains.
+
+`$A497-$A572` now owns foreground HUD formatting. `$0001-$0002` is the
+cold-boot-preserved high score; `$000B-$000C` is the new-game-cleared current
+score updated by point awards. Both entries join the same five-digit decimal
+converter. The common tail formats three life scratch digits, clamps the six
+inventory counters to nine, and clears `StatusTilesBusy` only when all output
+tiles are ready. The next 23 code-shaped bytes have no static or runtime entry
+and are explicitly typed in `src/data/unreferenced_bit_index_helper.asm`.
 
 The indirect object dispatcher uses `ObjectHandlerTable` at `$AD93`. Most
 individual handlers remain generically named until object-specific traces

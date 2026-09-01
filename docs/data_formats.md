@@ -12,7 +12,7 @@ transport-specific preamble:
 | Offset | Size | Contents | RAM traversal |
 | ---: | ---: | --- | --- |
 | 0 | 1 | current one-based room index | `$0037` |
-| 1 | 1 | runtime tail byte | `$0013` / mirror `$0744` |
+| 1 | 1 | player lives | `$0013` / mirror `$0744` |
 | 2 | 14 | active runtime state | ascending `$0005-$0012` |
 | 16 | 120 | mutable save region | descending `$0607-$0590` |
 | 136 | 150 | object save region | descending `$069D-$0608` |
@@ -32,6 +32,14 @@ fields and validates the exact physical and wire signatures.
 The receiver checks carry after the room byte and every looped byte, but not
 after payload byte 1. This unchecked status is part of the original binary
 contract and remains unchanged.
+
+New-game initialization clears the same physical 120-byte mutable and 150-byte
+object regions that save/load transfers, plus all 100 visited flags. It clears
+the current room state, load mirror, and snapshot A as one 27-byte span.
+Snapshot B is not part of that span: only its room-id byte is zeroed, which
+invalidates the record while preserving its eight payload bytes. Likewise,
+only 14 of the 15 runtime load-mirror bytes are initialized. These partial
+writes are modeled explicitly rather than treating adjacent storage as zero.
 
 ## Controller button byte
 
@@ -131,6 +139,13 @@ targets formatted score tiles at RAM `$079D`; `$07A2` is set to zero before
 the copy. `scripts/room_screen_data.py` checks the four exact boundaries, all
 five immediate pointer loads, 45 tile bytes, and the 16-byte attribute tail.
 
+Foreground HUD formatting uses paired high/low tables at `$A551-$A55A` for
+16-bit place values `10000,1000,100,10,1`. Five raw decimal digits become tile
+indexes `$60-$69`; leading zeroes become `$FF`. The eight-byte score buffer at
+`$079D` retains three zero tail bytes so `$07A2` also serves as the terminated
+room-load string boundary. Lives use three scratch bytes in ones/tens/hundreds
+order, while inventory uses six single digits saturated at nine.
+
 ## Static object stream
 
 The combined room-object stream occupies `$EF6B-$F8FB`. A room consists of:
@@ -216,6 +231,13 @@ sampler's A and complete processor status unchanged. For the four mapped cells
 it restores the sampler status first and then clears carry, so no other status
 flag is lost. The adjacent predicate's carry-clear set is exactly runtime types
 `$90-$95`.
+
+The 84 bytes at `$95BF-$9612` are 42 little-endian runtime-handler pointers.
+The dispatcher masks a record type with `$7F`, doubles the resulting index, and
+reads the low byte at the even address and high byte at the following odd
+address. Index zero is inactive; valid dispatched indexes are 1-41. Multiple
+indexes deliberately share the no-op `$A2A9` handler or common behavior at
+`$9674`.
 
 ## Music track sets and textual streams
 

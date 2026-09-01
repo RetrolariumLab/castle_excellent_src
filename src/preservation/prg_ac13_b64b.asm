@@ -49,7 +49,7 @@ Func_AC50:
     RTS
 
 Func_AC60:
-    LDA a:$0772
+    LDA PlayerTransitionCountdown
     BEQ Label_AC9E
     LDA RoomFrameCounter
     LSR A

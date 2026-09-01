@@ -33,7 +33,7 @@ SelectRoomAudio:
     JSR ClearSoundRequests
 
 CheckRoomMusicSuppression:
-    LDA SuppressRoomMusicSelection
+    LDA PlayerTransitionCountdown
     BEQ CheckRoomMusicTrack3
     RTS
 

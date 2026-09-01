@@ -18,9 +18,15 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/rooms/finish_transition.asm` | `$952D-$9551` | room-transition state mirroring and rendering resume |
 | `src/game/collision/cell_samples.asm` | `$9552-$9577` | runtime-type filtering and mutable-cell collision normalization |
 | `src/system/nmi_tasks.asm` | `$9578-$9582` | reset all 23 NMI task requests |
-| `src/preservation/prg_9583_a35b.asm` | `$9583-$A35B` | unresolved object handlers and gameplay logic |
+| `src/game/objects/update_dispatch.asm` | `$9583-$9612` | 24-record update dispatcher and 42 handler pointers |
+| `src/preservation/prg_9613_a2b0.asm` | `$9613-$A2B0` | unresolved object handlers and gameplay logic |
+| `src/game/new_game.asm` | `$A2B1-$A350` | new-game state and persistent-region initialization |
+| `src/rendering/room_palette.asm` | `$A351-$A35B` | room palette pointer setup and upload |
 | `src/game/rooms/load_room.asm` | `$A35C-$A3AB` | top-level room loading and audio selection |
-| `src/preservation/prg_a3ac_a589.asm` | `$A3AC-$A589` | unresolved room/gameplay helpers before coordinate conversion |
+| `src/game/rooms/runtime_reset.asm` | `$A3AC-$A3D1` | room-runtime reset and conditional room-audio restart |
+| `src/game/rooms/cell_animation.asm` | `$A3D2-$A496` | full-room animation scans, cadence, and phase tables |
+| `src/rendering/status_format.asm` | `$A497-$A572` | score, lives, inventory, and HUD interlock formatting |
+| `src/data/unreferenced_bit_index_helper.asm` | `$A573-$A589` | typed code-shaped bytes with no proven entry |
 | `src/game/rooms/cell_coordinates.asm` | `$A58A-$A5DC` | pixel/tile conversion and 20x20 room-cell addressing |
 | `src/preservation/prg_a5dd_a66c.asm` | `$A5DD-$A66C` | unresolved gameplay helpers before mutable-cell lookup |
 | `src/game/rooms/mutable_cell_lookup.asm` | `$A66D-$A6C9` | mutable-cell anchor lookup and one-based ordinal calculation |
@@ -59,9 +65,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 50 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 56 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 49 in CPU-address order. Ghidra-defined instructions are emitted
+following 55 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

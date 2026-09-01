@@ -45,7 +45,7 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Signature: ROM text `GNUTUEDEB` at `$FC99-$FCA1` is indexed 8 through 1 to
   produce the eight wire bytes `BEDEUTUN`
 - Load behavior: the room, 14 runtime bytes, all three blocks, and signature
-  check carry; runtime-tail byte at offset 1 does not check receive status
+  check carry; player-lives byte at offset 1 does not check receive status
 - Evidence: semantic `$FBFE-$FDC4`, symmetric send/receive loops, lossless
   394-byte codec, exact ROM signature validation, and byte-identical build
 
@@ -53,7 +53,7 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 
 - Status: resolved
 - Known: ROM `$82C9-$82CD` is `POWER`; Reset compares/copies `POW` at
-  `$077E-$0780`, clears score and the 16-bit reset counter only on mismatch,
+  `$077E-$0780`, clears high score and the 16-bit reset counter only on mismatch,
   then increments the counter on every reset
 - Frame gate: the foreground writes two to `$FC`; NMI decrements nonzero values,
   and the main loop waits for zero before the next update
@@ -93,6 +93,22 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   delegates to the first 20-cell room-row task at `$C8BC`
 - Evidence: semantic `$C804-$C8BB`, sized RAM buffers, exact handler tables,
   independent write-order model, runtime CDL, and byte-identical build
+
+### RENDER-004 - foreground status formatting
+
+- Status: resolved
+- Scores: `$0001-$0002` is high score and `$000B-$000C` current player score;
+  both use five decimal places `10000,1000,100,10,1`, tile base `$60`, and
+  leading blank `$FF`
+- Lives: three scratch digits are stored ones/tens/hundreds; NMI consumes tens
+  then ones, so the physical hundreds byte is formatting-only
+- Inventory: six counters at `$0005-$000A` each saturate at nine before tile
+  conversion
+- Interlock: `$07C8=$FF` precedes an eight-byte score-buffer clear and `$00`
+  is written only after score, lives, and inventory are complete
+- Evidence: semantic `$A497-$A572`, exact decimal tables, corrected score
+  call/compare/update sites, all 65,536 scores, 256 life counts, 1,536 inventory
+  cases, deterministic regeneration, and byte-identical build
 
 ### RENDER-003 - NMI room-row upload layout
 
@@ -182,6 +198,61 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Evidence: semantic `$952D-$9577`, contextual RAM aliases, all 256 runtime
   types, all 65,536 cell/status combinations, deterministic regeneration, and
   byte-identical build
+
+### OBJ-003 - runtime-object frame dispatcher
+
+- Status: resolved
+- Pool traversal: exactly 24 records at offsets `0,6,...,138`; the shared
+  update flag is cleared before inspecting every record
+- Selection: `type & $7F`; zero is inactive, Y at/after `$A0` is skipped, and
+  valid type indexes 1-41 select one of 42 little-endian pointers at `$95BF`
+- Call contract: push `AdvanceRuntimeObjectUpdate - 1`, jump indirectly through
+  `$31/$32`, and let the handler's `RTS` resume the record scan
+- Evidence: semantic `$9583-$9612`, exact 84-byte table decode, both high-bit
+  forms for every table index, all record offsets, deterministic regeneration,
+  and byte-identical build
+
+### GAME-001 - new-game state initialization
+
+- Status: resolved
+- Initial values: one-based room `$47`, three lives, player X zero and Y `$98`,
+  pause/map/game-over/transition countdown zero, status buffers busy `$FF`
+- Cleared storage: 14-byte runtime state copied to load mirror and snapshot A,
+  120 mutable bytes, 150 object bytes, 27 bytes spanning current room state
+  through snapshot A, and all 100 visited flags
+- Preserved details: load-mirror byte 14 is untouched; snapshot B bytes 1-8 are
+  retained while its room id is cleared; active runtime Y changes only after
+  the zero state has been mirrored
+- Palette: fallthrough `$A351` uploads typed `RoomPaletteData` at `$C53D`
+- Evidence: semantic `$A2B1-$A35B`, HUD/save/death uses proving `$13` as lives,
+  channel-specific SFX consumers, ten exact ROM operands, independent state
+  model, deterministic regeneration, and byte-identical build
+
+### GAME-002 - room-runtime reset and audio continuity
+
+- Status: resolved
+- Reset: ten movement, NMI-task, scroll, object-update, frame, and animation
+  fields are set to zero at `$A3AC-$A3C5`
+- Audio guard: game over or any nonzero byte in the current 16-bit stream
+  pointer returns immediately; normal play with a null pointer tail-calls
+  `SelectRoomAudio`
+- Evidence: semantic `$A3AC-$A3D1`, scoped RAM aliases, all 65,536 pointer
+  values, every nonzero game-over byte, unrelated-state preservation,
+  deterministic regeneration, and byte-identical build
+
+### GAME-003 - room-cell animation families and cadence
+
+- Status: resolved
+- Fast pass: every odd room simulation frame scans all 400 cells; `$35-$40`
+  contains three phase-decrementing groups and `$56-$61` three
+  phase-incrementing groups
+- Slow pass: `$45-$48` advances when the incremented 8-bit animation counter
+  is nonnegative and divisible by four; negative counter values pause it
+- Rendering: every slow cell queues its row; only `$35-$38` and `$56-$59`
+  queue rows for the grouped fast families
+- Evidence: semantic `$A3D2-$A496`, three typed tables totaling 28 bytes,
+  scoped scan/update pointers, all 256 cell values, 65,536 frame/counter cases,
+  all 20 redraw rows, deterministic regeneration, and byte-identical build
 
 ### DATA-004 - persistent room-state bitmaps
 

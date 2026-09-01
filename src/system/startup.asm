@@ -38,8 +38,8 @@ CopyPowerOnSignature:
     DEX
     BPL CopyPowerOnSignature
     LDA #$00
-    STA PlayerScoreLo
-    STA PlayerScoreHi
+    STA HighScoreLo
+    STA HighScoreHi
     STA ResetCounterLo
     STA ResetCounterHi
 
@@ -67,7 +67,7 @@ MainFrameLoop:
     JSR HandleCastleMapInput
     LDA CastleMapMode
     BNE WaitForMainFrame
-    JSR FormatHighScoreTiles
+    JSR FormatPlayerStatusTiles
     JSR HandlePauseInput
     LDA PauseMode
     BNE RenderMainFrame

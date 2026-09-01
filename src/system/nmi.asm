@@ -61,14 +61,14 @@ WaitForOamBuildTiming:
 UpdateScrollLatch:
     LDA ScrollUpdatePending
     BEQ ApplyHorizontalScroll
-    LDA PendingScrollX
-    STA AppliedScrollX
+    LDA ResetPendingScrollX
+    STA ResetAppliedScrollX
 
 ApplyHorizontalScroll:
     LDA CastleMapMode
     BNE AdvanceNmiTaskScheduler
     LDA PPU_STATUS
-    LDA AppliedScrollX
+    LDA ResetAppliedScrollX
     STA PPU_SCROLL
     LDA #$00
     STA PPU_SCROLL

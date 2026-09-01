@@ -4,7 +4,7 @@
 ; Keep byte-identical through make verify
 
 UpdatePlayerInputAndMovement:
-    LDA a:$0772
+    LDA PlayerTransitionCountdown
     BEQ Label_82D4
     RTS
 
@@ -1117,9 +1117,9 @@ Label_8D19:
     TYA
     EOR $27
     BEQ Label_8D27
-    INC $13
+    INC PlayerLives
     BNE Label_8D27
-    DEC $13
+    DEC PlayerLives
 
 Label_8D27:
     RTS
@@ -1149,23 +1149,23 @@ Func_8D2A:
 
 Label_8DB0:
     LDA $0E
-    ORA a:$0772
+    ORA PlayerTransitionCountdown
     BEQ Label_8DB8
     RTS
 
 Label_8DB8:
     LDA #$80
-    STA a:$0772
+    STA PlayerTransitionCountdown
     LDA #$00
     STA a:$0779
-    LDA $13
+    LDA PlayerLives
     BEQ Label_8DCB
-    DEC $13
+    DEC PlayerLives
     JMP Label_8DD0
 
 Label_8DCB:
     LDA #$FF
-    STA a:$07CC
+    STA GameOverActive
 
 Label_8DD0:
     JMP LoadAudioTrackSet2

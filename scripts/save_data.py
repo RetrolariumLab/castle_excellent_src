@@ -35,7 +35,7 @@ class SaveDataError(ValueError):
 @dataclass(frozen=True)
 class SaveState:
     room_index: int
-    runtime_tail: int
+    player_lives: int
     runtime_state: bytes
     mutable_region: bytes
     object_region: bytes
@@ -54,14 +54,14 @@ def _validate_region(data: bytes, size: int, name: str) -> None:
 
 def encode_payload(state: SaveState) -> bytes:
     _validate_byte(state.room_index, "room index")
-    _validate_byte(state.runtime_tail, "runtime tail")
+    _validate_byte(state.player_lives, "player lives")
     _validate_region(state.runtime_state, RUNTIME_STATE_SIZE, "runtime state")
     _validate_region(state.mutable_region, MUTABLE_REGION_SIZE, "mutable region")
     _validate_region(state.object_region, OBJECT_REGION_SIZE, "object region")
     _validate_region(state.visited_flags, VISITED_FLAGS_SIZE, "visited flags")
     payload = b"".join(
         (
-            bytes((state.room_index, state.runtime_tail)),
+            bytes((state.room_index, state.player_lives)),
             state.runtime_state,
             state.mutable_region[::-1],
             state.object_region[::-1],
@@ -81,7 +81,7 @@ def decode_payload(payload: bytes) -> SaveState:
         raise SaveDataError("save payload signature mismatch")
     return SaveState(
         room_index=payload[0],
-        runtime_tail=payload[1],
+        player_lives=payload[1],
         runtime_state=payload[RUNTIME_OFFSET:MUTABLE_OFFSET],
         mutable_region=payload[MUTABLE_OFFSET:OBJECT_OFFSET][::-1],
         object_region=payload[OBJECT_OFFSET:VISITED_OFFSET][::-1],
@@ -111,7 +111,7 @@ def validate_save_data(image: bytes) -> dict[str, object]:
         raise SaveDataError("ROM signature traversal does not produce the wire signature")
     state = SaveState(
         room_index=100,
-        runtime_tail=0xA5,
+        player_lives=0xA5,
         runtime_state=bytes(range(RUNTIME_STATE_SIZE)),
         mutable_region=bytes(value & 0xFF for value in range(MUTABLE_REGION_SIZE)),
         object_region=bytes((value * 3) & 0xFF for value in range(OBJECT_REGION_SIZE)),
@@ -124,7 +124,7 @@ def validate_save_data(image: bytes) -> dict[str, object]:
         "payload_size": PAYLOAD_SIZE,
         "field_offsets": {
             "room_index": 0,
-            "runtime_tail": 1,
+            "player_lives": 1,
             "runtime_state": RUNTIME_OFFSET,
             "mutable_region": MUTABLE_OFFSET,
             "object_region": OBJECT_OFFSET,

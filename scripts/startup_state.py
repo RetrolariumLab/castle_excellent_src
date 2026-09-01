@@ -25,15 +25,20 @@ class StartupStateError(ValueError):
 @dataclass(frozen=True)
 class ResetState:
     signature: bytes
-    score_lo: int
-    score_hi: int
+    high_score_lo: int
+    high_score_hi: int
     counter_lo: int
     counter_hi: int
 
     def __post_init__(self) -> None:
         if len(self.signature) != len(CHECKED_POWER_ON_SIGNATURE):
             raise StartupStateError("reset signature RAM must contain exactly 3 bytes")
-        for field_name in ("score_lo", "score_hi", "counter_lo", "counter_hi"):
+        for field_name in (
+            "high_score_lo",
+            "high_score_hi",
+            "counter_lo",
+            "counter_hi",
+        ):
             value = getattr(self, field_name)
             if not 0 <= value <= 0xFF:
                 raise StartupStateError(f"{field_name} is not a byte: {value}")
@@ -55,8 +60,8 @@ def apply_reset(state: ResetState) -> ResetResult:
     return ResetResult(
         ResetState(
             state.signature,
-            state.score_lo,
-            state.score_hi,
+            state.high_score_lo,
+            state.high_score_hi,
             counter & 0xFF,
             counter >> 8,
         ),

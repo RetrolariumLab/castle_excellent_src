@@ -38,6 +38,324 @@
       "evidence": "repeated subtraction divides the quarter-scaled pointer by five"
     },
     {
+      "instruction": "0x9590",
+      "expected": "#$7F",
+      "operand": "#RuntimeObjectTypeIndexMask",
+      "evidence": "the dispatcher removes the active high bit before indexing 42 logical runtime types"
+    },
+    {
+      "instruction": "0x9596",
+      "expected": "#$A0",
+      "operand": "#RuntimeObjectVisibleYLimit",
+      "evidence": "objects at or below the 160-pixel boundary are skipped by the frame dispatcher"
+    },
+    {
+      "instruction": "0x95A3",
+      "expected": "a:$95C0,X",
+      "operand": "RuntimeObjectHandlerPointers + 1,X",
+      "evidence": "odd bytes in the interleaved pointer table are handler address high bytes"
+    },
+    {
+      "instruction": "0x95A8",
+      "expected": "#$95",
+      "operand": "#>(AdvanceRuntimeObjectUpdate - 1)",
+      "evidence": "manual indirect call pushes the high byte of the RTS return address"
+    },
+    {
+      "instruction": "0x95AB",
+      "expected": "#$B2",
+      "operand": "#<(AdvanceRuntimeObjectUpdate - 1)",
+      "evidence": "manual indirect call pushes the low byte of the RTS return address"
+    },
+    {
+      "instruction": "0x95B6",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the frame dispatcher advances exactly one six-byte runtime record"
+    },
+    {
+      "instruction": "0x95BA",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the dispatcher stops after all 144 bytes in the 24-record runtime pool"
+    },
+    {
+      "instruction": "0xA3E1",
+      "expected": "#$03",
+      "operand": "#RoomCellSlowAnimationDividerMask",
+      "evidence": "the intermittent animation scan runs after every fourth odd room frame"
+    },
+    {
+      "instruction": "0xA3E5",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "the slow animation scan starts at the decoded 20-by-20 room buffer"
+    },
+    {
+      "instruction": "0xA3E9",
+      "expected": "#$00",
+      "operand": "#<RoomCells",
+      "evidence": "the slow animation scan starts at the decoded 20-by-20 room buffer"
+    },
+    {
+      "instruction": "0xA3F1",
+      "expected": "#$45",
+      "operand": "#SlowAnimatedCellFirst",
+      "evidence": "cell values $45-$48 form the four-frame intermittent animation range"
+    },
+    {
+      "instruction": "0xA3F5",
+      "expected": "#$49",
+      "operand": "#SlowAnimatedCellEnd",
+      "evidence": "the intermittent animation range has an exclusive upper bound of $49"
+    },
+    {
+      "instruction": "0xA3FA",
+      "expected": "a:$A3D6,X",
+      "operand": "SlowRoomCellAnimationFrames - SlowAnimatedCellFirst,X",
+      "evidence": "subtracting the first cell value converts X=$45-$48 into the four-byte frame table"
+    },
+    {
+      "instruction": "0xA412",
+      "expected": "#$90",
+      "operand": "#<RoomMutableCellPersistentState",
+      "evidence": "the scan ends immediately after all 400 bytes of RoomCells"
+    },
+    {
+      "instruction": "0xA416",
+      "expected": "#$05",
+      "operand": "#>RoomMutableCellPersistentState",
+      "evidence": "the scan end is the first byte of the following persistent-state region"
+    },
+    {
+      "instruction": "0xA425",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "the fast animation scan starts at the decoded 20-by-20 room buffer"
+    },
+    {
+      "instruction": "0xA429",
+      "expected": "#$00",
+      "operand": "#<RoomCells",
+      "evidence": "the fast animation scan starts at the decoded 20-by-20 room buffer"
+    },
+    {
+      "instruction": "0xA431",
+      "expected": "#$35",
+      "operand": "#DecrementingAnimatedCellFirst",
+      "evidence": "the phase-decrementing animation family begins at cell value $35"
+    },
+    {
+      "instruction": "0xA435",
+      "expected": "#$41",
+      "operand": "#DecrementingAnimatedCellEnd",
+      "evidence": "the phase-decrementing animation family covers twelve values through $40"
+    },
+    {
+      "instruction": "0xA43A",
+      "expected": "a:$A44A,X",
+      "operand": "DecrementingRoomCellAnimationFrames - DecrementingAnimatedCellFirst,X",
+      "evidence": "subtracting $35 converts the cell value into the phase-decrementing frame table"
+    },
+    {
+      "instruction": "0xA43F",
+      "expected": "#$39",
+      "operand": "#DecrementingAnimatedCellRedrawEnd",
+      "evidence": "only the leading four-value group requests the shared row redraw"
+    },
+    {
+      "instruction": "0xA451",
+      "expected": "#$56",
+      "operand": "#IncrementingAnimatedCellFirst",
+      "evidence": "the phase-incrementing animation family begins at cell value $56"
+    },
+    {
+      "instruction": "0xA455",
+      "expected": "#$62",
+      "operand": "#IncrementingAnimatedCellEnd",
+      "evidence": "the phase-incrementing animation family covers twelve values through $61"
+    },
+    {
+      "instruction": "0xA45A",
+      "expected": "a:$A435,X",
+      "operand": "IncrementingRoomCellAnimationFrames - IncrementingAnimatedCellFirst,X",
+      "evidence": "subtracting $56 converts the cell value into the phase-incrementing frame table"
+    },
+    {
+      "instruction": "0xA45F",
+      "expected": "#$5A",
+      "operand": "#IncrementingAnimatedCellRedrawEnd",
+      "evidence": "only the leading four-value group requests the shared row redraw"
+    },
+    {
+      "instruction": "0xA476",
+      "expected": "#$90",
+      "operand": "#<RoomMutableCellPersistentState",
+      "evidence": "the scan ends immediately after all 400 bytes of RoomCells"
+    },
+    {
+      "instruction": "0xA47A",
+      "expected": "#$05",
+      "operand": "#>RoomMutableCellPersistentState",
+      "evidence": "the scan end is the first byte of the following persistent-state region"
+    },
+    {
+      "instruction": "0xA4B5",
+      "expected": "a:$A556,X",
+      "operand": "DecimalPlaceValueLowBytes,X",
+      "evidence": "the low byte of each 10000, 1000, 100, 10, and 1 divisor is subtracted first"
+    },
+    {
+      "instruction": "0xA4BC",
+      "expected": "a:$A551,X",
+      "operand": "DecimalPlaceValueHighBytes,X",
+      "evidence": "the high byte completes the 16-bit decimal-place subtraction"
+    },
+    {
+      "instruction": "0xA4CA",
+      "expected": "a:$A556,X",
+      "operand": "DecimalPlaceValueLowBytes,X",
+      "evidence": "the failed subtraction restores the selected low place-value byte"
+    },
+    {
+      "instruction": "0xA4D1",
+      "expected": "a:$A551,X",
+      "operand": "DecimalPlaceValueHighBytes,X",
+      "evidence": "the failed subtraction restores the selected high place-value byte"
+    },
+    {
+      "instruction": "0xA4D7",
+      "expected": "#$05",
+      "operand": "#StatusScoreTileCount",
+      "evidence": "a 16-bit score is converted into exactly five decimal digits"
+    },
+    {
+      "instruction": "0xA4DB",
+      "expected": "#$04",
+      "operand": "#(StatusScoreTileCount - 1)",
+      "evidence": "tile encoding walks the five score digits from the last index"
+    },
+    {
+      "instruction": "0xA4E1",
+      "expected": "#$60",
+      "operand": "#StatusDigitTileZero",
+      "evidence": "HUD digit tile $60 represents numeric zero"
+    },
+    {
+      "instruction": "0xA4EE",
+      "expected": "#$60",
+      "operand": "#StatusDigitTileZero",
+      "evidence": "leading score zeroes are detected after digit-tile encoding"
+    },
+    {
+      "instruction": "0xA4F2",
+      "expected": "#$FF",
+      "operand": "#StatusBlankTile",
+      "evidence": "leading score zeroes become the HUD blank tile"
+    },
+    {
+      "instruction": "0xA4F8",
+      "expected": "#$05",
+      "operand": "#StatusScoreTileCount",
+      "evidence": "leading-zero suppression is bounded to the five score tiles"
+    },
+    {
+      "instruction": "0xA4FC",
+      "expected": "#$60",
+      "operand": "#StatusDigitTileZero",
+      "evidence": "all three life-count scratch digits start as numeric zero"
+    },
+    {
+      "instruction": "0xA509",
+      "expected": "#$64",
+      "operand": "#DecimalHundreds",
+      "evidence": "repeated subtraction extracts the life-count hundreds digit"
+    },
+    {
+      "instruction": "0xA50D",
+      "expected": "#$64",
+      "operand": "#DecimalHundreds",
+      "evidence": "each successful life-count hundreds subtraction removes 100"
+    },
+    {
+      "instruction": "0xA515",
+      "expected": "#$0A",
+      "operand": "#DecimalTens",
+      "evidence": "repeated subtraction extracts the life-count tens digit"
+    },
+    {
+      "instruction": "0xA519",
+      "expected": "#$0A",
+      "operand": "#DecimalTens",
+      "evidence": "each successful life-count tens subtraction removes 10"
+    },
+    {
+      "instruction": "0xA522",
+      "expected": "#$60",
+      "operand": "#StatusDigitTileZero",
+      "evidence": "the remaining life-count ones digit is converted to a HUD tile"
+    },
+    {
+      "instruction": "0xA527",
+      "expected": "#$02",
+      "operand": "#(StatusLivesFormattedTileCount - 1)",
+      "evidence": "leading-zero suppression starts at the hundreds scratch digit"
+    },
+    {
+      "instruction": "0xA52C",
+      "expected": "#$60",
+      "operand": "#StatusDigitTileZero",
+      "evidence": "zero-valued hundreds and tens scratch digits are detected as tile $60"
+    },
+    {
+      "instruction": "0xA530",
+      "expected": "#$FF",
+      "operand": "#StatusBlankTile",
+      "evidence": "leading life-count zeroes become the HUD blank tile"
+    },
+    {
+      "instruction": "0xA538",
+      "expected": "#$05",
+      "operand": "#(StatusInventoryTileCount - 1)",
+      "evidence": "the formatter visits all six displayed inventory counters"
+    },
+    {
+      "instruction": "0xA53C",
+      "expected": "#$09",
+      "operand": "#StatusInventoryMaxValue",
+      "evidence": "values at or above nine saturate to the largest single digit"
+    },
+    {
+      "instruction": "0xA540",
+      "expected": "#$09",
+      "operand": "#StatusInventoryMaxValue",
+      "evidence": "the saturated inventory digit is nine"
+    },
+    {
+      "instruction": "0xA543",
+      "expected": "#$60",
+      "operand": "#StatusDigitTileZero",
+      "evidence": "inventory counts use the same numeric HUD tile base"
+    },
+    {
+      "instruction": "0xA54B",
+      "expected": "#$00",
+      "operand": "#StatusTilesReady",
+      "evidence": "format completion releases the NMI status-upload interlock"
+    },
+    {
+      "instruction": "0xA563",
+      "expected": "#$FF",
+      "operand": "#StatusTilesLocked",
+      "evidence": "format initialization locks status upload before touching its buffers"
+    },
+    {
+      "instruction": "0xA56A",
+      "expected": "#$07",
+      "operand": "#(StatusScoreBufferSize - 1)",
+      "evidence": "initialization clears all eight bytes beginning at StatusScoreTiles"
+    },
+    {
       "instruction": "0xA5C4",
       "expected": "#$00",
       "operand": "#<RoomCells",
@@ -962,6 +1280,60 @@
       "evidence": "vblank helper enables background and sprites in both leftmost columns"
     },
     {
+      "instruction": "0xA2B1",
+      "expected": "#$47",
+      "operand": "#InitialRoomNumber",
+      "evidence": "new-game initialization selects the one-based starting room $47"
+    },
+    {
+      "instruction": "0xA2B5",
+      "expected": "#$03",
+      "operand": "#InitialPlayerLives",
+      "evidence": "the HUD-formatted and save/death-consumed lives counter starts at three"
+    },
+    {
+      "instruction": "0xA319",
+      "expected": "#$0D",
+      "operand": "#(NewGameRuntimeStateSize - 1)",
+      "evidence": "descending copy mirrors all 14 bytes at $0005-$0012"
+    },
+    {
+      "instruction": "0xA326",
+      "expected": "#$78",
+      "operand": "#SaveMutableRegionSize",
+      "evidence": "new-game clear covers the complete 120-byte mutable save region"
+    },
+    {
+      "instruction": "0xA328",
+      "expected": "a:$058F,X",
+      "operand": "SaveMutableRegion - 1,X",
+      "evidence": "descending one-based clear begins at $0590 and ends at $0607"
+    },
+    {
+      "instruction": "0xA32E",
+      "expected": "#$96",
+      "operand": "#SaveObjectRegionSize",
+      "evidence": "new-game clear covers the complete 150-byte object save region"
+    },
+    {
+      "instruction": "0xA330",
+      "expected": "a:$0607,X",
+      "operand": "SaveObjectRegion - 1,X",
+      "evidence": "descending one-based clear begins at $0608 and ends at $069D"
+    },
+    {
+      "instruction": "0xA336",
+      "expected": "#$1B",
+      "operand": "#NewGameRoomStateClearSize",
+      "evidence": "new-game clear covers current state, load mirror, and snapshot A"
+    },
+    {
+      "instruction": "0xA338",
+      "expected": "a:$0711,X",
+      "operand": "CurrentRoomState - 1,X",
+      "evidence": "descending one-based clear spans three consecutive nine-byte room-state records"
+    },
+    {
       "instruction": "0xA363",
       "expected": "a:$069D,X",
       "operand": "RoomVisitedFlags - 1,X",
@@ -978,6 +1350,24 @@
       "expected": "a:$069D,X",
       "operand": "RoomVisitedFlags - 1,X",
       "evidence": "descending one-based initialization covers all room-visited flags"
+    },
+    {
+      "instruction": "0xA34B",
+      "expected": "#$98",
+      "operand": "#InitialPlayerY",
+      "evidence": "new-game initialization places the player at vertical pixel $98"
+    },
+    {
+      "instruction": "0xA351",
+      "expected": "#$C5",
+      "operand": "#>RoomPaletteData",
+      "evidence": "room palette upload uses the high byte of the typed palette table"
+    },
+    {
+      "instruction": "0xA355",
+      "expected": "#$3D",
+      "operand": "#<RoomPaletteData",
+      "evidence": "room palette upload uses the low byte of the typed palette table"
     },
     {
       "instruction": "0xA368",
