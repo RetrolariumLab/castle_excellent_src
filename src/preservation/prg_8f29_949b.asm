@@ -1,5 +1,5 @@
-; Preservation PRG before NMI task reset
-; CPU range $8F29-$9577
+; Preservation PRG before room-cell row update requests
+; CPU range $8F29-$949B
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
@@ -82,43 +82,43 @@ UpdatePlayerCollisionState:
     JMP Label_93F6
 
 Label_938E:
-    LDY $3A
-    LDX $38
-    LDA $39
+    LDY PlayerY
+    LDX PlayerXLo
+    LDA PlayerXHi
     JSR Func_8DD3
     JSR Func_9477
-    LDY $3A
-    JSR Func_94DF
+    LDY PlayerY
+    JSR GetPlayerXPlus15
     JSR Func_8DD3
     JSR Func_9477
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC #$0F
     TAY
-    LDX $38
-    LDA $39
+    LDX PlayerXLo
+    LDA PlayerXHi
     JSR Func_8DD3
     JSR Func_9477
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC #$0F
     TAY
-    JSR Func_94DF
+    JSR GetPlayerXPlus15
     JSR Func_8DD3
     JSR Func_9477
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC #$07
     TAY
-    JSR Func_94DB
+    JSR GetPlayerXPlus7
     JSR Func_8DD3
     JSR Func_9477
-    LDY $3A
-    JSR Func_94DB
+    LDY PlayerY
+    JSR GetPlayerXPlus7
     JSR Func_8DD3
     JSR Func_9477
-    LDY $3A
-    JSR Func_94DF
+    LDY PlayerY
+    JSR GetPlayerXPlus15
     JSR Func_8DD3
     JSR Func_9477
     LDA a:$077C
@@ -137,11 +137,11 @@ Label_93F6:
 
 Label_93FC:
     LDA $10
-    STA $38
+    STA PlayerXLo
     LDA $11
-    STA $39
+    STA PlayerXHi
     LDA $12
-    STA $3A
+    STA PlayerY
     LDA $14
     ORA a:$07CD
     BEQ Label_9423
@@ -224,161 +224,4 @@ Label_9492:
     LDA #$9A
     PHA
     JMP ($0031)
-    RTS
-
-Func_949C:
-    JSR Func_94C3
-    LDA #$FF
-    STA a:$0786,Y
-    RTS
-    .byte $4A, $4A, $4A, $A8, $4C, $9F, $94
-
-Func_94AC:
-    JSR Func_94C3
-    LDA #$FF
-    STA a:$0786,Y
-    CPY #$14
-    BCS Label_94BB
-    STA a:$0787,Y
-
-Label_94BB:
-    RTS
-    .byte $4A, $4A, $4A, $A8, $4C, $AF, $94
-
-Func_94C3:
-    LSR $45
-    ROR $44
-    LSR $45
-    ROR $44
-    LDA $44
-    AND #$7F
-    LDY #$00
-
-Label_94D1:
-    CMP #$05
-    BCC Label_94DA
-    INY
-    SBC #$05
-    BCS Label_94D1
-
-Label_94DA:
-    RTS
-
-Func_94DB:
-    LDA #$07
-    BNE Label_94E1
-
-Func_94DF:
-    LDA #$0F
-
-Label_94E1:
-    CLC
-    ADC $38
-    TAX
-    LDA $39
-    ADC #$00
-    RTS
-
-Func_94EA:
-    LDA RuntimeObjectXHi,X
-    PHA
-    LDA RuntimeObjectXLo,X
-    TAX
-    PLA
-    RTS
-
-Func_94F2:
-    LDA RuntimeObjectXHi,X
-    PHA
-    LDA RuntimeObjectXLo,X
-    CLC
-    ADC #$07
-    JMP Label_951B
-
-Func_94FD:
-    LDA RuntimeObjectXHi,X
-    PHA
-    LDA RuntimeObjectXLo,X
-    CLC
-    ADC #$08
-    JMP Label_951B
-
-Func_9508:
-    LDA RuntimeObjectXHi,X
-    PHA
-    LDA RuntimeObjectXLo,X
-    CLC
-    ADC #$0F
-    JMP Label_951B
-
-Func_9513:
-    LDA RuntimeObjectXHi,X
-    PHA
-    LDA RuntimeObjectXLo,X
-    CLC
-    ADC #$11
-
-Label_951B:
-    TAX
-    PLA
-    ADC #$00
-    RTS
-
-Func_9520:
-    LDA RuntimeObjectXHi,X
-    PHA
-    LDA RuntimeObjectXLo,X
-    SEC
-    SBC #$02
-    TAX
-    PLA
-    SBC #$00
-    RTS
-
-Func_952D:
-    LDA #$FF
-    STA PauseMode
-    LDA $10
-    STA RoomRuntimeLoadMirror + $0B
-    LDA $11
-    STA RoomRuntimeLoadMirror + $0C
-    LDA $12
-    STA RoomRuntimeLoadMirror + $0D
-    LDA $0D
-    STA $14
-    LDA $0E
-    STA $15
-    JSR ResetPpuScroll
-    JSR EnableNmi
-    JMP WaitForVblankAndEnableRendering
-
-Func_9552:
-    CMP #$90
-    BCC Label_955B
-    CMP #$96
-    BCS Label_955B
-    RTS
-
-Label_955B:
-    SEC
-    RTS
-
-Func_955D:
-    JSR Func_A0C4
-    PHP
-    CMP #$62
-    BEQ Label_9573
-    CMP #$63
-    BEQ Label_9573
-    CMP #$54
-    BEQ Label_9573
-    CMP #$55
-    BEQ Label_9573
-    PLP
-    RTS
-
-Label_9573:
-    LDA #$53
-    PLP
-    CLC
     RTS

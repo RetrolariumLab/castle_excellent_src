@@ -440,6 +440,144 @@
       "confidence": "high"
     },
     {
+      "address": "0x949C",
+      "name": "RequestRoomCellRowUpdate",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94A5",
+      "name": "UnreferencedSingleRowIndexShimBytes",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94AC",
+      "name": "RequestRoomCellRowUpdates",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94BB",
+      "name": "ReturnRoomCellRowUpdates",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94BC",
+      "name": "UnreferencedAdjacentRowIndexShimBytes",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94C3",
+      "name": "GetRoomCellRowFromPointer",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94D1",
+      "name": "DivideRoomCellPointerByRowStride",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94DA",
+      "name": "ReturnRoomCellRow",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94DB",
+      "name": "GetPlayerXPlus7",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94DF",
+      "name": "GetPlayerXPlus15",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94E1",
+      "name": "AddPlayerXOffset",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94EA",
+      "name": "GetRuntimeObjectX",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94F2",
+      "name": "GetRuntimeObjectXPlus7",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x94FD",
+      "name": "GetRuntimeObjectXPlus8",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9508",
+      "name": "GetRuntimeObjectXPlus15",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9513",
+      "name": "GetRuntimeObjectXPlus17",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x951B",
+      "name": "ReturnOffsetRuntimeObjectX",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9520",
+      "name": "GetRuntimeObjectXMinus2",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x952D",
+      "name": "FinishRoomTransition",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9552",
+      "name": "IsRuntimeObjectType90To95",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x955B",
+      "name": "ReturnRuntimeObjectTypeOutsideRange",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x955D",
+      "name": "SampleNormalizedRoomCollisionCell",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9573",
+      "name": "NormalizeMutableCollisionCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x9578",
       "name": "ResetNmiTaskRequests",
       "kind": "routine",
@@ -458,15 +596,51 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xA0C4",
+      "name": "SampleRoomCollisionCell",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
       "address": "0xA2B1",
       "name": "InitializeNewGame",
       "kind": "routine",
       "confidence": "high"
     },
     {
+      "address": "0xA55B",
+      "name": "MutableCellStateBitMasks",
+      "kind": "table",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xA58A",
       "name": "ConvertPixelPositionToTileCoordinates",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA596",
+      "name": "UnreferencedTileToPixelConversionBytes",
+      "kind": "data",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA5A4",
+      "name": "GetRoomCellPointer",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA5BC",
+      "name": "AddRoomCellBufferBase",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA5DC",
+      "name": "ReturnRoomCellPointer",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
@@ -476,10 +650,142 @@
       "confidence": "high"
     },
     {
+      "address": "0xA685",
+      "name": "UseMutableCellAbove",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA692",
+      "name": "CheckMutableCellAnchor",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA6A1",
+      "name": "CountMutableCellOrdinal",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA6A5",
+      "name": "ScanPreviousMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA6AF",
+      "name": "MoveToPreviousRoomCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA6B5",
+      "name": "ReadPreviousRoomCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA6C4",
+      "name": "CountPreviousMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA6C8",
+      "name": "ReturnMutableCellOrdinal",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xA70A",
       "name": "RestoreMutableCellByOrdinal",
       "kind": "routine",
       "confidence": "high"
+    },
+    {
+      "address": "0xA714",
+      "name": "ScanNextMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA724",
+      "name": "SelectMutableCellOrdinal",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA72A",
+      "name": "InspectMutableCellNeighbors",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA730",
+      "name": "ReadMutableCellLeftNeighbor",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA742",
+      "name": "RestoreAlternateMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA748",
+      "name": "WriteAlternateMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA757",
+      "name": "RestoreStandardMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA75D",
+      "name": "WriteStandardMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA769",
+      "name": "PersistRestoredMutableCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA794",
+      "name": "ComputeRestoredMutableCellRow",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7AC",
+      "name": "RequestRestoredCellAttributes",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7C7",
+      "name": "AdvanceMutableCellScan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7CD",
+      "name": "CheckMutableCellScanEnd",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA7DA",
+      "name": "ReturnMutableCellNotFound",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0xA351",

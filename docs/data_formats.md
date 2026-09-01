@@ -77,6 +77,27 @@ without exhausting a CHR bank.
 The decoded cell value indexes two PRG tables near `$FF30` and `$FF94`. They
 select the left and right 8x8 background tile for a 16x8 logical cell.
 
+## Mutable-cell coordinates and ordinals
+
+The 20x20 room matrix corresponds to a 40x20 background-tile domain. Pixel
+coordinates become tiles by division by eight, then
+`cell_offset = tile_y * 20 + floor(tile_x / 2)` selects `$0400-$058F`.
+
+Mutable anchors are `$19,$1C,$1F,$22,$25,$29` or the restored forms `$54/$62`.
+Queries on `$1A,$1D,$20,$23,$26,$2A` and restored lower forms `$55/$63` move
+one row up before testing the anchor. Valid anchors receive one-based ordinals
+by row-major scan. Restoration uses the same scan over original candidates,
+writes `$62/$63` when either horizontal neighbor is `$16`, otherwise
+`$54/$55`, and maps ordinal `n` to byte `(n-1)/8` and mask
+`1 << ((n-1) & 7)`, with the byte division rounded down.
+`scripts/room_cell_coordinates.py` independently models
+these conversions, predicates, writes, and bit selection.
+
+An absolute room-cell pointer is converted back to its row by shifting right
+twice, masking with `$7F`, and dividing by five. This is equivalent to
+`floor((address - $0400) / 20)` throughout the 400-byte room matrix. The NMI
+request helper marks task `row + 1`; its paired form also marks `row + 2`.
+
 ## Nametable attributes
 
 `RoomAttributeQuadrantMasks` at `$E913` contains `$03,$0C,$30,$C0`, one
@@ -183,6 +204,18 @@ an additional four-pixel X offset. Record `+4` is initialized to zero except
 for encoded types `$12-$29`, where the overlapping state table supplies its
 initial value. The meaning of record `+5` and the later state transitions of
 `+4` remain open.
+
+Collision callers read record `+1/+2` through shared helpers returning
+A=high/X=low. The fixed probe offsets are 0, +7, +8, +15, +17, and -2; all use
+16-bit modular carry/borrow. Player probes use the same register contract with
+offsets +7 and +15.
+
+The collision wrapper at `$955D` treats restored mutable visual forms
+`$54,$55,$62,$63` as logical `$53`. For any other cell it returns the lower
+sampler's A and complete processor status unchanged. For the four mapped cells
+it restores the sampler status first and then clears carry, so no other status
+flag is lost. The adjacent predicate's carry-clear set is exactly runtime types
+`$90-$95`.
 
 ## Music track sets and textual streams
 

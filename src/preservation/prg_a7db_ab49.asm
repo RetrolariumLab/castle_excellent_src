@@ -1,141 +1,7 @@
-; Preservation PRG before room metadata
-; CPU range $A70A-$AB49
+; Preservation PRG after mutable-cell restoration
+; CPU range $A7DB-$AB49
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
-
-RestoreMutableCellByOrdinal:
-    LDA #$04
-    STA $2A
-    LDA #$00
-    STA $29
-    STX $1F
-
-Label_A714:
-    LDY #$00
-    LDA ($29),Y
-    CMP #$54
-    BEQ Label_A724
-    JSR IsPersistentMutableCell
-    BEQ Label_A724
-    JMP Label_A7C7
-
-Label_A724:
-    DEX
-    BEQ Label_A72A
-    JMP Label_A7C7
-
-Label_A72A:
-    LDA $29
-    BNE Label_A730
-    DEC $2A
-
-Label_A730:
-    DEC $29
-    LDY #$00
-    LDA ($29),Y
-    CMP #$16
-    BEQ Label_A742
-    LDY #$02
-    LDA ($29),Y
-    CMP #$16
-    BNE Label_A757
-
-Label_A742:
-    INC $29
-    BNE Label_A748
-    INC $2A
-
-Label_A748:
-    LDY #$00
-    LDA #$62
-    STA ($29),Y
-    LDY #$14
-    LDA #$63
-    STA ($29),Y
-    JMP Label_A769
-
-Label_A757:
-    INC $29
-    BNE Label_A75D
-    INC $2A
-
-Label_A75D:
-    LDY #$00
-    LDA #$54
-    STA ($29),Y
-    LDA #$55
-    LDY #$14
-    STA ($29),Y
-
-Label_A769:
-    LDA $29
-    STA $44
-    LDA $2A
-    STA $45
-    JSR Func_94AC
-    DEC $1F
-    LDA $1F
-    AND #$07
-    TAX
-    LDA a:$A55B,X
-    PHA
-    LDA $1F
-    LSR A
-    LSR A
-    LSR A
-    TAX
-    PLA
-    ORA CurrentRoomMutableCellState,X
-    STA CurrentRoomMutableCellState,X
-    LDA $2A
-    AND #$01
-    STA $2A
-    LDY #$07
-
-Label_A794:
-    LDA $29
-    CMP #$14
-    LDA $2A
-    SBC #$00
-    BCC Label_A7AC
-    LDA $29
-    SBC #$14
-    STA $29
-    INY
-    BCS Label_A794
-    DEC $2A
-    JMP Label_A794
-
-Label_A7AC:
-    LDA $29
-    ASL A
-    CLC
-    ADC #$04
-    TAX
-    JSR GetRoomAttributeMaskAndOffset
-    EOR #$FF
-    AND RoomAttributeScratch,X
-    STA RoomAttributeScratch,X
-    LDA #$FF
-    STA NmiRoomAttributesLeftRequest
-    STA NmiRoomAttributesRightRequest
-    RTS
-
-Label_A7C7:
-    INC $29
-    BNE Label_A7CD
-    INC $2A
-
-Label_A7CD:
-    LDA $29
-    CMP #$90
-    LDA $2A
-    SBC #$05
-    BCS Label_A7DA
-    JMP Label_A714
-
-Label_A7DA:
-    RTS
 
 Func_A7DB:
     LDA CurrentRoomIndex
@@ -227,7 +93,7 @@ Label_A847:
 
 Label_A859:
     LDA a:$077C
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC #$08
     TAY
@@ -235,11 +101,11 @@ Label_A859:
     BCC Label_A87E
     CPY #$B0
     BCS Label_A87E
-    LDA $38
+    LDA PlayerXLo
     CLC
     ADC #$07
     TAX
-    LDA $39
+    LDA PlayerXHi
     ADC #$00
     BEQ Label_A883
     CMP #$01
@@ -288,7 +154,7 @@ Func_A8A9:
     CLC
     ADC #$10
     SEC
-    SBC $3A
+    SBC PlayerY
     BCS Label_A8B9
     EOR #$FF
     ADC #$01
@@ -298,10 +164,10 @@ Label_A8B9:
     BCS Label_A8E2
     LDA RuntimeObjectXLo,X
     SEC
-    SBC $38
+    SBC PlayerXLo
     STA $25
     LDA RuntimeObjectXHi,X
-    SBC $39
+    SBC PlayerXHi
     STA $26
     BCS Label_A8DA
     LDA $25

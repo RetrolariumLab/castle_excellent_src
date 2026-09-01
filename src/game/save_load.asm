@@ -201,11 +201,11 @@ VerifySaveDataSignature:
     STA RoomStateSnapshotA
     STA RoomStateSnapshotB
     LDA SaveLoadRuntimeState + $0B
-    STA SaveLoadResumeState
+    STA PlayerXLo
     LDA SaveLoadRuntimeState + $0C
-    STA SaveLoadResumeState + $01
+    STA PlayerXHi
     LDA SaveLoadRuntimeState + $0D
-    STA SaveLoadResumeState + $02
+    STA PlayerY
 
 RebuildLoadedRoom:
     LDA #$00
@@ -217,12 +217,12 @@ RebuildLoadedRoom:
     JSR LoadRoomObjects
     JSR SelectAndApplyRoomState
     JSR UpdateHorizontalScroll
-    LDA SaveLoadResumeState + $02
+    LDA PlayerY
     SEC
     SBC #$10
     TAY
-    LDA SaveLoadResumeState + $01
-    LDX SaveLoadResumeState
+    LDA PlayerXHi
+    LDX PlayerXLo
     JSR ConvertPixelPositionToTileCoordinates
     JSR FindMutableCellOrdinalAtPosition
     BCS ReturnFromSaveLoad

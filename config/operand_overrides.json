@@ -2,6 +2,102 @@
   "schema_version": 1,
   "overrides": [
     {
+      "instruction": "0x949F",
+      "expected": "#$FF",
+      "operand": "#NmiTaskPending",
+      "evidence": "single-row helper marks the selected NMI task request pending"
+    },
+    {
+      "instruction": "0x94AF",
+      "expected": "#$FF",
+      "operand": "#NmiTaskPending",
+      "evidence": "adjacent-row helper marks both selected NMI task requests pending"
+    },
+    {
+      "instruction": "0x94B4",
+      "expected": "#$14",
+      "operand": "#RoomHeight",
+      "evidence": "the adjacent request is emitted only through the 20-row room domain"
+    },
+    {
+      "instruction": "0x94CD",
+      "expected": "#$7F",
+      "operand": "#RoomCellPointerRowMask",
+      "evidence": "quarter-scaled room pointers use only the low seven offset bits"
+    },
+    {
+      "instruction": "0x94D1",
+      "expected": "#$05",
+      "operand": "#RoomCellPointerRowDivisor",
+      "evidence": "a 20-cell row becomes five units after the pointer is shifted twice"
+    },
+    {
+      "instruction": "0x94D6",
+      "expected": "#$05",
+      "operand": "#RoomCellPointerRowDivisor",
+      "evidence": "repeated subtraction divides the quarter-scaled pointer by five"
+    },
+    {
+      "instruction": "0xA5C4",
+      "expected": "#$00",
+      "operand": "#<RoomCells",
+      "evidence": "low byte of the decoded 20-by-20 room-cell buffer"
+    },
+    {
+      "instruction": "0xA5CB",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "high byte of the decoded 20-by-20 room-cell buffer"
+    },
+    {
+      "instruction": "0xA70A",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "high byte initializes the mutable-cell restoration scan"
+    },
+    {
+      "instruction": "0xA70E",
+      "expected": "#$00",
+      "operand": "#<RoomCells",
+      "evidence": "low byte initializes the mutable-cell restoration scan"
+    },
+    {
+      "instruction": "0xA74E",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "alternate mutable cells store their paired tile one row below"
+    },
+    {
+      "instruction": "0xA765",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "standard mutable cells store their paired tile one row below"
+    },
+    {
+      "instruction": "0xA796",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "restored-cell row calculation divides the pointer by room width"
+    },
+    {
+      "instruction": "0xA7A0",
+      "expected": "#$14",
+      "operand": "#RoomWidth",
+      "evidence": "restored-cell row calculation subtracts one room row"
+    },
+    {
+      "instruction": "0xA7CF",
+      "expected": "#$90",
+      "operand": "#<RoomMutableCellPersistentState",
+      "evidence": "low byte of the first address after the 400-byte room grid"
+    },
+    {
+      "instruction": "0xA7D3",
+      "expected": "#$05",
+      "operand": "#>RoomMutableCellPersistentState",
+      "evidence": "high byte of the first address after the 400-byte room grid"
+    },
+    {
       "instruction": "0x8014",
       "expected": "#$02",
       "operand": "#PulseInputMask",

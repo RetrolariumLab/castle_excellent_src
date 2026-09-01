@@ -22,8 +22,16 @@ evidence, and tested decoders for game data.
   save paths are also semantic modules, together with bitmap application,
   mutable-cell predicates, and cell-derived object creation. The top-level
   room loader, NMI-request reset, room-screen initialization, and room-state
-  snapshot orchestration now form a semantic vertical slice. Controller
-  polling, both Famicom save-data transports, PPU mode helpers, and CNROM bank
+  snapshot orchestration now form a semantic vertical slice. Pixel-to-tile
+  conversion, room-cell addressing, mutable-anchor lookup, and ordinal-based
+  restoration are reconstructed with their persistence/render side effects.
+  Their pointer-to-row helper and current/next NMI task requests are semantic
+  too. Player and runtime-object 16-bit X-coordinate helpers now have explicit
+  A=high/X=low contracts. Room-transition completion now names its player/state
+  mirrors and rendering-resume order; adjacent collision helpers identify
+  runtime types `$90-$95` and normalize four mutable visual cells. Controller
+  polling, both Famicom save-data
+  transports, PPU mode helpers, and CNROM bank
   selection are also semantic platform modules. The 394-byte save/load payload,
   its signature, validation, and room-restoration path are reconstructed too.
   Reset and the NMI-paced main loop are reconstructed with
@@ -71,13 +79,21 @@ evidence, and tested decoders for game data.
   byte transfers plus the pulse symbols, leader, and shared preamble contract.
 - `scripts/save_data.py` losslessly encodes and decodes the 394-byte save
   payload and validates the exact `GNUTUEDEB`/`BEDEUTUN` ROM/wire signature.
-- `make format`, `make lint`, 133 unit tests, reproducible disassembly checks,
+- `scripts/room_cell_coordinates.py` models the 40x20 tile-to-cell mapping,
+  mutable ordinals, restored forms, and persistent-state bit selection.
+- `scripts/x_coordinates.py` exhaustively validates all player/object X helper
+  offsets, carry, borrow, register order, and 16-bit wrapping.
+- `scripts/room_transition.py` validates transition mirroring and the exact
+  rendering-resume call order.
+- `scripts/collision_cells.py` exhaustively validates all type bytes and all
+  65,536 room-cell/status combinations without losing sampler flags.
+- `make format`, `make lint`, 158 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,728 instructions after 33
+  disagreements. Evidence-refined Ghidra exports 9,728 instructions after 37
   evidence-backed data ranges remove 183 false-positive instructions.
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
@@ -159,12 +175,20 @@ make room-row-state   # inspect handler, nametable, and row layout as JSON
 make validate-room-rows # validate all 20 room-row upload handlers
 make attribute-upload-state # inspect both attribute transfers as JSON
 make validate-attribute-upload # validate 108 attribute PPU writes
+make transition-state # inspect room-transition mirrors and rendering resume
+make validate-transition # validate the room-transition completion contract
+make collision-state # inspect runtime-type and collision-cell filters
+make validate-collision # exhaustively validate collision normalization
 make castle-map-state # inspect the 10x10 map marker geometry
 make validate-castle-map # validate all 100 map positions
 make data-io-state   # inspect pulse and expansion serial contracts as JSON
 make validate-data-io # validate both Famicom data transports
 make save-data       # inspect the 394-byte save-payload layout as JSON
 make validate-save-data # validate payload codec and ROM signature
+make room-cell-state # inspect room-cell coordinate and ordinal contracts
+make validate-room-cells # validate mutable-cell lookup and restoration
+make x-coordinate-state # inspect 16-bit X helper contracts as JSON
+make validate-x-coordinates # exhaustively validate coordinate arithmetic
 make clean           # remove build artifacts only
 ```
 
@@ -196,6 +220,8 @@ scripts/room_screen_data.py room status-screen data validator
 scripts/controller_input.py controller serial-polling model
 scripts/famicom_data_io.py pulse and expansion data-transport model
 scripts/save_data.py     394-byte save-payload codec and validator
+scripts/room_cell_coordinates.py room-cell coordinate and mutation model
+scripts/x_coordinates.py exhaustive player/object X-coordinate model
 scripts/audio_data.py      music table and textual-stream validator
 src/main.asm               assembly entrypoint
 src/input/famicom_data_pulse.asm PRG entry, pulse transport, and module order
@@ -207,6 +233,8 @@ src/system/startup.asm     reset signature, initialization, and main frame loop
 src/system/nmi.asm         NMI task scheduler, input, OAM, scroll, and audio tick
 src/rendering/oam_dma.asm  64-sprite DMA interleave and order transforms
 src/rendering/status_upload.asm NMI HUD upload and task-handler tables
+src/rendering/room_cell_updates.asm cell-pointer row and NMI request helpers
+src/game/x_coordinates.asm player/object 16-bit X-coordinate helpers
 src/rendering/room_rows_*.asm  twenty complete NMI room-row upload tasks
 src/rendering/room_attribute_upload.asm final two NMI attribute tasks
 src/ui/castle_map.asm      map input, visited rooms, and current-room marker
@@ -215,7 +243,8 @@ src/game/rooms/decoder.asm proven room codebook, pointers, and decoder
 src/game/rooms/load_room.asm top-level room-loading orchestration
 src/game/rooms/state_orchestration.asm snapshot selection and rotation
 src/game/rooms/persistent_state_*.asm offsets plus apply/load/save paths
-src/game/rooms/mutable_cell_*.asm predicates and state restoration
+src/game/rooms/cell_coordinates.asm pixel, tile, and room-cell addressing
+src/game/rooms/mutable_cell_*.asm lookup, predicates, and state restoration
 src/rendering/room_attributes.asm proven room attribute-table construction
 src/rendering/room_screen.asm nametable, status, attribute, and OAM setup
 src/system/nmi_tasks.asm   NMI task-request reset

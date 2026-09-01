@@ -58,6 +58,35 @@ buffers, writes the status area, builds and uploads both attribute tables,
 clears per-room runtime state, and selects the room audio track. The routine is
 now isolated in `src/game/rooms/load_room.asm` rather than preservation code.
 
+The coordinate and mutable-cell path is now semantic at `$A58A-$A5DC`,
+`$A66D-$A6C9`, and `$A70A-$A7DA`. It maps 16-bit pixel positions through a
+40x20 background-tile domain into the 20x20 logical room, recognizes both
+halves of mutable two-row forms, derives a one-based row-major ordinal, and
+restores the selected cell pair. The restore path records the same ordinal in
+the five-byte active bitmap and requests row plus attribute rendering work.
+The 14 bytes at `$A596-$A5A3` resemble an inverse conversion but remain typed
+as unreferenced data because neither static nor runtime evidence enters them.
+The related `$949C-$94DA` render helper destructively quarter-scales the cell
+pointer and divides by five to recover row 0-19. It marks task `row + 1`, and
+the paired entry also marks `row + 2`; all 400 pointers are covered by the
+independent model. Two seven-byte code-shaped shims have no known entry or
+pointer and remain explicitly typed as unreferenced data.
+
+The adjacent `$94DB-$952C` module provides the common 16-bit X probes used by
+player collision, object collision, and room-cell lookup. Player X lives at
+`$38/$39`; runtime-object X occupies record bytes `+1/+2`. Every entry returns
+A=high and X=low after applying its fixed signed offset. The standalone model
+exhaustively checks all 65,536 positions against modular 16-bit arithmetic.
+
+The next `$952D-$9577` range is split into semantic room-transition and
+collision modules. Transition completion copies saved player X/Y into offsets
+11-13 of the 15-byte runtime mirror, mirrors two scoped state bytes, restores
+gameplay mode, resets scroll, enables NMI, and resumes rendering. The collision
+module returns carry clear exactly for types `$90-$95`; its sampler wrapper
+maps mutable forms `$54/$55/$62/$63` to `$53`, preserving every incoming status
+bit except the deliberately cleared carry. Independent models cover every
+input byte and every cell/status pair.
+
 The indirect object dispatcher uses `ObjectHandlerTable` at `$AD93`. Most
 individual handlers remain generically named until object-specific traces
 prove their state transitions.

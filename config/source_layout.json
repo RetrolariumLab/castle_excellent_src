@@ -14,13 +14,22 @@
         "../system/startup.asm",
         "../preservation/prg_82ce_8f0f.asm",
         "../game/objects/runtime_record_offsets.asm",
-        "../preservation/prg_8f29_9577.asm",
+        "../preservation/prg_8f29_949b.asm",
+        "../rendering/room_cell_updates.asm",
+        "../game/x_coordinates.asm",
+        "../game/rooms/finish_transition.asm",
+        "../game/collision/cell_samples.asm",
         "../system/nmi_tasks.asm",
         "../preservation/prg_9583_a35b.asm",
         "../game/rooms/load_room.asm",
-        "../preservation/prg_a3ac_a6d7.asm",
+        "../preservation/prg_a3ac_a589.asm",
+        "../game/rooms/cell_coordinates.asm",
+        "../preservation/prg_a5dd_a66c.asm",
+        "../game/rooms/mutable_cell_lookup.asm",
+        "../preservation/prg_a6ca_a6d7.asm",
         "../game/rooms/mutable_cell_predicates.asm",
-        "../preservation/prg_a70a_ab49.asm",
+        "../game/rooms/mutable_cell_restore.asm",
+        "../preservation/prg_a7db_ab49.asm",
         "../game/rooms/room_metadata.asm",
         "../preservation/prg_ac13_b64b.asm",
         "../rendering/room_screen.asm",
@@ -87,10 +96,34 @@
       "title": "Runtime object record offsets by object count"
     },
     {
-      "path": "src/preservation/prg_8f29_9577.asm",
+      "path": "src/preservation/prg_8f29_949b.asm",
       "start": "0x8F29",
+      "end": "0x949C",
+      "title": "Preservation PRG before room-cell row update requests"
+    },
+    {
+      "path": "src/rendering/room_cell_updates.asm",
+      "start": "0x949C",
+      "end": "0x94DB",
+      "title": "Room-cell pointer conversion and NMI row update requests"
+    },
+    {
+      "path": "src/game/x_coordinates.asm",
+      "start": "0x94DB",
+      "end": "0x952D",
+      "title": "Player and runtime-object 16-bit X-coordinate helpers"
+    },
+    {
+      "path": "src/game/rooms/finish_transition.asm",
+      "start": "0x952D",
+      "end": "0x9552",
+      "title": "Room-transition state mirroring and rendering resume"
+    },
+    {
+      "path": "src/game/collision/cell_samples.asm",
+      "start": "0x9552",
       "end": "0x9578",
-      "title": "Preservation PRG before NMI task reset"
+      "title": "Runtime-type filtering and mutable-cell collision normalization"
     },
     {
       "path": "src/system/nmi_tasks.asm",
@@ -111,10 +144,34 @@
       "title": "Top-level room loading and audio selection"
     },
     {
-      "path": "src/preservation/prg_a3ac_a6d7.asm",
+      "path": "src/preservation/prg_a3ac_a589.asm",
       "start": "0xA3AC",
+      "end": "0xA58A",
+      "title": "Preservation PRG before room-cell coordinate helpers"
+    },
+    {
+      "path": "src/game/rooms/cell_coordinates.asm",
+      "start": "0xA58A",
+      "end": "0xA5DD",
+      "title": "Pixel, tile, and room-cell coordinate conversion"
+    },
+    {
+      "path": "src/preservation/prg_a5dd_a66c.asm",
+      "start": "0xA5DD",
+      "end": "0xA66D",
+      "title": "Preservation PRG before mutable-cell lookup"
+    },
+    {
+      "path": "src/game/rooms/mutable_cell_lookup.asm",
+      "start": "0xA66D",
+      "end": "0xA6CA",
+      "title": "Mutable room-cell lookup and ordinal calculation"
+    },
+    {
+      "path": "src/preservation/prg_a6ca_a6d7.asm",
+      "start": "0xA6CA",
       "end": "0xA6D8",
-      "title": "Preservation PRG after room loading"
+      "title": "Preservation PRG between mutable-cell lookup and predicates"
     },
     {
       "path": "src/game/rooms/mutable_cell_predicates.asm",
@@ -123,10 +180,16 @@
       "title": "Persistent mutable-cell predicates"
     },
     {
-      "path": "src/preservation/prg_a70a_ab49.asm",
+      "path": "src/game/rooms/mutable_cell_restore.asm",
       "start": "0xA70A",
+      "end": "0xA7DB",
+      "title": "Mutable room-cell restoration and render requests"
+    },
+    {
+      "path": "src/preservation/prg_a7db_ab49.asm",
+      "start": "0xA7DB",
       "end": "0xAB4A",
-      "title": "Preservation PRG before room metadata"
+      "title": "Preservation PRG after mutable-cell restoration"
     },
     {
       "path": "src/game/rooms/room_metadata.asm",

@@ -157,6 +157,32 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Needed: prove field `+5`, later meanings/transitions of `+4`, and semantic
   identities for all encoded and runtime types
 
+### OBJ-002 - shared 16-bit X-coordinate probes
+
+- Status: resolved
+- Player fields: little-endian X at `$38/$39`, Y at `$3A`
+- Runtime fields: little-endian X at record `+1/+2`; record offset remains in X
+  on entry and is replaced by the result low byte on return
+- Return contract: A=high byte and X=low byte
+- Fixed probes: player +7/+15; runtime object +0/+7/+8/+15/+17/-2
+- Evidence: semantic `$94DB-$952C`, global RAM operands, collision and
+  pixel-to-tile callers, exhaustive 65,536-position arithmetic model,
+  deterministic regeneration, and byte-identical build
+
+### COLLISION-001 - transition-adjacent type and cell filters
+
+- Status: resolved
+- Type predicate: carry clear exactly for runtime types `$90-$95`; carry set
+  below `$90` and at or above `$96`
+- Cell normalization: `$54,$55,$62,$63` become `$53` with carry clear; every
+  other accumulator value and the sampler's complete status are preserved
+- Transition context: `$952D-$9551` mirrors player X/Y into runtime offsets
+  11-13, mirrors two scoped state bytes, restores `$FF` gameplay mode, then
+  resumes rendering through scroll reset, NMI enable, and vblank wait
+- Evidence: semantic `$952D-$9577`, contextual RAM aliases, all 256 runtime
+  types, all 65,536 cell/status combinations, deterministic regeneration, and
+  byte-identical build
+
 ### DATA-004 - persistent room-state bitmaps
 
 - Status: resolved
@@ -172,6 +198,25 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Evidence: semantic load/save/apply modules, exact object-count and six-byte
   offset tables, and independent validation of every object list, all 40,000
   decoded cells, and all 176 cell-derived objects
+
+### DATA-005 - mutable-cell coordinate and ordinal pipeline
+
+- Status: resolved
+- Coordinates: A:X is 16-bit pixel X and Y is pixel Y; division by eight
+  yields tiles, and `$0400 + tile_y * 20 + floor(tile_x / 2)` yields the cell
+- Lookup: lower/right forms move one row upward; anchors are numbered from one
+  by a row-major backward count
+- Restoration: horizontal neighbor `$16` selects `$62/$63`; all other anchors
+  become `$54/$55`; the ordinal also selects its persistent-state byte/mask
+- Side effects: the affected room row and successor task are queued; mutable
+  restoration separately requests both attribute NMI tasks
+- Evidence: semantic `$949C-$94DA`, `$A58A-$A5DC`, `$A66D-$A6C9`,
+  `$A70A-$A7DA`, independent
+  coordinate/ordinal/restoration model, deterministic regeneration, and
+  byte-identical build
+- Residual: `$A596-$A5A3` resembles the inverse tile-to-pixel conversion but
+  remains typed unreferenced data pending an observed entry; the same policy
+  covers code-shaped shims at `$94A5-$94AB` and `$94BC-$94C2`
 
 ### ROOM-001 - room-loading orchestration
 

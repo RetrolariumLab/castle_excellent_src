@@ -12,13 +12,22 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/system/startup.asm` | `$8225-$82CD` | reset, cold/warm boot state, and NMI-paced main loop |
 | `src/preservation/prg_82ce_8f0f.asm` | `$82CE-$8F0F` | unresolved player movement and early gameplay logic |
 | `src/game/objects/runtime_record_offsets.asm` | `$8F10-$8F28` | six-byte record offsets by object count |
-| `src/preservation/prg_8f29_9577.asm` | `$8F29-$9577` | unresolved early object/game logic |
+| `src/preservation/prg_8f29_949b.asm` | `$8F29-$949B` | unresolved early object/game logic before row updates |
+| `src/rendering/room_cell_updates.asm` | `$949C-$94DA` | room-cell row calculation and NMI update requests |
+| `src/game/x_coordinates.asm` | `$94DB-$952C` | player and runtime-object 16-bit X-coordinate helpers |
+| `src/game/rooms/finish_transition.asm` | `$952D-$9551` | room-transition state mirroring and rendering resume |
+| `src/game/collision/cell_samples.asm` | `$9552-$9577` | runtime-type filtering and mutable-cell collision normalization |
 | `src/system/nmi_tasks.asm` | `$9578-$9582` | reset all 23 NMI task requests |
 | `src/preservation/prg_9583_a35b.asm` | `$9583-$A35B` | unresolved object handlers and gameplay logic |
 | `src/game/rooms/load_room.asm` | `$A35C-$A3AB` | top-level room loading and audio selection |
-| `src/preservation/prg_a3ac_a6d7.asm` | `$A3AC-$A6D7` | unresolved room/gameplay helpers |
+| `src/preservation/prg_a3ac_a589.asm` | `$A3AC-$A589` | unresolved room/gameplay helpers before coordinate conversion |
+| `src/game/rooms/cell_coordinates.asm` | `$A58A-$A5DC` | pixel/tile conversion and 20x20 room-cell addressing |
+| `src/preservation/prg_a5dd_a66c.asm` | `$A5DD-$A66C` | unresolved gameplay helpers before mutable-cell lookup |
+| `src/game/rooms/mutable_cell_lookup.asm` | `$A66D-$A6C9` | mutable-cell anchor lookup and one-based ordinal calculation |
+| `src/preservation/prg_a6ca_a6d7.asm` | `$A6CA-$A6D7` | unresolved helper between lookup and predicates |
 | `src/game/rooms/mutable_cell_predicates.asm` | `$A6D8-$A709` | persistent mutable-cell predicates |
-| `src/preservation/prg_a70a_ab49.asm` | `$A70A-$AB49` | unresolved room manipulation helpers |
+| `src/game/rooms/mutable_cell_restore.asm` | `$A70A-$A7DA` | ordinal restoration, persistence bit, and render requests |
+| `src/preservation/prg_a7db_ab49.asm` | `$A7DB-$AB49` | unresolved room manipulation helpers |
 | `src/game/rooms/room_metadata.asm` | `$AB4A-$AC12` | object counts and mutable-state offsets |
 | `src/preservation/prg_ac13_b64b.asm` | `$AC13-$B64B` | unresolved object handlers and sprite data |
 | `src/rendering/room_screen.asm` | `$B64C-$B7FC` | room nametable, status, attribute, and OAM initialization |
@@ -50,9 +59,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 41 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 50 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 40 in CPU-address order. Ghidra-defined instructions are emitted
+following 49 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

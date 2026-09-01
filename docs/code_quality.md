@@ -15,7 +15,8 @@ The quality targets follow the same contract as the sibling
 - `make quality-check` runs lint and tests without requiring a reference ROM
 - `make release-check` adds deterministic disassembly, byte-identical ROM,
   room-data, room-screen-data, controller-input, audio-data, and Famicom
-  data-I/O and save-payload verification
+  data-I/O, save-payload, mutable-room-cell, and exhaustive coordinate-helper
+  verification, plus transition-state and collision-cell flag contracts
 - `make check` is the full release check
 
 The address-ordered PRG translation unit is split only at boundaries recorded

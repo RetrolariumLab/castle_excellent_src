@@ -18,6 +18,18 @@
       "name": "CurrentRoomIndex"
     },
     {
+      "address": "0x0038",
+      "name": "PlayerXLo"
+    },
+    {
+      "address": "0x0039",
+      "name": "PlayerXHi"
+    },
+    {
+      "address": "0x003A",
+      "name": "PlayerY"
+    },
+    {
       "address": "0x0041",
       "name": "CurrentObjectOffset"
     },
@@ -254,7 +266,8 @@
     },
     {
       "address": "0x0785",
-      "name": "NmiTaskRequests"
+      "name": "NmiTaskRequests",
+      "size": 23
     },
     {
       "address": "0x079D",
@@ -460,13 +473,6 @@
       "end": "0xFDC5"
     },
     {
-      "address": "0x0038",
-      "name": "SaveLoadResumeState",
-      "size": 3,
-      "start": "0xFBFE",
-      "end": "0xFDC5"
-    },
-    {
       "address": "0x0772",
       "name": "SaveLoadMusicSelectionState",
       "start": "0xFD96",
@@ -477,6 +483,114 @@
       "name": "SaveLoadScreenState",
       "start": "0xFBFE",
       "end": "0xFDC5"
+    },
+    {
+      "address": "0x002B",
+      "name": "RoomCellPointerLo",
+      "start": "0xA5A4",
+      "end": "0xA6CA"
+    },
+    {
+      "address": "0x002C",
+      "name": "RoomCellPointerHi",
+      "start": "0xA5A4",
+      "end": "0xA6CA"
+    },
+    {
+      "address": "0x0021",
+      "name": "MutableCellTileColumn",
+      "start": "0xA66D",
+      "end": "0xA6CA"
+    },
+    {
+      "address": "0x0022",
+      "name": "MutableCellTileRow",
+      "start": "0xA66D",
+      "end": "0xA6CA"
+    },
+    {
+      "address": "0x001F",
+      "name": "RestoredMutableCellOrdinal",
+      "start": "0xA70A",
+      "end": "0xA7DB"
+    },
+    {
+      "address": "0x0029",
+      "name": "MutableCellRestorePointerLo",
+      "start": "0xA70A",
+      "end": "0xA7DB"
+    },
+    {
+      "address": "0x002A",
+      "name": "MutableCellRestorePointerHi",
+      "start": "0xA70A",
+      "end": "0xA7DB"
+    },
+    {
+      "address": "0x0044",
+      "name": "RestoredMutableCellAddressLo",
+      "start": "0xA70A",
+      "end": "0xA7DB"
+    },
+    {
+      "address": "0x0045",
+      "name": "RestoredMutableCellAddressHi",
+      "start": "0xA70A",
+      "end": "0xA7DB"
+    },
+    {
+      "address": "0x0044",
+      "name": "RoomCellUpdateAddressLo",
+      "start": "0x949C",
+      "end": "0x94DB"
+    },
+    {
+      "address": "0x0045",
+      "name": "RoomCellUpdateAddressHi",
+      "start": "0x949C",
+      "end": "0x94DB"
+    },
+    {
+      "address": "0x0010",
+      "name": "TransitionPlayerXLo",
+      "start": "0x952D",
+      "end": "0x9552"
+    },
+    {
+      "address": "0x0011",
+      "name": "TransitionPlayerXHi",
+      "start": "0x952D",
+      "end": "0x9552"
+    },
+    {
+      "address": "0x0012",
+      "name": "TransitionPlayerY",
+      "start": "0x952D",
+      "end": "0x9552"
+    },
+    {
+      "address": "0x000D",
+      "name": "TransitionStateByte0",
+      "start": "0x952D",
+      "end": "0x9552"
+    },
+    {
+      "address": "0x000E",
+      "name": "TransitionStateByte1",
+      "start": "0x952D",
+      "end": "0x9552"
+    },
+    {
+      "address": "0x0014",
+      "name": "TransitionStateMirror0",
+      "start": "0x952D",
+      "end": "0x9552"
+    },
+    {
+      "address": "0x0015",
+      "name": "TransitionStateMirror1",
+      "start": "0x952D",
+      "end": "0x9552"
     },
     {
       "address": "0x0016",

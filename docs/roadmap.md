@@ -43,6 +43,12 @@
   serial formats, common byte wrappers, preamble, and error-return contracts;
 - [x] reconstruct the 394-byte save payload, reversed RAM traversals, exact
   `BEDEUTUN` signature, load-error path, and post-load room restoration;
+- [x] reconstruct pixel/tile/cell addressing, one-based mutable-cell lookup,
+  both restored cell forms, persistent-bit updates, and render requests;
+- [x] reconstruct shared 16-bit player/object X probes and exhaustively verify
+  their register order, offsets, carry, borrow, and wraparound;
+- [x] reconstruct room-transition completion, runtime-type filtering, and
+  mutable-cell collision normalization with exhaustive flag-preservation tests;
 - [x] reconstruct Reset and the NMI-paced main loop, including cold/warm boot,
   the `POWER`/`POW` signature contract, and the two-NMI frame gate;
 - [x] reconstruct the common NMI frame handler, 23-task request scheduler,

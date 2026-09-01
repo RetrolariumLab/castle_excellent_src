@@ -150,6 +150,23 @@ The logical room is 20x20 cells. One cell spans 16x8 pixels: X is doubled into
 two background tiles, while Y advances by one tile. The rendered playfield is
 therefore wider than one screen and uses two horizontal nametables.
 
+`ConvertPixelPositionToTileCoordinates` shifts the 16-bit A:X horizontal
+position and eight-bit Y position right by three. `GetRoomCellPointer` then
+computes `$0400 + tile_y * 20 + floor(tile_x / 2)`. Mutable-cell lookup accepts
+the six persistent top/left values plus restored anchors `$54/$62`; lower
+restored values and the six paired right values first move the lookup one row
+up. The resulting anchor is numbered from one by scanning the room row-major.
+Restoration scans the same candidate order, writes `$54/$55` or `$62/$63`,
+sets the ordinal's packed bit, requests the affected room-row update, and
+requests both attribute upload tasks.
+
+The render helper derives a row directly from an absolute room-cell pointer:
+it shifts the pointer right twice, masks the low seven bits, and divides by
+five. Since each row is 20 cells, the result is exactly the original row for
+every address `$0400-$058F`. The single-row entry marks NMI task `row + 1`;
+the paired entry also marks its successor, matching mutations that write the
+cell below.
+
 The 16-byte RAM region is lookahead over future compressed bits, not an LZ
 history window. Each byte contains ASCII `0` or `1` (`$30/$31`). The PRG table
 stores an output cell value followed by its ASCII bit code and a zero
@@ -162,6 +179,27 @@ Static room objects form `(type, x, y)` triples terminated by `$FF`; the stream
 occupies `$EF6B-$F8FB`. Loading expands each object into a six-byte record in
 `$004A-$00D9`. The `$90`-byte pool therefore contains 24 records; the original
 rooms use at most 18.
+
+The shared X-coordinate helpers at `$94DB-$952C` treat player and runtime-object
+X as unsigned 16-bit values. They return the high byte in A and low byte in X,
+which is the register order expected by collision and pixel-to-tile callers.
+Player probes add 7 or 15; object probes use offsets 0, 7, 8, 15, 17, and -2.
+Low-byte carry or borrow is propagated into the high byte, including natural
+wrap at `$FFFF/$0000`.
+
+`FinishRoomTransition` at `$952D` restores `PauseMode` to `$FF`, copies the
+saved player X/Y bytes into runtime-mirror offsets 11-13, mirrors two additional
+transition-state bytes, then calls `ResetPpuScroll`, `EnableNmi`, and tail-jumps
+to `WaitForVblankAndEnableRendering` in that order. The contextual zero-page
+names apply only to this routine; the destination runtime mirror is the same
+15-byte record populated by room-state selection.
+
+The adjacent collision helpers make two flag contracts explicit. The type
+predicate returns carry clear only for runtime types `$90-$95`. The sampling
+wrapper preserves the lower room-cell sampler's complete A/P result unless A
+is `$54,$55,$62`, or `$63`; those four mutable visual forms return `$53` with
+only carry forced clear. Thus visual restoration does not make the cell solid
+to these callers.
 
 A 101-entry cumulative offset table assigns `ceil(object count / 8)` bytes to
 each room. The resulting `$8D` bytes at `$0608-$0694` preserve one bit for each

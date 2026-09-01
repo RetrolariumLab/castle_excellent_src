@@ -10,6 +10,8 @@
 | `$001A` | 1 | saved X for data-I/O wrappers, scoped to `$8000-$8224` | confirmed | byte send/receive entry points |
 | `$001F` | 1 | data transport selector, scoped to `$8000-$8224` | confirmed | sign dispatches pulse vs expansion path |
 | `$0020` | 1 | polled controller buttons, scoped to `$80FF-$8157` | confirmed | both eight-bit serial pollers |
+| `$0038-$0039` | 2 | player X in pixels, little-endian | confirmed | movement, collision probes, save/load restoration, and 16-bit helpers |
+| `$003A` | 1 | player Y in pixels | confirmed | movement, collision probes, and save/load restoration |
 | `$00F8` | 1 | current NMI task index | confirmed | high/low handler dispatch and request scan |
 | `$00F9-$00FA` | 2 | NMI task handler pointer, little-endian | confirmed | indirect NMI jump |
 | `$00FB` | 1 | OAM staging busy flag | high | foreground sprite build and NMI DMA-buffer rebuild interlock |
@@ -68,9 +70,26 @@ count, and sampled input level. These aliases are restricted to
 `$8000-$8224`; the same zero-page bytes have unrelated meanings elsewhere.
 
 Save/load orchestration contextually views `$05-$12` as the 14-byte runtime
-payload and `$13` as its separate tail byte. `$38-$3A` mirrors runtime offsets
-11-13 while the loaded room is decoded and the player-adjacent mutable cell is
-restored. These meanings are scoped to `$FBFE-$FDC4`.
+payload and `$13` as its separate tail byte. Runtime offsets 11-13 restore the
+global player X/Y fields before the loaded room and player-adjacent mutable cell
+are rebuilt.
+
+Within `$952D-$9551`, zero-page `$10-$12` are the saved player X low/high and Y
+bytes copied into `RoomRuntimeLoadMirror + $0B..$0D`. Bytes `$0D-$0E` are two
+additional transition-state values copied to `$14-$15`. These seven names are
+strictly scoped to transition completion because the same scratch addresses
+serve unrelated code elsewhere.
+
+Room-cell lookup contextually names `$2B-$2C` as the pointer into the 400-byte
+matrix and `$21-$22` as the saved tile column/row. Mutable-cell restoration
+uses `$1F` for the original ordinal, `$29-$2A` for its scan pointer, and
+`$44-$45` for the selected cell address passed to the row-update helper. Each
+alias is restricted to its `$A5A4-$A7DA` consumer range.
+
+Within `$949C-$94DA`, `$44-$45` is independently named as the destructive
+room-cell update pointer. The helper shifts it twice before deriving the row;
+callers must treat the pair as consumed. `NmiTaskRequests` is sized to all 23
+bytes, so generated indexed operands use relocatable `+1` and `+2` expressions.
 
 The object loader and state-application path prove the first five bytes of each
 six-byte record: `+0` runtime type, `+1/+2` little-endian X in pixels, `+3` Y in

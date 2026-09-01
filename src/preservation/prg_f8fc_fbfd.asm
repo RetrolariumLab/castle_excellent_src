@@ -354,11 +354,11 @@ Label_FBB8:
 
 Label_FBC0:
     LDA $10
-    STA $38
+    STA PlayerXLo
     LDA $11
-    STA $39
+    STA PlayerXHi
     LDA $12
-    STA $3A
+    STA PlayerY
     DEC $13
     LDA #$00
     STA a:$07CD

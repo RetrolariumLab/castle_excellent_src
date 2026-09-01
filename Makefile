@@ -19,10 +19,15 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/input/controllers.asm src/system/ppu.asm \
 	src/input/famicom_data_io.asm src/system/startup.asm \
 	src/preservation/prg_82ce_8f0f.asm \
-	src/game/objects/runtime_record_offsets.asm src/preservation/prg_8f29_9577.asm \
+	src/game/objects/runtime_record_offsets.asm src/preservation/prg_8f29_949b.asm \
+	src/rendering/room_cell_updates.asm src/game/x_coordinates.asm \
+	src/game/rooms/finish_transition.asm src/game/collision/cell_samples.asm \
 	src/system/nmi_tasks.asm src/preservation/prg_9583_a35b.asm \
-	src/game/rooms/load_room.asm src/preservation/prg_a3ac_a6d7.asm \
-	src/game/rooms/mutable_cell_predicates.asm src/preservation/prg_a70a_ab49.asm \
+	src/game/rooms/load_room.asm src/preservation/prg_a3ac_a589.asm \
+	src/game/rooms/cell_coordinates.asm src/preservation/prg_a5dd_a66c.asm \
+	src/game/rooms/mutable_cell_lookup.asm src/preservation/prg_a6ca_a6d7.asm \
+	src/game/rooms/mutable_cell_predicates.asm \
+	src/game/rooms/mutable_cell_restore.asm src/preservation/prg_a7db_ab49.asm \
 	src/game/rooms/room_metadata.asm src/preservation/prg_ac13_b64b.asm \
 	src/rendering/room_screen.asm src/preservation/prg_b7fd_c55c.asm \
 	src/system/nmi.asm src/rendering/oam_dma.asm \
@@ -79,7 +84,9 @@ TIMEOUT_FRAMES ?= 15000
 	status-state validate-status room-row-state validate-room-rows \
 	attribute-upload-state validate-attribute-upload castle-map-state \
 	validate-castle-map data-io-state validate-data-io save-data \
-	validate-save-data
+	validate-save-data room-cell-state validate-room-cells x-coordinate-state \
+	validate-x-coordinates transition-state validate-transition \
+	collision-state validate-collision
 
 all: verify
 
@@ -290,7 +297,31 @@ save-data: $(ROM)
 validate-save-data: $(ROM)
 	$(PYTHON) scripts/save_data.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data
+room-cell-state:
+	$(PYTHON) scripts/room_cell_coordinates.py --pretty
+
+validate-room-cells:
+	$(PYTHON) scripts/room_cell_coordinates.py --validate
+
+x-coordinate-state:
+	$(PYTHON) scripts/x_coordinates.py --pretty
+
+validate-x-coordinates:
+	$(PYTHON) scripts/x_coordinates.py --validate
+
+transition-state:
+	$(PYTHON) scripts/room_transition.py --pretty
+
+validate-transition:
+	$(PYTHON) scripts/room_transition.py --validate
+
+collision-state:
+	$(PYTHON) scripts/collision_cells.py --pretty
+
+validate-collision:
+	$(PYTHON) scripts/collision_cells.py --validate
+
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision
 
 check: release-check
 

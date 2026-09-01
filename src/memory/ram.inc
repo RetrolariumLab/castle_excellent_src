@@ -5,6 +5,9 @@ PlayerScoreLo = $0001
 PlayerScoreHi = $0002
 
 CurrentRoomIndex = $0037
+PlayerXLo = $0038
+PlayerXHi = $0039
+PlayerY = $003A
 CurrentObjectOffset = $0041
 
 ; Contextual result buffer for controller polling at $80FF-$8157
@@ -96,6 +99,8 @@ RoomCells = $0400
 RoomWidth = 20
 RoomHeight = 20
 RoomCellCount = 400
+RoomCellPointerRowMask = $7F
+RoomCellPointerRowDivisor = 5
 
 RoomMutableCellPersistentState = $0590
 RoomMutableCellPersistentStateBytes = $6C
@@ -130,7 +135,6 @@ SaveLoadRuntimeState = $0005
 ActiveRoomRuntimeTail = $0013
 SaveLoadPpuStringPointerLo = $0021
 SaveLoadPpuStringPointerHi = $0022
-SaveLoadResumeState = $0038
 SaveLoadMusicSelectionState = $0772
 SaveLoadScreenState = $07CD
 SaveRuntimeStateSize = 14
@@ -140,8 +144,29 @@ SaveObjectRegion = $0608
 SaveObjectRegionSize = $96
 SaveDataSignatureSize = 8
 
+; Contextual room-cell coordinate and mutable restoration scratch
+RoomCellPointerLo = $002B
+RoomCellPointerHi = $002C
+MutableCellTileColumn = $0021
+MutableCellTileRow = $0022
+RestoredMutableCellOrdinal = $001F
+MutableCellRestorePointerLo = $0029
+MutableCellRestorePointerHi = $002A
+RestoredMutableCellAddressLo = $0044
+RestoredMutableCellAddressHi = $0045
+RoomCellUpdateAddressLo = $0044
+RoomCellUpdateAddressHi = $0045
+TransitionPlayerXLo = $0010
+TransitionPlayerXHi = $0011
+TransitionPlayerY = $0012
+TransitionStateByte0 = $000D
+TransitionStateByte1 = $000E
+TransitionStateMirror0 = $0014
+TransitionStateMirror1 = $0015
+
 NmiTaskRequests = $0785
 NmiTaskRequestCount = 23
+NmiTaskPending = $FF
 StatusScoreTiles = $079D
 StatusScoreTileCount = 5
 StatusScoreTerminator = $07A2

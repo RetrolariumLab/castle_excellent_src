@@ -1106,11 +1106,11 @@ Label_B456:
 Func_B457:
     STX $22
     STY $21
-    LDA $38
+    LDA PlayerXLo
     CLC
     ADC #$20
     STA $2B
-    LDA $39
+    LDA PlayerXHi
     ADC #$00
     STA $2C
     LDA $2B
@@ -1137,7 +1137,7 @@ Func_B457:
     LDY #$03
     LDA ($21),Y
     STA OamStagingBuffer + $06
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC #$27
     STA OamStagingBuffer

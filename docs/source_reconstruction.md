@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 32 semantic and 9 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 39 semantic and 11 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -32,7 +32,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 15,296 PRG bytes (46.68%): `$E45D-$E8DE`
+The promoted ranges currently cover 15,901 PRG bytes (48.53%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -71,6 +71,32 @@ signature. The three RAM regions traverse descending addresses. A lossless
 codec proves every field boundary, reversal, exact ROM signature source, and
 encode/decode round trip. The load path checks carry for the preamble and every
 field except payload byte one, preserving the original unchecked-status quirk.
+
+The mutable-room-cell slice adds `$A58A-$A5DC`, `$A66D-$A6C9`, and
+`$A70A-$A7DA`. It converts 16-bit pixel X and eight-bit pixel Y into tile
+coordinates, maps two horizontal tiles onto each of the 400 room cells, finds
+mutable anchors by one-based row-major ordinal, and restores `$54/$55` or
+`$62/$63` according to neighboring cell `$16`. Restoration also sets the
+matching persistent bitmap bit and requests the affected row and both room
+attribute uploads. An independent model checks the full 40x20 tile domain,
+both candidate families, ordinal-to-bit mapping, both restored forms, and the
+`$949C-$94DA` pointer-to-row/NMI-request helpers across all 400 cell addresses.
+
+The coordinate slice adds `$94DB-$952C`. Two player entries add 7 or 15 to the
+16-bit position at `$38/$39`; six runtime-object entries return X, X plus
+7/8/15/17, or X minus 2 from each six-byte record. All return A=high and
+X=low. The independent 6502 arithmetic model exhaustively checks all 65,536
+input positions, every helper offset, low-byte carry and borrow, and 16-bit
+wraparound.
+
+The adjacent transition/collision slice adds `$952D-$9577`.
+`FinishRoomTransition` restores gameplay mode, mirrors player X/Y and two
+transition bytes, then resumes rendering in the exact scroll-reset, NMI-enable,
+vblank/render order. The collision module recognizes runtime types `$90-$95`
+and maps room cells `$54,$55,$62,$63` to `$53`; it preserves the lower sampler's
+complete processor status for ordinary cells and clears only carry for mapped
+cells. Independent models check every type byte and all 65,536 cell/status
+combinations.
 
 The startup slice adds `$8225-$82CD`. `Reset` waits for two vblanks, establishes
 the stack, compares the three-byte RAM sentinel `POW` with the five-byte ROM

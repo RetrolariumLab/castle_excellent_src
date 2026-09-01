@@ -879,11 +879,11 @@ UpdateHorizontalScroll:
     RTS
 
 Label_C443:
-    LDA $38
+    LDA PlayerXLo
     SEC
     SBC #$40
     STA $2B
-    LDA $39
+    LDA PlayerXHi
     SBC #$00
     BCS Label_C456
 

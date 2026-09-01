@@ -9,7 +9,7 @@ UpdatePlayerInputAndMovement:
     RTS
 
 Label_82D4:
-    LDA $3A
+    LDA PlayerY
     BNE Label_82DB
     JMP Label_867A
 
@@ -54,7 +54,7 @@ Label_8320:
     LDA $3C
     CMP #$21
     BCC Label_8331
-    LDA $38
+    LDA PlayerXLo
     AND #$07
     BNE Label_8331
     DEC $3C
@@ -78,7 +78,7 @@ Label_8341:
     JMP Label_8478
 
 Label_834A:
-    LDY $3A
+    LDY PlayerY
     DEY
     DEY
     STY $1A
@@ -87,21 +87,21 @@ Label_834A:
     JMP Label_8478
 
 Label_8357:
-    JSR Func_94DB
+    JSR GetPlayerXPlus7
     LDY $1A
     JSR Func_8DD3
     BCS Label_837D
-    LDA $39
-    LDX $38
+    LDA PlayerXHi
+    LDX PlayerXLo
     LDY $1A
     JSR Func_8DD3
     BCS Label_837D
-    JSR Func_94DF
+    JSR GetPlayerXPlus15
     LDY $1A
     JSR Func_8DD3
     BCS Label_837D
-    DEC $3A
-    DEC $3A
+    DEC PlayerY
+    DEC PlayerY
     JMP Label_8478
 
 Label_837D:
@@ -136,11 +136,11 @@ Label_83A8:
     LDA #$00
     STA $1E
     STA $2F
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC $1F
     TAY
-    JSR Func_94DB
+    JSR GetPlayerXPlus7
     JSR Func_8DD3
     BCC Label_83C5
     STA $30
@@ -149,12 +149,12 @@ Label_83A8:
     INC $1E
 
 Label_83C5:
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC $1F
     TAY
-    LDX $38
-    LDA $39
+    LDX PlayerXLo
+    LDA PlayerXHi
     JSR Func_8DD3
     BCC Label_83DD
     STA $2F
@@ -163,11 +163,11 @@ Label_83C5:
     INC $1E
 
 Label_83DD:
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC $1F
     TAY
-    JSR Func_94DF
+    JSR GetPlayerXPlus15
     JSR Func_8DD3
     BCS Label_840F
     LDA $1E
@@ -185,11 +185,11 @@ Label_83F8:
     LDA $1F
     CMP #$11
     BNE Label_8404
-    INC $3A
+    INC PlayerY
 
 Label_8404:
-    INC $3A
-    LDA $3A
+    INC PlayerY
+    LDA PlayerY
     CMP #$A0
     BCC Label_8478
     JMP Label_86A0
@@ -229,7 +229,7 @@ Label_8435:
     LDA Controller1Buttons
     AND #$01
     BEQ Label_847B
-    LDA $38
+    LDA PlayerXLo
     AND #$07
     BNE Label_8467
     LDA a:$07C9
@@ -247,7 +247,7 @@ Label_8467:
     STA $3C
 
 Label_846B:
-    LDA $38
+    LDA PlayerXLo
     AND #$07
     BNE Label_8478
     LDA #$20
@@ -261,7 +261,7 @@ Label_847B:
     LDA Controller1Buttons
     AND #$C0
     BNE Label_8490
-    LDA $38
+    LDA PlayerXLo
     AND #$07
     BNE Label_8490
     LDA #$00
@@ -291,7 +291,7 @@ Label_84A8:
     BNE Label_84C8
     LDA $3B
     BEQ Label_84D9
-    LDA $38
+    LDA PlayerXLo
     AND #$07
     BNE Label_8512
     LDA #$02
@@ -303,7 +303,7 @@ Label_84C8:
     LDA #$02
     STA a:$07C9
     STA a:$07CA
-    LDA $38
+    LDA PlayerXLo
     AND #$07
     BEQ Label_84D9
     JMP Label_85CA
@@ -350,29 +350,29 @@ Label_8512:
 
 Label_8519:
     BMI Label_8538
-    LDA $38
+    LDA PlayerXLo
     CLC
     ADC #$11
     STA $21
-    LDA $39
+    LDA PlayerXHi
     ADC #$00
     STA $22
-    LDA $38
+    LDA PlayerXLo
     CLC
     ADC #$02
     STA $23
-    LDA $39
+    LDA PlayerXHi
     ADC #$00
     STA $24
     JMP Label_8549
 
 Label_8538:
-    LDA $38
+    LDA PlayerXLo
     SEC
     SBC #$02
     STA $21
     STA $23
-    LDA $39
+    LDA PlayerXHi
     SBC #$00
     STA $22
     STA $24
@@ -393,7 +393,7 @@ Label_8554:
 Label_855D:
     LDA #$FF
     STA a:$07CB
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC #$0F
     TAY
@@ -404,7 +404,7 @@ Label_855D:
     BCS Label_85A6
     LDA #$FF
     STA a:$07CB
-    LDA $3A
+    LDA PlayerY
     CLC
     ADC #$07
     TAY
@@ -417,14 +417,14 @@ Label_855D:
     STA a:$07CB
     LDA $22
     LDX $21
-    LDY $3A
+    LDY PlayerY
     STY $1E
     JSR Func_8DD3
     BCS Label_85A6
     LDA $24
-    STA $39
+    STA PlayerXHi
     LDA $23
-    STA $38
+    STA PlayerXLo
     JMP Label_85CA
 
 Label_85A6:
@@ -462,11 +462,11 @@ Label_85D2:
 
 Label_85D9:
     BMI Label_85F5
-    LDA $38
+    LDA PlayerXLo
     CLC
     ADC #$16
     STA $21
-    LDA $39
+    LDA PlayerXHi
     ADC #$00
     STA $22
     LDA $21
@@ -477,17 +477,17 @@ Label_85D9:
     JMP Label_8673
 
 Label_85F5:
-    LDA $38
+    LDA PlayerXLo
     SEC
     SBC #$06
     STA $21
-    LDA $39
+    LDA PlayerXHi
     SBC #$00
     STA $22
     BMI Label_8673
 
 Label_8604:
-    LDA $3A
+    LDA PlayerY
     SEC
     SBC #$05
     STA $16
@@ -556,13 +556,13 @@ Label_8673:
 
 Label_867A:
     LDA #$98
-    STA $3A
+    STA PlayerY
     STA $12
-    LDA $39
+    LDA PlayerXHi
     STA $11
-    LDA $38
+    LDA PlayerXLo
     AND #$F8
-    STA $38
+    STA PlayerXLo
     STA $10
     JSR Func_8758
     JSR Func_A7DB
@@ -570,17 +570,17 @@ Label_867A:
     STA a:$07CD
     JSR LoadRoom
     JSR UpdateHorizontalScroll
-    JMP Func_952D
+    JMP FinishRoomTransition
 
 Label_86A0:
     LDA #$10
-    STA $3A
+    STA PlayerY
     STA $12
-    LDA $39
+    LDA PlayerXHi
     STA $11
-    LDA $38
+    LDA PlayerXLo
     AND #$F8
-    STA $38
+    STA PlayerXLo
     STA $10
     JSR Func_8758
     JSR Func_A7E6
@@ -588,25 +588,25 @@ Label_86A0:
     STA a:$07CD
     JSR LoadRoom
     JSR UpdateHorizontalScroll
-    JMP Func_952D
+    JMP FinishRoomTransition
 
 Label_86C6:
     LDA CurrentRoomIndex
     JSR Func_A816
     BNE Label_86D6
     LDA #$00
-    STA $38
-    STA $39
+    STA PlayerXLo
+    STA PlayerXHi
     JMP UpdateHorizontalScroll
 
 Label_86D6:
     LDA #$30
-    STA $38
+    STA PlayerXLo
     STA $10
     LDA #$01
-    STA $39
+    STA PlayerXHi
     STA $11
-    LDA $3A
+    LDA PlayerY
     STA $12
     JSR Func_8758
     JSR Func_A7FE
@@ -614,7 +614,7 @@ Label_86D6:
     STA a:$07CD
     JSR LoadRoom
     JSR UpdateHorizontalScroll
-    LDA $3A
+    LDA PlayerY
     SEC
     SBC #$10
     TAY
@@ -626,25 +626,25 @@ Label_86D6:
     JSR RestoreMutableCellByOrdinal
 
 Label_870C:
-    JMP Func_952D
+    JMP FinishRoomTransition
 
 Label_870F:
     LDA CurrentRoomIndex
     JSR Func_A80B
     BNE Label_8721
     LDA #$01
-    STA $39
+    STA PlayerXHi
     LDA #$30
-    STA $38
+    STA PlayerXLo
     JMP UpdateHorizontalScroll
 
 Label_8721:
     LDA #$00
-    STA $38
-    STA $39
+    STA PlayerXLo
+    STA PlayerXHi
     STA $10
     STA $11
-    LDA $3A
+    LDA PlayerY
     STA $12
     JSR Func_8758
     JSR Func_A7F1
@@ -652,7 +652,7 @@ Label_8721:
     STA a:$07CD
     JSR LoadRoom
     JSR UpdateHorizontalScroll
-    LDA $3A
+    LDA PlayerY
     SEC
     SBC #$10
     TAY
@@ -664,7 +664,7 @@ Label_8721:
     JSR RestoreMutableCellByOrdinal
 
 Label_8755:
-    JMP Func_952D
+    JMP FinishRoomTransition
 
 Func_8758:
     LDX #$00
@@ -739,7 +739,7 @@ Label_89E0:
     .byte $4C, $C2, $8A, $A6, $41
     LDY RuntimeObjectY,X
     DEY
-    JSR Func_94F2
+    JSR GetRuntimeObjectXPlus7
     JSR Func_8ECB
     LDY $29
     LDA ($2B),Y
@@ -790,8 +790,8 @@ Label_8A3B:
     ADC #$09
     TAY
     STY $1C
-    JSR Func_94EA
-    JSR Func_955D
+    JSR GetRuntimeObjectX
+    JSR SampleNormalizedRoomCollisionCell
     CMP #$53
     BEQ Label_8A52
     JMP Label_8AC1
@@ -799,8 +799,8 @@ Label_8A3B:
 Label_8A52:
     LDY $1C
     LDX $1F
-    JSR Func_9508
-    JSR Func_955D
+    JSR GetRuntimeObjectXPlus15
+    JSR SampleNormalizedRoomCollisionCell
     CMP #$53
     BEQ Label_8A63
     JMP Label_8AC1
@@ -811,8 +811,8 @@ Label_8A63:
     CLC
     ADC #$0A
     TAY
-    JSR Func_94EA
-    JSR Func_955D
+    JSR GetRuntimeObjectX
+    JSR SampleNormalizedRoomCollisionCell
     CMP #$53
     BNE Label_8AC1
     LDX $1E
@@ -820,22 +820,22 @@ Label_8A63:
     CLC
     ADC #$0A
     TAY
-    JSR Func_9508
-    JSR Func_955D
+    JSR GetRuntimeObjectXPlus15
+    JSR SampleNormalizedRoomCollisionCell
     CMP #$53
     BNE Label_8AC1
     LDY $1C
     LDX $1F
-    JSR Func_9508
-    JSR Func_955D
+    JSR GetRuntimeObjectXPlus15
+    JSR SampleNormalizedRoomCollisionCell
     CMP #$53
     BNE Label_8AC1
     LDX $1E
     LDY RuntimeObjectY,X
     INY
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
-    JSR Func_A5A4
+    JSR GetRoomCellPointer
     LDY #$00
     LDA #$52
     STA ($2B),Y
@@ -843,7 +843,7 @@ Label_8A63:
     STA $44
     LDA $2C
     STA $45
-    JSR Func_949C
+    JSR RequestRoomCellRowUpdate
     LDX $1E
     JSR Func_8ABB
     LDX $1F
@@ -861,7 +861,7 @@ Func_8AC2:
     LDX CurrentObjectOffset
     LDY RuntimeObjectY,X
     DEY
-    JSR Func_94FD
+    JSR GetRuntimeObjectXPlus8
     JSR Func_8ECB
     LDY $29
     LDA ($2B),Y
@@ -888,7 +888,7 @@ Label_8AEB:
     LDY RuntimeObjectY,X
     DEY
     DEY
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR Func_8ECB
     LDY $29
     LDA ($2B),Y
@@ -918,9 +918,9 @@ Label_8B12:
     CLC
     ADC #$06
     TAY
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
-    JSR Func_A5A4
+    JSR GetRoomCellPointer
     LDY #$00
     LDA #$53
     STA ($2B),Y
@@ -928,7 +928,7 @@ Label_8B12:
     STA $44
     LDA $2C
     STA $45
-    JSR Func_949C
+    JSR RequestRoomCellRowUpdate
     JSR Func_9A2C
     LDX $1E
     JSR Func_9A1F
@@ -1020,7 +1020,7 @@ Label_8BB4:
     LDA RuntimeObjectRecords,X
     CMP #$A4
     BEQ Label_8BF9
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR Func_A1A3
     BCS Label_8BEB
     BMI Label_8BEB
@@ -1028,7 +1028,7 @@ Label_8BB4:
     LDA RuntimeObjectOffsetByCount,X
     TAX
     LDY RuntimeObjectY,X
-    JSR Func_9508
+    JSR GetRuntimeObjectXPlus15
     JSR Func_A1A3
     BMI Label_8BEB
     BCC Label_8BF9
@@ -1049,14 +1049,14 @@ Label_8BF9:
     BCC Label_8BB4
     LDA a:$07C3
     BEQ Label_8C11
-    LDA $3A
+    LDA PlayerY
     SEC
     SBC #$02
     BCS Label_8C0F
     LDA #$00
 
 Label_8C0F:
-    STA $3A
+    STA PlayerY
 
 Label_8C11:
     RTS
@@ -1248,7 +1248,7 @@ Label_8E2F:
     INC a:$07CB
     BEQ Label_8E4D
     LDA RuntimeObjectRecords,X
-    JSR Func_9552
+    JSR IsRuntimeObjectType90To95
     BCC Label_8EB7
 
 Label_8E4D:

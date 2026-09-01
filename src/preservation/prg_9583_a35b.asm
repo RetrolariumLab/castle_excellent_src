@@ -100,9 +100,9 @@ Label_97A7:
     CMP #$98
     BCS Label_97DE
     TAY
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
-    JSR Func_A5A4
+    JSR GetRoomCellPointer
     LDY #$14
     LDA ($2B),Y
     CMP #$4C
@@ -116,7 +116,7 @@ Label_97A7:
     STA $44
     LDA $2C
     STA $45
-    JSR Func_94AC
+    JSR RequestRoomCellRowUpdates
     LDX $43
     LDA RuntimeObjectY,X
     CLC
@@ -133,9 +133,9 @@ Label_97DE:
 Label_97E7:
     LDX $43
     LDY RuntimeObjectY,X
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
-    JSR Func_A5A4
+    JSR GetRoomCellPointer
     LDA #$53
     LDY #$00
     STA ($2B),Y
@@ -143,7 +143,7 @@ Label_97E7:
     STA $44
     LDA $2C
     STA $45
-    JSR Func_94AC
+    JSR RequestRoomCellRowUpdates
     LDX $43
     LDA #$00
     STA RuntimeObjectState,X
@@ -157,9 +157,9 @@ Label_980E:
     SEC
     SBC #$08
     TAY
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
-    JSR Func_A5A4
+    JSR GetRoomCellPointer
     LDY #$00
     LDA ($2B),Y
     CMP #$53
@@ -173,7 +173,7 @@ Label_980E:
     STA $44
     LDA $2C
     STA $45
-    JSR Func_94AC
+    JSR RequestRoomCellRowUpdates
     LDX $43
     LDA RuntimeObjectY,X
     TAY
@@ -215,9 +215,9 @@ Label_987A:
     CMP #$98
     BCS Label_98B9
     TAY
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
-    JSR Func_A5A4
+    JSR GetRoomCellPointer
     LDY #$14
     LDA ($2B),Y
     CMP #$4F
@@ -236,7 +236,7 @@ Label_987A:
     STA $44
     LDA $2C
     STA $45
-    JSR Func_94AC
+    JSR RequestRoomCellRowUpdates
     LDX $43
     LDA RuntimeObjectY,X
     CLC
@@ -253,9 +253,9 @@ Label_98B9:
 Label_98C2:
     LDX $43
     LDY RuntimeObjectY,X
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
-    JSR Func_A5A4
+    JSR GetRoomCellPointer
     LDA #$53
     LDY #$00
     STA ($2B),Y
@@ -265,7 +265,7 @@ Label_98C2:
     STA $44
     LDA $2C
     STA $45
-    JSR Func_94AC
+    JSR RequestRoomCellRowUpdates
     LDX $43
     LDA #$00
     STA RuntimeObjectState,X
@@ -279,9 +279,9 @@ Label_98EC:
     SEC
     SBC #$08
     TAY
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
-    JSR Func_A5A4
+    JSR GetRoomCellPointer
     LDY #$00
     LDA ($2B),Y
     CMP #$53
@@ -301,7 +301,7 @@ Label_98EC:
     STA $44
     LDA $2C
     STA $45
-    JSR Func_94AC
+    JSR RequestRoomCellRowUpdates
     LDX $43
     LDA RuntimeObjectY,X
     TAY
@@ -415,7 +415,7 @@ Label_99C5:
     AND #$F8
     STA RuntimeObjectY,X
     TAY
-    JSR Func_94EA
+    JSR GetRuntimeObjectX
     JSR Func_A1A3
     BCS Label_99FA
     BMI Label_99FA
@@ -423,7 +423,7 @@ Label_99C5:
     LDA RuntimeObjectOffsetByCount,X
     TAX
     LDY RuntimeObjectY,X
-    JSR Func_9508
+    JSR GetRuntimeObjectXPlus15
     JSR Func_A1A3
     BMI Label_99FA
     BCC Label_9A08
@@ -444,11 +444,11 @@ Label_9A08:
     BCC Label_99C5
     LDA a:$07C3
     BEQ Label_9A1E
-    LDA $3A
+    LDA PlayerY
     SEC
     SBC #$01
     AND #$F8
-    STA $3A
+    STA PlayerY
 
 Label_9A1E:
     RTS
@@ -551,10 +551,10 @@ Label_9A9C:
 Func_9AAD:
     LDX $43
     LDY RuntimeObjectY,X
-    JSR Func_9513
+    JSR GetRuntimeObjectXPlus17
     JSR Func_9AF1
     BCS Label_9A65
-    JMP Func_955D
+    JMP SampleNormalizedRoomCollisionCell
 
 Func_9ABC:
     LDX $43
@@ -562,18 +562,18 @@ Func_9ABC:
     CLC
     ADC #$07
     TAY
-    JSR Func_9513
+    JSR GetRuntimeObjectXPlus17
     JSR Func_9AF1
     BCS Label_9A65
-    JMP Func_955D
+    JMP SampleNormalizedRoomCollisionCell
 
 Func_9ACF:
     LDX $43
     LDY RuntimeObjectY,X
-    JSR Func_9520
+    JSR GetRuntimeObjectXMinus2
     JSR Func_9AF1
     BCS Label_9AFF
-    JMP Func_955D
+    JMP SampleNormalizedRoomCollisionCell
 
 Func_9ADE:
     LDX $43
@@ -581,10 +581,10 @@ Func_9ADE:
     CLC
     ADC #$07
     TAY
-    JSR Func_9520
+    JSR GetRuntimeObjectXMinus2
     JSR Func_9AF1
     BCS Label_9AFF
-    JMP Func_955D
+    JMP SampleNormalizedRoomCollisionCell
 
 Func_9AF1:
     CPY #$A0
@@ -605,7 +605,7 @@ Func_9B00:
     CLC
     ADC #$0E
     TAY
-    JSR Func_94F2
+    JSR GetRuntimeObjectXPlus7
     JSR Func_8ECB
     LDY $29
     LDA ($2B),Y
@@ -621,8 +621,8 @@ Label_9B1B:
     CLC
     ADC #$11
     TAY
-    JSR Func_94EA
-    JSR Func_A0C4
+    JSR GetRuntimeObjectX
+    JSR SampleRoomCollisionCell
     BPL Label_9B33
     JMP Func_9791
 
@@ -642,7 +642,7 @@ Label_9B33:
     TAX
     LDA $22
     ADC #$00
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BPL Label_9B55
     JMP Func_9791
 
@@ -662,7 +662,7 @@ Label_9B55:
     TAX
     LDA $22
     ADC #$00
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BPL Label_9B77
     JMP Func_9791
 
@@ -711,7 +711,7 @@ Label_9B9D:
     TAX
     LDA $22
     ADC #$00
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCC Label_9BE5
 
 Label_9BC4:
@@ -760,7 +760,7 @@ Label_9BED:
     TAX
     LDA $22
     SBC #$00
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCC Label_9C31
 
 Label_9C14:
@@ -799,15 +799,15 @@ Label_9C42:
     LDA RuntimeObjectY,X
     CLC
     ADC #$10
-    CMP $3A
+    CMP PlayerY
     BEQ Label_9C51
     RTS
 
 Label_9C51:
     LDA RuntimeObjectXLo,X
-    CMP $38
+    CMP PlayerXLo
     LDA RuntimeObjectXHi,X
-    SBC $39
+    SBC PlayerXHi
     BCC Label_9C60
     LDA RuntimeObjectState,X
     BMI Label_9C65
@@ -894,7 +894,7 @@ Label_9CC5:
     CMP #$50
     BCS Label_9CF5
     LDX $43
-    LDA $3A
+    LDA PlayerY
     SEC
     SBC #$10
     CMP RuntimeObjectY,X
@@ -917,8 +917,8 @@ Label_9D07:
     CLC
     ADC #$10
     TAY
-    JSR Func_94F2
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus7
+    JSR SampleRoomCollisionCell
     BCS Label_9D18
     JMP Func_9B00
 
@@ -936,24 +936,24 @@ Label_9D1E:
     LDY RuntimeObjectY,X
     DEY
     DEY
-    JSR Func_94EA
-    JSR Func_A0C4
+    JSR GetRuntimeObjectX
+    JSR SampleRoomCollisionCell
     BCS Label_9D64
     BMI Label_9D64
     LDX $43
     LDY RuntimeObjectY,X
     DEY
     DEY
-    JSR Func_94F2
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus7
+    JSR SampleRoomCollisionCell
     BCS Label_9D64
     BMI Label_9D64
     LDX $43
     LDY RuntimeObjectY,X
     DEY
     DEY
-    JSR Func_9508
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus15
+    JSR SampleRoomCollisionCell
     BCS Label_9D64
     BMI Label_9D64
     LDX $43
@@ -983,10 +983,10 @@ Label_9D76:
     JMP Label_9DC0
 
 Label_9D7D:
-    LDA $38
+    LDA PlayerXLo
     CMP RuntimeObjectXLo,X
     BNE Label_9D8F
-    LDA $39
+    LDA PlayerXHi
     CMP RuntimeObjectXHi,X
     BNE Label_9D8F
     LDA #$FF
@@ -1030,7 +1030,7 @@ Label_9DBF:
     RTS
 
 Label_9DC0:
-    LDA $3A
+    LDA PlayerY
     SEC
     SBC #$10
     CMP RuntimeObjectY,X
@@ -1070,22 +1070,22 @@ Func_9DF2:
     DEY
     CPY #$A0
     BCS Label_9E1E
-    JSR Func_94EA
-    JSR Func_A0C4
+    JSR GetRuntimeObjectX
+    JSR SampleRoomCollisionCell
     BCS Label_9E1E
     LDX $43
     LDY RuntimeObjectY,X
     DEY
     DEY
-    JSR Func_94F2
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus7
+    JSR SampleRoomCollisionCell
     BCS Label_9E1E
     LDX $43
     LDY RuntimeObjectY,X
     DEY
     DEY
-    JSR Func_9508
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus15
+    JSR SampleRoomCollisionCell
 
 Label_9E1E:
     RTS
@@ -1098,24 +1098,24 @@ Func_9E1F:
     CMP #$A0
     BCS Label_9E51
     TAY
-    JSR Func_94EA
-    JSR Func_A0C4
+    JSR GetRuntimeObjectX
+    JSR SampleRoomCollisionCell
     BCS Label_9E51
     LDX $43
     LDA RuntimeObjectY,X
     CLC
     ADC #$11
     TAY
-    JSR Func_94F2
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus7
+    JSR SampleRoomCollisionCell
     BCS Label_9E51
     LDX $43
     LDA RuntimeObjectY,X
     CLC
     ADC #$11
     TAY
-    JSR Func_9508
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus15
+    JSR SampleRoomCollisionCell
 
 Label_9E51:
     RTS
@@ -1123,24 +1123,24 @@ Label_9E51:
 Func_9E52:
     LDX $43
     LDY RuntimeObjectY,X
-    JSR Func_9520
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXMinus2
+    JSR SampleRoomCollisionCell
     BCS Label_9E7C
     LDX $43
     LDA RuntimeObjectY,X
     CLC
     ADC #$07
     TAY
-    JSR Func_9520
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXMinus2
+    JSR SampleRoomCollisionCell
     BCS Label_9E7C
     LDX $43
     LDA RuntimeObjectY,X
     CLC
     ADC #$0F
     TAY
-    JSR Func_9520
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXMinus2
+    JSR SampleRoomCollisionCell
 
 Label_9E7C:
     RTS
@@ -1148,34 +1148,34 @@ Label_9E7C:
 Func_9E7D:
     LDX $43
     LDY RuntimeObjectY,X
-    JSR Func_9513
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus17
+    JSR SampleRoomCollisionCell
     BCS Label_9EA7
     LDX $43
     LDA RuntimeObjectY,X
     CLC
     ADC #$07
     TAY
-    JSR Func_9513
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus17
+    JSR SampleRoomCollisionCell
     BCS Label_9EA7
     LDX $43
     LDA RuntimeObjectY,X
     CLC
     ADC #$0F
     TAY
-    JSR Func_9513
-    JSR Func_A0C4
+    JSR GetRuntimeObjectXPlus17
+    JSR SampleRoomCollisionCell
 
 Label_9EA7:
     RTS
 
 Func_9EA8:
-    LDA $38
+    LDA PlayerXLo
     CLC
     SBC RuntimeObjectXLo,X
     STA $21
-    LDA $39
+    LDA PlayerXHi
     SBC RuntimeObjectXHi,X
     STA $22
     STA $24
@@ -1227,7 +1227,7 @@ Label_9EF8:
     STY $16
     LDX $21
     LDA $22
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCS Label_9F73
     LDY $16
     LDA $21
@@ -1236,7 +1236,7 @@ Label_9EF8:
     TAX
     LDA $22
     ADC #$00
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCS Label_9F73
     LDA $16
     CLC
@@ -1244,7 +1244,7 @@ Label_9EF8:
     TAY
     LDX $21
     LDA $22
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCS Label_9F73
     LDA $16
     CLC
@@ -1256,7 +1256,7 @@ Label_9EF8:
     TAX
     LDA $22
     ADC #$00
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCS Label_9F73
     LDY CurrentRoomIndex
     LDX a:$AB49,Y
@@ -1294,7 +1294,7 @@ Label_9F73:
     LDA RuntimeObjectState,X
     BMI Label_9FBA
     LDY RuntimeObjectY,X
-    JSR Func_94F2
+    JSR GetRuntimeObjectXPlus7
     BEQ Label_9F89
     CMP #$01
     BNE Label_9FB5
@@ -1305,7 +1305,7 @@ Label_9F89:
     STX $21
     STA $22
     STY $16
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCS Label_9FB5
     BMI Label_9FB5
     LDA $16
@@ -1314,7 +1314,7 @@ Label_9F89:
     TAY
     LDX $21
     LDA $22
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCS Label_9FB5
     BMI Label_9FB5
     LDX $43
@@ -1346,7 +1346,7 @@ Label_9FBA:
     STX $21
     STA $22
     STY $16
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCS Label_9FB5
     BMI Label_9FB5
     LDA $16
@@ -1355,7 +1355,7 @@ Label_9FBA:
     TAY
     LDX $21
     LDA $22
-    JSR Func_A0C4
+    JSR SampleRoomCollisionCell
     BCS Label_9FB5
     BMI Label_9FB5
     LDX $43
@@ -1467,7 +1467,7 @@ Label_A09A:
     BRK
     .byte $00, $00, $00, $00, $00, $FF, $FF, $00, $FF, $FF, $FF, $FF, $FF, $FF
 
-Func_A0C4:
+SampleRoomCollisionCell:
     CPY #$A0
     BCC Label_A0CE
     CLC
@@ -1812,9 +1812,9 @@ InitializeNewGame:
     STA $0A
     STA $09
     LDA #$00
-    STA $39
+    STA PlayerXHi
     STA $11
-    STA $38
+    STA PlayerXLo
     STA $10
     STA $14
     LDX #$0D
@@ -1852,7 +1852,7 @@ Label_A340:
     LDA CurrentRoomIndex
     STA CurrentRoomState
     LDA #$98
-    STA $3A
+    STA PlayerY
     STA $12
 
 UploadRoomPalette:
