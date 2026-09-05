@@ -1,13 +1,7 @@
-; Preservation padding, room-cell tile tables, and vectors
-; CPU range $FEE8-$FFFF
+; Left and right tile indexes for 100 room-cell types
+; CPU range $FF30-$FFF7
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
-
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 
 LeftTileByCell:
     .byte $02, $02, $05, $05, $05, $05, $FF, $02, $00, $02, $06, $FF, $02, $07, $25, $27
@@ -25,13 +19,4 @@ RightTileByCell:
     .byte $0D, $0E, $0F, $10, $11, $4C, $4E, $2D, $30, $2E, $31, $4A, $33, $4C, $4E, $2D
     .byte $30, $3F, $40, $3F, $42, $1C, $22, $1E, $20, $FF, $FF, $FF, $13, $FF, $FF, $23
     .byte $FF, $FF, $44, $FF, $FF, $FF, $4C, $4E, $2D, $30, $2E, $31, $4A, $33, $4C, $4E
-    .byte $2D, $30, $18, $18, $FF, $FF
-
-NmiVector:
-    .addr Nmi
-
-ResetVector:
-    .addr Reset
-
-IrqVector:
-    .addr Irq
+    .byte $2D, $30, $18, $18

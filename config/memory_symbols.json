@@ -619,6 +619,48 @@
       "end": "0xA1D4"
     },
     {
+      "address": "0x001B",
+      "name": "RuntimeOnlySampleY",
+      "start": "0xA1D4",
+      "end": "0xA247"
+    },
+    {
+      "address": "0x001D",
+      "name": "RuntimeOnlySampleObjectIndex",
+      "start": "0xA1D4",
+      "end": "0xA247"
+    },
+    {
+      "address": "0x0027",
+      "name": "RuntimeOnlySampleXLo",
+      "start": "0xA1D4",
+      "end": "0xA247"
+    },
+    {
+      "address": "0x0028",
+      "name": "RuntimeOnlySampleXHi",
+      "start": "0xA1D4",
+      "end": "0xA247"
+    },
+    {
+      "address": "0x002B",
+      "name": "RuntimeOnlySampleDeltaXLo",
+      "start": "0xA1D4",
+      "end": "0xA247"
+    },
+    {
+      "address": "0x002C",
+      "name": "RuntimeOnlySampleDeltaXHi",
+      "start": "0xA1D4",
+      "end": "0xA247"
+    },
+    {
+      "address": "0x0042",
+      "name": "RuntimeOnlySampleObjectOffset",
+      "start": "0xA1D4",
+      "end": "0xA247"
+    },
+    {
       "address": "0x002B",
       "name": "CollisionSampleDeltaXLo",
       "start": "0xA13C",

@@ -40,7 +40,7 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/collision/object_filters.asm` | `$A044-$A0C3` | animated-cell and runtime-object collision filters |
 | `src/game/collision/point_sample.asm` | `$A0C4-$A1A2` | room-cell and runtime-object point collision sample |
 | `src/game/collision/room_sample.asm` | `$A1A3-$A1D3` | room-cell-only collision sample |
-| `src/preservation/prg_a044_a2b0.asm` | `$A1D4-$A246` | unresolved collision sampler before runtime overlap |
+| `src/game/collision/unreferenced_runtime_only_sample.asm` | `$A1D4-$A246` | unreferenced runtime-object-only point sampler |
 | `src/game/collision/runtime_overlap.asm` | `$A247-$A2A9` | runtime-object overlap scan and shared no-op return |
 | `src/data/unreferenced_nmi_task_index_bytes.asm` | `$A2AA-$A2B0` | unreferenced code-shaped bytes resembling `Y >> 3` |
 | `src/game/new_game.asm` | `$A2B1-$A350` | new-game state and persistent-region initialization |
@@ -67,7 +67,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/rendering/object_metasprites.asm` | `$B1D6-$B4B5` | common object/player metasprite composition and clipping |
 | `src/rendering/metasprite_data.asm` | `$B4B6-$B64B` | 203 tile/attribute descriptor pairs |
 | `src/rendering/room_screen.asm` | `$B64C-$B7FC` | room nametable, status, attribute, and OAM initialization |
-| `src/preservation/prg_b7fd_c55c.asm` | `$B7FD-$C55C` | unresolved demo input, audio, and scroll helpers |
+| `src/preservation/prg_b7fd_c4fc.asm` | `$B7FD-$C4FC` | unresolved demo input, audio, and scroll helpers |
+| `src/rendering/screen_palette_data.asm` | `$C4FD-$C53C` | overlapping completion, title, and castle-map palettes |
+| `src/rendering/room_palette_data.asm` | `$C53D-$C55C` | gameplay room background and sprite palette |
 | `src/system/nmi.asm` | `$C55D-$C6B8` | NMI dispatch, OAM/scroll, input, scheduler, counters, and audio tick |
 | `src/rendering/oam_dma.asm` | `$C6B9-$C803` | OAM staging transpose, frame rotation, and record reversal |
 | `src/rendering/status_upload.asm` | `$C804-$C8BB` | NMI HUD upload and 23-task handler tables |
@@ -91,7 +93,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/save_load.asm` | `$FBFE-$FDC4` | save/load payload, validation, messages, and room restoration |
 | `src/game/rooms/persistent_state_save.asm` | `$FDC5-$FE30` | snapshot persistence writer |
 | `src/game/end_sequences.asm` | `$FE31-$FEE7` | game over, type `$82` completion, and high-score update |
-| `src/preservation/prg_fee8_ffff.asm` | `$FEE8-$FFFF` | padding, room-cell tile tables, and interrupt vectors |
+| `src/data/prg_tail_padding.asm` | `$FEE8-$FF2F` | 72-byte erased-ROM padding |
+| `src/rendering/room_cell_tile_tables.asm` | `$FF30-$FFF7` | left/right tile index for every room-cell type |
+| `src/system/interrupt_vectors.asm` | `$FFF8-$FFFF` | vector padding and NMI/reset/IRQ addresses |
 | `src/graphics/chr.asm` | four 8 KiB banks | private CHR payload |
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |

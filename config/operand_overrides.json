@@ -566,6 +566,36 @@
       "evidence": "an out-of-bounds room-only sample returns the empty room-cell value"
     },
     {
+      "instruction": "0xA1D4",
+      "expected": "#$A0",
+      "operand": "#RuntimeObjectVisibleYLimit",
+      "evidence": "runtime-only samples at or below the 160-pixel gameplay boundary return empty"
+    },
+    {
+      "instruction": "0xA1D9",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "an out-of-bounds runtime-only sample returns the empty room-cell value"
+    },
+    {
+      "instruction": "0xA1F1",
+      "expected": "#$A8",
+      "operand": "#RuntimeOverlapTypeEnd",
+      "evidence": "the standalone sampler accepts active runtime types $80-$A7"
+    },
+    {
+      "instruction": "0xA23D",
+      "expected": "#$18",
+      "operand": "#RuntimeObjectRecordCount",
+      "evidence": "the standalone sampler visits all 24 runtime-object slots"
+    },
+    {
+      "instruction": "0xA242",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "an exhausted runtime-only scan returns the empty room-cell value"
+    },
+    {
       "instruction": "0xA247",
       "expected": "#$90",
       "operand": "#RuntimeObjectRecordBytes",
@@ -2102,6 +2132,18 @@
       "evidence": "room palette upload uses the low byte of the typed palette table"
     },
     {
+      "instruction": "0xEA8B",
+      "expected": "#$C5",
+      "operand": "#>CastleMapPaletteData",
+      "evidence": "castle map uploads the 32-byte palette beginning at $C51D"
+    },
+    {
+      "instruction": "0xEA8F",
+      "expected": "#$1D",
+      "operand": "#<CastleMapPaletteData",
+      "evidence": "castle map uploads the 32-byte palette beginning at $C51D"
+    },
+    {
       "instruction": "0xA368",
       "expected": "#$90",
       "operand": "#RuntimeObjectRecordBytes",
@@ -2976,6 +3018,18 @@
       "expected": "#$14",
       "operand": "#CompletionNametableChrPage",
       "evidence": "completion copies four CHR pages beginning at PPU page $14"
+    },
+    {
+      "instruction": "0xF901",
+      "expected": "#$C5",
+      "operand": "#>TitlePaletteData",
+      "evidence": "title screen uploads the 32-byte palette beginning at $C50D"
+    },
+    {
+      "instruction": "0xF905",
+      "expected": "#$0D",
+      "operand": "#<TitlePaletteData",
+      "evidence": "title screen uploads the 32-byte palette beginning at $C50D"
     },
     {
       "instruction": "0xFE96",

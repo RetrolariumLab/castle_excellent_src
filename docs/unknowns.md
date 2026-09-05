@@ -351,7 +351,8 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   `[max(0, spanX-objectWidth+1), spanX+spanWidth)`
 - Result: the first match returns its offset in X with carry clear; exhaustion
   returns X at `$90` with carry set through the shared no-op handler RTS
-- Evidence: semantic `$A247-$A2A9`, two direct calls, exact width/height tables,
+- Evidence: semantic `$A1D4-$A2A9`, an explicitly unreferenced runtime-only
+  sibling, two direct overlap calls, exact width/height tables,
   all 24 offsets, 1,052,928 type/X/Y cases, deterministic regeneration, and
   byte-identical build
 

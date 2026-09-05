@@ -1334,6 +1334,36 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xA1D4",
+      "name": "SampleRuntimeObjectCollisionAtPixel",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA1DE",
+      "name": "InitializeRuntimeOnlyCollisionSample",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA1E8",
+      "name": "TestNextRuntimeOnlyCollisionSample",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA234",
+      "name": "ReturnRuntimeOnlyCollisionSample",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0xA239",
+      "name": "AdvanceRuntimeOnlyCollisionSample",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
       "address": "0xA247",
       "name": "FindRuntimeObjectOverlappingSpan",
       "kind": "routine",
@@ -3470,6 +3500,24 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xC4FD",
+      "name": "CompletionPaletteData",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC50D",
+      "name": "TitlePaletteData",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC51D",
+      "name": "CastleMapPaletteData",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xC53D",
       "name": "RoomPaletteData",
       "kind": "data",
@@ -4796,6 +4844,12 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xFEE8",
+      "name": "PaddingBeforeTileTables",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xFF30",
       "name": "LeftTileByCell",
       "kind": "data",
@@ -4804,6 +4858,12 @@
     {
       "address": "0xFF94",
       "name": "RightTileByCell",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFFF8",
+      "name": "PaddingBeforeVectors",
       "kind": "data",
       "confidence": "confirmed"
     },

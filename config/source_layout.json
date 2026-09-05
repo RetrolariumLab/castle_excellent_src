@@ -42,7 +42,7 @@
         "../game/collision/object_filters.asm",
         "../game/collision/point_sample.asm",
         "../game/collision/room_sample.asm",
-        "../preservation/prg_a044_a2b0.asm",
+        "../game/collision/unreferenced_runtime_only_sample.asm",
         "../game/collision/runtime_overlap.asm",
         "../data/unreferenced_nmi_task_index_bytes.asm",
         "../game/new_game.asm",
@@ -69,7 +69,9 @@
         "../rendering/object_metasprites.asm",
         "../rendering/metasprite_data.asm",
         "../rendering/room_screen.asm",
-        "../preservation/prg_b7fd_c55c.asm",
+        "../preservation/prg_b7fd_c4fc.asm",
+        "../rendering/screen_palette_data.asm",
+        "../rendering/room_palette_data.asm",
         "../system/nmi.asm",
         "../rendering/oam_dma.asm",
         "../rendering/status_upload.asm",
@@ -93,7 +95,9 @@
         "../game/save_load.asm",
         "../game/rooms/persistent_state_save.asm",
         "../game/end_sequences.asm",
-        "../preservation/prg_fee8_ffff.asm"
+        "../data/prg_tail_padding.asm",
+        "../rendering/room_cell_tile_tables.asm",
+        "../system/interrupt_vectors.asm"
       ]
     },
     {
@@ -301,10 +305,10 @@
       "title": "Room-cell-only collision sample"
     },
     {
-      "path": "src/preservation/prg_a044_a2b0.asm",
+      "path": "src/game/collision/unreferenced_runtime_only_sample.asm",
       "start": "0xA1D4",
       "end": "0xA247",
-      "title": "Preservation collision samplers before runtime overlap"
+      "title": "Unreferenced runtime-object-only point collision sampler"
     },
     {
       "path": "src/game/collision/runtime_overlap.asm",
@@ -463,10 +467,22 @@
       "title": "Room nametable, status, attribute, and sprite initialization"
     },
     {
-      "path": "src/preservation/prg_b7fd_c55c.asm",
+      "path": "src/preservation/prg_b7fd_c4fc.asm",
       "start": "0xB7FD",
+      "end": "0xC4FD",
+      "title": "Preservation PRG before shared screen palettes"
+    },
+    {
+      "path": "src/rendering/screen_palette_data.asm",
+      "start": "0xC4FD",
+      "end": "0xC53D",
+      "title": "Overlapping completion, title, and castle-map palettes"
+    },
+    {
+      "path": "src/rendering/room_palette_data.asm",
+      "start": "0xC53D",
       "end": "0xC55D",
-      "title": "Preservation PRG before the NMI frame handler"
+      "title": "Gameplay room background and sprite palette"
     },
     {
       "path": "src/system/nmi.asm",
@@ -607,10 +623,22 @@
       "title": "Game-over and type $82 completion sequences"
     },
     {
-      "path": "src/preservation/prg_fee8_ffff.asm",
+      "path": "src/data/prg_tail_padding.asm",
       "start": "0xFEE8",
+      "end": "0xFF30",
+      "title": "PRG tail padding before room-cell tile tables"
+    },
+    {
+      "path": "src/rendering/room_cell_tile_tables.asm",
+      "start": "0xFF30",
+      "end": "0xFFF8",
+      "title": "Left and right tile indexes for 100 room-cell types"
+    },
+    {
+      "path": "src/system/interrupt_vectors.asm",
+      "start": "0xFFF8",
       "end": "0x10000",
-      "title": "Preservation padding, room-cell tile tables, and vectors"
+      "title": "Vector padding and 6502 interrupt vectors"
     }
   ]
 }

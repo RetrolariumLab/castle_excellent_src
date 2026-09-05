@@ -6,9 +6,9 @@
 RunTitleScreen:
     LDA #$18
     JSR CopyChrNametablePagesToVram
-    LDA #$C5
+    LDA #>TitlePaletteData
     STA $22
-    LDA #$0D
+    LDA #<TitlePaletteData
     STA $21
     JSR UploadPaletteFromPointer
     LDY #$01

@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 80 semantic and 7 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 86 semantic and 5 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 23,436 PRG bytes (71.52%): `$E45D-$E8DE`
+The promoted ranges currently cover 23,927 PRG bytes (73.02%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -372,6 +372,15 @@ It returns the first matching record offset with carry clear, while exhaustion
 reaches the shared no-op handler return with carry set. The model verifies both
 call sites, all 24 offsets, exact dimension tables, and 1,052,928 type/X/Y cases.
 
+The adjacent `$A1D4-$A246` routine is now explicit unreferenced code. It accepts
+a 16-bit X in A:X and Y pixel coordinate, rejects Y at or below the 160-pixel
+playfield boundary, then scans all 24 runtime records without excluding the
+current object. No direct call, pointer table, fallthrough, or captured runtime
+path enters it; the former `$A207` flow was an invalid sprite-table overrun into
+an operand byte. Validation binds all 115 bytes, checks 641 dispatch pointers,
+proves zero live entries, models slot order and bounds, and confirms that the
+Japanese and USA revisions contain the same routine.
+
 The seven bytes at `$A2AA-$A2B0` are now typed unreferenced data rather than a
 speculative helper. They resemble `NmiTaskIndex = Y >> 3`, but no direct,
 indirect, table, fallthrough, or runtime entry reaches them. Typed-data clearing
@@ -385,6 +394,20 @@ palette, starts track set 4, waits for audio, then freezes permanently. Both
 paths first update the persistent high score with the unsigned maximum of it
 and the player score. Validation checks all 183 bytes, 19 calls, both external
 jumps, the terminal loop, decoded text, and 655,360 score comparisons.
+
+The palette-data slice promotes `$C4FD-$C55C`. The first 64 bytes are three
+overlapping 32-byte uploads: completion at `$C4FD`, title at `$C50D`, and the
+castle map at `$C51D`; each later view reuses the preceding view's final 16
+bytes. The adjacent 32-byte room palette at `$C53D` remains a separate table.
+An independent validator checks all four data views, the fixed 32-byte uploader,
+and its three calls plus the room-loader tail jump.
+
+The final 280 PRG bytes are now three explicit typed modules: 72 erased bytes,
+two 100-entry left/right tile tables, and two more erased bytes followed by the
+NMI, reset, and IRQ vectors. The tile validator proves exactly 400 indexed
+reads from each table across the 20 unrolled room-row tasks and checks all 100
+cell pairs; vector checks bind `$C569`, `$8225`, and `$C6B8` to their platform
+entry points.
 
 The new-game slice adds `$A2B1-$A35B`. It selects one-based room `$47`, sets
 three lives and player position `(0,$98)`, resets gameplay, transition,

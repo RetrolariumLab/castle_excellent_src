@@ -42,6 +42,7 @@ table BB16 BB1C NoteSemitoneOffsets
 table BB1D BB54 NoteLengthTable
 table BB55 BBE6 ApuPeriodTable
 text BBE7 C20C MusicMmlData
+table C4FD C53C CompletionPaletteData
 table C53D C55C RoomPaletteData
 table C79D C7AB OamRotationOffsets
 data C7AC C7AC UnusedOamRotationOffset

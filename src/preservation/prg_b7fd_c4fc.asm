@@ -1,5 +1,5 @@
-; Preservation PRG before the NMI frame handler
-; CPU range $B7FD-$C55C
+; Preservation PRG before shared screen palettes
+; CPU range $B7FD-$C4FC
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
@@ -997,14 +997,3 @@ Label_C4E2:
     STA PPU_ADDR
     STA PPU_ADDR
     RTS
-    .byte $0F, $16, $36, $30, $0F, $1A, $36, $30, $0F, $08, $17, $27, $0F, $00, $10, $30
-    .byte $0F, $18, $28, $38, $0F, $00, $16, $30, $0F, $00, $2A, $30, $0F, $12, $22, $2A
-    .byte $0F, $16, $10, $30, $0F, $18, $1A, $2A, $0F, $07, $17, $27, $0F, $12, $21, $28
-    .byte $0F, $24, $1A, $36, $0F, $24, $1A, $36, $0F, $24, $1A
-    ROL $0F,X
-    BIT $1A
-    .byte $36
-
-RoomPaletteData:
-    .byte $0F, $12, $21, $30, $0F, $12, $21, $16, $0F, $1A, $28, $25, $0F, $08, $18, $20
-    .byte $0F, $12, $21, $30, $0F, $16, $28, $20, $0F, $25, $1A, $36, $0F, $00, $10, $30

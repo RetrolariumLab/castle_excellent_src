@@ -49,9 +49,9 @@ DrawCastleMap:
     JSR CopyChrNametablePagesToVram
     LDY #$01
     JSR SelectChrBank
-    LDA #$C5
+    LDA #>CastleMapPaletteData
     STA CastleMapPpuAddressHi
-    LDA #$1D
+    LDA #<CastleMapPaletteData
     STA CastleMapPpuAddressLo
     JSR UploadPaletteFromPointer
     LDX #$00
