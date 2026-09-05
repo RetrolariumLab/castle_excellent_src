@@ -308,6 +308,60 @@
       "evidence": "runtime type $86 alone receives phase- and motion-dependent vertical filtering"
     },
     {
+      "instruction": "0x8C19",
+      "expected": "#$0A",
+      "operand": "#InventoryCollectibleScore",
+      "evidence": "runtime type $90 inventory pickup awards 10 score units"
+    },
+    {
+      "instruction": "0x8C28",
+      "expected": "#$0A",
+      "operand": "#InventoryCollectibleScore",
+      "evidence": "runtime type $91 inventory pickup awards 10 score units"
+    },
+    {
+      "instruction": "0x8C37",
+      "expected": "#$0A",
+      "operand": "#InventoryCollectibleScore",
+      "evidence": "runtime type $92 inventory pickup awards 10 score units"
+    },
+    {
+      "instruction": "0x8C46",
+      "expected": "#$0A",
+      "operand": "#InventoryCollectibleScore",
+      "evidence": "runtime type $93 inventory pickup awards 10 score units"
+    },
+    {
+      "instruction": "0x8C55",
+      "expected": "#$0A",
+      "operand": "#InventoryCollectibleScore",
+      "evidence": "runtime type $94 inventory pickup awards 10 score units"
+    },
+    {
+      "instruction": "0x8C64",
+      "expected": "#$0A",
+      "operand": "#InventoryCollectibleScore",
+      "evidence": "runtime type $95 inventory pickup awards 10 score units"
+    },
+    {
+      "instruction": "0x8C6C",
+      "expected": "#$05",
+      "operand": "#CollectedObjectState5",
+      "evidence": "inventory pickups enter collected-object state 5"
+    },
+    {
+      "instruction": "0x8C72",
+      "expected": "#$A9",
+      "operand": "#CollectedObjectRuntimeType",
+      "evidence": "inventory pickups transform into transient runtime type $A9"
+    },
+    {
+      "instruction": "0x8C76",
+      "expected": "#$14",
+      "operand": "#CollectedObjectLifetime",
+      "evidence": "collected inventory objects receive a 20-frame lifetime"
+    },
+    {
       "instruction": "0x8E66",
       "expected": "#$08",
       "operand": "#PlayerCollisionSpecialPhaseThreshold",

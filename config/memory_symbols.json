@@ -1070,6 +1070,13 @@
       "end": "0xA4DB"
     },
     {
+      "address": "0x0005",
+      "name": "InventoryCollectibleCounts",
+      "size": 6,
+      "start": "0x8C12",
+      "end": "0x8C7B"
+    },
+    {
       "address": "0x0004",
       "name": "ScoreRemainderHi",
       "start": "0xA497",

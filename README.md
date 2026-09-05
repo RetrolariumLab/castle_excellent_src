@@ -55,6 +55,9 @@ evidence, and tested decoders for game data.
   separate semantic table.
   Six inventory-backed handlers now connect persistent cell pairs to all six
   counters, player-motion/alignment guards, boundary delay, and opening sound.
+  Another six collision-table-selected handlers map runtime pickups `$90-$95`
+  bijectively onto those counters, award 10 points, play their shared sound,
+  and transform the collected object into its 20-frame transient state.
   Four room-transition helpers now expose the one-based 10x10 castle grid,
   including both ten-entry horizontal edge tables and boundary-safe movement.
   Player protection countdowns and the exact bottom-center hazard probe now
@@ -204,7 +207,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 435 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 440 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -212,11 +215,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 10,317 instructions after 30
+  disagreements. Evidence-refined Ghidra exports 10,341 instructions after 31
   static code ranges recover pointer-selected entries and 66 evidence-backed data
   ranges remove 199 false-positive instructions. A separate registry clears
   five overextended or misaligned starts embedded in real instruction operands.
-  The source layout owns 23,927 PRG bytes semantically (73.02%).
+  The source layout owns 24,032 PRG bytes semantically (73.34%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -416,6 +419,7 @@ scripts/room_cell_coordinates.py room-cell coordinate and mutation model
 scripts/room_cell_sample_address.py shared collision-sample address model
 scripts/player_collision_sample.py player room-cell/object collision model
 scripts/player_collision_dispatch.py player collision-handler dispatch model
+scripts/inventory_collectible_handlers.py six-counter runtime pickup model
 scripts/runtime_types81_82_collision.py type-$81/$82 transform/completion model
 scripts/unreferenced_nmi_task_index_bytes.py typed orphan-byte validator
 scripts/unreferenced_runtime_only_sample.py dead runtime-only sampler model

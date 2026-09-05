@@ -1,5 +1,5 @@
 ; Preservation PRG before collectible collision handlers
-; CPU range $881A-$8C7F
+; CPU range $881A-$8C11
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
@@ -631,34 +631,3 @@ Label_8C0F:
 
 Label_8C11:
     RTS
-    .byte $20, $A9, $A8, $B0, $63, $E6, $06, $A9, $0A, $20, $04, $8D, $4C, $69, $8C, $20
-    .byte $A9, $A8, $B0, $54, $E6, $05, $A9, $0A, $20, $04, $8D, $4C, $69, $8C, $20, $A9
-    .byte $A8, $B0, $45, $E6, $09, $A9, $0A, $20, $04, $8D, $4C, $69, $8C, $20, $A9, $A8
-    .byte $B0, $36, $E6, $08, $A9, $0A, $20, $04, $8D, $4C, $69, $8C
-    JSR IsCurrentObjectNearPlayer
-    BCS Label_8C7A
-    INC $0A
-    LDA #$0A
-    JSR AddPlayerScore
-    JMP Label_8C69
-    JSR IsCurrentObjectNearPlayer
-    BCS Label_8C7A
-    INC $07
-    LDA #$0A
-    JSR AddPlayerScore
-
-Label_8C69:
-    JSR Func_C272
-    LDA #$05
-
-TransformCollectedRuntimeObject:
-    LDX CurrentObjectOffset
-    STA RuntimeObjectState,X
-    LDA #$A9
-    STA RuntimeObjectRecords,X
-    LDA #$14
-    STA RuntimeObjectByte5,X
-
-Label_8C7A:
-    RTS
-    .byte $A6, $41, $4C, $24, $A0

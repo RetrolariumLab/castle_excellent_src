@@ -15,6 +15,11 @@ code 8785 8819
 # to $89E1; direct flow rejoins the already decoded handler tail at $89F6.
 code 89E1 89F5
 
+# Player runtime-collision entries $9354-$935E select all six inventory
+# collectible handlers for types $90-$95; their branches converge on the
+# shared pickup finalizer and collected-object transform through $8C7A.
+code 8C12 8C7A
+
 # Player runtime-collision pointer entries at $933A/$9360/$9364/$9366/$9368/
 # $936A select the complete collectible handlers at $8C80-$8CF1.
 code 8C80 8CF1

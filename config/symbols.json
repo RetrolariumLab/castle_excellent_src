@@ -476,10 +476,58 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x8C12",
+      "name": "CollectInventoryRuntimeType90",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C21",
+      "name": "CollectInventoryRuntimeType91",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C30",
+      "name": "CollectInventoryRuntimeType92",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C3F",
+      "name": "CollectInventoryRuntimeType93",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C4E",
+      "name": "CollectInventoryRuntimeType94",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C5D",
+      "name": "CollectInventoryRuntimeType95",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C69",
+      "name": "FinalizeInventoryCollectible",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8C6E",
       "name": "TransformCollectedRuntimeObject",
       "kind": "local",
       "confidence": "high"
+    },
+    {
+      "address": "0x8C7A",
+      "name": "ReturnFromInventoryCollectible",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0x8C80",
@@ -3468,6 +3516,12 @@
       "name": "MusicMmlData",
       "kind": "data",
       "confidence": "confirmed"
+    },
+    {
+      "address": "0xC272",
+      "name": "StartInventoryCollectibleSoundEffect",
+      "kind": "routine",
+      "confidence": "high"
     },
     {
       "address": "0xC2BD",

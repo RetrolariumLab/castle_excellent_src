@@ -20,7 +20,9 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/input/famicom_data_io.asm src/system/startup.asm \
 	src/preservation/prg_82ce_8f0f.asm src/game/rooms/object_state_save.asm \
 	src/game/player/animated_cell_displacement.asm \
-	src/preservation/prg_881a_8c7f.asm \
+	src/preservation/prg_881a_8c11.asm \
+	src/game/objects/inventory_collectible_handlers.asm \
+	src/preservation/prg_8c7b_8c7f.asm \
 	src/game/objects/collectible_collision_handlers.asm \
 	src/game/objects/collectible_type97.asm src/game/scoring/add_score.asm \
 	src/game/collision/runtime_type9f.asm src/game/collision/runtime_types81_82.asm \
@@ -139,6 +141,7 @@ TIMEOUT_FRAMES ?= 15000
 	room-object-state-save validate-room-object-state-save \
 	player-animated-cell-displacement validate-player-animated-cell-displacement \
 	collectible-collision-handlers validate-collectible-collision-handlers \
+	inventory-collectible-handlers validate-inventory-collectible-handlers \
 	score-award validate-score-award \
 	runtime-type9f-collision validate-runtime-type9f-collision \
 	runtime-types81-82-collision validate-runtime-types81-82-collision \
@@ -513,6 +516,12 @@ collectible-collision-handlers: $(ROM)
 validate-collectible-collision-handlers: $(ROM)
 	$(PYTHON) scripts/collectible_collision_handlers.py --image "$(ROM)" --validate
 
+inventory-collectible-handlers: $(ROM)
+	$(PYTHON) scripts/inventory_collectible_handlers.py --image "$(ROM)" --pretty
+
+validate-inventory-collectible-handlers: $(ROM)
+	$(PYTHON) scripts/inventory_collectible_handlers.py --image "$(ROM)" --validate
+
 score-award: $(ROM)
 	$(PYTHON) scripts/score_award.py --image "$(ROM)" --pretty
 
@@ -615,7 +624,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

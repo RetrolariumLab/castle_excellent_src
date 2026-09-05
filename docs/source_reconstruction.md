@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 86 semantic and 5 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 87 semantic and 6 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 23,927 PRG bytes (73.02%): `$E45D-$E8DE`
+The promoted ranges currently cover 24,032 PRG bytes (73.34%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -380,6 +380,14 @@ path enters it; the former `$A207` flow was an invalid sprite-table overrun into
 an operand byte. Validation binds all 115 bytes, checks 641 dispatch pointers,
 proves zero live entries, models slot order and bounds, and confirms that the
 Japanese and USA revisions contain the same routine.
+
+The inventory-collectible slice promotes `$8C12-$8C7A`. Collision-table entries
+for runtime types `$90-$95` select six handlers, which map bijectively onto the
+six inventory counters in order `1,0,4,3,5,2`. A nearby player increments only
+the selected byte, receives 10 score units, triggers the shared pickup sound,
+and transforms the object into type `$A9`, state 5, with lifetime 20. A distant
+player leaves all state unchanged. Validation pins all 105 bytes, six pointers,
+call topology, wraparound increments, and 3,072 exhaustive state cases.
 
 The seven bytes at `$A2AA-$A2B0` are now typed unreferenced data rather than a
 speculative helper. They resemble `NmiTaskIndex = Y >> 3`, but no direct,

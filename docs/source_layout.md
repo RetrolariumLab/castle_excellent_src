@@ -13,7 +13,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/preservation/prg_82ce_8f0f.asm` | `$82CE-$8757` | unresolved player movement and room-transition logic |
 | `src/game/rooms/object_state_save.asm` | `$8758-$8784` | current-room runtime object-state bitmap save |
 | `src/game/player/animated_cell_displacement.asm` | `$8785-$8819` | forced horizontal movement from animated room cells |
-| `src/preservation/prg_881a_8c7f.asm` | `$881A-$8C7F` | unresolved player movement and early gameplay logic |
+| `src/preservation/prg_881a_8c11.asm` | `$881A-$8C11` | unresolved player movement and early gameplay logic |
+| `src/game/objects/inventory_collectible_handlers.asm` | `$8C12-$8C7A` | six inventory pickups and shared collected-object transform |
+| `src/preservation/prg_8c7b_8c7f.asm` | `$8C7B-$8C7F` | unreferenced runtime-object clear tail |
 | `src/game/objects/collectible_collision_handlers.asm` | `$8C80-$8CF1` | six runtime collectible collision handlers |
 | `src/game/objects/collectible_type97.asm` | `$8CF2-$8D03` | type `$97` score-and-life collectible handler |
 | `src/game/scoring/add_score.asm` | `$8D04-$8D3C` | score awards and 1000-point extra-life threshold |

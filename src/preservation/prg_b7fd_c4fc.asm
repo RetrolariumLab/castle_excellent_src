@@ -645,7 +645,7 @@ Func_C233:
     STA NoiseSoundEffectBusy
     RTS
 
-Func_C272:
+StartInventoryCollectibleSoundEffect:
     LDA #$0F
     STA APU_STATUS
     LDA #$03
