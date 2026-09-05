@@ -1926,6 +1926,498 @@
       "expected": "#$FF",
       "operand": "#PauseScrollUpdateRequested",
       "evidence": "a paused Right scroll requests NMI latch application"
+    },
+    {
+      "instruction": "0x8E0C",
+      "expected": "a:$A95A,X",
+      "operand": "PlayerCollisionFlagsByRoomCellHalf,X",
+      "evidence": "room-cell type and horizontal half select the player collision flags"
+    },
+    {
+      "instruction": "0xA124",
+      "expected": "a:$AA22,X",
+      "operand": "ObjectCollisionFlagsByRoomCellHalf,X",
+      "evidence": "room-cell type and horizontal half select the first object collision flags"
+    },
+    {
+      "instruction": "0xA1BE",
+      "expected": "a:$AA22,X",
+      "operand": "ObjectCollisionFlagsByRoomCellHalf,X",
+      "evidence": "room-cell type and horizontal half select the second object collision flags"
+    },
+    {
+      "instruction": "0x861D",
+      "expected": "a:$AA9A,Y",
+      "operand": "RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "runtime type $80 indexes its collision height at the physical table start"
+    },
+    {
+      "instruction": "0x8E55",
+      "expected": "a:$AA9A,Y",
+      "operand": "RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "player/object vertical overlap uses the runtime type collision height"
+    },
+    {
+      "instruction": "0xA159",
+      "expected": "a:$AA9A,Y",
+      "operand": "RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "object/object vertical overlap uses the runtime type collision height"
+    },
+    {
+      "instruction": "0xA1FD",
+      "expected": "a:$AA9A,Y",
+      "operand": "RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "alternate object/object overlap uses the runtime type collision height"
+    },
+    {
+      "instruction": "0xA25B",
+      "expected": "a:$AA9A,Y",
+      "operand": "RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "runtime-object scan uses the candidate type collision height"
+    },
+    {
+      "instruction": "0x863B",
+      "expected": "a:$AA6A,Y",
+      "operand": "RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "player/object horizontal overlap uses the runtime type collision width"
+    },
+    {
+      "instruction": "0x8B88",
+      "expected": "a:$AA6A,Y",
+      "operand": "RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "runtime-object setup loads the type collision width"
+    },
+    {
+      "instruction": "0x8E93",
+      "expected": "a:$AA6A,Y",
+      "operand": "RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "player/object horizontal overlap uses the runtime type collision width"
+    },
+    {
+      "instruction": "0x998F",
+      "expected": "a:$AA6A,Y",
+      "operand": "RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "runtime-object setup loads the type collision width"
+    },
+    {
+      "instruction": "0xA178",
+      "expected": "a:$AA6A,Y",
+      "operand": "RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "object/object horizontal overlap uses the runtime type collision width"
+    },
+    {
+      "instruction": "0xA21C",
+      "expected": "a:$AA6A,Y",
+      "operand": "RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "alternate object/object overlap uses the runtime type collision width"
+    },
+    {
+      "instruction": "0xA263",
+      "expected": "a:$AA6A,Y",
+      "operand": "RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "runtime-object scan uses the candidate type collision width"
+    },
+    {
+      "instruction": "0x9C6F",
+      "expected": "a:$AB49,X",
+      "operand": "RoomObjectCounts - 1,X",
+      "evidence": "one-based room number selects where spawned objects follow static records"
+    },
+    {
+      "instruction": "0x9F46",
+      "expected": "a:$AB49,Y",
+      "operand": "RoomObjectCounts - 1,Y",
+      "evidence": "one-based room number selects where spawned objects follow static records"
+    },
+    {
+      "instruction": "0xAC19",
+      "expected": "#$F0",
+      "operand": "#OamHiddenY",
+      "evidence": "the frame builder initializes all 256 staging bytes to the hidden-sprite Y value"
+    },
+    {
+      "instruction": "0xAC27",
+      "expected": "#$0C",
+      "operand": "#FirstObjectOamStagingOffset",
+      "evidence": "two player sprites and one action sprite reserve the first twelve staging bytes"
+    },
+    {
+      "instruction": "0xAC34",
+      "expected": "#$A0",
+      "operand": "#RuntimeObjectVisibleYLimit",
+      "evidence": "objects at or below the 160-pixel boundary do not produce staging sprites"
+    },
+    {
+      "instruction": "0xAC3D",
+      "expected": "#$7F",
+      "operand": "#RuntimeObjectTypeIndexMask",
+      "evidence": "object sprite selection removes the active high bit before table indexing"
+    },
+    {
+      "instruction": "0xAC46",
+      "expected": "a:$AD94,Y",
+      "operand": "ObjectSpriteHandlerPointers + 1,Y",
+      "evidence": "odd table bytes provide the object sprite handler high address"
+    },
+    {
+      "instruction": "0xAC53",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the frame renderer advances one six-byte runtime-object record"
+    },
+    {
+      "instruction": "0xAC57",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the frame renderer scans all 24 runtime-object records"
+    },
+    {
+      "instruction": "0xAC6E",
+      "expected": "#$B4",
+      "operand": "#>PlayerTransitionMetasprite0",
+      "evidence": "transition phase zero selects its two-sprite descriptor"
+    },
+    {
+      "instruction": "0xAC70",
+      "expected": "#$E6",
+      "operand": "#<PlayerTransitionMetasprite0",
+      "evidence": "transition phase zero selects its two-sprite descriptor"
+    },
+    {
+      "instruction": "0xAC7C",
+      "expected": "#$B4",
+      "operand": "#>PlayerTransitionMetasprite1",
+      "evidence": "transition phase one selects its two-sprite descriptor"
+    },
+    {
+      "instruction": "0xAC7E",
+      "expected": "#$EA",
+      "operand": "#<PlayerTransitionMetasprite1",
+      "evidence": "transition phase one selects its two-sprite descriptor"
+    },
+    {
+      "instruction": "0xAC8A",
+      "expected": "#$B4",
+      "operand": "#>PlayerTransitionMetasprite2",
+      "evidence": "transition phase two selects its two-sprite descriptor"
+    },
+    {
+      "instruction": "0xAC8C",
+      "expected": "#$EE",
+      "operand": "#<PlayerTransitionMetasprite2",
+      "evidence": "transition phase two selects its two-sprite descriptor"
+    },
+    {
+      "instruction": "0xAC94",
+      "expected": "#$B4",
+      "operand": "#>PlayerTransitionMetasprite3",
+      "evidence": "transition phase three selects its two-sprite descriptor"
+    },
+    {
+      "instruction": "0xAC96",
+      "expected": "#$F2",
+      "operand": "#<PlayerTransitionMetasprite3",
+      "evidence": "transition phase three selects its two-sprite descriptor"
+    },
+    {
+      "instruction": "0xACA8",
+      "expected": "#$B4",
+      "operand": "#>PlayerNeutralMetasprite",
+      "evidence": "an idle directionless player selects the neutral descriptor"
+    },
+    {
+      "instruction": "0xACAA",
+      "expected": "#$C2",
+      "operand": "#<PlayerNeutralMetasprite",
+      "evidence": "an idle directionless player selects the neutral descriptor"
+    },
+    {
+      "instruction": "0xACB2",
+      "expected": "#$B4",
+      "operand": "#>PlayerNeutralMotionMetasprite",
+      "evidence": "a directionless player with active motion selects the neutral motion descriptor"
+    },
+    {
+      "instruction": "0xACB4",
+      "expected": "#$D6",
+      "operand": "#<PlayerNeutralMotionMetasprite",
+      "evidence": "a directionless player with active motion selects the neutral motion descriptor"
+    },
+    {
+      "instruction": "0xACC4",
+      "expected": "#$B4",
+      "operand": "#>PlayerRightMotionMetasprite",
+      "evidence": "positive direction with active motion selects the right motion descriptor"
+    },
+    {
+      "instruction": "0xACC6",
+      "expected": "#$C6",
+      "operand": "#<PlayerRightMotionMetasprite",
+      "evidence": "positive direction with active motion selects the right motion descriptor"
+    },
+    {
+      "instruction": "0xACD3",
+      "expected": "#$B4",
+      "operand": "#>PlayerRightActionMetasprite",
+      "evidence": "positive direction during the action countdown selects the right action descriptor"
+    },
+    {
+      "instruction": "0xACD5",
+      "expected": "#$DE",
+      "operand": "#<PlayerRightActionMetasprite",
+      "evidence": "positive direction during the action countdown selects the right action descriptor"
+    },
+    {
+      "instruction": "0xACE6",
+      "expected": "#$B4",
+      "operand": "#>PlayerRightWalkMetasprite0",
+      "evidence": "right walk phase zero selects its first descriptor"
+    },
+    {
+      "instruction": "0xACE8",
+      "expected": "#$B6",
+      "operand": "#<PlayerRightWalkMetasprite0",
+      "evidence": "right walk phase zero selects its first descriptor"
+    },
+    {
+      "instruction": "0xACF4",
+      "expected": "#$B4",
+      "operand": "#>PlayerRightWalkMetasprite2",
+      "evidence": "right walk phase two selects its third descriptor"
+    },
+    {
+      "instruction": "0xACF6",
+      "expected": "#$BE",
+      "operand": "#<PlayerRightWalkMetasprite2",
+      "evidence": "right walk phase two selects its third descriptor"
+    },
+    {
+      "instruction": "0xACFE",
+      "expected": "#$B4",
+      "operand": "#>PlayerRightWalkMetaspriteMiddle",
+      "evidence": "right walk phases one and three share the middle descriptor"
+    },
+    {
+      "instruction": "0xAD00",
+      "expected": "#$BA",
+      "operand": "#<PlayerRightWalkMetaspriteMiddle",
+      "evidence": "right walk phases one and three share the middle descriptor"
+    },
+    {
+      "instruction": "0xAD0E",
+      "expected": "#$B4",
+      "operand": "#>PlayerLeftMotionMetasprite",
+      "evidence": "negative direction with active motion selects the left motion descriptor"
+    },
+    {
+      "instruction": "0xAD10",
+      "expected": "#$DA",
+      "operand": "#<PlayerLeftMotionMetasprite",
+      "evidence": "negative direction with active motion selects the left motion descriptor"
+    },
+    {
+      "instruction": "0xAD1D",
+      "expected": "#$B4",
+      "operand": "#>PlayerLeftActionMetasprite",
+      "evidence": "negative direction during the action countdown selects the left action descriptor"
+    },
+    {
+      "instruction": "0xAD1F",
+      "expected": "#$E2",
+      "operand": "#<PlayerLeftActionMetasprite",
+      "evidence": "negative direction during the action countdown selects the left action descriptor"
+    },
+    {
+      "instruction": "0xAD30",
+      "expected": "#$B4",
+      "operand": "#>PlayerLeftWalkMetasprite0",
+      "evidence": "left walk phase zero selects its first descriptor"
+    },
+    {
+      "instruction": "0xAD32",
+      "expected": "#$CA",
+      "operand": "#<PlayerLeftWalkMetasprite0",
+      "evidence": "left walk phase zero selects its first descriptor"
+    },
+    {
+      "instruction": "0xAD3E",
+      "expected": "#$B4",
+      "operand": "#>PlayerLeftWalkMetasprite2",
+      "evidence": "left walk phase two selects its third descriptor"
+    },
+    {
+      "instruction": "0xAD40",
+      "expected": "#$D2",
+      "operand": "#<PlayerLeftWalkMetasprite2",
+      "evidence": "left walk phase two selects its third descriptor"
+    },
+    {
+      "instruction": "0xAD48",
+      "expected": "#$B4",
+      "operand": "#>PlayerLeftWalkMetaspriteMiddle",
+      "evidence": "left walk phases one and three share the middle descriptor"
+    },
+    {
+      "instruction": "0xAD4A",
+      "expected": "#$CE",
+      "operand": "#<PlayerLeftWalkMetaspriteMiddle",
+      "evidence": "left walk phases one and three share the middle descriptor"
+    },
+    {
+      "instruction": "0xAD70",
+      "expected": "#$CA",
+      "operand": "#PlayerActionSpriteTile",
+      "evidence": "the positive-direction action overlay uses tile $CA"
+    },
+    {
+      "instruction": "0xAD75",
+      "expected": "#$03",
+      "operand": "#PlayerRightActionSpriteAttributes",
+      "evidence": "the positive-direction action overlay uses palette three without horizontal flip"
+    },
+    {
+      "instruction": "0xAD8A",
+      "expected": "#$CA",
+      "operand": "#PlayerActionSpriteTile",
+      "evidence": "the negative-direction action overlay uses tile $CA"
+    },
+    {
+      "instruction": "0xAD8F",
+      "expected": "#$43",
+      "operand": "#PlayerLeftActionSpriteAttributes",
+      "evidence": "the negative-direction action overlay uses palette three with horizontal flip"
+    },
+    {
+      "instruction": "0xB1DF",
+      "expected": "#$20",
+      "operand": "#ObjectSpriteWorldX",
+      "evidence": "the first standard object component begins 32 pixels into object world space"
+    },
+    {
+      "instruction": "0xB212",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB224",
+      "expected": "#$28",
+      "operand": "#SecondStandardObjectSpriteWorldX",
+      "evidence": "the second standard component is eight pixels right of the first"
+    },
+    {
+      "instruction": "0xB257",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB26E",
+      "expected": "#$20",
+      "operand": "#ObjectSpriteWorldX",
+      "evidence": "the single object component begins 32 pixels into object world space"
+    },
+    {
+      "instruction": "0xB29C",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB2B8",
+      "expected": "#$20",
+      "operand": "#ObjectSpriteWorldX",
+      "evidence": "the first wide object component begins 32 pixels into object world space"
+    },
+    {
+      "instruction": "0xB2EB",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB2FD",
+      "expected": "#$28",
+      "operand": "#SecondStandardObjectSpriteWorldX",
+      "evidence": "the second wide component is eight pixels right of the first"
+    },
+    {
+      "instruction": "0xB330",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB342",
+      "expected": "#$30",
+      "operand": "#ThirdWideObjectSpriteWorldX",
+      "evidence": "the third wide component is sixteen pixels right of the first"
+    },
+    {
+      "instruction": "0xB375",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB387",
+      "expected": "#$38",
+      "operand": "#FourthWideObjectSpriteWorldX",
+      "evidence": "the fourth wide component is twenty-four pixels right of the first"
+    },
+    {
+      "instruction": "0xB3BA",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB3D1",
+      "expected": "#$20",
+      "operand": "#ObjectSpriteWorldX",
+      "evidence": "the first compact object component begins 32 pixels into object world space"
+    },
+    {
+      "instruction": "0xB404",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB416",
+      "expected": "#$24",
+      "operand": "#SecondCompactObjectSpriteWorldX",
+      "evidence": "the second compact component is four pixels right of the first"
+    },
+    {
+      "instruction": "0xB449",
+      "expected": "#$37",
+      "operand": "#ObjectMetaspriteYBias",
+      "evidence": "object world Y is biased into OAM screen coordinates"
+    },
+    {
+      "instruction": "0xB45E",
+      "expected": "#$20",
+      "operand": "#ObjectSpriteWorldX",
+      "evidence": "the player metasprite shares the 32-pixel world-to-screen X origin"
+    },
+    {
+      "instruction": "0xB49B",
+      "expected": "#$27",
+      "operand": "#PlayerMetaspriteYBias",
+      "evidence": "player world Y uses its distinct OAM screen-coordinate bias"
+    },
+    {
+      "instruction": "0xB4A9",
+      "expected": "#$08",
+      "operand": "#HardwareSpriteWidth",
+      "evidence": "the second player hardware sprite is one eight-pixel sprite to the right"
+    },
+    {
+      "instruction": "0xB4B0",
+      "expected": "#$F0",
+      "operand": "#OamHiddenY",
+      "evidence": "a wrapped second player component is hidden below the visible screen"
     }
   ]
 }

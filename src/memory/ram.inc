@@ -112,6 +112,11 @@ PauseScrollMinimum = $00
 PauseScrollMaximum = $80
 PauseScrollUpdateRequested = $FF
 
+RoomCellCollisionTypeCount = 100
+RoomCellCollisionHalfCount = 2
+RuntimeObjectCollisionTypeFirst = $80
+RuntimeObjectCollisionDimensionCount = 48
+
 RoomAttributeScratch = $0100
 RoomAttributeScratchSize = $80
 NametableAttributeTableSize = $40
@@ -125,6 +130,39 @@ OamBufferSize = $100
 OamInterleaveBlockSize = $20
 OamInterleaveBlockCount = 8
 OamRotationFrameCount = 8
+OamHiddenY = $F0
+FirstObjectOamStagingOffset = $0C
+ObjectSpriteHandlerCount = 42
+PlayerActionSpriteTile = $CA
+PlayerRightActionSpriteAttributes = $03
+PlayerLeftActionSpriteAttributes = $43
+
+; Contextual frame-sprite state at $AC13-$ADE6
+OamStagingWriteOffset = $0016
+ObjectSpriteHandlerPointerLo = $0031
+ObjectSpriteHandlerPointerHi = $0032
+PlayerSpriteDirection = $003B
+PlayerSpriteMotionState = $003C
+PlayerSpriteMotionPhase = $003E
+PlayerActionCountdown = $0779
+
+; Contextual metasprite-renderer state at $B1D6-$B4B5
+PlayerMetaspriteDeadReadState = $0018
+MetaspriteScreenX = $001B
+MetaspritePointerLo = $0021
+MetaspritePointerHi = $0022
+MetaspriteWorldXLo = $002B
+MetaspriteWorldXHi = $002C
+MetaspritePendingScrollX = $0034
+ObjectMetaspriteYBias = $37
+PlayerMetaspriteYBias = $27
+ObjectSpriteWorldX = $20
+SecondStandardObjectSpriteWorldX = $28
+ThirdWideObjectSpriteWorldX = $30
+FourthWideObjectSpriteWorldX = $38
+SecondCompactObjectSpriteWorldX = $24
+MetaspriteDescriptorBytesPerSprite = 2
+HardwareSpriteWidth = 8
 
 ; Contextual OAM interleave scratch at $C6B9-$C79C
 OamOutputBlockIndex = $0020

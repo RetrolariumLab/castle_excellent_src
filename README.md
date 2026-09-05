@@ -35,10 +35,22 @@ evidence, and tested decoders for game data.
   too. Player and runtime-object 16-bit X-coordinate helpers now have explicit
   A=high/X=low contracts. Room-transition completion now names its player/state
   mirrors and rendering-resume order; collision helpers identify runtime types
-  `$90-$95`, doubled cell indexes `$8A-$91`, and four mutable visual cells. The runtime
-  object dispatcher and all 42 handler pointers now expose the exact 24-record
-  scan, type mask, visibility cutoff, and manual indirect-call return. New-game
-  initialization now covers the starting room, lives/player state, persistent
+  `$90-$95`, doubled cell indexes `$8A-$91`, and four mutable visual cells. Two
+  100x2 room-cell collision-flag tables and width/height tables for runtime
+  types `$80-$AF` are now typed, named, and linked to all 18 consumers. The
+  runtime object dispatcher and all 42 handler pointers now expose the exact
+  24-record scan, type mask, visibility cutoff, and manual indirect-call return.
+  Frame sprite construction now owns the 256-byte staging clear, player and
+  action animation selection, 24-record object render scan, and the separate
+  42-entry render-handler table. Five common metasprite render paths now own
+  one-, two-, compact-two-, and four-component object composition plus the
+  fixed two-component player path. Their 203 tile/attribute pairs and all 107
+  statically selected descriptor references are validated independently.
+  All 41 object render indexes now lead into a semantic selector module with
+  named state/frame branches; the shared indexes 29/30 and seven unreachable
+  code-shaped bytes after the type-09 terminator are preserved explicitly.
+  New-game initialization now covers the
+  starting room, lives/player state, persistent
   stores, partial snapshot invalidation, and room-palette upload. Room-runtime
   reset and the guarded room-audio restart are semantic too. The complete
   400-cell animation pass now names both opposite-direction fast phase tables,
@@ -71,6 +83,10 @@ evidence, and tested decoders for game data.
   cumulative offsets prove 141 bytes of packed object state. A second table
   proves 108 bytes of mutable-cell state across all rooms. Five cell markers
   create 176 additional runtime objects without overflowing the 24-slot pool.
+- `scripts/object_catalog.py` joins all 61 encoded room types to the 42 runtime
+  indexes, update handlers, sprite selectors, collision dimensions, initial
+  states, room occurrence sets, and five cell-marker sources. The original
+  rooms use 34 encoded values and directly source 32 runtime types.
 - `scripts/audio_data.py` validates the eight-set music table and all 21
   textual command streams, including their terminators and restart pointers.
 - `scripts/room_screen_data.py` validates four status-screen tile streams,
@@ -111,6 +127,13 @@ evidence, and tested decoders for game data.
   predicate, both exclusive distance limits, and its original page-delta alias.
 - `scripts/pause_input.py` proves pause/resume edges, APU shutdown, paused
   scroll priority and saturation across complete button and byte domains.
+- `scripts/collision_tables.py` validates both 100x2 flag tables, all 48 object
+  dimensions, their processor-flag encoding, and all 18 exact consumers.
+- `scripts/frame_sprites.py` validates player/action frame selection, the full
+  staging clear and object scan, and all 42 object render pointers.
+- `scripts/metasprites.py` validates all 41 selector indexes, five composition
+  paths, page-zero horizontal clipping and OAM compaction, 203 descriptor
+  pairs, and all 107 statically selected descriptor references.
 - `scripts/x_coordinates.py` exhaustively validates all player/object X helper
   offsets, carry, borrow, register order, and 16-bit wrapping.
 - `scripts/room_transition.py` validates transition mirroring and the exact
@@ -127,7 +150,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 237 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 268 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -135,10 +158,10 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,747 instructions after six
-  static code ranges recover five untraced handlers and 45 evidence-backed data
-  ranges remove 183 false-positive instructions. The
-  source layout owns 17,235 PRG bytes semantically (52.60%).
+  disagreements. Evidence-refined Ghidra exports 9,804 instructions after seven
+  static code ranges recover pointer-selected entries and 52 evidence-backed data
+  ranges remove 190 false-positive instructions. The
+  source layout owns 20,348 PRG bytes semantically (62.10%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -251,6 +274,14 @@ make object-player-proximity # inspect the object/player carry predicate
 make validate-object-player-proximity # validate every proven distance domain
 make pause-input-state # inspect pause edges and paused scrolling
 make validate-pause-input # validate all pause button/mode/scroll domains
+make collision-table-state # inspect room-cell flags and object dimensions
+make validate-collision-tables # validate every table index and exact consumer
+make frame-sprite-state # inspect player/action frames and object render dispatch
+make validate-frame-sprites # validate the complete frame-sprite contract
+make metasprite-state # inspect composition paths, descriptors, references, and gaps
+make validate-metasprites # validate clipping, OAM output, and descriptor data
+make object-catalog # inspect encoded/runtime/update/sprite/collision correlations
+make validate-object-catalog # validate all object-type tables and room sources
 make x-coordinate-state # inspect 16-bit X helper contracts as JSON
 make validate-x-coordinates # exhaustively validate coordinate arithmetic
 make clean           # remove build artifacts only
@@ -290,6 +321,10 @@ scripts/room_navigation.py one-based 10x10 castle navigation model
 scripts/player_hazard_state.py protection countdown and hazard-probe model
 scripts/object_player_proximity.py runtime-object/player proximity model
 scripts/pause_input.py     pause toggle and paused-scroll model
+scripts/collision_tables.py room-cell flags and object-dimension validator
+scripts/frame_sprites.py   player/action and object frame-sprite validator
+scripts/metasprites.py     metasprite composition and descriptor validator
+scripts/object_catalog.py  unified room/runtime/update/sprite object catalog
 scripts/x_coordinates.py exhaustive player/object X-coordinate model
 scripts/audio_data.py      music table and textual-stream validator
 src/main.asm               assembly entrypoint
@@ -302,6 +337,10 @@ src/system/ppu.asm         PPU mode helpers and CNROM bank selection
 src/system/startup.asm     reset signature, initialization, and main frame loop
 src/system/nmi.asm         NMI task scheduler, input, OAM, scroll, and audio tick
 src/rendering/oam_dma.asm  64-sprite DMA interleave and order transforms
+src/rendering/frame_sprites.asm player/action selection and object render dispatch
+src/rendering/object_sprite_selectors.asm per-type descriptor and renderer selection
+src/rendering/object_metasprites.asm common object/player OAM composition paths
+src/rendering/metasprite_data.asm tile/attribute descriptor data
 src/rendering/status_upload.asm NMI HUD upload and task-handler tables
 src/rendering/room_cell_updates.asm cell-pointer row and NMI request helpers
 src/game/x_coordinates.asm player/object 16-bit X-coordinate helpers
@@ -318,7 +357,7 @@ src/game/rooms/mutable_cell_*.asm actions, lookup, predicates, and restoration
 src/game/rooms/navigation.asm boundary-safe castle room movement
 src/game/player/hazard_state.asm protection decay and hazard-cell contact
 src/game/objects/player_proximity.asm shared object/player interaction predicate
-src/game/collision/*.asm collision sampling and cell-index classification
+src/game/collision/*.asm collision sampling, classification, flags, and dimensions
 src/rendering/room_attributes.asm proven room attribute-table construction
 src/rendering/room_screen.asm nametable, status, attribute, and OAM setup
 src/system/nmi_tasks.asm   NMI task-request reset

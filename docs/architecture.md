@@ -240,6 +240,15 @@ in X. It returns Y=`$00` with Z set only for indexes `$8A-$91`, corresponding
 to both index phases of room-cell types `$45-$48`; every other index returns
 Y=`$FF` with Z clear. Its three callers consume the Z flag immediately.
 
+The collision data at `$A95A-$AB49` is four physical tables. Player and object
+cell classifiers each contain 100 pairs, selected by `cell * 2 + horizontal
+half`; their bytes are processor-flag masks whose high and low bits become N
+and C. Width and height tables cover runtime types `$80-$AF`. Callers index
+those dimensions directly with the type byte by referring to each physical
+table start minus `$80`, so the apparently earlier `$AA6A/$AA9A` operands are
+biased bases rather than independent data. The final height byte at `$AB49`
+also serves as `RoomObjectCounts - 1` for one-based room indexing.
+
 `UpdateRuntimeObjects` then scans offsets `0,6,...,138` across the 24-record
 pool. It clears the shared update flag before every slot, masks type byte bit 7,
 and skips a zero result or Y at/after `$A0`. Valid indexes 1-41 select an
@@ -247,6 +256,28 @@ interleaved little-endian pointer from the 42-entry table at `$95BF`. The code
 implements an indirect subroutine call by pushing `$95B2`, one byte before
 `AdvanceRuntimeObjectUpdate`, and jumping through `$31/$32`; the handler's
 `RTS` therefore lands at `$95B3` and continues with the next six-byte record.
+
+`BuildFrameSprites` at `$AC13` is the rendering-side counterpart. It marks the
+staging buffer busy, fills all 256 bytes with hidden Y `$F0`, draws the player
+into records 0-1 and an optional action tile into record 2, then begins object
+output at byte offset `$0C`. The same 24 six-byte runtime records are filtered
+by Y `<$A0` and a nonzero raw type before `type & $7F` selects the render table.
+Unlike the update dispatcher, the raw-zero test occurs before masking; active
+type `$80` would therefore select entry zero rather than being skipped.
+
+Player rendering selects one of four transition descriptors from room frame
+bits 2-3. Outside transition it distinguishes zero, positive, and negative
+direction, active motion/phase, a ten-frame action countdown, and walk phase
+from global frame bits 3-4. Both walk cycles reuse their middle descriptor in
+phases one and three. The action overlay copies the first player sprite Y, uses
+tile `$CA`, and appears at X+15 with attributes `$03` or X-7 with horizontally
+flipped attributes `$43`.
+
+`ObjectSpriteHandlerPointers` has 42 logical entries beginning at `$AD93`.
+Entry zero is the overlapping word `$6003`, composed from the high operand byte
+of the final `STA $030A` and the following `RTS`; it is not selected by raw type
+zero. The 41 normal pointers occupy `$AD95-$ADE6`, name render handlers for type
+indexes 1-41, and intentionally share one target for indexes 29 and 30.
 
 `InitializeNewGame` at `$A2B1` establishes one-based room `$47`, three lives,
 X zero, and Y `$98`. It resets pause/map/game-over and four sound-effect busy
@@ -303,9 +334,21 @@ The encoded type indexes a logical table beginning at `$EB8F`. Types through
 is also indexed directly, but only for encoded types `$12-$29`. The loader
 scales X by 16 and Y by 8 and initializes record byte `+4` from that state view.
 
-Object type selects an indirect behavior handler through a table near `$AD93`.
-The published analysis identifies 34 used types. Sprite helpers compose one,
-two, or four hardware records in 8x16 sprite mode.
+Object type selects an indirect render handler through the table at `$AD93`.
+The published analysis identifies 34 used types. Semantic object-specific
+selectors in `$ADE7-$B1D5` choose descriptors, then five common paths at `$B1D6-$B4B5`
+compose one, two, compact two, or four object records and the two-record player
+in 8x16 sprite mode. Each object component adds a fixed world-X offset, applies
+pending scroll with 16-bit page testing, and appends only visible components to
+staging OAM. Thus clipping compacts later components into earlier free records.
+The player owns fixed records zero and one; an X wrap hides only record one.
+
+The contiguous `$B4B6-$B64B` descriptor block contains 203 `(tile,
+attributes)` pairs. The 107 statically recognizable selections use 98 unique
+pair-aligned pointers. Their renderer call tail determines lengths of one, two,
+or four hardware sprites; five short gaps are not selected by this pattern.
+Indexes 29 and 30 deliberately share `$B089`. The seven bytes at `$AFCC-$AFD2`
+are unreachable after an unconditional type-09 jump and remain typed data.
 
 ```text
 room object stream
@@ -317,6 +360,16 @@ room object stream
   -> reordered DMA OAM at $0200
   -> write $02 to $4014
 ```
+
+The object identity joins are machine-checked rather than inferred from
+matching indexes. Encoded room values `$00-$3C` first select a runtime byte at
+`$EB8F`; its low seven bits independently index the 42-word update table at
+`$95BF` and the 42-word sprite table at `$AD93`. The same runtime byte indexes
+width/height tables based at `$AAEA/$AB1A`. Across the shipped room stream, 34
+encoded values produce 27 runtime types; five decoded-cell markers add types
+`$A1-$A5`, for 32 directly sourced runtime types in total. The remaining ten
+indexes are reserved for runtime transformations or otherwise absent from room
+sources and are not assigned identities without behavior evidence.
 
 The state orchestration before object-state application is:
 

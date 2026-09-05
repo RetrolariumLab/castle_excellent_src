@@ -33,8 +33,10 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/rooms/mutable_cell_predicates.asm \
 	src/game/rooms/mutable_cell_restore.asm src/game/rooms/navigation.asm \
 	src/game/player/hazard_state.asm src/game/objects/player_proximity.asm \
-	src/input/pause.asm src/preservation/prg_a95a_ab49.asm \
-	src/game/rooms/room_metadata.asm src/preservation/prg_ac13_b64b.asm \
+	src/input/pause.asm src/game/collision/tables.asm \
+	src/game/rooms/room_metadata.asm src/rendering/frame_sprites.asm \
+	src/rendering/object_sprite_selectors.asm src/rendering/object_metasprites.asm \
+	src/rendering/metasprite_data.asm \
 	src/rendering/room_screen.asm src/preservation/prg_b7fd_c55c.asm \
 	src/system/nmi.asm src/rendering/oam_dma.asm \
 	src/rendering/status_upload.asm src/rendering/room_rows_00_04.asm \
@@ -100,7 +102,10 @@ TIMEOUT_FRAMES ?= 15000
 	mutable-cell-action-state validate-mutable-cell-actions \
 	room-navigation-state validate-room-navigation \
 	player-hazard-state validate-player-hazard object-player-proximity \
-	validate-object-player-proximity pause-input-state validate-pause-input
+	validate-object-player-proximity pause-input-state validate-pause-input \
+	collision-table-state validate-collision-tables \
+	frame-sprite-state validate-frame-sprites \
+	metasprite-state validate-metasprites object-catalog validate-object-catalog
 
 all: verify
 
@@ -395,7 +400,31 @@ pause-input-state: $(ROM)
 validate-pause-input: $(ROM)
 	$(PYTHON) scripts/pause_input.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-hazard validate-object-player-proximity validate-pause-input
+collision-table-state: $(ROM)
+	$(PYTHON) scripts/collision_tables.py --image "$(ROM)" --pretty
+
+validate-collision-tables: $(ROM)
+	$(PYTHON) scripts/collision_tables.py --image "$(ROM)" --validate
+
+frame-sprite-state: $(ROM)
+	$(PYTHON) scripts/frame_sprites.py --image "$(ROM)" --pretty
+
+validate-frame-sprites: $(ROM)
+	$(PYTHON) scripts/frame_sprites.py --image "$(ROM)" --validate
+
+metasprite-state: $(ROM)
+	$(PYTHON) scripts/metasprites.py --image "$(ROM)" --pretty
+
+validate-metasprites: $(ROM)
+	$(PYTHON) scripts/metasprites.py --image "$(ROM)" --validate
+
+object-catalog: $(ROM)
+	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --pretty
+
+validate-object-catalog: $(ROM)
+	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
+
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

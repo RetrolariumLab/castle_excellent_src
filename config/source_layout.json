@@ -39,9 +39,12 @@
         "../game/player/hazard_state.asm",
         "../game/objects/player_proximity.asm",
         "pause.asm",
-        "../preservation/prg_a95a_ab49.asm",
+        "../game/collision/tables.asm",
         "../game/rooms/room_metadata.asm",
-        "../preservation/prg_ac13_b64b.asm",
+        "../rendering/frame_sprites.asm",
+        "../rendering/object_sprite_selectors.asm",
+        "../rendering/object_metasprites.asm",
+        "../rendering/metasprite_data.asm",
         "../rendering/room_screen.asm",
         "../preservation/prg_b7fd_c55c.asm",
         "../system/nmi.asm",
@@ -256,10 +259,10 @@
       "title": "Pause toggle and paused horizontal-scroll input"
     },
     {
-      "path": "src/preservation/prg_a95a_ab49.asm",
+      "path": "src/game/collision/tables.asm",
       "start": "0xA95A",
       "end": "0xAB4A",
-      "title": "Preservation collision tables and helpers"
+      "title": "Room-cell collision flags and runtime-object dimensions"
     },
     {
       "path": "src/game/rooms/room_metadata.asm",
@@ -268,10 +271,28 @@
       "title": "Room object counts and mutable-cell state offsets"
     },
     {
-      "path": "src/preservation/prg_ac13_b64b.asm",
+      "path": "src/rendering/frame_sprites.asm",
       "start": "0xAC13",
+      "end": "0xADE7",
+      "title": "Frame sprite orchestration and object render pointers"
+    },
+    {
+      "path": "src/rendering/object_sprite_selectors.asm",
+      "start": "0xADE7",
+      "end": "0xB1D6",
+      "title": "Runtime-object sprite descriptor selection"
+    },
+    {
+      "path": "src/rendering/object_metasprites.asm",
+      "start": "0xB1D6",
+      "end": "0xB4B6",
+      "title": "Object and player metasprite composition"
+    },
+    {
+      "path": "src/rendering/metasprite_data.asm",
+      "start": "0xB4B6",
       "end": "0xB64C",
-      "title": "Preservation PRG before room-screen initialization"
+      "title": "Metasprite tile and attribute descriptors"
     },
     {
       "path": "src/rendering/room_screen.asm",

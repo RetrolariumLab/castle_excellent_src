@@ -130,6 +130,19 @@ receives a nine-frame movement delay only at the outward horizontal bounds.
 These scratch names remain scoped because their broader player-movement roles
 are not yet fully reconstructed.
 
+Within `$AC13-$ADE6`, `$16` is the next free byte offset in staging OAM and
+starts at `$0C`; `$31-$32` hold the selected object render-handler pointer.
+Scoped views name `$3B` as signed player direction, `$3C/$3E` as the motion
+state/phase used for frame selection, and `$0779` as the action countdown.
+The selector clears the phase after emitting the player metasprite.
+
+Within `$B1D6-$B4B5`, `$21-$22` hold the selected tile/attribute descriptor,
+`$2B-$2C` hold a component's 16-bit world X, and `$1B` receives its low-byte
+screen X after subtracting pending scroll `$34`. Object paths append through
+`$16`; the player path writes fixed records zero and one. `$18` is named only
+as the player renderer's dead-read state because two shifts and `TXA` discard
+it before any observable use.
+
 Room-cell lookup contextually names `$2B-$2C` as the pointer into the 400-byte
 matrix and `$21-$22` as the saved tile column/row. Mutable-cell restoration
 uses `$1F` for the original ordinal, `$29-$2A` for its scan pointer, and

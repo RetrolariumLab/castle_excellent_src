@@ -24,7 +24,14 @@ The quality targets follow the same contract as the sibling
   pointer, guard, and boundary checks, all 100 castle-room navigation cases,
   exhaustive player protection/hazard-probe domains, and the shared
   object/player proximity predicate across all proven coordinate domains, plus
-  pause edges and paused scrolling across complete button/state byte domains
+  pause edges and paused scrolling across complete button/state byte domains,
+  plus both 100x2 collision-flag tables, all 48 runtime-object dimensions, and
+  all 18 exact table consumers, plus player/action frame selection and the
+  complete 24-record/42-pointer object render dispatch, plus all five common
+  metasprite render paths, page clipping/OAM compaction, 203 descriptor pairs,
+  and 107 statically recognizable descriptor selections, plus the complete
+  encoded/runtime/update/sprite/collision object-type correlation across all
+  783 static and 176 cell-derived room objects
 - `make check` is the full release check
 
 The address-ordered PRG translation unit is split only at boundaries recorded

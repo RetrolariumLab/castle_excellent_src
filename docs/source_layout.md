@@ -37,9 +37,12 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/player/hazard_state.asm` | `$A835-$A8A8` | protection countdowns and player hazard-cell contact |
 | `src/game/objects/player_proximity.asm` | `$A8A9-$A8E2` | runtime-object/player interaction proximity predicate |
 | `src/input/pause.asm` | `$A8E3-$A959` | pause/resume edges and paused horizontal-scroll input |
-| `src/preservation/prg_a95a_ab49.asm` | `$A95A-$AB49` | unresolved collision tables and helpers |
+| `src/game/collision/tables.asm` | `$A95A-$AB49` | room-cell collision flags and runtime-object dimensions |
 | `src/game/rooms/room_metadata.asm` | `$AB4A-$AC12` | object counts and mutable-state offsets |
-| `src/preservation/prg_ac13_b64b.asm` | `$AC13-$B64B` | unresolved object handlers and sprite data |
+| `src/rendering/frame_sprites.asm` | `$AC13-$ADE6` | staging clear, player/action selection, object render dispatch and pointers |
+| `src/rendering/object_sprite_selectors.asm` | `$ADE7-$B1D5` | per-type descriptor, animation phase, and renderer selection |
+| `src/rendering/object_metasprites.asm` | `$B1D6-$B4B5` | common object/player metasprite composition and clipping |
+| `src/rendering/metasprite_data.asm` | `$B4B6-$B64B` | 203 tile/attribute descriptor pairs |
 | `src/rendering/room_screen.asm` | `$B64C-$B7FC` | room nametable, status, attribute, and OAM initialization |
 | `src/preservation/prg_b7fd_c55c.asm` | `$B7FD-$C55C` | unresolved demo input, audio, and scroll helpers |
 | `src/system/nmi.asm` | `$C55D-$C6B8` | NMI dispatch, OAM/scroll, input, scheduler, counters, and audio tick |
@@ -69,9 +72,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 60 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 63 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 59 in CPU-address order. Ghidra-defined instructions are emitted
+following 62 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

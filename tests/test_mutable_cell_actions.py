@@ -22,6 +22,13 @@ class MutableCellActionTests(unittest.TestCase):
              (0xA5FB, 0xA604), (0xA605, 0xA60E), (0xA60F, 0xA615)),
         )
 
+    def test_static_range_check_ignores_other_provenance(self) -> None:
+        combined = mutable_cell_actions.STATIC_CODE_RANGES + ((0xADE7, 0xAE74),)
+        self.assertEqual(
+            mutable_cell_actions.mutable_action_static_ranges(combined),
+            mutable_cell_actions.STATIC_CODE_RANGES,
+        )
+
     def test_zero_inventory_aborts_without_side_effects(self) -> None:
         result = mutable_cell_actions.apply_mutable_cell_action(
             inventory_count=0, motion_state=0, motion_phase=0, player_y=8,

@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 52 semantic and 8 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 54 semantic and 7 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 17,235 PRG bytes (52.60%): `$E45D-$E8DE`
+The promoted ranges currently cover 20,348 PRG bytes (62.10%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -128,6 +128,55 @@ saturates at `$80` in the valid scroll domain. Either direction sets the NMI
 scroll-latch request. The exact model covers 131,072 current/previous button
 pairs, every pause-mode byte, every scroll byte, and the original out-of-domain
 Right wrap at `$FC-$FF`.
+
+The collision-table slice adds `$A95A-$AB49`. Two 200-byte tables describe all
+100 room-cell types at their left and right horizontal halves. The player view
+uses flag bytes `$00,$01,$80`; the runtime-object view adds `$81`, with bit 7
+feeding N and bit 0 feeding C after `BIT`/shift consumers. Two 48-byte tables
+provide collision widths and heights for runtime types `$80-$AF`. Direct type
+indexing deliberately uses table bases minus `$80`. The independent validator
+checks every table byte and index, both exact flag-value domains, and the exact 18
+machine-code consumers, including three one-based `RoomObjectCounts - 1`
+accesses that share the final height-table address.
+
+The frame-sprite slice adds `$AC13-$ADE6`. `BuildFrameSprites` locks and fills
+all 256 staging bytes with `$F0`, draws the two-record player metasprite and an
+optional action overlay, then reserves offsets `$00-$0B` and scans all 24
+runtime-object records from offset `$0C`. Player selection distinguishes four
+transition phases, neutral and directional motion, action countdown, and two
+mirrored four-phase walk cycles. The 42-entry object render table begins at
+the overlapping address `$AD93`: unused entry zero is `$6003`, formed by the
+final `STA $030A` operand and `RTS`, while entries 1-41 occupy `$AD95-$ADE6`.
+The model checks the exact 468-byte range, full player state partitions,
+action-overlay direction/X domains, all type/Y dispatch inputs, and every
+six-byte record offset.
+
+The object-selector slice adds `$ADE7-$B1D5`. All 41 render-table indexes enter
+named type-specific selectors; indexes 29 and 30 intentionally share one body.
+Selectors use fixed descriptors, mirrored sign-bit families, `0,1,2,1` phase
+cycles, modulo-three and room-frame phases, and state-dependent renderer widths.
+Pointer-table provenance recovers the previously untraced first four handlers.
+Seven bytes at `$AFCC-$AFD2` resemble a missing type-09 frame branch but follow
+an unconditional jump and have no known entry, so they remain explicitly typed
+unreferenced data rather than speculative code.
+
+The accompanying object catalog closes the index relation across otherwise
+separate semantic modules. It validates every legal encoded type, all 783
+static occurrences and room memberships, 176 cell-derived objects, 42 update
+pointers, 42 sprite pointers, loader initial states, and collision dimensions.
+This identifies 32 directly sourced runtime types while leaving ten
+runtime-created or unused indexes deliberately numeric pending behavior proof.
+
+The common metasprite slice adds `$B1D6-$B64B`. Four object paths compose one,
+two, two with four-pixel spacing, or four 8x16 hardware sprites, while the
+player path always owns two fixed staging records. Object components project a
+16-bit world X through the pending scroll and emit only page-zero results;
+clipped components do not consume a staging slot. The player instead hides its
+second component at Y `$F0` when adding eight wraps X. The adjacent data range
+is exactly 203 `(tile, attributes)` pairs. An independent model verifies the
+five machine-code paths, modular wrap behavior, all 107 descriptor selections
+from `$AC60-$B1D5`, 98 unique pointers, their renderer-specific lengths, the
+nine-value attribute domain, and the five intentionally unreferenced gaps.
 
 The coordinate slice adds `$94DB-$952C`. Two player entries add 7 or 15 to the
 16-bit position at `$38/$39`; six runtime-object entries return X, X plus

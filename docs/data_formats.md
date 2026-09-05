@@ -215,6 +215,33 @@ an encoded room field. A bottom-center pixel probe classifies original cell
 `$16` and both restored forms `$62/$63` as active (`$FF` at RAM `$077C`);
 every other cell and every out-of-room coordinate clears the flag.
 
+## Collision flag and runtime-object dimension tables
+
+`PlayerCollisionFlagsByRoomCellHalf` at `$A95A` and
+`ObjectCollisionFlagsByRoomCellHalf` at `$AA22` each contain 200 bytes:
+
+```text
+index = room cell type * 2 + horizontal half
+horizontal half = 0 for left, 1 for right
+```
+
+The player table uses `$00,$01,$80`; the object table uses `$00,$01,$81`.
+These values are not enumerated collision classes. They
+encode the processor flags consumed by the collision paths: bit 7 supplies N
+and bit 0 supplies C.
+
+`RuntimeObjectCollisionWidths` at `$AAEA` and
+`RuntimeObjectCollisionHeights` at `$AB1A` each contain 48 bytes for runtime
+types `$80-$AF`. Since callers retain the high type bit, their operands use
+the physical table address minus `$80` (`$AA6A` and `$AA9A`) and index directly
+with the type byte. Those biased operands do not denote separate tables.
+
+The last height byte at `$AB49` is also the byte immediately before
+`RoomObjectCounts`. One-based room consumers therefore load
+`RoomObjectCounts - 1,x`; the overlap is an address-expression alias, not a
+fifth data structure. `scripts/collision_tables.py` proves the four physical
+ranges and all 18 exact code consumers.
+
 `RoomObjectCounts` at `$AB4A-$ABAD` exactly matches the 100 decoded static
 lists. `RuntimeObjectOffsetByCount` at `$8F10-$8F28` is the sequence
 `0,6,...,144`, allowing cell-derived objects to follow the static records.
@@ -238,6 +265,17 @@ the encoded type. The logical 61-byte view therefore continues through
 for encoded types `$12-$29`, so the two logical views intentionally share
 bytes. The typed-data registry represents this as two non-overlapping physical
 ranges rather than pretending the logical tables are disjoint.
+
+`scripts/object_catalog.py` validates the complete cross-table relation for
+runtime types `$80-$A9`. For each index it reports all encoded sources, loader
+initial-state values, occurrence count and room set, update handler, sprite
+selector, and collision width/height. Of 61 legal encoded values, 34 occur in
+the original 783-record stream and map to 27 runtime types. Cell markers
+`$4B,$4D,$51,$49,$4A` respectively create `$A1-$A5` with occurrence counts
+73, 47, 40, 8, and 8. Thus room data directly sources 32 of the 42 dispatch
+indexes. The update table has 16 distinct targets and 23 indexes use the shared
+no-op `$A2A9`; the nonzero sprite domain has 40 distinct selectors because
+indexes 29 and 30 share `$B089`.
 
 Loading writes runtime type at record `+0`, scales X by 16 into the 16-bit
 field at `+1/+2`, and scales Y by 8 into `+3`. Runtime types `$90-$95` receive
@@ -264,6 +302,64 @@ reads the low byte at the even address and high byte at the following odd
 address. Index zero is inactive; valid dispatched indexes are 1-41. Multiple
 indexes deliberately share the no-op `$A2A9` handler or common behavior at
 `$9674`.
+
+## Frame sprite selection and render-handler pointers
+
+`BuildFrameSprites` first writes `$F0` to every byte of the 256-byte staging
+OAM. Player output owns records 0-1, the optional action overlay owns record 2,
+and runtime-object output starts at byte offset `$0C`. The object scan visits
+all 24 records with a six-byte stride, rejects Y at/after `$A0` and raw type
+zero, then indexes the render table by `(type & $7F) * 2`.
+
+The player descriptor pointer is passed high byte in X and low byte in Y. Four
+transition descriptors use `(RoomFrameCounter >> 2) & 3`. Normal rendering
+partitions zero/positive/negative direction, motion state or phase, action
+countdown, and `(FrameCounter >> 3) & 3`; walk phases 1 and 3 reuse the same
+middle descriptor. Every referenced player descriptor contains two
+`(tile, attributes)` pairs for adjacent 8x16 hardware sprites.
+
+`ObjectSpriteHandlerPointers` is a 42-word logical view beginning at `$AD93`.
+Its first word intentionally overlaps executable bytes:
+
+```text
+$AD91  STA $030A  ; high operand byte at $AD93 is $03
+$AD94  RTS        ; opcode byte is $60
+logical entry 0 = $6003
+```
+
+The usable physical tail at `$AD95-$ADE6` stores entries 1-41. Indexes 29 and
+30 both point to `$B089`; every other nonzero entry has its own target. The raw
+type check precedes masking, so type `$80` preserves the original entry-zero
+edge case instead of behaving like inactive type `$00`.
+
+## Metasprite descriptors
+
+`$B4B6-$B64B` is a flat sequence of 203 two-byte records:
+
+```text
+tile, attributes
+```
+
+There is no stored count. The selected renderer supplies the shape: one sprite
+reads two bytes, the standard/compact/player paths read four, and the wide path
+reads eight. A static scan of the preceding selectors recognizes 107 exact
+high/low pointer loads followed by one of those renderer call tails. These use
+98 unique, pair-aligned pointers and leave only `$B568-$B56B`, `$B578-$B57B`,
+`$B5A0-$B5AB`, `$B5F8-$B5FB`, and `$B61C-$B61F` uncovered. The complete
+attribute domain is `$00,$01,$02,$03,$40,$41,$42,$43,$C1`.
+
+Object renderer geometry is encoded by code rather than the descriptor:
+standard components use world-X offsets `$20,$28`; wide components add
+`$30,$38`; the compact second component uses `$24`. All object components add
+Y bias `$37`. The fixed two-record player path uses X offsets `$20,$28` and Y
+bias `$27`.
+
+The 41 nonzero render-table indexes enter selectors at `$ADE7-$B1D5`; indexes
+29 and 30 share the same entry. Most selectors load a descriptor directly or
+choose among phase/state variants before calling a renderer. The seven bytes
+at `$AFCC-$AFD2` encode a plausible extra type-09 descriptor load, but execution
+has already passed an unconditional jump and no entry points there, so the
+bytes are classified as unreferenced data.
 
 ## Music track sets and textual streams
 

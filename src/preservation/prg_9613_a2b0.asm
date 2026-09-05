@@ -323,7 +323,7 @@ Label_9974:
     STA $45
     LDA RuntimeObjectRecords,X
     TAY
-    LDA a:$AA6A,Y
+    LDA RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
     STA $47
     LDX #$00
 
@@ -783,7 +783,7 @@ Label_9C65:
 
 Label_9C6D:
     LDX CurrentRoomNumber
-    LDA a:$AB49,X
+    LDA RoomObjectCounts - 1,X
     TAY
     LDX RuntimeObjectOffsetByCount,Y
 
@@ -1216,7 +1216,7 @@ Label_9EF8:
     JSR SampleRoomCollisionCell
     BCS Label_9F73
     LDY CurrentRoomNumber
-    LDX a:$AB49,Y
+    LDX RoomObjectCounts - 1,Y
     LDA RuntimeObjectOffsetByCount,X
     TAX
 
@@ -1485,7 +1485,7 @@ Label_A0F3:
     TXA
     ROL A
     TAX
-    LDA a:$AA22,X
+    LDA ObjectCollisionFlagsByRoomCellHalf,X
     BEQ Label_A13C
     JSR ClassifyCollisionCellPairIndex
     BNE Label_A134
@@ -1521,7 +1521,7 @@ Label_A140:
     SEC
     SBC RuntimeObjectY,X
     BCC Label_A195
-    SBC a:$AA9A,Y
+    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
     BCS Label_A195
     LDA $27
     STA $2B
@@ -1537,7 +1537,7 @@ Label_A140:
     BCC Label_A195
     LDA $2B
     SEC
-    SBC a:$AA6A,Y
+    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
     STA $2B
     LDA $2C
     SBC #$00
@@ -1586,7 +1586,7 @@ Label_A1AD:
     TXA
     ROL A
     TAX
-    LDA a:$AA22,X
+    LDA ObjectCollisionFlagsByRoomCellHalf,X
     JSR ClassifyCollisionCellPairIndex
     BNE Label_A1CC
     LDA $40
@@ -1617,7 +1617,7 @@ Label_A1E8:
     SEC
     SBC RuntimeObjectY,X
     BCC Label_A239
-    SBC a:$AA9A,Y
+    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
     BCS Label_A239
     LDA $27
     STA $2B
@@ -1634,7 +1634,7 @@ Label_A1E8:
     BCC Label_A239
     LDA $2B
     SEC
-    SBC a:$AA6A,Y
+    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
     STA $2B
     LDA $2C
     SBC #$00
@@ -1674,11 +1674,11 @@ Func_A247:
     SEC
     SBC RuntimeObjectY,X
     BCC Label_A2A0
-    SBC a:$AA9A,Y
+    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
     BCS Label_A2A0
     LDA $44
     SEC
-    SBC a:$AA6A,Y
+    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
     STA $48
     LDA $45
     SBC #$00

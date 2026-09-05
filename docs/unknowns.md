@@ -84,6 +84,41 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Evidence: semantic `$C6B9-$C803`, typed table/padding byte, independent model
   of every frame and record, runtime CDL, and byte-identical build
 
+### RENDER-005 - frame sprite selection and render dispatch
+
+- Status: resolved
+- Staging: all 256 bytes are set to hidden Y `$F0`; two player records and one
+  optional action record reserve offsets `$00-$0B`, objects start at `$0C`
+- Player: four transition phases, neutral/directional motion, action countdown,
+  and mirrored `0,1,2,1` walk descriptor cycles are selected explicitly
+- Action overlay: tile `$CA`, X+15/attributes `$03` to the right, and
+  X-7/attributes `$43` to the left
+- Objects: 24 records, six-byte stride, Y `<$A0`, raw nonzero type, then
+  `(type & $7F) * 2` into 42 render pointers
+- Overlap: logical entry zero at `$AD93` is `$6003`; entries 1-41 occupy the
+  physical typed range `$AD95-$ADE6`, with indexes 29/30 sharing `$B089`
+- Evidence: semantic `$AC13-$ADE6`, exact range hash and instruction slices,
+  complete player/action/type/Y models, deterministic regeneration, and
+  byte-identical build
+
+### RENDER-006 - common metasprite renderers and descriptor data
+
+- Status: resolved
+- Selectors: all 41 indexes are semantic at `$ADE7-$B1D5`; indexes 29/30 share
+  one body, and the unreachable `$AFCC-$AFD2` tail remains typed data
+- Paths: one, standard two, compact two, and wide four object components plus
+  the fixed two-component player renderer occupy `$B1D6-$B4B5`
+- Clipping: object world X is adjusted modulo 16 bits, pending scroll is
+  subtracted, and only page-zero results append to staging OAM; earlier clipped
+  components do not reserve records
+- Player edge: both records are fixed, but an eight-pixel X wrap hides the
+  second by writing Y `$F0`
+- Data: `$B4B6-$B64B` is 203 `(tile, attributes)` pairs; 107 recognizable
+  selections use 98 unique aligned pointers and leave five short gaps
+- Evidence: exact selector/renderer/data hashes, independent exhaustive projection
+  model, descriptor-reference scan and shape validation, deterministic
+  regeneration, and byte-identical build
+
 ### RENDER-002 - NMI status-tile upload
 
 - Status: resolved
@@ -371,6 +406,34 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Residual: `$A596-$A5A3` resembles the inverse tile-to-pixel conversion but
   remains typed unreferenced data pending an observed entry; the same policy
   covers code-shaped shims at `$94A5-$94AB` and `$94BC-$94C2`
+
+### DATA-006 - collision flag and object-dimension tables
+
+- Status: resolved
+- Cell flags: two 200-byte tables index 100 room-cell types by left/right half;
+  player values are `$00,$01,$80` and object values are `$00,$01,$81`
+- Flag contract: bit 7 becomes N and bit 0 becomes C in the consuming paths
+- Dimensions: two 48-byte tables provide width and height for runtime types
+  `$80-$AF`; `$AA6A/$AA9A` are physical bases minus `$80`, not extra tables
+- Boundary: `$AB49` is both the final height byte and `RoomObjectCounts - 1`
+- Evidence: semantic `$A95A-$AB49`, all four exact table images, exhaustive
+  100x2/48-entry indexing, 18 exact consumers, deterministic regeneration, and
+  byte-identical build
+
+### DATA-007 - encoded-to-runtime object catalog
+
+- Status: resolved
+- Join: encoded `$00-$3C` through `$EB8F` to runtime `$80-$A9`, then by low
+  seven bits to update `$95BF`, sprite `$AD93`, and collision dimensions
+- Sources: 34 encoded values produce 783 static objects of 27 runtime types;
+  five cell markers produce 176 objects of types `$A1-$A5`
+- Dispatch: 16 unique update targets, 23 no-op indexes, and 40 unique nonzero
+  sprite selectors; indexes 29/30 share their selector
+- Residual: ten runtime indexes have no direct room-data source and remain
+  numeric until dynamic transitions or behavior establish their identities
+- Evidence: all 100 object lists and decoded rooms, exact handler tables,
+  initial-state overlap, dimension tables, occurrence/room aggregation, and
+  byte-identical build
 
 ### ROOM-001 - room-loading orchestration
 

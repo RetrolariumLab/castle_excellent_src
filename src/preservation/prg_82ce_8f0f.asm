@@ -503,7 +503,7 @@ Label_860D:
     SEC
     SBC RuntimeObjectY,X
     BCC Label_866A
-    SBC a:$AA9A,Y
+    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
     BCS Label_866A
     LDA $21
     STA $23
@@ -518,7 +518,7 @@ Label_860D:
     BCC Label_866A
     STA $24
     LDA $23
-    SBC a:$AA6A,Y
+    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
     BCS Label_866A
     LDA $24
     BNE Label_866A
@@ -976,7 +976,7 @@ Label_8B6D:
     STA $45
     LDA RuntimeObjectRecords,X
     TAY
-    LDA a:$AA6A,Y
+    LDA RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
     STA $47
     LDX #$00
 
@@ -1210,7 +1210,7 @@ Label_8DF0:
     TXA
     ROL A
     TAX
-    LDA a:$A95A,X
+    LDA PlayerCollisionFlagsByRoomCellHalf,X
     BEQ Label_8E2B
     JSR ClassifyCollisionCellPairIndex
     BNE Label_8E1C
@@ -1257,7 +1257,7 @@ Label_8E4D:
     SEC
     SBC RuntimeObjectY,X
     BCC Label_8EB7
-    SBC a:$AA9A,Y
+    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
     BCS Label_8EB7
     CPY #$86
     BNE Label_8E7A
@@ -1295,7 +1295,7 @@ Label_8E7A:
     BCC Label_8EB7
     STA $2C
     LDA $2B
-    SBC a:$AA6A,Y
+    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
     BCS Label_8EB7
     LDA $2C
     BNE Label_8EB7

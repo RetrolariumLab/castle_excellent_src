@@ -181,6 +181,14 @@ def load_static_code_ranges(path: Path) -> tuple[tuple[int, int], ...]:
     return tuple(ranges)
 
 
+def mutable_action_static_ranges(
+    ranges: tuple[tuple[int, int], ...],
+) -> tuple[tuple[int, int], ...]:
+    start = STATIC_CODE_RANGES[0][0]
+    end = STATIC_CODE_RANGES[-1][1]
+    return tuple(item for item in ranges if max(item[0], start) <= min(item[1], end))
+
+
 def validate_rom_contract(prg: bytes, static_evidence: Path) -> dict[str, object]:
     if len(prg) != PRG_SIZE:
         raise MutableCellActionError(f"PRG has {len(prg)} bytes, expected {PRG_SIZE}")
@@ -201,7 +209,9 @@ def validate_rom_contract(prg: bytes, static_evidence: Path) -> dict[str, object
             raise MutableCellActionError(
                 f"mutable-cell handler ${entry.handler:04X} bytes changed"
             )
-    observed_ranges = load_static_code_ranges(static_evidence)
+    observed_ranges = mutable_action_static_ranges(
+        load_static_code_ranges(static_evidence)
+    )
     if observed_ranges != STATIC_CODE_RANGES:
         raise MutableCellActionError(
             f"static code evidence {observed_ranges!r} does not match handlers"

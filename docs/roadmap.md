@@ -61,6 +61,8 @@
   call sites, exclusive thresholds, and original negative-page alias behavior;
 - [x] reconstruct pause/resume edge handling, APU shutdown, and paused
   four-pixel horizontal scrolling across complete input/state domains;
+- [x] classify both 100x2 room-cell collision-flag tables and the 48-entry
+  runtime-object width/height tables, including all 18 exact consumers;
 - [x] reconstruct the 24-record runtime-object update dispatcher, its manual
   indirect-call convention, and all 42 handler pointers;
 - [x] reconstruct new-game state initialization, physical persistent-region
@@ -77,6 +79,14 @@
   OAM/scroll interlock, controller paths, modular counters, and audio tick;
 - [x] reconstruct OAM staging-to-DMA transposition, eight-frame sprite-priority
   rotation, full record reversal, and sized RAM-array operand generation;
+- [x] reconstruct frame-sprite staging, player/action descriptor selection,
+  24-record object render dispatch, and the overlapping 42-entry pointer table;
+- [x] promote all 41 per-type sprite selectors with named state/frame branches,
+  shared indexes 29/30, and the unreachable type-09 tail kept as typed data;
+- [x] correlate encoded room types, loader states, runtime indexes, update and
+  sprite dispatch, collision dimensions, room use, and cell-marker sources;
+- [x] reconstruct five common metasprite composition paths, horizontal page
+  clipping/OAM compaction, and all 203 tile/attribute descriptor pairs;
 - [x] reconstruct the NMI status task, its foreground-formatting interlock,
   three HUD PPU writes, and exact 23-entry handler layout;
 - [x] reconstruct all 20 NMI room-row tasks, the 14+6 nametable split, 400 cell

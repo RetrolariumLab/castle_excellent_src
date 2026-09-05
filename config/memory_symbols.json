@@ -522,6 +522,90 @@
       "end": "0xA95A"
     },
     {
+      "address": "0x0016",
+      "name": "OamStagingWriteOffset",
+      "start": "0xAC13",
+      "end": "0xB4B6"
+    },
+    {
+      "address": "0x0018",
+      "name": "PlayerMetaspriteDeadReadState",
+      "start": "0xB457",
+      "end": "0xB4B6"
+    },
+    {
+      "address": "0x001B",
+      "name": "MetaspriteScreenX",
+      "start": "0xB1D6",
+      "end": "0xB4B6"
+    },
+    {
+      "address": "0x0021",
+      "name": "MetaspritePointerLo",
+      "start": "0xB1D6",
+      "end": "0xB4B6"
+    },
+    {
+      "address": "0x0022",
+      "name": "MetaspritePointerHi",
+      "start": "0xB1D6",
+      "end": "0xB4B6"
+    },
+    {
+      "address": "0x002B",
+      "name": "MetaspriteWorldXLo",
+      "start": "0xB1D6",
+      "end": "0xB4B6"
+    },
+    {
+      "address": "0x002C",
+      "name": "MetaspriteWorldXHi",
+      "start": "0xB1D6",
+      "end": "0xB4B6"
+    },
+    {
+      "address": "0x0034",
+      "name": "MetaspritePendingScrollX",
+      "start": "0xB1D6",
+      "end": "0xB4B6"
+    },
+    {
+      "address": "0x0031",
+      "name": "ObjectSpriteHandlerPointerLo",
+      "start": "0xAC13",
+      "end": "0xADE7"
+    },
+    {
+      "address": "0x0032",
+      "name": "ObjectSpriteHandlerPointerHi",
+      "start": "0xAC13",
+      "end": "0xADE7"
+    },
+    {
+      "address": "0x003B",
+      "name": "PlayerSpriteDirection",
+      "start": "0xAC13",
+      "end": "0xADE7"
+    },
+    {
+      "address": "0x003C",
+      "name": "PlayerSpriteMotionState",
+      "start": "0xAC13",
+      "end": "0xADE7"
+    },
+    {
+      "address": "0x003E",
+      "name": "PlayerSpriteMotionPhase",
+      "start": "0xAC13",
+      "end": "0xADE7"
+    },
+    {
+      "address": "0x0779",
+      "name": "PlayerActionCountdown",
+      "start": "0xAC13",
+      "end": "0xADE7"
+    },
+    {
       "address": "0x0005",
       "name": "NewGameRuntimeState",
       "size": 14,

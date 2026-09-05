@@ -16,3 +16,8 @@ code A5F1 A5FA
 code A5FB A604
 code A605 A60E
 code A60F A615
+
+# Object render-handler entries 1-4 at $AD95/$AD97/$AD99/$AD9B prove the
+# four contiguous selector bodies below. Their direct branches and jumps cover
+# the shared two-component render tail at $AE0C as well.
+code ADE7 AE74

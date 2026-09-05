@@ -57,6 +57,13 @@ four-pixel steps, request NMI application, and keep simulation stopped while
 the normal render tail continues. Left has priority and the valid scroll domain
 saturates at `$00-$80`.
 
+`$A95A-$AB49` contains no executable helpers: it is two 100x2 room-cell
+collision-flag tables followed by 48 widths and 48 heights for runtime types
+`$80-$AF`. The cell pair index is `cell * 2 + horizontal half`; flag bit 7
+drives negative and bit 0 drives carry in the consuming collision paths. All
+18 exact references are named and independently validated, including the
+biased dimension-table operands and three one-based room-count accesses.
+
 `LoadRoom` at `$A35C` is the next strong high-level landmark in this region: it
 clears the 24 six-byte runtime object records,
 calls `DecodeRoom`, loads static and tile-derived objects, applies persistent
@@ -168,9 +175,30 @@ inventory counters to nine, and clears `StatusTilesBusy` only when all output
 tiles are ready. The next 23 code-shaped bytes have no static or runtime entry
 and are explicitly typed in `src/data/unreferenced_bit_index_helper.asm`.
 
-The indirect object dispatcher uses `ObjectHandlerTable` at `$AD93`. Most
-individual handlers remain generically named until object-specific traces
-prove their state transitions.
+`$AC13-$ADE6` now owns frame sprite orchestration. It clears and locks all 256
+staging bytes, draws the two-record player and optional action overlay, reserves
+the first three hardware records, and scans all 24 runtime objects into a
+separate 42-entry render-handler table. Player frames cover four transition
+phases, neutral/directional motion, action, and mirrored walk cycles. The table
+starts at overlapping `$AD93`: entry zero is `$6003` from the final action
+sprite `STA` operand plus `RTS`; entries 1-41 occupy typed `$AD95-$ADE6`.
+All selector bodies at `$ADE7-$B1D5` are now semantic and retain numeric type
+names until gameplay-handler work proves object identities. They select fixed,
+sign-mirrored, phased, or state-indexed descriptors and choose one-, two-,
+compact-two-, or four-component renderers. Indexes 29/30 share one selector;
+the unreachable seven-byte type-09 tail is explicitly data. The shared
+continuation at `$B1D6-$B4B5` contains five object/player composition paths,
+and `$B4B6-$B64B` contains 203 tile/attribute pairs. The independent validator
+recognizes 107 descriptor selections, 98 unique pointers, and five unreferenced
+gaps.
+
+`scripts/object_catalog.py` ties the rendering view back to room data and
+behavior dispatch. It follows each legal encoded value through the overlapping
+loader type/state tables, aggregates all 783 static and 176 cell-derived
+occurrences by room, and joins the resulting runtime type to its update
+handler, sprite selector, and collision dimensions. Thirty-two runtime types
+have a direct room source; the ten unsourced indexes remain explicit candidates
+for runtime transitions or unused slots rather than receiving guessed names.
 
 ## Audio interpreter (`$B906-$C43C`)
 

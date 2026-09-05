@@ -15,8 +15,15 @@ data A573 A589 UnreferencedBitIndexHelperBytes
 data A596 A5A3 UnreferencedTileToPixelConversionBytes
 table A821 A82A RightmostCastleRoomNumbers
 table A82B A834 LeftmostCastleRoomNumbers
+table A95A AA21 PlayerCollisionFlagsByRoomCellHalf
+table AA22 AAE9 ObjectCollisionFlagsByRoomCellHalf
+table AAEA AB19 RuntimeObjectCollisionWidths
+table AB1A AB49 RuntimeObjectCollisionHeights
 table AB4A ABAD RoomObjectCounts
 table ABAE AC12 RoomMutableCellStateOffsets
+table AD95 ADE6 ObjectSpriteHandlerPointerEntries1To41
+data AFCC AFD2 UnreferencedType09FrameSelectionBytes
+data B4B6 B64B MetaspriteTileAttributeData
 table B77C B7BC RoomStatusAndInitialAttributeData
 table B8C6 B905 AudioTrackTable
 table BB16 BB1C NoteSemitoneOffsets
