@@ -530,6 +530,12 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x8C7B",
+      "name": "UnreferencedRuntimeObjectClearTailBytes",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8C80",
       "name": "CollectRuntimeType83",
       "kind": "routine",

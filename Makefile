@@ -22,7 +22,7 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/player/animated_cell_displacement.asm \
 	src/preservation/prg_881a_8c11.asm \
 	src/game/objects/inventory_collectible_handlers.asm \
-	src/preservation/prg_8c7b_8c7f.asm \
+	src/data/unreferenced_runtime_object_clear_tail.asm \
 	src/game/objects/collectible_collision_handlers.asm \
 	src/game/objects/collectible_type97.asm src/game/scoring/add_score.asm \
 	src/game/collision/runtime_type9f.asm src/game/collision/runtime_types81_82.asm \
@@ -159,6 +159,7 @@ TIMEOUT_FRAMES ?= 15000
 	runtime-type9f-collision validate-runtime-type9f-collision \
 	runtime-types81-82-collision validate-runtime-types81-82-collision \
 	unreferenced-nmi-task-bytes validate-unreferenced-nmi-task-bytes \
+	unreferenced-object-clear-tail validate-unreferenced-object-clear-tail \
 	unreferenced-runtime-only-sample validate-unreferenced-runtime-only-sample \
 	title-sub-command validate-title-sub-command \
 	demo-playback validate-demo-playback \
@@ -565,6 +566,12 @@ unreferenced-nmi-task-bytes: ghidra-analyze $(ROM)
 validate-unreferenced-nmi-task-bytes: ghidra-analyze $(ROM)
 	$(PYTHON) scripts/unreferenced_nmi_task_index_bytes.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
 
+unreferenced-object-clear-tail: ghidra-analyze $(ROM)
+	$(PYTHON) scripts/unreferenced_runtime_object_clear_tail.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
+
+validate-unreferenced-object-clear-tail: ghidra-analyze $(ROM)
+	$(PYTHON) scripts/unreferenced_runtime_object_clear_tail.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
+
 unreferenced-runtime-only-sample: ghidra-analyze $(ROM)
 	$(PYTHON) scripts/unreferenced_runtime_only_sample.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --comparison-image "Castlequest (U) [!].nes" --pretty
 
@@ -679,7 +686,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-scroll-math-palette validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-object-clear-tail validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-scroll-math-palette validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

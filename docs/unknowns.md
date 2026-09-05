@@ -649,6 +649,18 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   absence of a `$A2AA` pointer in PRG, typed-data Ghidra clearing, and exhaustive
   hypothetical Y-domain model
 
+### DATA-011 - code-shaped bytes at `$8C7B-$8C7F`
+
+- Status: classified as unreferenced data
+- Bytes: `A6 41 4C 24 A0`, resembling `LDX CurrentObjectOffset` followed by a
+  jump to the proven six-byte runtime-object clear tail at `$A024`
+- Non-claim: no routine name is assigned; the preceding collectible handler
+  ends in `RTS`, the next routine starts independently at `$8C80`, and no PRG
+  word, Ghidra instruction, or captured runtime range enters any of the bytes
+- Evidence: exact hash and boundary bytes, exhaustive whole-PRG pointer scan,
+  zero static/runtime instruction starts, deterministic regeneration, and
+  byte-identical build
+
 ### ROOM-001 - room-loading orchestration
 
 - Status: resolved

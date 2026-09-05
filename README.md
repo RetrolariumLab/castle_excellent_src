@@ -154,6 +154,8 @@ evidence, and tested decoders for game data.
   period/envelope tables.
 - `scripts/scroll_math_palette.py` validates the horizontal camera curve, the
   shared unsigned 16-bit divider, and the exact 32-byte PPU palette upload.
+- `scripts/unreferenced_runtime_object_clear_tail.py` proves that the five
+  code-shaped bytes at `$8C7B` have no Ghidra, runtime, or PRG-pointer entry.
 - `scripts/room_screen_data.py` validates four status-screen tile streams,
   their code-level pointer loads, and the 16 initial attribute bytes.
 - `scripts/controller_input.py` exhaustively validates all 256 controller masks
@@ -215,7 +217,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 502 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 506 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -227,7 +229,7 @@ evidence, and tested decoders for game data.
   static code ranges recover pointer-selected entries and 73 evidence-backed data
   ranges remove 199 false-positive instructions. A separate registry clears
   five overextended or misaligned starts embedded in real instruction operands.
-  The source layout owns 28,130 PRG bytes semantically (85.85%). The title and
+  The source layout owns 28,135 PRG bytes semantically (85.86%). The title and
   sub-command path now owns title palette/CHR upload, Start/attract timeout,
   controller-2 menu entry, five-entry wrapped selection, typed menu text,
   load/save dispatch, and current/previous-room restoration.
@@ -364,6 +366,8 @@ make runtime-types81-82-collision # inspect transform, clone, and completion eff
 make validate-runtime-types81-82-collision # validate pointers and machine-width states
 make unreferenced-nmi-task-bytes # inspect the typed code-shaped byte sequence
 make validate-unreferenced-nmi-task-bytes # prove it has no code/dispatch entry
+make unreferenced-object-clear-tail # inspect the five-byte orphan tail
+make validate-unreferenced-object-clear-tail # prove it has no reachable entry
 make title-sub-command # inspect title/menu bytes, strings, and behavior
 make validate-title-sub-command # exhaustively validate title/menu input and room actions
 make demo-playback # inspect title-demo commands and expanded controller samples
@@ -445,6 +449,7 @@ scripts/player_collision_dispatch.py player collision-handler dispatch model
 scripts/inventory_collectible_handlers.py six-counter runtime pickup model
 scripts/runtime_types81_82_collision.py type-$81/$82 transform/completion model
 scripts/unreferenced_nmi_task_index_bytes.py typed orphan-byte validator
+scripts/unreferenced_runtime_object_clear_tail.py five-byte orphan validator
 scripts/unreferenced_runtime_only_sample.py dead runtime-only sampler model
 scripts/title_sub_command.py title screen and sub-command menu model
 scripts/demo_playback.py title-demo controller-script model

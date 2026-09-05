@@ -17,7 +17,7 @@
         "../game/player/animated_cell_displacement.asm",
         "../preservation/prg_881a_8c11.asm",
         "../game/objects/inventory_collectible_handlers.asm",
-        "../preservation/prg_8c7b_8c7f.asm",
+        "../data/unreferenced_runtime_object_clear_tail.asm",
         "../game/objects/collectible_collision_handlers.asm",
         "../game/objects/collectible_type97.asm",
         "../game/scoring/add_score.asm",
@@ -178,10 +178,10 @@
       "title": "Runtime inventory collectible collision handlers"
     },
     {
-      "path": "src/preservation/prg_8c7b_8c7f.asm",
+      "path": "src/data/unreferenced_runtime_object_clear_tail.asm",
       "start": "0x8C7B",
       "end": "0x8C80",
-      "title": "Unreferenced runtime-object clear tail"
+      "title": "Unreferenced code-shaped runtime-object clear tail bytes"
     },
     {
       "path": "src/game/objects/collectible_collision_handlers.asm",

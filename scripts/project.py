@@ -419,7 +419,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         "src/game/player/animated_cell_displacement.asm",
         "src/preservation/prg_881a_8c11.asm",
         "src/game/objects/inventory_collectible_handlers.asm",
-        "src/preservation/prg_8c7b_8c7f.asm",
+        "src/data/unreferenced_runtime_object_clear_tail.asm",
         "src/game/objects/collectible_collision_handlers.asm",
         "src/game/objects/collectible_type97.asm",
         "src/game/scoring/add_score.asm",
@@ -555,6 +555,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         "scripts/runtime_type9f_collision.py",
         "scripts/runtime_types81_82_collision.py",
         "scripts/unreferenced_nmi_task_index_bytes.py",
+        "scripts/unreferenced_runtime_object_clear_tail.py",
         "scripts/unreferenced_runtime_only_sample.py",
         "scripts/title_sub_command.py",
         "scripts/demo_playback.py",
@@ -664,7 +665,7 @@ def command_lint(_args: argparse.Namespace) -> None:
             '.include "../game/player/animated_cell_displacement.asm"',
             '.include "../preservation/prg_881a_8c11.asm"',
             '.include "../game/objects/inventory_collectible_handlers.asm"',
-            '.include "../preservation/prg_8c7b_8c7f.asm"',
+            '.include "../data/unreferenced_runtime_object_clear_tail.asm"',
             '.include "../game/objects/collectible_collision_handlers.asm"',
             '.include "../game/objects/collectible_type97.asm"',
             '.include "../game/scoring/add_score.asm"',
@@ -912,6 +913,10 @@ def command_lint(_args: argparse.Namespace) -> None:
         "src/data/unreferenced_nmi_task_index_bytes.asm": (
             "UnreferencedNmiTaskIndexFromYBytes:",
             ".byte $98, $4A, $4A, $4A, $85, $F8, $60",
+        ),
+        "src/data/unreferenced_runtime_object_clear_tail.asm": (
+            "UnreferencedRuntimeObjectClearTailBytes:",
+            ".byte $A6, $41, $4C, $24, $A0",
         ),
         "src/game/collision/unreferenced_runtime_only_sample.asm": (
             "SampleRuntimeObjectCollisionAtPixel:",

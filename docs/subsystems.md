@@ -57,6 +57,12 @@ four-pixel steps, request NMI application, and keep simulation stopped while
 the normal render tail continues. Left has priority and the valid scroll domain
 saturates at `$00-$80`.
 
+The five bytes at `$8C7B-$8C7F` resemble a detached load of the current object
+offset followed by a jump to the shared six-byte record clear at `$A024`.
+They remain typed data rather than a routine: the preceding handler ends in
+`RTS`, `$8C80` is an independent entry, and no Ghidra fact, runtime range, or
+little-endian word anywhere in PRG targets any byte of the sequence.
+
 `$A95A-$AB49` contains no executable helpers: it is two 100x2 room-cell
 collision-flag tables followed by 48 widths and 48 heights for runtime types
 `$80-$AF`. The cell pair index is `cell * 2 + horizontal half`; flag bit 7

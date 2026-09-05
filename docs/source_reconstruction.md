@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 110 semantic and 4 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 111 semantic and 3 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 28,130 PRG bytes (85.85%): `$E45D-$E8DE`
+The promoted ranges currently cover 28,135 PRG bytes (85.86%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record

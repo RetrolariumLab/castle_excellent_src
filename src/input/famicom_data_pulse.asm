@@ -190,7 +190,7 @@ ReturnPulseByteStatus:
 .include "../game/player/animated_cell_displacement.asm"
 .include "../preservation/prg_881a_8c11.asm"
 .include "../game/objects/inventory_collectible_handlers.asm"
-.include "../preservation/prg_8c7b_8c7f.asm"
+.include "../data/unreferenced_runtime_object_clear_tail.asm"
 .include "../game/objects/collectible_collision_handlers.asm"
 .include "../game/objects/collectible_type97.asm"
 .include "../game/scoring/add_score.asm"

@@ -83,6 +83,8 @@
   arbiter, three step counters, and five period/envelope tables;
 - [x] reconstruct the player-following horizontal camera curve, shared unsigned
   16-bit divider, and exact 32-byte PPU palette uploader;
+- [x] classify the detached five-byte runtime-object-clear-shaped tail at
+  `$8C7B-$8C7F` as unreferenced typed data and prove it has no reachable entry;
 - [x] reconstruct OAM staging-to-DMA transposition, eight-frame sprite-priority
   rotation, full record reversal, and sized RAM-array operand generation;
 - [x] reconstruct frame-sprite staging, player/action descriptor selection,
