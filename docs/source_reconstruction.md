@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 93 semantic and 5 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 107 semantic and 5 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 24,802 PRG bytes (75.69%): `$E45D-$E8DE`
+The promoted ranges currently cover 27,938 PRG bytes (85.26%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -56,6 +56,37 @@ the established snapshot pipeline. Its independent model pins all six range
 hashes, transfer topology, eight strings, the 768-frame timeout, all three
 four-page copy call sites, 327,680 menu-input cases, 262,144 entry-gating
 cases, and both guarded room-restoration actions.
+
+Audio track selection at `$B875-$B905` is split into semantic selector and
+record-table modules. Seven entry points select sets 0-5 and 7; all but title
+set 5 honor the demo-playback guard. The independent model pins both hashes,
+all external callers, eight records, 24 pointer slots, the exact 11 RAM writes,
+and 1,792 selector/demo-state cases.
+
+The title-demo playback at `$B7FD-$B874` is semantic code and typed input data.
+Its 72 commands suppress Select/Start, repeat the first command 11 times and
+later commands 12 times, return 863 controller samples, then reset on read 864.
+The model also proves pointer carry and NMI separation of scripted, second-pad,
+and physical-controller input.
+
+The music-data slice promotes `$BB16-$C20C` into four semantic modules: seven
+note semitone offsets, 56 tempo-indexed duration bytes, 73 little-endian APU
+periods, and 21 gap-free textual MML streams. The existing audio validator
+checks all track pointers, command grammar, terminators, restart pointers, the
+one unreferenced stream, and all 1,511 command bytes.
+
+The audio-engine slice promotes `$B906-$BB15` into two semantic code modules
+around an explicitly typed 11-byte orphan at `$BADE-$BAE8`. Its independent
+model pins all 528 bytes and 16 external callers, proves stop/clear ownership,
+walks all 21 MML streams, and exhaustively checks 16-bit pointer advance,
+channel request routing, APU configuration, tick expiry, and channel gating.
+
+The sound-effect slice promotes `$C20D-$C43C` into setup, per-frame update, and
+typed-table modules. Five starters claim their exact channel/request/APU writes;
+the NMI updater arbitrates pulse, triangle, and noise requests against live APU
+length counters and advances the inventory, mutable-cell, and generic effects.
+The focused model pins all 560 bytes, six entry points and their callers, table
+bounds, request completion, step wraparound, and NMI music-before-effects order.
 
 The room-loading vertical slice adds `$9578-$9582`, `$A35C-$A3AB`,
 `$B64C-$B7FC`, and `$EC63-$ECB6`. It marks the one-based visited-room flag,

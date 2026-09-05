@@ -197,7 +197,7 @@ ExitSubCommandMenu:
     STA PauseMode
     STA PreviousController2Buttons
     JSR StopAudioStreams
-    JSR ClearSoundRequests
+    JSR ClearSoundEffectRequests
     JMP FinalizeRoomLoad
 
 ExecuteSubCommandSelection:

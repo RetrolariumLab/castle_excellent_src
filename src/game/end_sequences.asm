@@ -19,7 +19,7 @@ RunGameOverSequence:
     STA GameOverMessagePointerLo
     JSR ShowBackgroundOnlyMessage
     JSR StopAudioStreams
-    JSR ClearSoundRequests
+    JSR ClearSoundEffectRequests
     JSR LoadAudioTrackSet2
     LDA #EndSequencePpuMask
     STA PPU_MASK
@@ -59,7 +59,7 @@ RunType82CompletionSequence:
     JSR SelectChrBank
     JSR DisableNmi
     JSR StopAudioStreams
-    JSR ClearSoundRequests
+    JSR ClearSoundEffectRequests
     JSR LoadAudioTrackSet4
 
 WaitForType82CompletionSetupVblank:

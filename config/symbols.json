@@ -3404,6 +3404,36 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xB814",
+      "name": "ReadCurrentDemoInputCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB81D",
+      "name": "ReturnMaskedDemoInput",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB820",
+      "name": "AdvanceDemoInputPointer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB826",
+      "name": "ResetDemoInputRepeatCounter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB82C",
+      "name": "TitleDemoInputScript",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xB875",
       "name": "LoadAudioTrackSet0",
       "kind": "routine",
@@ -3446,6 +3476,12 @@
       "confidence": "high"
     },
     {
+      "address": "0xB88F",
+      "name": "GuardAudioTrackLoadDuringDemo",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xB895",
       "name": "LoadAudioTrackSetByOffset",
       "kind": "routine",
@@ -3458,6 +3494,48 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xB8CE",
+      "name": "AudioTrackSet1Record",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB8D6",
+      "name": "AudioTrackSet2Record",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB8DE",
+      "name": "AudioTrackSet3Record",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB8E6",
+      "name": "AudioTrackSet4Record",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB8EE",
+      "name": "AudioTrackSet5Record",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB8F6",
+      "name": "AudioTrackSet6Record",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB8FE",
+      "name": "AudioTrackSet7Record",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xB906",
       "name": "StopAudioStreams",
       "kind": "routine",
@@ -3465,7 +3543,7 @@
     },
     {
       "address": "0xB918",
-      "name": "ClearSoundRequests",
+      "name": "ClearSoundEffectRequests",
       "kind": "routine",
       "confidence": "high"
     },
@@ -3482,9 +3560,267 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xB936",
+      "name": "TickActiveAudioStream",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB94B",
+      "name": "CheckPulse2GateMask",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB951",
+      "name": "CheckTriangleGateMask",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB957",
+      "name": "ApplyAudioChannelGate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB95A",
+      "name": "ReturnFromAudioStreamUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB95B",
+      "name": "ReadAudioStreamCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB962",
+      "name": "DispatchAudioStreamCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB97E",
+      "name": "CheckTempoCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB992",
+      "name": "CheckDefaultLengthCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9A3",
+      "name": "CheckDefaultLength8",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9AB",
+      "name": "CheckDefaultLength4",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9B3",
+      "name": "CheckDefaultLength2",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9BB",
+      "name": "UseDefaultLength1",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9BD",
+      "name": "StoreChannelDefaultLength",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9C3",
+      "name": "StorePulse2DefaultLength",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9C9",
+      "name": "StoreTriangleDefaultLength",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9CF",
+      "name": "ReadNextAudioStreamCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9D2",
+      "name": "CheckVolumeCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9DE",
+      "name": "CheckNoteCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xB9FE",
+      "name": "CheckFlatAccidental",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA06",
+      "name": "BuildPeriodTableIndex",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA0D",
+      "name": "CheckRestCommand",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA14",
+      "name": "UseRestPeriod",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA16",
+      "name": "ProcessAudioEvent",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA29",
+      "name": "WriteAudioChannelPeriod",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA35",
+      "name": "SelectChannelDefaultLength",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA3E",
+      "name": "SelectPulse2DefaultLength",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA47",
+      "name": "SelectTriangleDefaultLength",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA49",
+      "name": "LoadDefaultEventDuration",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA60",
+      "name": "CheckExplicitLength1",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA66",
+      "name": "CheckExplicitLength2",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA6C",
+      "name": "CheckExplicitLength4",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA72",
+      "name": "CheckExplicitLength8",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA78",
+      "name": "CheckExplicitLength16",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA7E",
+      "name": "LoadExplicitEventDuration",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA8B",
+      "name": "ApplyDottedDuration",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA9C",
+      "name": "ReturnFromAudioEvent",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBA9D",
+      "name": "SkipStreamTerminator",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBAA0",
+      "name": "ReadAudioStreamRestartPointer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBAB6",
+      "name": "RestartAudioStream",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xBABF",
       "name": "ReadChannelSoundRequest",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBAC6",
+      "name": "ReadPulse2SoundRequest",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBACD",
+      "name": "ReadTriangleSoundRequest",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBAD4",
+      "name": "ReturnInvalidChannelRequest",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
@@ -3494,9 +3830,39 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xBADD",
+      "name": "ReturnFromAdvanceAudioStream",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBADE",
+      "name": "UnreferencedLowercaseHexDigitDecodeBytes",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xBAE9",
       "name": "ConfigureAudioChannel",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBAFD",
+      "name": "ConfigurePulse2AudioChannel",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBB0C",
+      "name": "ConfigureTriangleAudioChannel",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBB15",
+      "name": "ReturnFromConfigureAudioChannel",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
@@ -3524,10 +3890,148 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xBC3F",
+      "name": "Track0Pulse2MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBCEE",
+      "name": "Track0TriangleMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBD4F",
+      "name": "Track1Pulse1MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBD80",
+      "name": "Track1Pulse2MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBDB9",
+      "name": "Track1TriangleMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBDF4",
+      "name": "Track2PulseMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBE17",
+      "name": "UnreferencedMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBE38",
+      "name": "Track2TriangleMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBE5D",
+      "name": "Track3Pulse1MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBEBC",
+      "name": "Track3Pulse2MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBF1B",
+      "name": "Track3TriangleMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBF92",
+      "name": "Track4Pulse1MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xBFFB",
+      "name": "Track4Pulse2MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC05D",
+      "name": "Track4TriangleMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC0A1",
+      "name": "Track5Pulse1MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC0DE",
+      "name": "Track5Pulse2MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC117",
+      "name": "Track5TriangleMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC158",
+      "name": "SharedTrack6And7MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC185",
+      "name": "Track7Pulse2MusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC1C2",
+      "name": "Track7TriangleMusicStream",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC20D",
+      "name": "StartPulse1SoundEffect1",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC233",
+      "name": "StartPulse2NoiseSoundEffect2",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xC272",
       "name": "StartInventoryCollectibleSoundEffect",
       "kind": "routine",
       "confidence": "high"
+    },
+    {
+      "address": "0xC29A",
+      "name": "StartNoiseSoundEffect4",
+      "kind": "routine",
+      "confidence": "confirmed"
     },
     {
       "address": "0xC2BD",
@@ -3540,6 +4044,114 @@
       "name": "UpdateSoundEffects",
       "kind": "routine",
       "confidence": "high"
+    },
+    {
+      "address": "0xC318",
+      "name": "UpdatePulse2SoundEffect",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC33A",
+      "name": "AdvanceInventoryCollectibleSoundEffect",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC347",
+      "name": "UpdatePulse2SoundEffect2",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC354",
+      "name": "UpdateTriangleSoundEffect",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC376",
+      "name": "AdvanceTriangleSoundEffect2",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC389",
+      "name": "UpdateTriangleSoundEffect5",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC3A3",
+      "name": "AdvanceMutableCellTriangleSound",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC3B5",
+      "name": "UpdateNoiseSoundEffect",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC3E9",
+      "name": "FinishNoiseSoundEffect4",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC3EF",
+      "name": "UpdateNoiseSoundEffect5",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC408",
+      "name": "AdvanceMutableCellNoiseSound",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC419",
+      "name": "UpdateNoiseSoundEffect2",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC428",
+      "name": "ReturnFromUpdateSoundEffects",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC429",
+      "name": "TriangleSoundEffect2PeriodLow",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC42D",
+      "name": "InventorySoundEffectPeriodLow",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC431",
+      "name": "NoiseSoundEffect4Volume",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC435",
+      "name": "NoiseSoundEffect4Period",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC439",
+      "name": "NoiseSoundEffect4Length",
+      "kind": "data",
+      "confidence": "confirmed"
     },
     {
       "address": "0xC43D",

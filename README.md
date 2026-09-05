@@ -146,6 +146,12 @@ evidence, and tested decoders for game data.
   and the carry-clear match versus carry-set exhaustion contract.
 - `scripts/audio_data.py` validates the eight-set music table and all 21
   textual command streams, including their terminators and restart pointers.
+- `scripts/audio_stream_engine.py` pins the interpreter's code/data boundaries
+  and callers, walks every MML stream, and exhaustively models pointer advance,
+  sound-effect arbitration, channel setup, countdown expiry, and APU gating.
+- `scripts/sound_effect_engine.py` validates five starter write traces, the NMI
+  updater's request/status arbitration, byte-wide step sequences, and all five
+  period/envelope tables.
 - `scripts/room_screen_data.py` validates four status-screen tile streams,
   their code-level pointer loads, and the 16 initial attribute bytes.
 - `scripts/controller_input.py` exhaustively validates all 256 controller masks
@@ -207,7 +213,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 454 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 492 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -215,11 +221,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 10,341 instructions after 34
-  static code ranges recover pointer-selected entries and 66 evidence-backed data
+  disagreements. Evidence-refined Ghidra exports 10,341 instructions after 39
+  static code ranges recover pointer-selected entries and 73 evidence-backed data
   ranges remove 199 false-positive instructions. A separate registry clears
   five overextended or misaligned starts embedded in real instruction operands.
-  The source layout owns 24,802 PRG bytes semantically (75.69%). The title and
+  The source layout owns 27,938 PRG bytes semantically (85.26%). The title and
   sub-command path now owns title palette/CHR upload, Start/attract timeout,
   controller-2 menu entry, five-entry wrapped selection, typed menu text,
   load/save dispatch, and current/previous-room restoration.
@@ -358,6 +364,14 @@ make unreferenced-nmi-task-bytes # inspect the typed code-shaped byte sequence
 make validate-unreferenced-nmi-task-bytes # prove it has no code/dispatch entry
 make title-sub-command # inspect title/menu bytes, strings, and behavior
 make validate-title-sub-command # exhaustively validate title/menu input and room actions
+make demo-playback # inspect title-demo commands and expanded controller samples
+make validate-demo-playback # validate all 863 samples and terminal reset
+make audio-track-selection # inspect track records and selector behavior
+make validate-audio-track-selection # validate all selectors and demo-gate cases
+make audio-stream-engine # inspect interpreter partitions and behavior
+make validate-audio-stream-engine # validate all stream-engine state domains
+make sound-effect-engine # inspect starter and per-frame effect behavior
+make validate-sound-effect-engine # validate requests, steps, and effect tables
 make end-sequences   # inspect game-over and type-$82 completion routes
 make validate-end-sequences # validate ending bytes, calls, text, and score comparisons
 make prg-tail-data    # inspect tail padding, tile tables, and vectors
@@ -429,6 +443,10 @@ scripts/runtime_types81_82_collision.py type-$81/$82 transform/completion model
 scripts/unreferenced_nmi_task_index_bytes.py typed orphan-byte validator
 scripts/unreferenced_runtime_only_sample.py dead runtime-only sampler model
 scripts/title_sub_command.py title screen and sub-command menu model
+scripts/demo_playback.py title-demo controller-script model
+scripts/audio_track_selection.py track records and demo-gated selector model
+scripts/audio_stream_engine.py MML interpreter and channel-arbitration model
+scripts/sound_effect_engine.py sound-effect starter and updater model
 scripts/end_sequences.py game-over/completion and high-score model
 scripts/prg_tail_data.py room-cell tiles, padding, and vector validator
 scripts/palette_data.py overlapping screen and room palette validator
@@ -457,6 +475,9 @@ src/input/pause.asm        pause/resume edges and paused horizontal scrolling
 src/system/ppu.asm         PPU mode helpers and CNROM bank selection
 src/system/startup.asm     reset signature, initialization, and main frame loop
 src/system/nmi.asm         NMI task scheduler, input, OAM, scroll, and audio tick
+src/audio/stream_engine.asm textual MML interpreter and three-channel scheduler
+src/audio/channel_configuration.asm streamed-note APU channel setup
+src/audio/sound_effect_*.asm starters, per-frame updater, and parameter tables
 src/rendering/oam_dma.asm  64-sprite DMA interleave and order transforms
 src/rendering/frame_sprites.asm player/action selection and object render dispatch
 src/rendering/object_sprite_selectors.asm per-type descriptor and renderer selection

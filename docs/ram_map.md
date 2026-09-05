@@ -28,6 +28,12 @@
 | `$0041` | 1 | current object-record offset | high | sprite dispatch trace |
 | `$0043` | 1 | current runtime-object update offset | confirmed | `$9583` initializes it and advances by six through all 24 records; handlers reuse it |
 | `$004A-$00D9` | `$90` | 24 six-byte object records | confirmed | clear/load loops |
+| `$00DA` | 1 | shared audio tempo-table offset | confirmed | `t` command and all three streamed-note duration lookups |
+| `$00DB-$00E6` | 12 | three four-byte audio stream states | confirmed | pointer, countdown, and octave fields indexed by X=`0,4,8` |
+| `$00E7-$00E8` | 2 | pulse 1/2 streamed-note parameters | confirmed | track records and pulse channel setup |
+| `$00E9-$00EB` | 3 | pulse 1, pulse 2, and triangle default-length indexes | confirmed | `l` command and note/rest duration selection |
+| `$00EC,$00EF,$00F2,$00F5` | 4 | pulse 1, pulse 2, triangle, and noise sound-effect requests | confirmed | request clear, channel arbitration, and sound-effect starters |
+| `$00F0,$00F3,$00F6` | 3 | pulse 2, triangle, and noise sound-effect steps | confirmed | per-frame effect sequences and starter resets |
 | `$0100-$017F` | `$80` | left/right room attribute buffers | confirmed | builder + NMI uploads to `$23C8/$27C8` |
 | `$0200-$02FF` | `$100` | final OAM DMA buffer | confirmed | `$4014 = $02` |
 | `$0300-$03FF` | `$100` | OAM staging buffer | confirmed | copy into `$0200` |

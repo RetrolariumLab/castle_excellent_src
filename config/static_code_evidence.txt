@@ -118,6 +118,20 @@ code A60F A615
 # the shared two-component render tail at $AE0C as well.
 code ADE7 AE74
 
+# Seven direct selector call sites and their internal branches prove the shared
+# audio track-record loader. Track set 5 deliberately bypasses the demo guard.
+code B7FD B82B
+code B875 B8C5
+
+# Direct callers and the interpreter's internal control flow prove two code
+# partitions separated by eleven bytes with no established entry point.
+code B906 BADD
+code BAE9 BB15
+
+# Five direct gameplay starters plus the NMI updater prove the complete
+# sound-effect code partition before its typed parameter tables.
+code C20D C428
+
 # Reset, castle-map, and completion call sites prove the title loop and shared
 # four-page CHR-to-nametable copier, including both title exit paths.
 code F8FC F9AC

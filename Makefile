@@ -58,7 +58,16 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/rooms/room_metadata.asm src/rendering/frame_sprites.asm \
 	src/rendering/object_sprite_selectors.asm src/rendering/object_metasprites.asm \
 	src/rendering/metasprite_data.asm \
-	src/rendering/room_screen.asm src/preservation/prg_b7fd_c4fc.asm \
+	src/rendering/room_screen.asm src/input/demo_playback.asm \
+	src/data/title_demo_input.asm \
+	src/audio/track_selection.asm src/audio/track_table.asm \
+	src/audio/stream_engine.asm \
+	src/data/unreferenced_lowercase_hex_digit_decode_bytes.asm \
+	src/audio/channel_configuration.asm \
+	src/audio/note_semitone_offsets.asm src/audio/note_length_table.asm \
+	src/audio/apu_period_table.asm src/audio/music_mml_data.asm \
+	src/audio/sound_effect_starters.asm src/audio/sound_effect_update.asm \
+	src/audio/sound_effect_tables.asm src/preservation/prg_c43d_c4fc.asm \
 	src/rendering/screen_palette_data.asm src/rendering/room_palette_data.asm \
 	src/system/nmi.asm src/rendering/oam_dma.asm \
 	src/rendering/status_upload.asm src/rendering/room_rows_00_04.asm \
@@ -151,6 +160,10 @@ TIMEOUT_FRAMES ?= 15000
 	unreferenced-nmi-task-bytes validate-unreferenced-nmi-task-bytes \
 	unreferenced-runtime-only-sample validate-unreferenced-runtime-only-sample \
 	title-sub-command validate-title-sub-command \
+	demo-playback validate-demo-playback \
+	audio-track-selection validate-audio-track-selection \
+	audio-stream-engine validate-audio-stream-engine \
+	sound-effect-engine validate-sound-effect-engine \
 	end-sequences validate-end-sequences \
 	prg-tail-data validate-prg-tail-data \
 	palette-data validate-palette-data \
@@ -562,6 +575,30 @@ title-sub-command: $(ROM)
 validate-title-sub-command: $(ROM)
 	$(PYTHON) scripts/title_sub_command.py --image "$(ROM)" --validate
 
+demo-playback: $(ROM)
+	$(PYTHON) scripts/demo_playback.py --image "$(ROM)" --pretty
+
+validate-demo-playback: $(ROM)
+	$(PYTHON) scripts/demo_playback.py --image "$(ROM)" --validate
+
+audio-track-selection: $(ROM)
+	$(PYTHON) scripts/audio_track_selection.py --image "$(ROM)" --pretty
+
+validate-audio-track-selection: $(ROM)
+	$(PYTHON) scripts/audio_track_selection.py --image "$(ROM)" --validate
+
+audio-stream-engine: $(ROM)
+	$(PYTHON) scripts/audio_stream_engine.py --image "$(ROM)" --pretty
+
+validate-audio-stream-engine: $(ROM)
+	$(PYTHON) scripts/audio_stream_engine.py --image "$(ROM)" --validate
+
+sound-effect-engine: $(ROM)
+	$(PYTHON) scripts/sound_effect_engine.py --image "$(ROM)" --pretty
+
+validate-sound-effect-engine: $(ROM)
+	$(PYTHON) scripts/sound_effect_engine.py --image "$(ROM)" --validate
+
 end-sequences: $(ROM)
 	$(PYTHON) scripts/end_sequences.py --image "$(ROM)" --pretty
 
@@ -634,7 +671,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-title-sub-command validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

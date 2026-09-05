@@ -71,7 +71,21 @@
         "../rendering/object_metasprites.asm",
         "../rendering/metasprite_data.asm",
         "../rendering/room_screen.asm",
-        "../preservation/prg_b7fd_c4fc.asm",
+        "../input/demo_playback.asm",
+        "../data/title_demo_input.asm",
+        "../audio/track_selection.asm",
+        "../audio/track_table.asm",
+        "../audio/stream_engine.asm",
+        "../data/unreferenced_lowercase_hex_digit_decode_bytes.asm",
+        "../audio/channel_configuration.asm",
+        "../audio/note_semitone_offsets.asm",
+        "../audio/note_length_table.asm",
+        "../audio/apu_period_table.asm",
+        "../audio/music_mml_data.asm",
+        "../audio/sound_effect_starters.asm",
+        "../audio/sound_effect_update.asm",
+        "../audio/sound_effect_tables.asm",
+        "../preservation/prg_c43d_c4fc.asm",
         "../rendering/screen_palette_data.asm",
         "../rendering/room_palette_data.asm",
         "../system/nmi.asm",
@@ -486,10 +500,94 @@
       "title": "Room nametable, status, attribute, and sprite initialization"
     },
     {
-      "path": "src/preservation/prg_b7fd_c4fc.asm",
+      "path": "src/input/demo_playback.asm",
       "start": "0xB7FD",
+      "end": "0xB82C",
+      "title": "Title-demo controller script playback"
+    },
+    {
+      "path": "src/data/title_demo_input.asm",
+      "start": "0xB82C",
+      "end": "0xB875",
+      "title": "Title-demo controller input script"
+    },
+    {
+      "path": "src/audio/track_selection.asm",
+      "start": "0xB875",
+      "end": "0xB8C6",
+      "title": "Audio track-set selection and channel initialization"
+    },
+    {
+      "path": "src/audio/track_table.asm",
+      "start": "0xB8C6",
+      "end": "0xB906",
+      "title": "Eight audio track-set records"
+    },
+    {
+      "path": "src/audio/stream_engine.asm",
+      "start": "0xB906",
+      "end": "0xBADE",
+      "title": "Textual MML stream interpreter and scheduler"
+    },
+    {
+      "path": "src/data/unreferenced_lowercase_hex_digit_decode_bytes.asm",
+      "start": "0xBADE",
+      "end": "0xBAE9",
+      "title": "Unreferenced lowercase hexadecimal digit decoder bytes"
+    },
+    {
+      "path": "src/audio/channel_configuration.asm",
+      "start": "0xBAE9",
+      "end": "0xBB16",
+      "title": "APU channel configuration for streamed notes"
+    },
+    {
+      "path": "src/audio/note_semitone_offsets.asm",
+      "start": "0xBB16",
+      "end": "0xBB1D",
+      "title": "MML note-to-semitone offsets"
+    },
+    {
+      "path": "src/audio/note_length_table.asm",
+      "start": "0xBB1D",
+      "end": "0xBB55",
+      "title": "Tempo-indexed MML note lengths"
+    },
+    {
+      "path": "src/audio/apu_period_table.asm",
+      "start": "0xBB55",
+      "end": "0xBBE7",
+      "title": "APU note period table"
+    },
+    {
+      "path": "src/audio/music_mml_data.asm",
+      "start": "0xBBE7",
+      "end": "0xC20D",
+      "title": "Terminated textual MML streams"
+    },
+    {
+      "path": "src/audio/sound_effect_starters.asm",
+      "start": "0xC20D",
+      "end": "0xC2F9",
+      "title": "Five sound-effect channel starters"
+    },
+    {
+      "path": "src/audio/sound_effect_update.asm",
+      "start": "0xC2F9",
+      "end": "0xC429",
+      "title": "Per-frame sound-effect channel updater"
+    },
+    {
+      "path": "src/audio/sound_effect_tables.asm",
+      "start": "0xC429",
+      "end": "0xC43D",
+      "title": "Sound-effect period, volume, and length tables"
+    },
+    {
+      "path": "src/preservation/prg_c43d_c4fc.asm",
+      "start": "0xC43D",
       "end": "0xC4FD",
-      "title": "Preservation PRG before shared screen palettes"
+      "title": "Preservation scroll, division, and palette helpers"
     },
     {
       "path": "src/rendering/screen_palette_data.asm",

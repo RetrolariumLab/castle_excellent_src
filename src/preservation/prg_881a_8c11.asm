@@ -237,7 +237,7 @@ Label_8985:
     STA RuntimeObjectRecords,X
     LDA #$00
     STA RuntimeObjectState,X
-    JSR Func_C233
+    JSR StartPulse2NoiseSoundEffect2
     JMP Label_89A0
 
 Label_899E:

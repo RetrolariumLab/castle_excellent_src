@@ -21,13 +21,13 @@ Label_82DB:
     AND #$01
     BNE Label_82FA
     STA $3C
-    LDA $EC
+    LDA Pulse1SoundEffectRequest
     CMP #$01
     BNE Label_82FA
     LDA #$0E
     STA APU_STATUS
     LDA #$00
-    STA $EC
+    STA Pulse1SoundEffectRequest
 
 Label_82FA:
     LDA Controller1Buttons
@@ -58,7 +58,7 @@ Label_8320:
     AND #$07
     BNE Label_8331
     DEC $3C
-    JSR Func_C20D
+    JSR StartPulse1SoundEffect1
 
 Label_8331:
     JSR GetActivePlayerMotionState
@@ -252,7 +252,7 @@ Label_846B:
     BNE Label_8478
     LDA #$20
     STA $3C
-    JSR Func_C20D
+    JSR StartPulse1SoundEffect1
 
 Label_8478:
     JMP Label_8490
@@ -538,7 +538,7 @@ Label_860D:
     STA RuntimeObjectRecords,X
     LDA #$00
     STA RuntimeObjectState,X
-    JSR Func_C233
+    JSR StartPulse2NoiseSoundEffect2
     JMP Label_8673
 
 Label_866A:

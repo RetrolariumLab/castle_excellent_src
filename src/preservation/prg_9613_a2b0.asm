@@ -28,7 +28,7 @@ Label_9786:
     STA RuntimeObjectRecords,X
     LDA #$00
     STA RuntimeObjectState,X
-    JMP Func_C233
+    JMP StartPulse2NoiseSoundEffect2
 
 Func_9791:
     LDX CurrentRuntimeObjectOffset
@@ -917,9 +917,9 @@ Label_9D1E:
 
 Label_9D64:
     RTS
-    LDA $F5
+    LDA NoiseSoundEffectRequest
     BNE Label_9D6C
-    JSR Func_C29A
+    JSR StartNoiseSoundEffect4
 
 Label_9D6C:
     LDX CurrentRuntimeObjectOffset

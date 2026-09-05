@@ -69,7 +69,21 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/rendering/object_metasprites.asm` | `$B1D6-$B4B5` | common object/player metasprite composition and clipping |
 | `src/rendering/metasprite_data.asm` | `$B4B6-$B64B` | 203 tile/attribute descriptor pairs |
 | `src/rendering/room_screen.asm` | `$B64C-$B7FC` | room nametable, status, attribute, and OAM initialization |
-| `src/preservation/prg_b7fd_c4fc.asm` | `$B7FD-$C4FC` | unresolved demo input, audio, and scroll helpers |
+| `src/input/demo_playback.asm` | `$B7FD-$B82B` | title-demo controller script playback |
+| `src/data/title_demo_input.asm` | `$B82C-$B874` | 72-command title-demo input script and terminator |
+| `src/audio/track_selection.asm` | `$B875-$B8C5` | track-set selection and channel initialization |
+| `src/audio/track_table.asm` | `$B8C6-$B905` | eight track-set records |
+| `src/audio/stream_engine.asm` | `$B906-$BADD` | textual MML stream interpreter and scheduler |
+| `src/data/unreferenced_lowercase_hex_digit_decode_bytes.asm` | `$BADE-$BAE8` | typed orphan bytes shaped like a lowercase-hex decoder |
+| `src/audio/channel_configuration.asm` | `$BAE9-$BB15` | streamed-note APU channel configuration |
+| `src/audio/note_semitone_offsets.asm` | `$BB16-$BB1C` | MML note-to-semitone offsets |
+| `src/audio/note_length_table.asm` | `$BB1D-$BB54` | tempo-indexed note durations |
+| `src/audio/apu_period_table.asm` | `$BB55-$BBE6` | little-endian APU note periods |
+| `src/audio/music_mml_data.asm` | `$BBE7-$C20C` | 21 terminated textual music streams |
+| `src/audio/sound_effect_starters.asm` | `$C20D-$C2F8` | five sound-effect channel setup routines |
+| `src/audio/sound_effect_update.asm` | `$C2F9-$C428` | per-frame sound-effect request updater |
+| `src/audio/sound_effect_tables.asm` | `$C429-$C43C` | period and envelope tables |
+| `src/preservation/prg_c43d_c4fc.asm` | `$C43D-$C4FC` | unresolved scroll, division, and palette helpers |
 | `src/rendering/screen_palette_data.asm` | `$C4FD-$C53C` | overlapping completion, title, and castle-map palettes |
 | `src/rendering/room_palette_data.asm` | `$C53D-$C55C` | gameplay room background and sprite palette |
 | `src/system/nmi.asm` | `$C55D-$C6B8` | NMI dispatch, OAM/scroll, input, scheduler, counters, and audio tick |
@@ -107,9 +121,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 98 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 112 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 97 in CPU-address order. Ghidra-defined instructions are emitted
+following 111 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

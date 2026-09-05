@@ -3288,6 +3288,132 @@
       "expected": "#$30",
       "operand": "#EndSequencePpuControl",
       "evidence": "completion selects the shared PPU control state"
+    },
+    {
+      "instruction": "0xB875",
+      "expected": "#$00",
+      "operand": "#AudioTrackSet0Offset",
+      "evidence": "track selector zero chooses the first eight-byte record"
+    },
+    {
+      "instruction": "0xB879",
+      "expected": "#$08",
+      "operand": "#AudioTrackSet1Record - AudioTrackTable",
+      "evidence": "track selector one chooses the second eight-byte record"
+    },
+    {
+      "instruction": "0xB87D",
+      "expected": "#$10",
+      "operand": "#AudioTrackSet2Record - AudioTrackTable",
+      "evidence": "track selector two chooses the third eight-byte record"
+    },
+    {
+      "instruction": "0xB881",
+      "expected": "#$18",
+      "operand": "#AudioTrackSet3Record - AudioTrackTable",
+      "evidence": "track selector three chooses the fourth eight-byte record"
+    },
+    {
+      "instruction": "0xB885",
+      "expected": "#$20",
+      "operand": "#AudioTrackSet4Record - AudioTrackTable",
+      "evidence": "track selector four chooses the fifth eight-byte record"
+    },
+    {
+      "instruction": "0xB889",
+      "expected": "#$28",
+      "operand": "#AudioTrackSet5Record - AudioTrackTable",
+      "evidence": "title selector chooses record five and bypasses the demo guard"
+    },
+    {
+      "instruction": "0xB88D",
+      "expected": "#$38",
+      "operand": "#AudioTrackSet7Record - AudioTrackTable",
+      "evidence": "track selector seven chooses the eighth record"
+    },
+    {
+      "instruction": "0xB89A",
+      "expected": "a:$B8C7,X",
+      "operand": "AudioTrackTable + 1,X",
+      "evidence": "record byte one is the pulse-one stream pointer high byte"
+    },
+    {
+      "instruction": "0xB89F",
+      "expected": "a:$B8C8,X",
+      "operand": "AudioTrackTable + 2,X",
+      "evidence": "record byte two is the pulse-two stream pointer low byte"
+    },
+    {
+      "instruction": "0xB8A4",
+      "expected": "a:$B8C9,X",
+      "operand": "AudioTrackTable + 3,X",
+      "evidence": "record byte three is the pulse-two stream pointer high byte"
+    },
+    {
+      "instruction": "0xB8A9",
+      "expected": "a:$B8CA,X",
+      "operand": "AudioTrackTable + 4,X",
+      "evidence": "record byte four is the triangle stream pointer low byte"
+    },
+    {
+      "instruction": "0xB8AE",
+      "expected": "a:$B8CB,X",
+      "operand": "AudioTrackTable + 5,X",
+      "evidence": "record byte five is the triangle stream pointer high byte"
+    },
+    {
+      "instruction": "0xB8B3",
+      "expected": "a:$B8CC,X",
+      "operand": "AudioTrackTable + 6,X",
+      "evidence": "record byte six is the pulse-one channel parameter"
+    },
+    {
+      "instruction": "0xB8B8",
+      "expected": "a:$B8CD,X",
+      "operand": "AudioTrackTable + 7,X",
+      "evidence": "record byte seven is the pulse-two channel parameter"
+    },
+    {
+      "instruction": "0xB8BD",
+      "expected": "#$01",
+      "operand": "#AudioTrackInitialTicks",
+      "evidence": "all three selected streams begin with one tick remaining"
+    },
+    {
+      "instruction": "0xBA2F",
+      "expected": "a:$BB56,Y",
+      "operand": "ApuPeriodTable + 1,Y",
+      "evidence": "odd bytes in the interleaved period table are the high byte of each APU timer value"
+    },
+    {
+      "instruction": "0xB7FD",
+      "expected": "#$2C",
+      "operand": "#<TitleDemoInputScript",
+      "evidence": "demo initialization constructs the controller-script pointer"
+    },
+    {
+      "instruction": "0xB801",
+      "expected": "#$B8",
+      "operand": "#>TitleDemoInputScript",
+      "evidence": "demo initialization constructs the controller-script pointer"
+    },
+    {
+      "instruction": "0xB80E",
+      "expected": "#$0C",
+      "operand": "#DemoInputCommandFrames",
+      "evidence": "each command after the first is repeated for twelve frames"
+    },
+    {
+      "instruction": "0xB816",
+      "expected": "#$FF",
+      "operand": "#DemoInputTerminator",
+      "evidence": "the title demo terminator returns to reset"
+    },
+    {
+      "instruction": "0xB81D",
+      "expected": "#$F3",
+      "operand": "#DemoInputControllerMask",
+      "evidence": "demo input cannot synthesize Select or Start"
     }
   ]
 }

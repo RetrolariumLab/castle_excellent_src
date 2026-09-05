@@ -2,6 +2,46 @@
   "schema_version": 1,
   "symbols": [
     {
+      "address": "0x00DF",
+      "name": "AudioPulse2StreamPointerLo"
+    },
+    {
+      "address": "0x00E0",
+      "name": "AudioPulse2StreamPointerHi"
+    },
+    {
+      "address": "0x00E1",
+      "name": "AudioPulse2TicksRemaining"
+    },
+    {
+      "address": "0x00E3",
+      "name": "AudioTriangleStreamPointerLo"
+    },
+    {
+      "address": "0x00E4",
+      "name": "AudioTriangleStreamPointerHi"
+    },
+    {
+      "address": "0x00E5",
+      "name": "AudioTriangleTicksRemaining"
+    },
+    {
+      "address": "0x00E8",
+      "name": "AudioPulse2TrackParameters"
+    },
+    {
+      "address": "0x00FD",
+      "name": "DemoInputPointerLo"
+    },
+    {
+      "address": "0x00FE",
+      "name": "DemoInputPointerHi"
+    },
+    {
+      "address": "0x00FF",
+      "name": "DemoInputRepeatCounter"
+    },
+    {
       "address": "0x0021",
       "name": "TitlePalettePointerLo",
       "start": "0xF8FC",
@@ -182,7 +222,43 @@
     },
     {
       "address": "0x00E9",
-      "name": "AudioDefaultLengthIndices"
+      "name": "AudioPulse1DefaultLengthIndex"
+    },
+    {
+      "address": "0x00EA",
+      "name": "AudioPulse2DefaultLengthIndex"
+    },
+    {
+      "address": "0x00EB",
+      "name": "AudioTriangleDefaultLengthIndex"
+    },
+    {
+      "address": "0x00EC",
+      "name": "Pulse1SoundEffectRequest"
+    },
+    {
+      "address": "0x00EF",
+      "name": "Pulse2SoundEffectRequest"
+    },
+    {
+      "address": "0x00F0",
+      "name": "Pulse2SoundEffectStep"
+    },
+    {
+      "address": "0x00F2",
+      "name": "TriangleSoundEffectRequest"
+    },
+    {
+      "address": "0x00F3",
+      "name": "TriangleSoundEffectStep"
+    },
+    {
+      "address": "0x00F5",
+      "name": "NoiseSoundEffectRequest"
+    },
+    {
+      "address": "0x00F6",
+      "name": "NoiseSoundEffectStep"
     },
     {
       "address": "0x00F8",

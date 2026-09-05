@@ -200,7 +200,7 @@ handler, sprite selector, and collision dimensions. Thirty-two runtime types
 have a direct room source; the ten unsourced indexes remain explicit candidates
 for runtime transitions or unused slots rather than receiving guessed names.
 
-## Audio interpreter (`$B906-$C43C`)
+## Audio selection and interpreter (`$B875-$C43C`)
 
 The audio core owns three four-byte stream states beginning at `$DB` and walks
 textual commands. `UpdateAudioStreams` calls `UpdateAudioStream` with X equal to
@@ -210,12 +210,23 @@ eight-byte record. `MusicMmlData` is a gap-free sequence of 21 streams using
 octave, tempo, default-length, volume, note, rest, accidental, explicit-length,
 and dotted-length tokens. A zero terminator is followed by a restart pointer or
 `$0000`. `StopAudioStreams` disables `$4015` and clears the three pointers.
-Seven small entry points select record offsets 0-5 and 7 before joining
-`LoadAudioTrackSetByOffset`; record 6 has no statically established selector.
+Seven small semantic entry points select record offsets 0-5 and 7 before
+joining `LoadAudioTrackSetByOffset`; record 6 has no statically established
+selector. Sets 0-4 and 7 are suppressed during demo playback, while title set
+5 deliberately bypasses that guard. The adjacent eight-record table is also
+semantic source and initializes exactly three pointers, two channel parameters,
+and three one-tick countdowns.
 
-The stream bytes and interpreter tables are now independently validated, while
-the broad subsystem end remains provisional because sound-effect helpers and
-data tables are interleaved.
+The selector, interpreter, channel configuration, semitone/length/period
+tables, and all 21 textual streams are now semantic source and independently
+validated. The interpreter's `$BADE-$BAE8` bytes remain typed data because no
+static or runtime entry reaches their lowercase-hex-decoder-shaped sequence.
+The following five sound-effect starters, common per-frame updater, and five
+parameter tables are semantic too. Their busy bytes guard synchronous setup,
+while request/step bytes retain effects across frames and arbitrate against the
+APU length-counter status bits. Generic request types 1, 2, and 4 retain numeric
+names until their still-preserved gameplay callers establish behavior. The
+remaining preservation source begins at the horizontal-scroll helper `$C43D`.
 
 ## NMI, sprites, and PPU transfers (`$C43D-$E45C`)
 
@@ -253,6 +264,12 @@ performs DMA. `InitializeRoomStatusDisplay` writes four terminated tile streams
 and formatted score tiles, then seeds 16 attribute bytes.
 `UploadRoomAttributeTables` copies the two 64-byte scratch tables to `$23C0`
 and `$27C0`. `ResetNmiTaskRequests` at `$9578` fills `$0785-$079B` with `$FF`.
+
+The adjacent title-demo module initializes a 16-bit pointer into a typed
+72-command controller script. NMI playback masks Select/Start, repeats commands
+at a 12-frame cadence (11 frames for the first), and returns to reset at the
+terminator after 863 synthesized samples; physical controller polling remains
+independent.
 
 ## Room and object data pipeline (`$E45D-$F8FB`)
 

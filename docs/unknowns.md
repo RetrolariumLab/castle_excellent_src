@@ -674,3 +674,36 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Evidence: static consumers in `$B895-$BB15`, exact-ROM validation by
   `scripts/audio_data.py`, and FCEUX CDL data reads with no executions in the
   stream range
+
+### AUDIO-002 - textual MML interpreter boundaries and behavior
+
+- Status: resolved
+- Known: `$B906-$BADD` updates three four-byte stream states at X=`0,4,8`,
+  parses octave/tempo/default-length/volume commands, emits notes and rests,
+  and consumes zero terminators followed by little-endian restart pointers
+- Arbitration: active sound effects suppress streamed APU writes; idle channels
+  are gated when their countdown reaches three, using `$4015` masks
+  `$0E/$0D/$0B`
+- Boundary: `$BADE-$BAE8` is an 11-byte lowercase-hex-decoder-shaped sequence
+  with no static or runtime entry; `$BAE9-$BB15` is the separately proven APU
+  channel configurator
+- Evidence: two static code ranges, one typed-data range, exact caller/hash
+  validation, complete MML walk, exhaustive machine-width model, deterministic
+  regeneration, and byte-identical build
+
+### AUDIO-003 - sound-effect request engine
+
+- Status: resolved
+- Known: five entry points at `$C20D-$C2F8` synchronously configure pulse,
+  triangle, and noise registers, then leave request IDs for the NMI updater at
+  `$C2F9-$C428`
+- Arbitration: each channel waits for both its setup-busy byte and corresponding
+  APU length-counter status bit to clear; types 2, 3, 4, and 5 either clear or
+  advance byte-wide step counters before completing
+- Data: five tables at `$C429-$C43C` provide triangle/inventory periods and the
+  three-byte noise envelope; sequence indexes include the `$FF -> 0` wrap case
+- Naming: request types 1, 2, and 4 stay numeric because their gameplay callers
+  remain inside preservation modules
+- Evidence: exact hashes and call topology, starter write traces, exhaustive
+  request/step arbitration, typed table bounds, NMI update order, deterministic
+  regeneration, and byte-identical build

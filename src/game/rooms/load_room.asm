@@ -30,7 +30,7 @@ SelectRoomAudio:
     LDA DemoPlaybackActive
     BNE CheckRoomMusicSuppression
     JSR StopAudioStreams
-    JSR ClearSoundRequests
+    JSR ClearSoundEffectRequests
 
 CheckRoomMusicSuppression:
     LDA PlayerTransitionCountdown

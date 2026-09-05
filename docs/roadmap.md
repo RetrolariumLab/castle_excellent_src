@@ -77,6 +77,10 @@
   the `POWER`/`POW` signature contract, and the two-NMI frame gate;
 - [x] reconstruct the common NMI frame handler, 23-task request scheduler,
   OAM/scroll interlock, controller paths, modular counters, and audio tick;
+- [x] reconstruct the textual MML stream interpreter, three channel-state
+  lanes, restart pointers, channel gating, and streamed-note APU setup;
+- [x] reconstruct all five sound-effect starters, the per-frame channel
+  arbiter, three step counters, and five period/envelope tables;
 - [x] reconstruct OAM staging-to-DMA transposition, eight-frame sprite-priority
   rotation, full record reversal, and sized RAM-array operand generation;
 - [x] reconstruct frame-sprite staging, player/action descriptor selection,

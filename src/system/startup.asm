@@ -50,7 +50,7 @@ IncrementResetCounter:
 
 StartNewGame:
     JSR StopAudioStreams
-    JSR ClearSoundRequests
+    JSR ClearSoundEffectRequests
     JSR RunTitleScreen
     JSR InitializeNewGame
     JSR LoadRoom
