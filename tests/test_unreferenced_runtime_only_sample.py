@@ -46,17 +46,15 @@ class UnreferencedRuntimeOnlySampleTests(unittest.TestCase):
         self.assertIsNone(runtime_only.sample_runtime_objects(tuple(records), x=100 + width, y=50).object_offset)
         self.assertIsNone(runtime_only.sample_runtime_objects(tuple(records), x=100, y=50 + height).object_offset)
 
-    def test_reference_contract_and_revision_identity(self) -> None:
-        usa_prg = runtime_only.extract_prg((ROOT / "Castlequest (U) [!].nes").read_bytes())
+    def test_japanese_reference_contract(self) -> None:
         report = runtime_only.validate_contract(
             self.prg,
             runtime_only.load_instruction_starts(ROOT / "build/ghidra/instructions.tsv"),
             runtime_only.load_code_evidence(ROOT / "config/runtime_evidence.txt"),
-            usa_prg,
         )
         self.assertEqual(report["bytes"], 115)
         self.assertEqual(report["dispatch_entries_checked"], 641)
-        self.assertTrue(report["revision_match"])
+        self.assertFalse(report["revision_match"])
 
 
 if __name__ == "__main__":

@@ -55,6 +55,12 @@
   pointer-table provenance, stack-unwind guard, alignment, and boundary delay;
 - [x] reconstruct one-based movement across the 10x10 castle room grid and
   prove both ten-entry horizontal edge tables across all 100 rooms;
+- [x] reconstruct all four player room-boundary routes, aligned entry state,
+  castle-edge X clamps, room reload order, and horizontal mutable-cell repair;
+- [x] reconstruct player jump, gravity, horizontal input/collision dispatch,
+  ten-frame action state, and the complete 24-record action-hit scan;
+- [x] reconstruct player-driven horizontal object pushing, support/clearance
+  probes, world bounds, destroyable obstructions, and synchronized movement;
 - [x] reconstruct player protection countdown decay, room-audio restoration,
   and bottom-center hazard contact across all coordinates and room cells;
 - [x] reconstruct the shared runtime-object/player proximity predicate, all 15

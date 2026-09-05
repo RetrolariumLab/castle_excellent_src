@@ -50,6 +50,23 @@ object, collision, room-cell animation, scrolling, sprite, and sub-command
 phases. NMI owns a saturating countdown initialized to two, so each main update
 is separated by two NMI ticks.
 
+`$82CE-$8679` is the semantic player input and movement controller. It updates
+the ten-frame B-action latch, advances jump/ascent or gravity, samples three
+points for both vertical and horizontal collisions, and dispatches room-cell
+or runtime-object handlers through three synthetic RTS continuations. Left and
+right move two pixels, crossing `$0000/$0131` through the established room
+boundary routes. During an active action, a facing-dependent point scan walks
+all 24 runtime records; the first overlap stops the scan, and types
+`$84,$87,$88` become transient type `$A8` with state cleared and sound requested.
+
+`$881A-$89E0` handles player-driven horizontal pushing for runtime types
+`$8A-$8D/$8F`; type `$8E` calls it before its own linked-object mechanics.
+Three bottom probes require support below the pushed object. Six directional
+player probes reject every collision except the same runtime record, then three
+leading-edge probes enforce world bounds and obstacle clearance. A blocking
+runtime type `$84-$89` is converted to `$A8`; otherwise player and object move
+two pixels together and `$0773` records the direction.
+
 `HandlePauseInput` at `$A8E3-$A959` detects new A/B and Start presses against
 the saved controller mask. Start enters pause and disables every APU channel;
 Start or A/B resumes. Paused Left/Right adjust the pending horizontal scroll in
@@ -98,6 +115,14 @@ ten-byte tables identify the left and right edge of every row before changing
 the room number horizontally. The standalone model checks the exact routine
 bytes, both ROM tables, all four corners, and every direction from all 100
 rooms.
+
+`$867A-$8757` connects those helpers to player boundary crossings. Vertical
+routes align X down to eight pixels, place Y at `$98` or `$10`, save outgoing
+object state, reload the room, update the camera, and finish the rendering
+transition. Horizontal routes first detect the ten castle edges. At an edge
+they clamp X to `$0000` or `$0130` and update only scrolling; otherwise they
+reload the adjacent room and restore a mutable cell 16 pixels above the new
+entrance when one exists.
 
 `$A835-$A8A8` updates player protection and hazard contact once per simulation
 frame. The two protection values use 32-frame countdown units and independently

@@ -60,6 +60,18 @@ evidence, and tested decoders for game data.
   and transform the collected object into its 20-frame transient state.
   Four room-transition helpers now expose the one-based 10x10 castle grid,
   including both ten-entry horizontal edge tables and boundary-safe movement.
+  The four player boundary routes now preserve aligned entry coordinates,
+  save outgoing object state, reload the adjacent room, update scrolling, and
+  restore a mutable cell at either horizontal entrance; castle edges clamp X
+  without performing a room reload.
+  The complete `$82CE-$8679` player controller now owns jump/ascent/gravity,
+  three-point horizontal collision probes, room-edge dispatch, the ten-frame
+  B action, and its 24-record object hit scan. All three indirect collision
+  calls expose their synthetic RTS continuation labels.
+  The adjacent push controller now proves player-driven horizontal movement
+  of runtime types `$8A-$8D/$8F`: support, player-clearance, and object-leading
+  edges are sampled in order, world bounds are enforced, and obstructing
+  runtime types `$84-$89` can be transformed before the two-pixel commit.
   Player protection countdowns and the exact bottom-center hazard probe now
   expose three lethal cell forms, 32-frame decay, and room-music restoration.
   Their pointer-to-row helper and current/next NMI task requests are semantic
@@ -188,6 +200,8 @@ evidence, and tested decoders for game data.
   adjustment, and signed-direction horizontal boundary behavior.
 - `scripts/room_navigation.py` proves the exact navigation machine code and
   both edge tables, then checks every direction from all 100 one-based rooms.
+- `scripts/room_boundary_transitions.py` proves all four boundary routes,
+  vertical X alignment, horizontal edge clamps, and entrance-cell restoration.
 - `scripts/player_hazard_state.py` proves both protection countdowns, exact
   routine bytes, all 400 room-cell probes, and full X/Y/cell input domains.
 - `scripts/object_player_proximity.py` proves the shared 15-call interaction
@@ -217,7 +231,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 506 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 528 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -225,11 +239,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 10,341 instructions after 40
+  disagreements. Evidence-refined Ghidra exports 10,341 instructions after 43
   static code ranges recover pointer-selected entries and 73 evidence-backed data
   ranges remove 199 false-positive instructions. A separate registry clears
   five overextended or misaligned starts embedded in real instruction operands.
-  The source layout owns 28,135 PRG bytes semantically (85.86%). The title and
+  The source layout owns 29,752 PRG bytes semantically (90.80%). The title and
   sub-command path now owns title palette/CHR upload, Start/attract timeout,
   controller-2 menu entry, five-entry wrapped selection, typed menu text,
   load/save dispatch, and current/previous-room restoration.
@@ -281,6 +295,10 @@ make trace-timeout  # capture an idle game through timeout/death paths
 make trace-suite    # run and merge every deterministic runtime scenario
 make reconstruction-check # static checks plus a fresh emulator trace
 make reconstruction-audit # enforce semantic-module ownership and naming
+make player-input-movement # inspect player motion and action contracts
+make validate-player-input-movement # validate the player controller model
+make player-object-push # inspect player/object horizontal pushing
+make validate-player-object-push # validate push bounds and collision topology
 make runtime-types81-82-collision # inspect the type $81/$82 collision model
 make format         # normalize ca65 sources and all repository text/JSON
 make format-check   # check ca65 style without changing source files
@@ -340,6 +358,8 @@ make mutable-cell-action-state # inspect inventory-backed cell actions
 make validate-mutable-cell-actions # validate all action mappings and guards
 make room-navigation-state # inspect the one-based 10x10 castle grid
 make validate-room-navigation # validate every room movement and edge table
+make room-boundary-transitions # inspect entry coordinates and reload routes
+make validate-room-boundary-transitions # validate every boundary path
 make room-cell-sample-address # inspect shared room-cell address arithmetic
 make validate-room-cell-sample-address # validate all 16-bit X and byte Y inputs
 make player-death-transition # inspect death guards, lives, and game-over state
@@ -445,6 +465,8 @@ scripts/save_data.py     394-byte save-payload codec and validator
 scripts/room_cell_coordinates.py room-cell coordinate and mutation model
 scripts/room_cell_sample_address.py shared collision-sample address model
 scripts/player_collision_sample.py player room-cell/object collision model
+scripts/player_input_movement.py player input, motion, and action-hit model
+scripts/player_object_push.py player/runtime-object push model
 scripts/player_collision_dispatch.py player collision-handler dispatch model
 scripts/inventory_collectible_handlers.py six-counter runtime pickup model
 scripts/runtime_types81_82_collision.py type-$81/$82 transform/completion model
@@ -461,6 +483,7 @@ scripts/end_sequences.py game-over/completion and high-score model
 scripts/prg_tail_data.py room-cell tiles, padding, and vector validator
 scripts/palette_data.py overlapping screen and room palette validator
 scripts/room_navigation.py one-based 10x10 castle navigation model
+scripts/room_boundary_transitions.py player room-boundary transition model
 scripts/player_hazard_state.py protection countdown and hazard-probe model
 scripts/object_player_proximity.py runtime-object/player proximity model
 scripts/player_object_span.py player/object-span overlap model

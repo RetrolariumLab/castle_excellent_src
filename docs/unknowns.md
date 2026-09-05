@@ -434,6 +434,40 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   exact 129 bytes, exhaustive countdown/protection model, deterministic
   regeneration, and byte-identical build
 
+### PLAYER-004 - input, movement, and action-hit controller
+
+- Status: resolved
+- Input: A gates grounded jump transitions; a fresh B press starts a ten-frame
+  action, holding B decrements it without restart, and release clears both
+  action fields
+- Motion: ascent and gravity use three collision samples; horizontal movement
+  advances two pixels and dispatches the established left/right room routes at
+  the world boundaries
+- Dispatch: upward, downward, and horizontal collision paths each select a
+  room-cell or runtime-object handler and push an explicit synthetic RTS return
+- Action hit: the first overlapping active object stops the 24-record scan;
+  only types `$84,$87,$88` transform to `$A8`, clear state, and request sound
+- Evidence: semantic `$82CE-$8679`, direct main-loop call, three exact indirect
+  continuation shims, exact 940-byte hash, exhaustive input/action/X/type
+  models, deterministic regeneration, and byte-identical build
+
+### PLAYER-005 - player-driven runtime-object pushing
+
+- Status: resolved
+- Dispatch: horizontal runtime types `$8A-$8D/$8F` select the shared routine;
+  type `$8E` calls it directly before continuing into linked-object behavior
+- Preconditions: player vertical motion/phase must be inactive and at least
+  one of three points 17 pixels below the object must report collision
+- Clearance: directional player probes may rediscover the pushed record but
+  any other room/object obstruction stops the operation
+- Commit: the leading object edge must remain inside world X `$0000-$013F`;
+  player and object then move two pixels together and `$0773` records direction
+- Destruction: a leading collision value in `$84-$89` becomes type `$A8` with
+  state zero and a sound request before movement continues
+- Evidence: semantic `$881A-$89E0`, six exact pointer entries, direct `$89E6`
+  call, exact 455-byte hash, twelve collision call sites, exhaustive X/motion/
+  type/order models, deterministic regeneration, and byte-identical build
+
 ### GAME-001 - new-game state initialization
 
 - Status: resolved
@@ -673,6 +707,20 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Evidence: semantic `$9578-$9582`, `$A35C-$A3AB`, `$B64C-$B7FC`, and
   `$EC63-$ECB6` modules; boot/gameplay CDL execution; independent status-data
   bounds and pointer validation; byte-identical build
+
+### ROOM-002 - player room-boundary transitions
+
+- Status: resolved
+- Vertical: `$867A/$86A0` align player X down to eight pixels, set destination
+  Y to `$98/$10`, save outgoing objects, move by ten rooms, reload, update the
+  camera, and tail-call transition completion
+- Horizontal: `$86C6/$870F` clamp X to `$0000/$0130` on the ten outer edges;
+  interior crossings save state, move one room, reload, then probe 16 pixels
+  above the new entrance and restore a matching mutable cell before completion
+- Evidence: exact 222-byte hash, four direct jump sites, established navigation
+  and mutable-cell helpers, 131,072 X-alignment cases, every room and Y value,
+  both mutable-lookup outcomes, deterministic regeneration, and byte-identical
+  build
 
 ### AUDIO-001 - alleged textual MML region
 

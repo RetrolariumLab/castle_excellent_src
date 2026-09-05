@@ -425,7 +425,397 @@
       "address": "0x82CE",
       "name": "UpdatePlayerInputAndMovement",
       "kind": "routine",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x82D4",
+      "name": "CheckPlayerTopBoundary",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x82DB",
+      "name": "UpdatePlayerJumpAudio",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x82FA",
+      "name": "UpdatePlayerActionInput",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8309",
+      "name": "StartPlayerAction",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8318",
+      "name": "TickPlayerAction",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8320",
+      "name": "AdvancePlayerVerticalMotion",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8331",
+      "name": "SelectPlayerVerticalMovement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8339",
+      "name": "AdvancePlayerAscent",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8341",
+      "name": "MovePlayerUpward",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x834A",
+      "name": "PreparePlayerUpwardProbe",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8357",
+      "name": "ProbePlayerUpwardCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x837D",
+      "name": "DispatchPlayerUpwardCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x838E",
+      "name": "SelectPlayerUpwardRuntimeHandler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8398",
+      "name": "InvokePlayerUpwardCollisionHandler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x83A1",
+      "name": "ResumeAfterPlayerUpwardCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x83A4",
+      "name": "ApplyPlayerGravity",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x83A8",
+      "name": "ProbePlayerDownwardCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x83C5",
+      "name": "ProbePlayerDownwardCenter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x83DD",
+      "name": "ProbePlayerDownwardRight",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x83F5",
+      "name": "UsePlayerDownwardCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x83F8",
+      "name": "MovePlayerDownward",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8404",
+      "name": "AdvancePlayerDownward",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x840F",
+      "name": "RetryPlayerDownwardProbe",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x841A",
+      "name": "DispatchPlayerDownwardCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x842B",
+      "name": "SelectPlayerDownwardRuntimeHandler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8435",
+      "name": "InvokePlayerDownwardCollisionHandler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x843E",
+      "name": "ResumeAfterPlayerDownwardCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8467",
+      "name": "PrimePlayerJump",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x846B",
+      "name": "StartAlignedPlayerJump",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8478",
+      "name": "ContinuePlayerHorizontalUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x847B",
+      "name": "ResetGroundedPlayerMotion",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8490",
+      "name": "ApplyPlayerActionMovementLock",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x849F",
+      "name": "TickPlayerHorizontalDelay",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x84A8",
+      "name": "ConsumeForcedPlayerMovement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x84C8",
+      "name": "ContinueForcedPlayerMovement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x84D9",
+      "name": "ReadPlayerHorizontalInput",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x84E7",
+      "name": "DelayPlayerDirectionChange",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x84FA",
+      "name": "SkipPlayerHorizontalMovement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x84FD",
+      "name": "SelectPlayerHorizontalDirection",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8510",
+      "name": "StorePlayerHorizontalDirection",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8512",
+      "name": "MovePlayerHorizontally",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8519",
+      "name": "BuildPlayerHorizontalProbe",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8538",
+      "name": "BuildPlayerLeftwardProbe",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8549",
+      "name": "CheckPlayerHorizontalRoomBoundary",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8554",
+      "name": "CheckPlayerRightRoomBoundary",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x855D",
+      "name": "ProbePlayerHorizontalCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x85A6",
+      "name": "DispatchPlayerHorizontalCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x85B7",
+      "name": "SelectPlayerHorizontalRuntimeHandler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x85C1",
+      "name": "InvokePlayerHorizontalCollisionHandler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x85CA",
+      "name": "HandlePlayerActionHit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x85D2",
+      "name": "CheckPlayerActionFacingDirection",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x85D9",
+      "name": "BuildPlayerActionProbe",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x85F5",
+      "name": "BuildPlayerLeftActionProbe",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8604",
+      "name": "ScanPlayerActionObjects",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x860D",
+      "name": "TestNextPlayerActionObject",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x866A",
+      "name": "AdvancePlayerActionObjectScan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8673",
+      "name": "RememberPlayerInputAndReturn",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x867A",
+      "name": "TransitionToRoomAbove",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x86A0",
+      "name": "TransitionToRoomBelow",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x86C6",
+      "name": "HandleLeftRoomBoundary",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x86D6",
+      "name": "TransitionToRoomLeft",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x870C",
+      "name": "FinishLeftRoomTransition",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x870F",
+      "name": "HandleRightRoomBoundary",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8721",
+      "name": "TransitionToRoomRight",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8755",
+      "name": "FinishRightRoomTransition",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0x8758",
@@ -467,6 +857,150 @@
       "address": "0x87CB",
       "name": "MovePlayerRightOnDecrementingAnimatedCell",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x881A",
+      "name": "PushPlayerAndRuntimeObject",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8822",
+      "name": "ProbePushedObjectSupport",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8853",
+      "name": "ProbePlayerPushClearance",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8878",
+      "name": "ProbePlayerPushRightMiddle",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8899",
+      "name": "ProbePlayerPushRightBottom",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x88BA",
+      "name": "AcceptRightPlayerPushClearance",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x88BD",
+      "name": "ProbePlayerPushLeftTop",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x88DA",
+      "name": "ProbePlayerPushLeftMiddle",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x88FB",
+      "name": "ProbePlayerPushLeftBottom",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x891C",
+      "name": "SelectPushedObjectLeadingEdge",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8939",
+      "name": "ReturnBoundaryBlockedPlayerObjectPush",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x893A",
+      "name": "BuildPushedObjectLeftEdge",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8948",
+      "name": "FinishPushedObjectLeftEdge",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8954",
+      "name": "ProbePushedObjectFront",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8985",
+      "name": "HandlePushedObjectFrontCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x899E",
+      "name": "ReturnBlockedPlayerObjectPush",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89A0",
+      "name": "CommitPlayerObjectPush",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89B1",
+      "name": "MovePlayerRightWithObject",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89BC",
+      "name": "SetRightPlayerObjectPushLatch",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89C4",
+      "name": "MovePushedObjectLeft",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89CF",
+      "name": "MovePlayerLeftWithObject",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89DA",
+      "name": "SetLeftPlayerObjectPushLatch",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89DF",
+      "name": "ReturnSuccessfulPlayerObjectPush",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89E0",
+      "name": "ReturnPlayerObjectPush",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {

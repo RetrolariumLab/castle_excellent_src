@@ -12,10 +12,12 @@
         "../system/ppu.asm",
         "famicom_data_io.asm",
         "../system/startup.asm",
-        "../preservation/prg_82ce_8f0f.asm",
+        "../game/player/input_and_movement.asm",
+        "../game/rooms/boundary_transitions.asm",
         "../game/rooms/object_state_save.asm",
         "../game/player/animated_cell_displacement.asm",
-        "../preservation/prg_881a_8c11.asm",
+        "../game/player/object_push.asm",
+        "../preservation/prg_89e1_8c11.asm",
         "../game/objects/inventory_collectible_handlers.asm",
         "../data/unreferenced_runtime_object_clear_tail.asm",
         "../game/objects/collectible_collision_handlers.asm",
@@ -148,10 +150,16 @@
       "title": "Reset initialization and NMI-paced main loop"
     },
     {
-      "path": "src/preservation/prg_82ce_8f0f.asm",
+      "path": "src/game/player/input_and_movement.asm",
       "start": "0x82CE",
+      "end": "0x867A",
+      "title": "Player input, movement, collision dispatch, and action hits"
+    },
+    {
+      "path": "src/game/rooms/boundary_transitions.asm",
+      "start": "0x867A",
       "end": "0x8758",
-      "title": "Preservation PRG after the main loop"
+      "title": "Player room-boundary transitions and edge clamping"
     },
     {
       "path": "src/game/rooms/object_state_save.asm",
@@ -166,10 +174,16 @@
       "title": "Animated-cell forced player displacement"
     },
     {
-      "path": "src/preservation/prg_881a_8c11.asm",
+      "path": "src/game/player/object_push.asm",
       "start": "0x881A",
+      "end": "0x89E1",
+      "title": "Player-driven horizontal runtime-object pushing"
+    },
+    {
+      "path": "src/preservation/prg_89e1_8c11.asm",
+      "start": "0x89E1",
       "end": "0x8C12",
-      "title": "Preservation PRG before collectible collision handlers"
+      "title": "Unresolved type-$8E and linked-object mechanics"
     },
     {
       "path": "src/game/objects/inventory_collectible_handlers.asm",

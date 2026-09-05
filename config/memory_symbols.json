@@ -2106,6 +2106,240 @@
       "name": "PaletteSourcePointerHi",
       "start": "0xC4CD",
       "end": "0xC4FD"
+    },
+    {
+      "address": "0x0010",
+      "name": "BoundaryTransitionPlayerXLo",
+      "start": "0x867A",
+      "end": "0x8758"
+    },
+    {
+      "address": "0x0011",
+      "name": "BoundaryTransitionPlayerXHi",
+      "start": "0x867A",
+      "end": "0x8758"
+    },
+    {
+      "address": "0x0012",
+      "name": "BoundaryTransitionPlayerY",
+      "start": "0x867A",
+      "end": "0x8758"
+    },
+    {
+      "address": "0x07CD",
+      "name": "BoundaryTransitionScreenState",
+      "start": "0x867A",
+      "end": "0x8758"
+    },
+    {
+      "address": "0x003B",
+      "name": "PlayerMovementDirection",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x003C",
+      "name": "PlayerMovementState",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x003E",
+      "name": "PlayerMovementPhase",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x003F",
+      "name": "PlayerHorizontalMovementDelay",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x0774",
+      "name": "PlayerForcedMovementLatch",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x0779",
+      "name": "MovementPlayerActionCountdown",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x077A",
+      "name": "PlayerActionHeldLatch",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x07C9",
+      "name": "PlayerGroundCounterA",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x07CA",
+      "name": "PlayerGroundCounterB",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x07CB",
+      "name": "PlayerHorizontalCollisionObjectFilter",
+      "start": "0x82CE",
+      "end": "0x867A"
+    },
+    {
+      "address": "0x0031",
+      "name": "PlayerMovementCollisionHandlerPointerLo",
+      "start": "0x837D",
+      "end": "0x85CA"
+    },
+    {
+      "address": "0x0032",
+      "name": "PlayerMovementCollisionHandlerPointerHi",
+      "start": "0x837D",
+      "end": "0x85CA"
+    },
+    {
+      "address": "0x001A",
+      "name": "PlayerUpwardProbeY",
+      "start": "0x834A",
+      "end": "0x83A4"
+    },
+    {
+      "address": "0x001E",
+      "name": "PlayerDownwardSolidProbeCount",
+      "start": "0x83A4",
+      "end": "0x843E"
+    },
+    {
+      "address": "0x001F",
+      "name": "PlayerDownwardProbeYOffset",
+      "start": "0x83A4",
+      "end": "0x843E"
+    },
+    {
+      "address": "0x002F",
+      "name": "PlayerDownwardCenterCollision",
+      "start": "0x83A4",
+      "end": "0x843E"
+    },
+    {
+      "address": "0x0030",
+      "name": "PlayerDownwardLeftCollision",
+      "start": "0x83A4",
+      "end": "0x843E"
+    },
+    {
+      "address": "0x001E",
+      "name": "PlayerHorizontalProbeY",
+      "start": "0x8519",
+      "end": "0x85CA"
+    },
+    {
+      "address": "0x0021",
+      "name": "PlayerHorizontalProbeXLo",
+      "start": "0x8519",
+      "end": "0x85CA"
+    },
+    {
+      "address": "0x0022",
+      "name": "PlayerHorizontalProbeXHi",
+      "start": "0x8519",
+      "end": "0x85CA"
+    },
+    {
+      "address": "0x0023",
+      "name": "PlayerHorizontalCandidateXLo",
+      "start": "0x8519",
+      "end": "0x85CA"
+    },
+    {
+      "address": "0x0024",
+      "name": "PlayerHorizontalCandidateXHi",
+      "start": "0x8519",
+      "end": "0x85CA"
+    },
+    {
+      "address": "0x0016",
+      "name": "PlayerActionScratch",
+      "start": "0x85CA",
+      "end": "0x8673"
+    },
+    {
+      "address": "0x0021",
+      "name": "PlayerActionProbeXLo",
+      "start": "0x85CA",
+      "end": "0x8673"
+    },
+    {
+      "address": "0x0022",
+      "name": "PlayerActionProbeXHi",
+      "start": "0x85CA",
+      "end": "0x8673"
+    },
+    {
+      "address": "0x0023",
+      "name": "PlayerActionDeltaXLo",
+      "start": "0x85CA",
+      "end": "0x8673"
+    },
+    {
+      "address": "0x0024",
+      "name": "PlayerActionDeltaXHi",
+      "start": "0x85CA",
+      "end": "0x8673"
+    },
+    {
+      "address": "0x003B",
+      "name": "PlayerPushDirection",
+      "start": "0x881A",
+      "end": "0x89E1"
+    },
+    {
+      "address": "0x003C",
+      "name": "PlayerPushMotionState",
+      "start": "0x881A",
+      "end": "0x89E1"
+    },
+    {
+      "address": "0x003E",
+      "name": "PlayerPushMotionPhase",
+      "start": "0x881A",
+      "end": "0x89E1"
+    },
+    {
+      "address": "0x001C",
+      "name": "PushedRuntimeObjectOffset",
+      "start": "0x8853",
+      "end": "0x89E1"
+    },
+    {
+      "address": "0x0025",
+      "name": "PushedObjectProbeXLo",
+      "start": "0x891C",
+      "end": "0x89A0"
+    },
+    {
+      "address": "0x0026",
+      "name": "PushedObjectProbeXHi",
+      "start": "0x891C",
+      "end": "0x89A0"
+    },
+    {
+      "address": "0x0042",
+      "name": "PushedObjectCollisionOffset",
+      "start": "0x8985",
+      "end": "0x89A0"
+    },
+    {
+      "address": "0x0773",
+      "name": "PlayerObjectPushDirectionLatch",
+      "start": "0x881A",
+      "end": "0x8C12"
     }
   ]
 }

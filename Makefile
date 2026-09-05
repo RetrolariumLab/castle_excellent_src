@@ -18,9 +18,10 @@ DEBUG := $(BUILD_DIR)/castle_excellent.dbg
 SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.asm \
 	src/input/controllers.asm src/system/ppu.asm \
 	src/input/famicom_data_io.asm src/system/startup.asm \
-	src/preservation/prg_82ce_8f0f.asm src/game/rooms/object_state_save.asm \
+	src/game/player/input_and_movement.asm \
+	src/game/rooms/boundary_transitions.asm src/game/rooms/object_state_save.asm \
 	src/game/player/animated_cell_displacement.asm \
-	src/preservation/prg_881a_8c11.asm \
+	src/game/player/object_push.asm src/preservation/prg_89e1_8c11.asm \
 	src/game/objects/inventory_collectible_handlers.asm \
 	src/data/unreferenced_runtime_object_clear_tail.asm \
 	src/game/objects/collectible_collision_handlers.asm \
@@ -145,6 +146,9 @@ TIMEOUT_FRAMES ?= 15000
 	validate-room-cell-animation hud-format-state validate-hud-format \
 	mutable-cell-action-state validate-mutable-cell-actions \
 	room-navigation-state validate-room-navigation \
+	player-input-movement validate-player-input-movement \
+	player-object-push validate-player-object-push \
+	room-boundary-transitions validate-room-boundary-transitions \
 	room-cell-sample-address validate-room-cell-sample-address \
 	player-death-transition validate-player-death-transition \
 	player-collision-sample validate-player-collision-sample \
@@ -488,6 +492,24 @@ room-navigation-state: $(ROM)
 validate-room-navigation: $(ROM)
 	$(PYTHON) scripts/room_navigation.py --image "$(ROM)" --validate
 
+player-input-movement: $(ROM)
+	$(PYTHON) scripts/player_input_movement.py --image "$(ROM)" --pretty
+
+validate-player-input-movement: $(ROM)
+	$(PYTHON) scripts/player_input_movement.py --image "$(ROM)" --validate
+
+player-object-push: $(ROM)
+	$(PYTHON) scripts/player_object_push.py --image "$(ROM)" --pretty
+
+validate-player-object-push: $(ROM)
+	$(PYTHON) scripts/player_object_push.py --image "$(ROM)" --validate
+
+room-boundary-transitions: $(ROM)
+	$(PYTHON) scripts/room_boundary_transitions.py --image "$(ROM)" --pretty
+
+validate-room-boundary-transitions: $(ROM)
+	$(PYTHON) scripts/room_boundary_transitions.py --image "$(ROM)" --validate
+
 room-cell-sample-address: $(ROM)
 	$(PYTHON) scripts/room_cell_sample_address.py --image "$(ROM)" --pretty
 
@@ -573,10 +595,10 @@ validate-unreferenced-object-clear-tail: ghidra-analyze $(ROM)
 	$(PYTHON) scripts/unreferenced_runtime_object_clear_tail.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
 
 unreferenced-runtime-only-sample: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/unreferenced_runtime_only_sample.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --comparison-image "Castlequest (U) [!].nes" --pretty
+	$(PYTHON) scripts/unreferenced_runtime_only_sample.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
 
 validate-unreferenced-runtime-only-sample: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/unreferenced_runtime_only_sample.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --comparison-image "Castlequest (U) [!].nes" --validate
+	$(PYTHON) scripts/unreferenced_runtime_only_sample.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
 
 title-sub-command: $(ROM)
 	$(PYTHON) scripts/title_sub_command.py --image "$(ROM)" --pretty
@@ -686,7 +708,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-object-clear-tail validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-scroll-math-palette validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-input-movement validate-player-object-push validate-room-boundary-transitions validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-object-clear-tail validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-scroll-math-palette validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

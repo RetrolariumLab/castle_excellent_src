@@ -3474,6 +3474,576 @@
       "expected": "#$F3",
       "operand": "#DemoInputControllerMask",
       "evidence": "demo input cannot synthesize Select or Start"
+    },
+    {
+      "instruction": "0x867A",
+      "expected": "#$98",
+      "operand": "#AboveRoomEntryPlayerY",
+      "evidence": "crossing the top boundary places the player near the bottom of the destination room"
+    },
+    {
+      "instruction": "0x8686",
+      "expected": "#$F8",
+      "operand": "#RoomBoundaryPlayerXAlignmentMask",
+      "evidence": "vertical room transitions align player X to an eight-pixel boundary"
+    },
+    {
+      "instruction": "0x8692",
+      "expected": "#$00",
+      "operand": "#BoundaryTransitionScreenStateInactive",
+      "evidence": "a real room transition clears the shared transition screen state before reload"
+    },
+    {
+      "instruction": "0x86A0",
+      "expected": "#$10",
+      "operand": "#BelowRoomEntryPlayerY",
+      "evidence": "crossing the bottom boundary places the player below the destination status row"
+    },
+    {
+      "instruction": "0x86AC",
+      "expected": "#$F8",
+      "operand": "#RoomBoundaryPlayerXAlignmentMask",
+      "evidence": "vertical room transitions align player X to an eight-pixel boundary"
+    },
+    {
+      "instruction": "0x86B8",
+      "expected": "#$00",
+      "operand": "#BoundaryTransitionScreenStateInactive",
+      "evidence": "a real room transition clears the shared transition screen state before reload"
+    },
+    {
+      "instruction": "0x86CD",
+      "expected": "#$00",
+      "operand": "#<LeftRoomEdgePlayerX",
+      "evidence": "the left castle edge clamps player X to $0000"
+    },
+    {
+      "instruction": "0x86D6",
+      "expected": "#$30",
+      "operand": "#<RightRoomEdgePlayerX",
+      "evidence": "entering from the right uses player X $0130"
+    },
+    {
+      "instruction": "0x86DC",
+      "expected": "#$01",
+      "operand": "#>RightRoomEdgePlayerX",
+      "evidence": "entering from the right uses player X $0130"
+    },
+    {
+      "instruction": "0x86FD",
+      "expected": "#$01",
+      "operand": "#>RightRoomEdgePlayerX",
+      "evidence": "the destination entrance probe uses player X $0130"
+    },
+    {
+      "instruction": "0x86FF",
+      "expected": "#$30",
+      "operand": "#<RightRoomEdgePlayerX",
+      "evidence": "the destination entrance probe uses player X $0130"
+    },
+    {
+      "instruction": "0x86FA",
+      "expected": "#$10",
+      "operand": "#RoomBoundaryEntranceProbeYOffset",
+      "evidence": "the horizontal destination checks a mutable cell sixteen pixels above player Y"
+    },
+    {
+      "instruction": "0x86EC",
+      "expected": "#$00",
+      "operand": "#BoundaryTransitionScreenStateInactive",
+      "evidence": "a real room transition clears the shared transition screen state before reload"
+    },
+    {
+      "instruction": "0x8716",
+      "expected": "#$01",
+      "operand": "#>RightRoomEdgePlayerX",
+      "evidence": "the right castle edge clamps player X to $0130"
+    },
+    {
+      "instruction": "0x871A",
+      "expected": "#$30",
+      "operand": "#<RightRoomEdgePlayerX",
+      "evidence": "the right castle edge clamps player X to $0130"
+    },
+    {
+      "instruction": "0x8721",
+      "expected": "#$00",
+      "operand": "#<LeftRoomEdgePlayerX",
+      "evidence": "entering from the left uses player X $0000"
+    },
+    {
+      "instruction": "0x8735",
+      "expected": "#$00",
+      "operand": "#BoundaryTransitionScreenStateInactive",
+      "evidence": "a real room transition clears the shared transition screen state before reload"
+    },
+    {
+      "instruction": "0x8743",
+      "expected": "#$10",
+      "operand": "#RoomBoundaryEntranceProbeYOffset",
+      "evidence": "the horizontal destination checks a mutable cell sixteen pixels above player Y"
+    },
+    {
+      "instruction": "0x8746",
+      "expected": "#$00",
+      "operand": "#>LeftRoomEdgePlayerX",
+      "evidence": "the destination entrance probe uses player X $0000"
+    },
+    {
+      "instruction": "0x8748",
+      "expected": "#$00",
+      "operand": "#<LeftRoomEdgePlayerX",
+      "evidence": "the destination entrance probe uses player X $0000"
+    },
+    {
+      "instruction": "0x82E5",
+      "expected": "#$01",
+      "operand": "#ControllerButtonA",
+      "evidence": "A gates the grounded jump transition"
+    },
+    {
+      "instruction": "0x82FD",
+      "expected": "#$02",
+      "operand": "#ControllerButtonB",
+      "evidence": "B starts and sustains the player action countdown"
+    },
+    {
+      "instruction": "0x830E",
+      "expected": "#$0A",
+      "operand": "#PlayerActionDuration",
+      "evidence": "a fresh B press initializes both action fields to ten frames"
+    },
+    {
+      "instruction": "0x8322",
+      "expected": "#$21",
+      "operand": "#PlayerMotionInactiveThreshold",
+      "evidence": "motion states $21-$FF are normalized to inactive by the shared predicate"
+    },
+    {
+      "instruction": "0x8328",
+      "expected": "#$07",
+      "operand": "#PlayerCoordinateAlignmentMask",
+      "evidence": "vertical-state stepping occurs only on eight-pixel X alignment"
+    },
+    {
+      "instruction": "0x833D",
+      "expected": "#$FF",
+      "operand": "#PlayerMovementPhaseActive",
+      "evidence": "finishing an ascent marks the movement phase for rendering"
+    },
+    {
+      "instruction": "0x8343",
+      "expected": "#$10",
+      "operand": "#PlayerAscentMoveThreshold",
+      "evidence": "only the upper half of the active motion-state interval moves upward"
+    },
+    {
+      "instruction": "0x8350",
+      "expected": "#$10",
+      "operand": "#PlayerScreenTopBoundary",
+      "evidence": "upward collision probes stop above the first playable scanline"
+    },
+    {
+      "instruction": "0x8398",
+      "expected": "#$83",
+      "operand": "#>(ResumeAfterPlayerUpwardCollision - 1)",
+      "evidence": "the indirect handler returns through RTS to $83A1"
+    },
+    {
+      "instruction": "0x839B",
+      "expected": "#$A0",
+      "operand": "#<(ResumeAfterPlayerUpwardCollision - 1)",
+      "evidence": "the indirect handler returns through RTS to $83A1"
+    },
+    {
+      "instruction": "0x83A4",
+      "expected": "#$11",
+      "operand": "#PlayerDownwardInitialProbeOffset",
+      "evidence": "gravity first samples seventeen pixels below the player origin"
+    },
+    {
+      "instruction": "0x83F8",
+      "expected": "#$FF",
+      "operand": "#PlayerMovementPhaseActive",
+      "evidence": "an unobstructed fall marks the movement phase for rendering"
+    },
+    {
+      "instruction": "0x8408",
+      "expected": "#$A0",
+      "operand": "#PlayerScreenBottomBoundary",
+      "evidence": "crossing Y $A0 dispatches the below-room transition"
+    },
+    {
+      "instruction": "0x840F",
+      "expected": "#$10",
+      "operand": "#PlayerDownwardRetryProbeOffset",
+      "evidence": "a special animated collision retries one pixel closer to the player"
+    },
+    {
+      "instruction": "0x8435",
+      "expected": "#$84",
+      "operand": "#>(ResumeAfterPlayerDownwardCollision - 1)",
+      "evidence": "the indirect handler returns through RTS to $843E"
+    },
+    {
+      "instruction": "0x8438",
+      "expected": "#$3D",
+      "operand": "#<(ResumeAfterPlayerDownwardCollision - 1)",
+      "evidence": "the indirect handler returns through RTS to $843E"
+    },
+    {
+      "instruction": "0x8447",
+      "expected": "#$01",
+      "operand": "#ControllerButtonA",
+      "evidence": "A requests a jump after a downward collision handler returns"
+    },
+    {
+      "instruction": "0x8458",
+      "expected": "#$02",
+      "operand": "#PlayerGroundedCounterSum",
+      "evidence": "the paired ground counters gate jump priming at a combined value of two"
+    },
+    {
+      "instruction": "0x8467",
+      "expected": "#$21",
+      "operand": "#PlayerJumpInitialState",
+      "evidence": "an unaligned jump begins in the one-step preparatory state"
+    },
+    {
+      "instruction": "0x8471",
+      "expected": "#$20",
+      "operand": "#PlayerJumpActiveState",
+      "evidence": "an aligned jump begins at the active ascent state"
+    },
+    {
+      "instruction": "0x847E",
+      "expected": "#$C0",
+      "operand": "#PlayerHorizontalInputMask",
+      "evidence": "grounded reset tests the union of left and right controller bits"
+    },
+    {
+      "instruction": "0x8500",
+      "expected": "#$C0",
+      "operand": "#PlayerHorizontalInputMask",
+      "evidence": "horizontal selection isolates left and right controller bits"
+    },
+    {
+      "instruction": "0x8508",
+      "expected": "#$7F",
+      "operand": "#PlayerDirectionRight",
+      "evidence": "right movement stores the positive direction sentinel"
+    },
+    {
+      "instruction": "0x850E",
+      "expected": "#$FF",
+      "operand": "#PlayerDirectionLeft",
+      "evidence": "left movement stores the negative direction sentinel"
+    },
+    {
+      "instruction": "0x851E",
+      "expected": "#$11",
+      "operand": "#PlayerRightCollisionProbeOffset",
+      "evidence": "rightward collision is sampled seventeen pixels from player X"
+    },
+    {
+      "instruction": "0x852B",
+      "expected": "#$02",
+      "operand": "#PlayerHorizontalStep",
+      "evidence": "successful horizontal movement advances two pixels"
+    },
+    {
+      "instruction": "0x853B",
+      "expected": "#$02",
+      "operand": "#PlayerHorizontalStep",
+      "evidence": "leftward collision and candidate coordinates are two pixels behind"
+    },
+    {
+      "instruction": "0x8556",
+      "expected": "#$31",
+      "operand": "#PlayerRightRoomBoundaryLo",
+      "evidence": "candidate X $0131 and above enters the right-room boundary path"
+    },
+    {
+      "instruction": "0x8565",
+      "expected": "#$0F",
+      "operand": "#PlayerHorizontalProbeBottomOffset",
+      "evidence": "the first horizontal collision sample is at player Y plus fifteen"
+    },
+    {
+      "instruction": "0x857B",
+      "expected": "#$07",
+      "operand": "#PlayerHorizontalProbeMiddleOffset",
+      "evidence": "the second horizontal collision sample is at player Y plus seven"
+    },
+    {
+      "instruction": "0x85C1",
+      "expected": "#$85",
+      "operand": "#>(HandlePlayerActionHit - 1)",
+      "evidence": "the indirect horizontal handler returns through RTS to $85CA"
+    },
+    {
+      "instruction": "0x85C4",
+      "expected": "#$C9",
+      "operand": "#<(HandlePlayerActionHit - 1)",
+      "evidence": "the indirect horizontal handler returns through RTS to $85CA"
+    },
+    {
+      "instruction": "0x85DE",
+      "expected": "#$16",
+      "operand": "#PlayerActionRightProbeOffset",
+      "evidence": "right-facing action probes twenty-two pixels ahead"
+    },
+    {
+      "instruction": "0x85EA",
+      "expected": "#$40",
+      "operand": "#PlayerActionRightBoundaryLo",
+      "evidence": "the right action probe must remain below world X $0140"
+    },
+    {
+      "instruction": "0x85EE",
+      "expected": "#$01",
+      "operand": "#PlayerActionRightBoundaryHi",
+      "evidence": "the right action probe must remain below world X $0140"
+    },
+    {
+      "instruction": "0x85F8",
+      "expected": "#$06",
+      "operand": "#PlayerActionLeftProbeOffset",
+      "evidence": "left-facing action probes six pixels behind"
+    },
+    {
+      "instruction": "0x8607",
+      "expected": "#$05",
+      "operand": "#PlayerActionProbeYOffset",
+      "evidence": "the action hit point is five pixels above player Y"
+    },
+    {
+      "instruction": "0x8611",
+      "expected": "#$A8",
+      "operand": "#RuntimeObjectPersistentTypeEnd",
+      "evidence": "only active runtime types $80-$A7 participate in the action scan"
+    },
+    {
+      "instruction": "0x865A",
+      "expected": "#$A8",
+      "operand": "#PlayerDestroyedRuntimeType",
+      "evidence": "action-destroyed types 84, 87, and 88 become runtime type $A8"
+    },
+    {
+      "instruction": "0x866C",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the action scan advances one six-byte runtime record"
+    },
+    {
+      "instruction": "0x866F",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the action scan covers all 24 six-byte runtime records"
+    },
+    {
+      "instruction": "0x8827",
+      "expected": "#$11",
+      "operand": "#PushedObjectSupportYOffset",
+      "evidence": "the first support probe is seventeen pixels below the pushed object"
+    },
+    {
+      "instruction": "0x8837",
+      "expected": "#$11",
+      "operand": "#PushedObjectSupportYOffset",
+      "evidence": "the center support probe uses the same bottom edge"
+    },
+    {
+      "instruction": "0x8847",
+      "expected": "#$11",
+      "operand": "#PushedObjectSupportYOffset",
+      "evidence": "the right support probe uses the same bottom edge"
+    },
+    {
+      "instruction": "0x885B",
+      "expected": "#$FF",
+      "operand": "#PlayerPushNoCurrentObjectOffset",
+      "evidence": "player clearance probes reset the sampler's current-object exclusion"
+    },
+    {
+      "instruction": "0x8862",
+      "expected": "#$11",
+      "operand": "#PlayerPushRightTopXOffset",
+      "evidence": "the right top clearance probe is seventeen pixels ahead"
+    },
+    {
+      "instruction": "0x8878",
+      "expected": "#$FF",
+      "operand": "#PlayerPushNoCurrentObjectOffset",
+      "evidence": "the right middle probe begins without an excluded runtime object"
+    },
+    {
+      "instruction": "0x887F",
+      "expected": "#$07",
+      "operand": "#PlayerPushMiddleYOffset",
+      "evidence": "the middle player clearance probe is at Y plus seven"
+    },
+    {
+      "instruction": "0x8885",
+      "expected": "#$10",
+      "operand": "#PlayerPushRightLowerXOffset",
+      "evidence": "lower right clearance probes use the player's sixteen-pixel edge"
+    },
+    {
+      "instruction": "0x8899",
+      "expected": "#$FF",
+      "operand": "#PlayerPushNoCurrentObjectOffset",
+      "evidence": "the right bottom probe begins without an excluded runtime object"
+    },
+    {
+      "instruction": "0x88A0",
+      "expected": "#$0F",
+      "operand": "#PlayerPushBottomYOffset",
+      "evidence": "the bottom player clearance probe is at Y plus fifteen"
+    },
+    {
+      "instruction": "0x88A6",
+      "expected": "#$10",
+      "operand": "#PlayerPushRightLowerXOffset",
+      "evidence": "the bottom right clearance probe uses the sixteen-pixel edge"
+    },
+    {
+      "instruction": "0x88BD",
+      "expected": "#$FF",
+      "operand": "#PlayerPushNoCurrentObjectOffset",
+      "evidence": "the left top probe begins without an excluded runtime object"
+    },
+    {
+      "instruction": "0x88C4",
+      "expected": "#$02",
+      "operand": "#PlayerPushLeftTopXOffset",
+      "evidence": "the left top clearance probe is two pixels behind"
+    },
+    {
+      "instruction": "0x88DA",
+      "expected": "#$FF",
+      "operand": "#PlayerPushNoCurrentObjectOffset",
+      "evidence": "the left middle probe begins without an excluded runtime object"
+    },
+    {
+      "instruction": "0x88E1",
+      "expected": "#$07",
+      "operand": "#PlayerPushMiddleYOffset",
+      "evidence": "the middle player clearance probe is at Y plus seven"
+    },
+    {
+      "instruction": "0x88E7",
+      "expected": "#$01",
+      "operand": "#PlayerPushLeftLowerXOffset",
+      "evidence": "lower left clearance probes use one pixel behind player X"
+    },
+    {
+      "instruction": "0x88FB",
+      "expected": "#$FF",
+      "operand": "#PlayerPushNoCurrentObjectOffset",
+      "evidence": "the left bottom probe begins without an excluded runtime object"
+    },
+    {
+      "instruction": "0x8902",
+      "expected": "#$0F",
+      "operand": "#PlayerPushBottomYOffset",
+      "evidence": "the bottom player clearance probe is at Y plus fifteen"
+    },
+    {
+      "instruction": "0x8908",
+      "expected": "#$01",
+      "operand": "#PlayerPushLeftLowerXOffset",
+      "evidence": "the bottom left clearance probe uses one pixel behind player X"
+    },
+    {
+      "instruction": "0x8925",
+      "expected": "#$10",
+      "operand": "#PushedObjectWidth",
+      "evidence": "rightward pushing samples the sixteen-pixel object's leading edge"
+    },
+    {
+      "instruction": "0x8931",
+      "expected": "#$40",
+      "operand": "#PlayerObjectPushRightBoundaryLo",
+      "evidence": "the pushed object's leading edge must remain below world X $0140"
+    },
+    {
+      "instruction": "0x8935",
+      "expected": "#$01",
+      "operand": "#PlayerObjectPushRightBoundaryHi",
+      "evidence": "the pushed object's leading edge must remain below world X $0140"
+    },
+    {
+      "instruction": "0x894C",
+      "expected": "#$40",
+      "operand": "#PlayerObjectPushRightBoundaryLo",
+      "evidence": "left-edge underflow is rejected by the same unsigned $0140 bound"
+    },
+    {
+      "instruction": "0x8950",
+      "expected": "#$01",
+      "operand": "#PlayerObjectPushRightBoundaryHi",
+      "evidence": "left-edge underflow is rejected by the same unsigned $0140 bound"
+    },
+    {
+      "instruction": "0x8966",
+      "expected": "#$07",
+      "operand": "#PlayerPushMiddleYOffset",
+      "evidence": "the pushed-object center probe is at Y plus seven"
+    },
+    {
+      "instruction": "0x8979",
+      "expected": "#$0F",
+      "operand": "#PlayerPushBottomYOffset",
+      "evidence": "the pushed-object bottom probe is at Y plus fifteen"
+    },
+    {
+      "instruction": "0x8985",
+      "expected": "#$80",
+      "operand": "#RuntimeObjectCollisionTypeFirst",
+      "evidence": "only runtime-object collision values can enter the destroyable filter"
+    },
+    {
+      "instruction": "0x8990",
+      "expected": "#$A8",
+      "operand": "#PushDestroyedRuntimeType",
+      "evidence": "a destroyable object in front of the push becomes transient type $A8"
+    },
+    {
+      "instruction": "0x89A9",
+      "expected": "#$02",
+      "operand": "#PlayerObjectPushStep",
+      "evidence": "rightward pushing moves the runtime object two pixels"
+    },
+    {
+      "instruction": "0x89B4",
+      "expected": "#$02",
+      "operand": "#PlayerObjectPushStep",
+      "evidence": "rightward pushing moves the player two pixels"
+    },
+    {
+      "instruction": "0x89BC",
+      "expected": "#$7F",
+      "operand": "#PlayerDirectionRight",
+      "evidence": "a successful right push records the positive direction sentinel"
+    },
+    {
+      "instruction": "0x89C7",
+      "expected": "#$02",
+      "operand": "#PlayerObjectPushStep",
+      "evidence": "leftward pushing moves the runtime object two pixels"
+    },
+    {
+      "instruction": "0x89D2",
+      "expected": "#$02",
+      "operand": "#PlayerObjectPushStep",
+      "evidence": "leftward pushing moves the player two pixels"
+    },
+    {
+      "instruction": "0x89DA",
+      "expected": "#$FF",
+      "operand": "#PlayerDirectionLeft",
+      "evidence": "a successful left push records the negative direction sentinel"
     }
   ]
 }

@@ -93,6 +93,13 @@ payload and `$13` as its separate tail byte. Runtime offsets 11-13 restore the
 global player X/Y fields before the loaded room and player-adjacent mutable cell
 are rebuilt.
 
+Within `$867A-$8757`, `$10-$12` hold the destination player X low/high and Y
+saved into transition state before the outgoing room is serialized. `$07CD`
+is cleared before each real room reload. Vertical paths align the low X byte
+with `$F8`; horizontal paths use the exact entrance/clamp coordinates `$0000`
+and `$0130`. These aliases are scoped separately from the later transition
+reload view of the same zero-page bytes.
+
 Within `$93F6-$9551`, zero-page `$10-$12` are the saved player X low/high and Y
 bytes restored after death and later copied into
 `RoomRuntimeLoadMirror + $0B..$0D`. Bytes `$0D-$0E` are two additional
@@ -153,6 +160,22 @@ a movement delay and latch, both scroll reset bytes, the object-update shared
 flag, and the room animation counter. The routine also clears the global NMI
 task index and room frame counter. These reset names describe proven ownership
 without claiming complete semantics for the movement fields elsewhere.
+
+Within `$82CE-$8679`, `$3B` is the signed horizontal direction (`$FF` left,
+`$7F` right), `$3C` is the vertical motion state, `$3E` is its rendering phase,
+and `$3F` is the horizontal delay. `$0774` carries forced movement from an
+animated cell; `$0779-$077A` hold action countdown/latch state; `$07C9-$07CA`
+gate grounded direction and jump changes; `$07CB` enables object filtering for
+horizontal probes. Scoped scratch names separate upward Y, downward collision
+samples, horizontal probe/candidate X, action probe/delta X, and the shared
+collision-handler pointer at `$31-$32`.
+
+Within `$881A-$89E0`, `$1C` preserves the pushed runtime-record offset while
+player collision sampling reuses the global current-object field. `$25-$26`
+hold the pushed object's leading-edge X, `$42` identifies a destroyable object
+returned by the point sampler, and `$0773` receives `$7F/$FF` after a successful
+right/left push. Scoped `$3B/$3C/$3E` aliases expose direction and the motion
+guard without extending those meanings into unrelated object handlers.
 
 Within `$C43D-$C479`, `$27` receives the low byte of the camera quotient,
 `$29-$2A` hold the fixed divisor three, and `$2B-$2C` hold twice the player X

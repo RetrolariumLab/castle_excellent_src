@@ -10,10 +10,12 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/system/ppu.asm` | `$8158-$817F` | PPU state helpers and CNROM bank selection |
 | `src/input/famicom_data_io.asm` | `$8180-$8224` | transport selection and expansion-port serial I/O |
 | `src/system/startup.asm` | `$8225-$82CD` | reset, cold/warm boot state, and NMI-paced main loop |
-| `src/preservation/prg_82ce_8f0f.asm` | `$82CE-$8757` | unresolved player movement and room-transition logic |
+| `src/game/player/input_and_movement.asm` | `$82CE-$8679` | player input, motion, collision dispatch, and action hits |
+| `src/game/rooms/boundary_transitions.asm` | `$867A-$8757` | player room-boundary transitions and edge clamping |
 | `src/game/rooms/object_state_save.asm` | `$8758-$8784` | current-room runtime object-state bitmap save |
 | `src/game/player/animated_cell_displacement.asm` | `$8785-$8819` | forced horizontal movement from animated room cells |
-| `src/preservation/prg_881a_8c11.asm` | `$881A-$8C11` | unresolved player movement and early gameplay logic |
+| `src/game/player/object_push.asm` | `$881A-$89E0` | player-driven horizontal runtime-object pushing |
+| `src/preservation/prg_89e1_8c11.asm` | `$89E1-$8C11` | unresolved type-`$8E` and linked-object mechanics |
 | `src/game/objects/inventory_collectible_handlers.asm` | `$8C12-$8C7A` | six inventory pickups and shared collected-object transform |
 | `src/data/unreferenced_runtime_object_clear_tail.asm` | `$8C7B-$8C7F` | unreferenced code-shaped runtime-object clear tail bytes |
 | `src/game/objects/collectible_collision_handlers.asm` | `$8C80-$8CF1` | six runtime collectible collision handlers |
@@ -123,9 +125,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 114 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 115 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 113 in CPU-address order. Ghidra-defined instructions are emitted
+following 114 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

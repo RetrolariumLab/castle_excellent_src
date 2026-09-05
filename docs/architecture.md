@@ -106,6 +106,37 @@ writes tiles `$07-$0A` as a 2x2 marker whose top-left address is
 marker at `Y=$33+row*$10`, `X=$34+column*$10`. Select opens the map when the map
 item is available; A, B, or Select returns through normal room finalization.
 
+## Player input and movement
+
+The main loop calls `UpdatePlayerInputAndMovement` once per simulation frame.
+A enters the jump path and B owns a ten-frame action countdown with a separate
+held latch, so holding B does not restart the action. Motion states below `$21`
+are active; eight-pixel X alignment promotes preparatory state `$21` to active
+ascent state `$20`.
+
+Ascent samples left, center, and right two pixels above the player. Gravity
+first samples 17 pixels below and can retry at 16 for animated cells. Horizontal
+movement uses a two-pixel candidate and three Y probes. Collision values choose
+room-cell or runtime-object handler tables; the controller emulates JSR by
+pushing a named continuation minus one before each indirect jump.
+
+An active facing-dependent action probes 22 pixels to the right or six to the
+left and five pixels above player Y. It scans the 24 six-byte runtime records
+in order; the first overlap terminates the search. Runtime types `$84,$87,$88`
+become `$A8`, their state is cleared, and the shared sound effect is started.
+The ROM-backed model exhausts action latches, all button masks, both directions
+over every 16-bit X, and all 256 runtime types.
+
+Horizontal collision handlers for runtime types `$8A-$8D/$8F` share
+`PushPlayerAndRuntimeObject`. The controller acts only when player motion is
+inactive and the object has support at one of three bottom points. It samples
+the player-facing edge while allowing rediscovery of the pushed record itself,
+then samples the object's new leading edge. World X remains below `$0140`.
+Successful movement advances or subtracts two pixels from both 16-bit X
+positions and records `$7F/$FF` in the direction latch. A leading collision
+with runtime type `$84-$89` is transformed to `$A8` before movement continues;
+all other collisions block the push.
+
 ## Controller input
 
 Both controller pollers pulse `$4016` high then low and consume eight serial
@@ -232,6 +263,14 @@ which is the register order expected by collision and pixel-to-tile callers.
 Player probes add 7 or 15; object probes use offsets 0, 7, 8, 15, 17, and -2.
 Low-byte carry or borrow is propagated into the high byte, including natural
 wrap at `$FFFF/$0000`.
+
+The four boundary routes at `$867A` preserve the entry coordinates in scoped
+`$10-$12` before saving outgoing object state. Vertical movement aligns X with
+`$FFF8` and re-enters at Y `$98` from above or `$10` from below. Horizontal
+movement clamps to X `$0000/$0130` at the outer castle edges. An actual left or
+right room change reloads the destination and probes `(entryX, playerY-16)` so
+a mutable two-cell structure at the doorway is restored before rendering
+resumes.
 
 `FinishRoomTransition` at `$952D` restores `PauseMode` to `$FF`, copies the
 saved player X/Y bytes into runtime-mirror offsets 11-13, mirrors two additional

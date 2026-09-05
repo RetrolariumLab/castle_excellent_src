@@ -2,6 +2,15 @@
 # rom_sha1 42f7975da9a68a74e141353eb6e2bdc676fc1f77
 # kind start end (inclusive CPU addresses)
 #
+# The NMI-paced main loop directly calls $82CE at $8299. Internal branches,
+# direct room-transition tails, three collision-dispatch return shims, and the
+# final RTS prove the complete player input/movement range through $8679.
+code 82CE 8679
+
+# Direct jumps at $82D8/$840C/$8551/$855A select all four room-boundary
+# paths; their internal branches and tail calls prove the complete range.
+code 867A 8757
+
 # Five direct calls at $868C/$86B2/$86E6/$872F/$9434 prove the current-room
 # object-state saver and its complete 24-record traversal.
 code 8758 8784
@@ -10,6 +19,11 @@ code 8758 8784
 # while entries $56-$61 at $8FD5-$8FEB select $8785. Internal branches and
 # calls prove both complete handlers through the shared boundary at $881A.
 code 8785 8819
+
+# Horizontal runtime collision entries for types $8A-$8D and $8F at
+# $9231-$923B select $881A. Internal probes and branches prove the complete
+# player/object push controller through its terminal RTS at $89E0.
+code 881A 89E0
 
 # The horizontal runtime-collision table entry for type $8E at $9239 points
 # to $89E1; direct flow rejoins the already decoded handler tail at $89F6.

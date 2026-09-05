@@ -12,12 +12,12 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 111 semantic and 3 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 114 semantic and 2 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
 | Runtime evidence | boot, attract, gameplay, timeout CDL suite | title, transitions, death, ending, save/load, object and physics scenarios |
-| Revisions | Japanese HSP-05 baseline | Castlequest profile with explicit shared/different source |
+| Revisions | Japanese HSP-05 baseline | Japanese HSP-05 complete; Castlequest deferred to Source Reconstruction 2.0 |
 | Relocation | not yet established | source-reference relocation probes after semantic modularization |
 
 ## Promotion rule
@@ -33,7 +33,10 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 28,135 PRG bytes (85.86%): `$E45D-$E8DE`
+The promoted ranges currently cover 29,752 PRG bytes (90.80%): `$82CE-$8679`
+contains the complete player input/movement controller, including jump,
+gravity, horizontal collision dispatch, room-edge transitions, and action-hit
+scanning. `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -45,6 +48,15 @@ object counts, and cell-derived object creation. These claims are independently
 covered by all-100-room decoding, attribute construction, exact object-stream
 round trips, both offset/bitmap-width checks, marker/capacity checks, typed PRG
 ranges, Ghidra facts, and the byte-identical build.
+
+The player/object push slice adds `$881A-$89E0`. Horizontal collision-table
+entries for runtime types `$8A-$8D/$8F` select this shared controller. It first
+requires support below the object, permits player probes that rediscover only
+the object being pushed, checks the object's leading edge against world and
+collision bounds, optionally transforms blocking runtime types `$84-$89`, and
+moves player and object two pixels together. Its model pins all 455 bytes, all
+six table entries, the direct type-`$8E` caller, twelve collision call sites,
+every 16-bit player/object X value, all motion states, and collision ordering.
 
 The title/sub-command slice promotes `$F8FC-$FBFD` into six semantic modules.
 The title path uploads its overlapping palette, copies four CHR-ROM pages into
@@ -427,7 +439,8 @@ current object. No direct call, pointer table, fallthrough, or captured runtime
 path enters it; the former `$A207` flow was an invalid sprite-table overrun into
 an operand byte. Validation binds all 115 bytes, checks 641 dispatch pointers,
 proves zero live entries, models slot order and bounds, and confirms that the
-Japanese and USA revisions contain the same routine.
+Japanese HSP-05 bytes satisfy the complete contract. Cross-revision comparison
+is deferred to Source Reconstruction 2.0.
 
 The inventory-collectible slice promotes `$8C12-$8C7A`. Collision-table entries
 for runtime types `$90-$95` select six handlers, which map bijectively onto the
