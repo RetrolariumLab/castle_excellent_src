@@ -83,7 +83,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/audio/sound_effect_starters.asm` | `$C20D-$C2F8` | five sound-effect channel setup routines |
 | `src/audio/sound_effect_update.asm` | `$C2F9-$C428` | per-frame sound-effect request updater |
 | `src/audio/sound_effect_tables.asm` | `$C429-$C43C` | period and envelope tables |
-| `src/preservation/prg_c43d_c4fc.asm` | `$C43D-$C4FC` | unresolved scroll, division, and palette helpers |
+| `src/rendering/horizontal_scroll.asm` | `$C43D-$C479` | player-following horizontal camera curve |
+| `src/math/divide_unsigned16.asm` | `$C47A-$C4CC` | destructive unsigned 16-bit division |
+| `src/rendering/palette_upload.asm` | `$C4CD-$C4FC` | 32-byte PPU palette upload |
 | `src/rendering/screen_palette_data.asm` | `$C4FD-$C53C` | overlapping completion, title, and castle-map palettes |
 | `src/rendering/room_palette_data.asm` | `$C53D-$C55C` | gameplay room background and sprite palette |
 | `src/system/nmi.asm` | `$C55D-$C6B8` | NMI dispatch, OAM/scroll, input, scheduler, counters, and audio tick |
@@ -121,9 +123,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 112 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 114 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 111 in CPU-address order. Ghidra-defined instructions are emitted
+following 113 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

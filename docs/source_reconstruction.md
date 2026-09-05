@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 107 semantic and 5 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 110 semantic and 4 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 27,938 PRG bytes (85.26%): `$E45D-$E8DE`
+The promoted ranges currently cover 28,130 PRG bytes (85.85%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -87,6 +87,12 @@ the NMI updater arbitrates pulse, triangle, and noise requests against live APU
 length counters and advances the inventory, mutable-cell, and generic effects.
 The focused model pins all 560 bytes, six entry points and their callers, table
 bounds, request completion, step wraparound, and NMI music-before-effects order.
+
+The adjacent `$C43D-$C4FC` slice now owns the player-following horizontal camera
+curve, its destructive unsigned 16-bit divider, and the common 32-byte palette
+upload. The model pins all 192 bytes and 15 callers, checks all 65,536 player X
+positions, cross-checks quotient/remainder behavior, and verifies the exact PPU
+write sequence including the final `$3F00` address/latch reset.
 
 The room-loading vertical slice adds `$9578-$9582`, `$A35C-$A3AB`,
 `$B64C-$B7FC`, and `$EC63-$ECB6`. It marks the one-based visited-room flag,

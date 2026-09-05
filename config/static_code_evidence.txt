@@ -132,6 +132,10 @@ code BAE9 BB15
 # sound-effect code partition before its typed parameter tables.
 code C20D C428
 
+# Direct foreground and rendering callers plus internal control flow prove the
+# scroll, unsigned division, and palette-upload helpers.
+code C43D C4FC
+
 # Reset, castle-map, and completion call sites prove the title loop and shared
 # four-page CHR-to-nametable copier, including both title exit paths.
 code F8FC F9AC

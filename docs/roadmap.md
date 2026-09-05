@@ -81,6 +81,8 @@
   lanes, restart pointers, channel gating, and streamed-note APU setup;
 - [x] reconstruct all five sound-effect starters, the per-frame channel
   arbiter, three step counters, and five period/envelope tables;
+- [x] reconstruct the player-following horizontal camera curve, shared unsigned
+  16-bit divider, and exact 32-byte PPU palette uploader;
 - [x] reconstruct OAM staging-to-DMA transposition, eight-frame sprite-priority
   rotation, full record reversal, and sized RAM-array operand generation;
 - [x] reconstruct frame-sprite staging, player/action descriptor selection,

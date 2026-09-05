@@ -154,6 +154,18 @@ flag, and the room animation counter. The routine also clears the global NMI
 task index and room frame counter. These reset names describe proven ownership
 without claiming complete semantics for the movement fields elsewhere.
 
+Within `$C43D-$C479`, `$27` receives the low byte of the camera quotient,
+`$29-$2A` hold the fixed divisor three, and `$2B-$2C` hold twice the player X
+offset from the 64-pixel left margin. The result is clamped to `$00-$80` and
+stored in the global pending-scroll byte. The adjacent divider at
+`$C47A-$C4CC` expands that view to `$25-$26` for the shifting bit, `$27-$28`
+for the quotient, `$29-$2A` for the destructive divisor, and `$2B-$2C` for the
+dividend that becomes the remainder. All arithmetic aliases remain scoped.
+
+Within `$C4CD-$C4FC`, `$21-$22` are the source pointer for the 32-byte palette
+copied to PPU `$3F00`. The uploader consumes Y=`$00-$1F`, then rewrites the PPU
+address latch to `$3F00`; the pointer meaning is limited to this routine.
+
 Within `$A3D2-$A47E`, `$21-$22` are the pointer that scans `RoomCells`, `$40`
 is the intermittent room-cell animation counter, and `$44-$45` receive the
 current cell address before the row-update helper consumes them. The animation

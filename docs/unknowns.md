@@ -707,3 +707,17 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 - Evidence: exact hashes and call topology, starter write traces, exhaustive
   request/step arbitration, typed table bounds, NMI update order, deterministic
   regeneration, and byte-identical build
+
+### SYS-003 - camera, unsigned division, and palette upload
+
+- Status: resolved
+- Camera: `$C43D-$C479` maps player X to pending scroll `$00-$80`, with a
+  64-pixel left margin, a `2/3` middle slope, and saturation after delta `$C0`
+- Division: `$C47A-$C4CC` is a destructive unsigned 16-bit divider; quotient
+  occupies `$27-$28`, the dividend becomes the remainder, and zero divisor
+  returns before scratch initialization
+- Palette: `$C4CD-$C4FC` waits for vblank and emits 32 source bytes plus the
+  final `$3F00` PPU address-latch reset, for 38 ordered `$2006/$2007` writes
+- Evidence: three exact code hashes, all 15 direct callers, exhaustive camera
+  and divider domains, exact PPU trace, deterministic regeneration, and
+  byte-identical build

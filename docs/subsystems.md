@@ -226,9 +226,17 @@ parameter tables are semantic too. Their busy bytes guard synchronous setup,
 while request/step bytes retain effects across frames and arbitrate against the
 APU length-counter status bits. Generic request types 1, 2, and 4 retain numeric
 names until their still-preserved gameplay callers establish behavior. The
-remaining preservation source begins at the horizontal-scroll helper `$C43D`.
+following camera, divider, and palette uploader are semantic modules too.
 
 ## NMI, sprites, and PPU transfers (`$C43D-$E45C`)
+
+`UpdateHorizontalScroll` preserves state while paused, clamps player positions
+below `$0040` to scroll zero and deltas at or above `$C0` to `$80`, and maps the
+middle interval through `floor(2 * delta / 3)`. `DivideUnsigned16` returns the
+quotient in `$27-$28`, leaves the remainder in the dividend pair, and returns
+early without initializing outputs for a zero divisor. `UploadPaletteFromPointer`
+disables NMI/rendering, waits for vblank, writes exactly 32 bytes to `$3F00`, and
+performs the original four-write PPU address/latch reset.
 
 `Nmi` and `NmiFrame` at `$C55D-$C6B8` now live in `src/system/nmi.asm`.
 They preserve A/X/Y and dispatch through 23 high/low frame-task pointers before

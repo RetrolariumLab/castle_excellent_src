@@ -98,6 +98,10 @@ DemoInputRepeatCounter = $00FF
 DemoInputCommandFrames = $0C
 DemoInputControllerMask = $F3
 DemoInputTerminator = $FF
+HorizontalScrollPlayerMargin = $0040
+HorizontalScrollMaximumDelta = $C0
+HorizontalScrollMaximum = $80
+HorizontalScrollDivisor = $03
 
 ; Frame and NMI scheduler state
 FrameCounter = $0000
@@ -618,3 +622,23 @@ LoadedRoomMutableCellStateBits = $0019
 ; NMI task requests 21 and 22 upload the left and right room attribute tables
 NmiRoomAttributesLeftRequest = $079A
 NmiRoomAttributesRightRequest = $079B
+
+; Contextual horizontal-scroll/division scratch at $C43D-$C4CC
+HorizontalScrollPendingX = $0034
+HorizontalScrollQuotientLo = $0027
+HorizontalScrollDivisorLo = $0029
+HorizontalScrollDivisorHi = $002A
+HorizontalScrollDividendLo = $002B
+HorizontalScrollDividendHi = $002C
+UnsignedDivisionBitLo = $0025
+UnsignedDivisionBitHi = $0026
+UnsignedDivisionQuotientLo = $0027
+UnsignedDivisionQuotientHi = $0028
+UnsignedDivisionDivisorLo = $0029
+UnsignedDivisionDivisorHi = $002A
+UnsignedDivisionDividendLo = $002B
+UnsignedDivisionDividendHi = $002C
+
+; Contextual source pointer for the 32-byte palette uploader at $C4CD-$C4FC
+PaletteSourcePointerLo = $0021
+PaletteSourcePointerHi = $0022

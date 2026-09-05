@@ -152,6 +152,8 @@ evidence, and tested decoders for game data.
 - `scripts/sound_effect_engine.py` validates five starter write traces, the NMI
   updater's request/status arbitration, byte-wide step sequences, and all five
   period/envelope tables.
+- `scripts/scroll_math_palette.py` validates the horizontal camera curve, the
+  shared unsigned 16-bit divider, and the exact 32-byte PPU palette upload.
 - `scripts/room_screen_data.py` validates four status-screen tile streams,
   their code-level pointer loads, and the 16 initial attribute bytes.
 - `scripts/controller_input.py` exhaustively validates all 256 controller masks
@@ -213,7 +215,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 492 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 502 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -221,11 +223,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 10,341 instructions after 39
+  disagreements. Evidence-refined Ghidra exports 10,341 instructions after 40
   static code ranges recover pointer-selected entries and 73 evidence-backed data
   ranges remove 199 false-positive instructions. A separate registry clears
   five overextended or misaligned starts embedded in real instruction operands.
-  The source layout owns 27,938 PRG bytes semantically (85.26%). The title and
+  The source layout owns 28,130 PRG bytes semantically (85.85%). The title and
   sub-command path now owns title palette/CHR upload, Start/attract timeout,
   controller-2 menu entry, five-entry wrapped selection, typed menu text,
   load/save dispatch, and current/previous-room restoration.
@@ -372,6 +374,8 @@ make audio-stream-engine # inspect interpreter partitions and behavior
 make validate-audio-stream-engine # validate all stream-engine state domains
 make sound-effect-engine # inspect starter and per-frame effect behavior
 make validate-sound-effect-engine # validate requests, steps, and effect tables
+make scroll-math-palette # inspect camera, divider, and palette-upload behavior
+make validate-scroll-math-palette # validate all three exact code partitions
 make end-sequences   # inspect game-over and type-$82 completion routes
 make validate-end-sequences # validate ending bytes, calls, text, and score comparisons
 make prg-tail-data    # inspect tail padding, tile tables, and vectors
@@ -447,6 +451,7 @@ scripts/demo_playback.py title-demo controller-script model
 scripts/audio_track_selection.py track records and demo-gated selector model
 scripts/audio_stream_engine.py MML interpreter and channel-arbitration model
 scripts/sound_effect_engine.py sound-effect starter and updater model
+scripts/scroll_math_palette.py camera, unsigned-divider, and palette-upload model
 scripts/end_sequences.py game-over/completion and high-score model
 scripts/prg_tail_data.py room-cell tiles, padding, and vector validator
 scripts/palette_data.py overlapping screen and room palette validator

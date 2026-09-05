@@ -8,6 +8,8 @@ OAM_DATA = $2004
 PPU_SCROLL = $2005
 PPU_ADDR = $2006
 PPU_DATA = $2007
+PpuPaletteAddress = $3F00
+PpuPaletteByteCount = $20
 
 APU_PL1_VOL = $4000
 APU_PL1_SWEEP = $4001

@@ -2010,6 +2010,102 @@
     {
       "address": "0x4016",
       "name": "JOYPAD1"
+    },
+    {
+      "address": "0x0027",
+      "name": "HorizontalScrollQuotientLo",
+      "start": "0xC43D",
+      "end": "0xC47A"
+    },
+    {
+      "address": "0x0034",
+      "name": "HorizontalScrollPendingX",
+      "start": "0xC43D",
+      "end": "0xC47A"
+    },
+    {
+      "address": "0x0029",
+      "name": "HorizontalScrollDivisorLo",
+      "start": "0xC43D",
+      "end": "0xC47A"
+    },
+    {
+      "address": "0x002A",
+      "name": "HorizontalScrollDivisorHi",
+      "start": "0xC43D",
+      "end": "0xC47A"
+    },
+    {
+      "address": "0x002B",
+      "name": "HorizontalScrollDividendLo",
+      "start": "0xC43D",
+      "end": "0xC47A"
+    },
+    {
+      "address": "0x002C",
+      "name": "HorizontalScrollDividendHi",
+      "start": "0xC43D",
+      "end": "0xC47A"
+    },
+    {
+      "address": "0x0025",
+      "name": "UnsignedDivisionBitLo",
+      "start": "0xC47A",
+      "end": "0xC4CD"
+    },
+    {
+      "address": "0x0026",
+      "name": "UnsignedDivisionBitHi",
+      "start": "0xC47A",
+      "end": "0xC4CD"
+    },
+    {
+      "address": "0x0027",
+      "name": "UnsignedDivisionQuotientLo",
+      "start": "0xC47A",
+      "end": "0xC4CD"
+    },
+    {
+      "address": "0x0028",
+      "name": "UnsignedDivisionQuotientHi",
+      "start": "0xC47A",
+      "end": "0xC4CD"
+    },
+    {
+      "address": "0x0029",
+      "name": "UnsignedDivisionDivisorLo",
+      "start": "0xC47A",
+      "end": "0xC4CD"
+    },
+    {
+      "address": "0x002A",
+      "name": "UnsignedDivisionDivisorHi",
+      "start": "0xC47A",
+      "end": "0xC4CD"
+    },
+    {
+      "address": "0x002B",
+      "name": "UnsignedDivisionDividendLo",
+      "start": "0xC47A",
+      "end": "0xC4CD"
+    },
+    {
+      "address": "0x002C",
+      "name": "UnsignedDivisionDividendHi",
+      "start": "0xC47A",
+      "end": "0xC4CD"
+    },
+    {
+      "address": "0x0021",
+      "name": "PaletteSourcePointerLo",
+      "start": "0xC4CD",
+      "end": "0xC4FD"
+    },
+    {
+      "address": "0x0022",
+      "name": "PaletteSourcePointerHi",
+      "start": "0xC4CD",
+      "end": "0xC4FD"
     }
   ]
 }

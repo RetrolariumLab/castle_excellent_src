@@ -67,7 +67,8 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/audio/note_semitone_offsets.asm src/audio/note_length_table.asm \
 	src/audio/apu_period_table.asm src/audio/music_mml_data.asm \
 	src/audio/sound_effect_starters.asm src/audio/sound_effect_update.asm \
-	src/audio/sound_effect_tables.asm src/preservation/prg_c43d_c4fc.asm \
+	src/audio/sound_effect_tables.asm src/rendering/horizontal_scroll.asm \
+	src/math/divide_unsigned16.asm src/rendering/palette_upload.asm \
 	src/rendering/screen_palette_data.asm src/rendering/room_palette_data.asm \
 	src/system/nmi.asm src/rendering/oam_dma.asm \
 	src/rendering/status_upload.asm src/rendering/room_rows_00_04.asm \
@@ -164,6 +165,7 @@ TIMEOUT_FRAMES ?= 15000
 	audio-track-selection validate-audio-track-selection \
 	audio-stream-engine validate-audio-stream-engine \
 	sound-effect-engine validate-sound-effect-engine \
+	scroll-math-palette validate-scroll-math-palette \
 	end-sequences validate-end-sequences \
 	prg-tail-data validate-prg-tail-data \
 	palette-data validate-palette-data \
@@ -599,6 +601,12 @@ sound-effect-engine: $(ROM)
 validate-sound-effect-engine: $(ROM)
 	$(PYTHON) scripts/sound_effect_engine.py --image "$(ROM)" --validate
 
+scroll-math-palette: $(ROM)
+	$(PYTHON) scripts/scroll_math_palette.py --image "$(ROM)" --pretty
+
+validate-scroll-math-palette: $(ROM)
+	$(PYTHON) scripts/scroll_math_palette.py --image "$(ROM)" --validate
+
 end-sequences: $(ROM)
 	$(PYTHON) scripts/end_sequences.py --image "$(ROM)" --pretty
 
@@ -671,7 +679,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-scroll-math-palette validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

@@ -41,6 +41,18 @@ resume. While paused, Left/Right move the pending horizontal scroll by four,
 clamped to `$00-$80`, and set the NMI latch request. Left wins if both are held.
 Unpaused idle frames deliberately leave the saved edge mask unchanged.
 
+During normal play `UpdateHorizontalScroll` maps player X to that same
+`$00-$80` scroll range. Positions below the 64-pixel margin select zero;
+positions at least 192 pixels beyond it select `$80`; the middle interval uses
+`floor(2 * (playerX - 64) / 3)`. The helper delegates to the destructive
+unsigned 16-bit divider at `$C47A`, whose quotient is returned in `$27-$28`
+and whose dividend pair becomes the remainder. A zero divisor exits before
+initializing those work fields.
+
+`UploadPalette` waits for vblank, writes exactly 32 source bytes to PPU palette
+address `$3F00`, and finally writes `$3F00` to the address latch once more.
+Callers provide the source pointer in scoped zero-page `$21-$22`.
+
 NMI dispatches one of 23 PPU tasks through separate high- and low-byte tables.
 After the selected task reaches the common frame handler, it performs OAM DMA,
 rebuilds the DMA buffer when the staging buffer is free, applies a pending

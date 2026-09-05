@@ -85,7 +85,9 @@
         "../audio/sound_effect_starters.asm",
         "../audio/sound_effect_update.asm",
         "../audio/sound_effect_tables.asm",
-        "../preservation/prg_c43d_c4fc.asm",
+        "../rendering/horizontal_scroll.asm",
+        "../math/divide_unsigned16.asm",
+        "../rendering/palette_upload.asm",
         "../rendering/screen_palette_data.asm",
         "../rendering/room_palette_data.asm",
         "../system/nmi.asm",
@@ -584,10 +586,22 @@
       "title": "Sound-effect period, volume, and length tables"
     },
     {
-      "path": "src/preservation/prg_c43d_c4fc.asm",
+      "path": "src/rendering/horizontal_scroll.asm",
       "start": "0xC43D",
+      "end": "0xC47A",
+      "title": "Player-following horizontal scroll update"
+    },
+    {
+      "path": "src/math/divide_unsigned16.asm",
+      "start": "0xC47A",
+      "end": "0xC4CD",
+      "title": "Unsigned 16-bit division helper"
+    },
+    {
+      "path": "src/rendering/palette_upload.asm",
+      "start": "0xC4CD",
       "end": "0xC4FD",
-      "title": "Preservation scroll, division, and palette helpers"
+      "title": "32-byte PPU palette uploader"
     },
     {
       "path": "src/rendering/screen_palette_data.asm",

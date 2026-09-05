@@ -3386,6 +3386,66 @@
       "evidence": "odd bytes in the interleaved period table are the high byte of each APU timer value"
     },
     {
+      "instruction": "0xC446",
+      "expected": "#$40",
+      "operand": "#<HorizontalScrollPlayerMargin",
+      "evidence": "the camera begins following after the player's 64-pixel left margin"
+    },
+    {
+      "instruction": "0xC44C",
+      "expected": "#$00",
+      "operand": "#>HorizontalScrollPlayerMargin",
+      "evidence": "the camera margin is subtracted as a 16-bit value"
+    },
+    {
+      "instruction": "0xC45A",
+      "expected": "#$C0",
+      "operand": "#HorizontalScrollMaximumDelta",
+      "evidence": "player deltas of 192 pixels or more clamp the camera to its maximum"
+    },
+    {
+      "instruction": "0xC45E",
+      "expected": "#$80",
+      "operand": "#HorizontalScrollMaximum",
+      "evidence": "horizontal scrolling is bounded to the second nametable's 128-pixel edge"
+    },
+    {
+      "instruction": "0xC46E",
+      "expected": "#$03",
+      "operand": "#HorizontalScrollDivisor",
+      "evidence": "the middle camera curve divides twice the player delta by three"
+    },
+    {
+      "instruction": "0xC4D8",
+      "expected": "#$3F",
+      "operand": "#>PpuPaletteAddress",
+      "evidence": "palette uploads begin at PPU address $3F00"
+    },
+    {
+      "instruction": "0xC4DD",
+      "expected": "#$00",
+      "operand": "#<PpuPaletteAddress",
+      "evidence": "palette uploads begin at PPU address $3F00"
+    },
+    {
+      "instruction": "0xC4E8",
+      "expected": "#$20",
+      "operand": "#PpuPaletteByteCount",
+      "evidence": "the uploader copies the complete 32-byte NES palette"
+    },
+    {
+      "instruction": "0xC4EC",
+      "expected": "#$3F",
+      "operand": "#>PpuPaletteAddress",
+      "evidence": "the final PPU address sequence returns to palette base before clearing the latch"
+    },
+    {
+      "instruction": "0xC4F1",
+      "expected": "#$00",
+      "operand": "#<PpuPaletteAddress",
+      "evidence": "the final PPU address sequence writes three zero bytes after $3F"
+    },
+    {
       "instruction": "0xB7FD",
       "expected": "#$2C",
       "operand": "#<TitleDemoInputScript",

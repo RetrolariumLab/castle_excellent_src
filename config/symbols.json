@@ -4160,15 +4160,87 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xC443",
+      "name": "UpdateUnpausedHorizontalScroll",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC450",
+      "name": "SetMinimumHorizontalScroll",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC456",
+      "name": "CheckMaximumHorizontalScroll",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC464",
+      "name": "ScaleHorizontalScrollPosition",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC479",
+      "name": "ReturnFromHorizontalScrollUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xC47A",
       "name": "DivideUnsigned16",
       "kind": "routine",
       "confidence": "high"
     },
     {
+      "address": "0xC482",
+      "name": "InitializeUnsignedDivision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC48E",
+      "name": "AlignUnsignedDivisor",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC49D",
+      "name": "TrySubtractUnsignedDivisor",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC4C0",
+      "name": "ShiftUnsignedDivisorRight",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC4CC",
+      "name": "ReturnFromUnsignedDivision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xC4CD",
       "name": "UploadPaletteFromPointer",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC4D3",
+      "name": "WaitForPaletteUploadVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xC4E2",
+      "name": "UploadNextPaletteByte",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
