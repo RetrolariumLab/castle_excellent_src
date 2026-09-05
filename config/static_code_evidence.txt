@@ -11,6 +11,10 @@ code 8758 8784
 # calls prove both complete handlers through the shared boundary at $881A.
 code 8785 8819
 
+# The horizontal runtime-collision table entry for type $8E at $9239 points
+# to $89E1; direct flow rejoins the already decoded handler tail at $89F6.
+code 89E1 89F5
+
 # Player runtime-collision pointer entries at $933A/$9360/$9364/$9366/$9368/
 # $936A select the complete collectible handlers at $8C80-$8CF1.
 code 8C80 8CF1
@@ -26,6 +30,14 @@ code 8D04 8D3C
 # Runtime collision-handler pointer entry $9372 selects type $9F at $8D3D;
 # entry $9338 selects the next handler at $8D57 and proves the complete range.
 code 8D3D 8D56
+
+# Player runtime-collision pointer entry $9338 selects type $82 at $8D57;
+# its direct branch target at $8D6F proves the complete guarded handler.
+code 8D57 8D6F
+
+# All three directional runtime-collision matrices select $8D70 for type $81;
+# internal flow and the next proven entry at $8DAB bound the complete handler.
+code 8D70 8DAA
 
 # Four animated-cell and fifty-seven direct-death handler table entries plus
 # the hazard-contact jump at $93F2 prove both complete player-death paths.
@@ -95,3 +107,8 @@ code A60F A615
 # four contiguous selector bodies below. Their direct branches and jumps cover
 # the shared two-component render tail at $AE0C as well.
 code ADE7 AE74
+
+# Runtime type $82 exits the synthetic collision call and directly jumps to
+# $FE8E; its internal branches, terminal self-loop, and high-score call prove
+# the full sequence through the shared helper return.
+code FE8E FEE7

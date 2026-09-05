@@ -18,12 +18,12 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/objects/collectible_type97.asm` | `$8CF2-$8D03` | type `$97` score-and-life collectible handler |
 | `src/game/scoring/add_score.asm` | `$8D04-$8D3C` | score awards and 1000-point extra-life threshold |
 | `src/game/collision/runtime_type9f.asm` | `$8D3D-$8D56` | phase/X guarded type `$9F` invulnerability effect |
-| `src/preservation/prg_8d57_8daa.asm` | `$8D57-$8DAA` | unresolved late collision logic |
+| `src/game/collision/runtime_types81_82.asm` | `$8D57-$8DAA` | type `$82` completion trigger and type `$81` transform/clone handlers |
 | `src/game/player/death_transition.asm` | `$8DAB-$8DD2` | animated hazard phase, guarded death, reserve lives, game over, and audio |
 | `src/game/collision/player_sample.asm` | `$8DD3-$8ECA` | player room-cell and runtime-object collision sampler |
 | `src/game/rooms/sample_address.asm` | `$8ECB-$8F0F` | room-row pointer and 16-bit collision-sample column preparation |
 | `src/game/objects/runtime_record_offsets.asm` | `$8F10-$8F28` | six-byte record offsets by object count |
-| `src/preservation/prg_8f29_949b.asm` | `$8F29-$926A` | unresolved early object/game logic before collision tables |
+| `src/game/collision/player_movement_handler_tables.asm` | `$8F29-$926A` | downward, upward, and horizontal collision-handler pointer matrices |
 | `src/game/collision/player_handler_tables.asm` | `$926B-$9385` | shared no-op plus 100 room and 41 runtime collision handlers |
 | `src/game/collision/player_update.asm` | `$9386-$93F5` | seven frame-level probes and protected-hazard death dispatch |
 | `src/game/player/transition_reload.asm` | `$93F6-$9476` | transition countdown, protection, game over, and current-room reload |
@@ -42,7 +42,7 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/collision/room_sample.asm` | `$A1A3-$A1D3` | room-cell-only collision sample |
 | `src/preservation/prg_a044_a2b0.asm` | `$A1D4-$A246` | unresolved collision sampler before runtime overlap |
 | `src/game/collision/runtime_overlap.asm` | `$A247-$A2A9` | runtime-object overlap scan and shared no-op return |
-| `src/preservation/prg_a2aa_a2b0.asm` | `$A2AA-$A2B0` | unresolved helper before new-game initialization |
+| `src/data/unreferenced_nmi_task_index_bytes.asm` | `$A2AA-$A2B0` | unreferenced code-shaped bytes resembling `Y >> 3` |
 | `src/game/new_game.asm` | `$A2B1-$A350` | new-game state and persistent-region initialization |
 | `src/rendering/room_palette.asm` | `$A351-$A35B` | room palette pointer setup and upload |
 | `src/game/rooms/load_room.asm` | `$A35C-$A3AB` | top-level room loading and audio selection |
@@ -90,7 +90,8 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/preservation/prg_f8fc_fbfd.asm` | `$F8FC-$FBFD` | unresolved title and sub-command UI |
 | `src/game/save_load.asm` | `$FBFE-$FDC4` | save/load payload, validation, messages, and room restoration |
 | `src/game/rooms/persistent_state_save.asm` | `$FDC5-$FE30` | snapshot persistence writer |
-| `src/preservation/prg_fe31_ffff.asm` | `$FE31-$FFFF` | unresolved ending and tail tables |
+| `src/game/end_sequences.asm` | `$FE31-$FEE7` | game over, type `$82` completion, and high-score update |
+| `src/preservation/prg_fee8_ffff.asm` | `$FEE8-$FFFF` | padding, room-cell tile tables, and interrupt vectors |
 | `src/graphics/chr.asm` | four 8 KiB banks | private CHR payload |
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |

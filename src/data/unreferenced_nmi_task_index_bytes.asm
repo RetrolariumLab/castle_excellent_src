@@ -1,10 +1,7 @@
-; Preservation helper before new-game initialization
+; Unreferenced code-shaped NMI task-index bytes
 ; CPU range $A2AA-$A2B0
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-    .byte $98, $4A
-    LSR A
-    LSR A
-    STA NmiTaskIndex
-    RTS
+UnreferencedNmiTaskIndexFromYBytes:
+    .byte $98, $4A, $4A, $4A, $85, $F8, $60

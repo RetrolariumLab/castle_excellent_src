@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 76 semantic and 10 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 80 semantic and 7 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 22,328 PRG bytes (68.14%): `$E45D-$E8DE`
+The promoted ranges currently cover 23,436 PRG bytes (71.52%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -263,6 +263,26 @@ the prior invulnerability timer is zero, then always refreshes that timer to
 40 ticks. The model checks the exact 26 bytes, current and next handler-table
 entries, the audio call, and 66,048 frame, X-pair, and timer states.
 
+The adjacent type `$81/$82` slice adds `$8D57-$8DAA`. Both handlers use the
+shared proximity predicate and wait for the primary audio pointer to clear.
+Type `$82` is disabled after game over; on contact it discards the synthetic
+collision-dispatch return and jumps to the terminal completion sequence at
+`$FE8E`. Type `$81` becomes `$91`, moves left 16 pixels, and in room `$59`
+writes a second `$91` another 16 pixels left into the final runtime record.
+The model checks all eight normal/directional pointers, exact handler hashes,
+all 65,536 X values and audio-pointer pairs, and every room and Y byte.
+
+The directional collision-table slice adds `$8F29-$926A`: three physical
+matrices for downward, upward, and horizontal contact, each containing 100
+room-cell pointers and 39 runtime pointers for types `$80-$A6`. Downward and
+upward type `$A7` deliberately read the first pointer of the following room
+table and obtain the shared no-op; horizontal `$A7` has no physical entry and
+would cross into code as the invalid pointer `$B060`. The validator checks all
+six table hashes and 417 physical entries, 420 logical selections, 12 indexed
+consumers, three synthetic-call continuations, and every target against Ghidra
+instruction starts. The tables also prove previously missing entries `$89E1`
+and `$8D70`.
+
 The frame-level player collision slice adds `$9386-$93F5`. With no active
 transition it samples and dispatches seven ordered points: four player corners,
 center, top-center, and a deliberate second top-right sample. An active
@@ -351,6 +371,20 @@ using the candidate width on the left and supplied span width on the right.
 It returns the first matching record offset with carry clear, while exhaustion
 reaches the shared no-op handler return with carry set. The model verifies both
 call sites, all 24 offsets, exact dimension tables, and 1,052,928 type/X/Y cases.
+
+The seven bytes at `$A2AA-$A2B0` are now typed unreferenced data rather than a
+speculative helper. They resemble `NmiTaskIndex = Y >> 3`, but no direct,
+indirect, table, fallthrough, or runtime entry reaches them. Typed-data clearing
+removes four false Ghidra instructions; validation checks the exact hash, all
+known dispatch tables, runtime evidence, and all 256 hypothetical Y values.
+
+The ending slice adds `$FE31-$FEE7`. Game over clears the playfield, writes the
+typed `GAME OVER` tile string, starts track set 2, waits for audio, delays another
+60 vblanks, and resets. Runtime type `$82` copies its completion nametable and
+palette, starts track set 4, waits for audio, then freezes permanently. Both
+paths first update the persistent high score with the unsigned maximum of it
+and the player score. Validation checks all 183 bytes, 19 calls, both external
+jumps, the terminal loop, decoded text, and 655,360 score comparisons.
 
 The new-game slice adds `$A2B1-$A35B`. It selects one-based room `$47`, sets
 three lives and player position `(0,$98)`, resets gameplay, transition,

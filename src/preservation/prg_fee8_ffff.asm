@@ -1,69 +1,8 @@
-; Preservation PRG after persistent-state saving
-; CPU range $FE31-$FFFF
+; Preservation padding, room-cell tile tables, and vectors
+; CPU range $FEE8-$FFFF
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-RunGameOverSequence:
-    JSR Func_FED5
-    JSR ClearRoomNametablesAndSprites
-    JSR DisableNmi
-    JSR DisableRendering
-    LDA PPU_STATUS
-    LDA #$21
-    STA PPU_ADDR
-    LDA #$EC
-    STA PPU_ADDR
-    LDA #$FE
-    STA $22
-    LDA #$84
-    STA $21
-    JSR ShowBackgroundOnlyMessage
-    JSR StopAudioStreams
-    JSR ClearSoundRequests
-    JSR LoadAudioTrackSet2
-    LDA #$0A
-    STA PPU_MASK
-    SEI
-    LDA #$30
-    STA PPU_CTRL
-
-Label_FE69:
-    LDA PPU_STATUS
-    BPL Label_FE69
-    JSR UpdateAudioStreams
-    LDA AudioStreamPointerLo
-    ORA AudioStreamPointerHi
-    BNE Label_FE69
-    LDX #$3C
-
-Label_FE79:
-    LDA PPU_STATUS
-    BPL Label_FE79
-    DEX
-    BNE Label_FE79
-    JMP Reset
-    .byte $77, $71, $7D, $75, $FF, $7F, $86, $75, $82, $00, $20, $D5, $FE, $A9, $14, $20
-    .byte $73, $F9, $A9, $C4, $85, $22, $A9, $FD, $85, $21, $20, $CD
-    CPY $A0
-    BRK
-    .byte $20, $75, $81, $20, $58, $81, $20, $06, $B9, $20, $18, $B9, $20, $85, $B8, $AD
-    .byte $02, $20, $10, $FB, $20, $6A, $81, $A9, $0A, $8D, $01, $20, $78, $A9, $30, $8D
-    .byte $00, $20, $AD, $02, $20, $10, $FB, $20, $23, $B9, $A5, $DB, $05, $DC, $D0, $F2
-    .byte $F0, $FE
-
-Func_FED5:
-    LDA $0B
-    CMP HighScoreLo
-    LDA $0C
-    SBC HighScoreHi
-    BCC Label_FEE7
-    LDA $0B
-    STA HighScoreLo
-    LDA $0C
-    STA HighScoreHi
-
-Label_FEE7:
-    RTS
     .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
     .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
     .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF

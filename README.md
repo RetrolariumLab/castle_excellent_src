@@ -38,6 +38,13 @@ evidence, and tested decoders for game data.
   Transition completion now restores saved player coordinates, extends hazard
   protection, selects game over or a complete persistent-state room reload,
   and documents the exact rendering-resume order.
+  Runtime collision types `$81` and `$82` now expose their shared proximity and
+  audio waits: `$81` transforms into type `$91` and creates a room-`$59` clone,
+  while `$82` discards the synthetic dispatcher return and enters the terminal
+  completion sequence.
+  The complete game-over and type-`$82` ending paths now own their PPU/audio
+  ordering, `GAME OVER` tile string, 60-vblank reset delay, terminal freeze,
+  and shared unsigned high-score update.
   Six inventory-backed handlers now connect persistent cell pairs to all six
   counters, player-motion/alignment guards, boundary delay, and opening sound.
   Four room-transition helpers now expose the one-based 10x10 castle grid,
@@ -189,7 +196,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 396 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 421 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -197,11 +204,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 10,233 instructions after 25
-  static code ranges recover pointer-selected entries and 57 evidence-backed data
-  ranges remove 192 false-positive instructions. A separate registry clears
-  three overextended switch targets embedded in real instruction operands. The
-  source layout owns 22,328 PRG bytes semantically (68.14%).
+  disagreements. Evidence-refined Ghidra exports 10,307 instructions after 29
+  static code ranges recover pointer-selected entries and 64 evidence-backed data
+  ranges remove 196 false-positive instructions. A separate registry clears
+  five overextended or misaligned starts embedded in real instruction operands.
+  The source layout owns 23,436 PRG bytes semantically (71.52%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -250,6 +257,7 @@ make trace-timeout  # capture an idle game through timeout/death paths
 make trace-suite    # run and merge every deterministic runtime scenario
 make reconstruction-check # static checks plus a fresh emulator trace
 make reconstruction-audit # enforce semantic-module ownership and naming
+make runtime-types81-82-collision # inspect the type $81/$82 collision model
 make format         # normalize ca65 sources and all repository text/JSON
 make format-check   # check ca65 style without changing source files
 make lint-asm       # check the shared ca65 source-style contract
@@ -330,6 +338,12 @@ make score-award     # inspect type-$97 collection and score/life transitions
 make validate-score-award # validate score topology and exhaustive state cases
 make runtime-type9f-collision # inspect the phase/X guarded type-$9F effect
 make validate-runtime-type9f-collision # validate its pointer and state domains
+make runtime-types81-82-collision # inspect transform, clone, and completion effects
+make validate-runtime-types81-82-collision # validate pointers and machine-width states
+make unreferenced-nmi-task-bytes # inspect the typed code-shaped byte sequence
+make validate-unreferenced-nmi-task-bytes # prove it has no code/dispatch entry
+make end-sequences   # inspect game-over and type-$82 completion routes
+make validate-end-sequences # validate ending bytes, calls, text, and score comparisons
 make player-hazard-state # inspect protection timers and hazard contact
 make validate-player-hazard # validate all timer/probe/cell input domains
 make object-player-proximity # inspect the object/player carry predicate
@@ -346,6 +360,8 @@ make pause-input-state # inspect pause edges and paused scrolling
 make validate-pause-input # validate all pause button/mode/scroll domains
 make collision-table-state # inspect room-cell flags and object dimensions
 make validate-collision-tables # validate every table index and exact consumer
+make collision-handler-tables # inspect directional room/runtime pointer matrices
+make validate-collision-handler-tables # validate maps, consumers, and target starts
 make frame-sprite-state # inspect player/action frames and object render dispatch
 make validate-frame-sprites # validate the complete frame-sprite contract
 make metasprite-state # inspect composition paths, descriptors, references, and gaps
@@ -390,6 +406,9 @@ scripts/room_cell_coordinates.py room-cell coordinate and mutation model
 scripts/room_cell_sample_address.py shared collision-sample address model
 scripts/player_collision_sample.py player room-cell/object collision model
 scripts/player_collision_dispatch.py player collision-handler dispatch model
+scripts/runtime_types81_82_collision.py type-$81/$82 transform/completion model
+scripts/unreferenced_nmi_task_index_bytes.py typed orphan-byte validator
+scripts/end_sequences.py game-over/completion and high-score model
 scripts/room_navigation.py one-based 10x10 castle navigation model
 scripts/player_hazard_state.py protection countdown and hazard-probe model
 scripts/object_player_proximity.py runtime-object/player proximity model

@@ -1362,6 +1362,66 @@
       "end": "0x8D57"
     },
     {
+      "address": "0x00D4",
+      "name": "RuntimeType81CloneType",
+      "start": "0x8D70",
+      "end": "0x8DAB"
+    },
+    {
+      "address": "0x00D5",
+      "name": "RuntimeType81CloneXLo",
+      "start": "0x8D70",
+      "end": "0x8DAB"
+    },
+    {
+      "address": "0x00D6",
+      "name": "RuntimeType81CloneXHi",
+      "start": "0x8D70",
+      "end": "0x8DAB"
+    },
+    {
+      "address": "0x00D7",
+      "name": "RuntimeType81CloneY",
+      "start": "0x8D70",
+      "end": "0x8DAB"
+    },
+    {
+      "address": "0x0021",
+      "name": "GameOverMessagePointerLo",
+      "start": "0xFE31",
+      "end": "0xFE55"
+    },
+    {
+      "address": "0x0022",
+      "name": "GameOverMessagePointerHi",
+      "start": "0xFE31",
+      "end": "0xFE55"
+    },
+    {
+      "address": "0x0021",
+      "name": "CompletionPalettePointerLo",
+      "start": "0xFE8E",
+      "end": "0xFEA1"
+    },
+    {
+      "address": "0x0022",
+      "name": "CompletionPalettePointerHi",
+      "start": "0xFE8E",
+      "end": "0xFEA1"
+    },
+    {
+      "address": "0x000B",
+      "name": "EndingPlayerScoreLo",
+      "start": "0xFED5",
+      "end": "0xFEE8"
+    },
+    {
+      "address": "0x000C",
+      "name": "EndingPlayerScoreHi",
+      "start": "0xFED5",
+      "end": "0xFEE8"
+    },
+    {
       "address": "0x000D",
       "name": "CollectibleHazardProtectionCountdown",
       "start": "0x8C80",

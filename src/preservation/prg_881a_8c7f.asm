@@ -3,6 +3,7 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
+Func_881A:
     JSR GetActivePlayerMotionState
     ORA $3E
     BEQ Label_8822
@@ -292,8 +293,21 @@ Label_89DF:
 
 Label_89E0:
     RTS
-    .byte $A9, $00, $8D, $73, $07, $20, $1A, $88, $AD, $73, $07, $D0, $01, $60, $10, $03
-    .byte $4C, $C2, $8A, $A6, $41
+
+HandleRuntimeType8EHorizontalCollision:
+    LDA #$00
+    STA a:$0773
+    JSR Func_881A
+    LDA a:$0773
+    BNE Label_89EF
+    RTS
+
+Label_89EF:
+    BPL Label_89F4
+    JMP Func_8AC2
+
+Label_89F4:
+    LDX CurrentObjectOffset
     LDY RuntimeObjectY,X
     DEY
     JSR GetRuntimeObjectXPlus7

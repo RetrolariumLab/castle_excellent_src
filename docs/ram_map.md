@@ -197,6 +197,16 @@ high-byte scratch and `$21-$22` as the static-object stream pointer within
 `$EBE9-$EC62`. Record `+5` is named only as `RuntimeObjectByte5`; its semantic
 meaning remains intentionally open.
 
+The type `$81` collision handler uses `$D4-$D7`, the first four bytes of the
+24th and final runtime record (`RuntimeObjectRecords + $8A`), as a clone slot
+in room `$59`. It deliberately leaves that record's state and byte `+5`
+untouched; the scoped names claim only the four fields actually written.
+
+Ending code contextually names `$21-$22` as the game-over message pointer at
+`$FE31-$FE54` and as the completion palette pointer at `$FE8E-$FEA0`.
+`$0B-$0C` are separately scoped as the player score in the shared high-score
+update at `$FED5-$FEE7`.
+
 Within `$A8A9-$A8E2`, `$25-$26` are the low/high scratch pair holding the
 normalized runtime-object/player X delta. The aliases are scoped to the shared
 proximity predicate because both bytes have unrelated uses elsewhere.

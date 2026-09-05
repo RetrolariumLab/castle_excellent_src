@@ -108,16 +108,16 @@ Label_837D:
     ASL A
     TAX
     BCS Label_838E
-    LDA a:$903F,X
+    LDA PlayerUpwardRoomCellCollisionHandlerPointers,X
     STA $31
-    LDA a:$9040,X
+    LDA PlayerUpwardRoomCellCollisionHandlerPointers + 1,X
     STA $32
     JMP Label_8398
 
 Label_838E:
-    LDA a:$9107,X
+    LDA PlayerUpwardRuntimeCollisionHandlerPointerEntries80ToA6,X
     STA $31
-    LDA a:$9108,X
+    LDA PlayerUpwardRuntimeCollisionHandlerPointerEntries80ToA6 + 1,X
     STA $32
 
 Label_8398:
@@ -205,16 +205,16 @@ Label_841A:
     ASL A
     TAX
     BCS Label_842B
-    LDA a:$8F29,X
+    LDA PlayerDownwardRoomCellCollisionHandlerPointers,X
     STA $31
-    LDA a:$8F2A,X
+    LDA PlayerDownwardRoomCellCollisionHandlerPointers + 1,X
     STA $32
     JMP Label_8435
 
 Label_842B:
-    LDA a:$8FF1,X
+    LDA PlayerDownwardRuntimeCollisionHandlerPointerEntries80ToA6,X
     STA $31
-    LDA a:$8FF2,X
+    LDA PlayerDownwardRuntimeCollisionHandlerPointerEntries80ToA6 + 1,X
     STA $32
 
 Label_8435:
@@ -431,16 +431,16 @@ Label_85A6:
     ASL A
     TAX
     BCS Label_85B7
-    LDA a:$9155,X
+    LDA PlayerHorizontalRoomCellCollisionHandlerPointers,X
     STA $31
-    LDA a:$9156,X
+    LDA PlayerHorizontalRoomCellCollisionHandlerPointers + 1,X
     STA $32
     JMP Label_85C1
 
 Label_85B7:
-    LDA a:$921D,X
+    LDA PlayerHorizontalRuntimeCollisionHandlerPointerEntries80ToA6,X
     STA $31
-    LDA a:$921E,X
+    LDA PlayerHorizontalRuntimeCollisionHandlerPointerEntries80ToA6 + 1,X
     STA $32
 
 Label_85C1:

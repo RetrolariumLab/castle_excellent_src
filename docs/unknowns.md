@@ -623,6 +623,31 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   exhaustive 65,792 X/Y machine-value cases, deterministic regeneration, and
   byte-identical build
 
+### DATA-009 - horizontal runtime collision type `$A7`
+
+- Status: partially resolved
+- Known: the directional dispatch block contains six physical LE16 tables;
+  each runtime table represents `$80-$A6`, while downward/upward `$A7`
+  deliberately alias the following room table's first no-op pointer
+- Hazard: the horizontal block has no following room table; indexing `$A7`
+  crosses into `$926B-$926C` and produces the invalid pointer `$B060`
+- Current sources: no static room object, cell-derived object, immediate load,
+  or known transition creates runtime type `$A7`; `$A6` is created dynamically
+- Required closure: reconstruct all remaining object handlers and prove that
+  no dynamic transition can place `$A7` on the horizontal collision path
+- Evidence: exact six-table decode, 12 consumers, three synthetic calls,
+  object catalog, explicit validator rejection, and byte-identical build
+
+### DATA-010 - code-shaped bytes at `$A2AA-$A2B0`
+
+- Status: classified as unreferenced data
+- Bytes: `98 4A 4A 4A 85 F8 60`, resembling `NmiTaskIndex = Y >> 3`
+- Non-claim: no routine name is assigned because there is no direct, indirect,
+  table, fallthrough, or runtime entry into the range
+- Evidence: exact hash, all known dispatch tables, zero runtime code coverage,
+  absence of a `$A2AA` pointer in PRG, typed-data Ghidra clearing, and exhaustive
+  hypothetical Y-domain model
+
 ### ROOM-001 - room-loading orchestration
 
 - Status: resolved

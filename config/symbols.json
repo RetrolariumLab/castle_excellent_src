@@ -470,6 +470,12 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x89E1",
+      "name": "HandleRuntimeType8EHorizontalCollision",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8C6E",
       "name": "TransformCollectedRuntimeObject",
       "kind": "local",
@@ -626,6 +632,72 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x8D57",
+      "name": "HandleRuntimeType82PlayerCollision",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D5C",
+      "name": "CheckRuntimeType82PlayerProximity",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D64",
+      "name": "WaitForRuntimeType82Audio",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D6A",
+      "name": "ExitCollisionDispatchForRuntimeType82",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D6F",
+      "name": "ReturnFromRuntimeType81Or82Collision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D70",
+      "name": "HandleRuntimeType81PlayerCollision",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D78",
+      "name": "WaitForRuntimeType81Audio",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D7E",
+      "name": "TransformRuntimeType81Object",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D8F",
+      "name": "CheckRuntimeType81CloneRoom",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D95",
+      "name": "SpawnRuntimeType81Clone",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DAA",
+      "name": "ReturnFromRuntimeType81Collision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8DAB",
       "name": "HandleAnimatedPlayerHazard",
       "kind": "routine",
@@ -748,6 +820,42 @@
     {
       "address": "0x8F10",
       "name": "RuntimeObjectOffsetByCount",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8F29",
+      "name": "PlayerDownwardRoomCellCollisionHandlerPointers",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8FF1",
+      "name": "PlayerDownwardRuntimeCollisionHandlerPointerEntries80ToA6",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x903F",
+      "name": "PlayerUpwardRoomCellCollisionHandlerPointers",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9107",
+      "name": "PlayerUpwardRuntimeCollisionHandlerPointerEntries80ToA6",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9155",
+      "name": "PlayerHorizontalRoomCellCollisionHandlerPointers",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x921D",
+      "name": "PlayerHorizontalRuntimeCollisionHandlerPointerEntries80ToA6",
       "kind": "data",
       "confidence": "confirmed"
     },
@@ -1254,6 +1362,12 @@
       "name": "ReturnFromRuntimeObjectHandler",
       "kind": "local",
       "confidence": "high"
+    },
+    {
+      "address": "0xA2AA",
+      "name": "UnreferencedNmiTaskIndexFromYBytes",
+      "kind": "data",
+      "confidence": "confirmed"
     },
     {
       "address": "0xA2B1",
@@ -4625,6 +4739,60 @@
       "address": "0xFE31",
       "name": "RunGameOverSequence",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFE69",
+      "name": "WaitForGameOverAudioVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFE79",
+      "name": "WaitForGameOverRestartDelayVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFE84",
+      "name": "GameOverMessageTiles",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFE8E",
+      "name": "RunType82CompletionSequence",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFEB2",
+      "name": "WaitForType82CompletionSetupVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFEC5",
+      "name": "WaitForType82CompletionAudioVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFED3",
+      "name": "FreezeAfterType82CompletionAudio",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFED5",
+      "name": "UpdateHighScoreFromPlayerScore",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFEE7",
+      "name": "ReturnFromHighScoreUpdate",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {

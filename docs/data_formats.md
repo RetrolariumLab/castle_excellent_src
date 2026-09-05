@@ -249,6 +249,29 @@ indexed directly by cell type. `PlayerRuntimeCollisionHandlerPointers` at
 the player sampler consumes `$80-$A7`, leaving the final `$A8` entry outside
 that call path. The shared `$926B` target is a one-byte no-op `RTS`.
 
+Player movement uses an earlier directional dispatch block at `$8F29-$926A`.
+It consists of three `$116`-byte physical matrices. Each matrix has a 200-byte
+room-cell table for identities `$00-$63`, followed by 78 bytes for runtime
+types `$80-$A6`:
+
+| Direction | Room cells | Runtime types |
+| --- | --- | --- |
+| downward | `$8F29-$8FF0` | `$8FF1-$903E` |
+| upward | `$903F-$9106` | `$9107-$9154` |
+| horizontal | `$9155-$921C` | `$921D-$926A` |
+
+Downward animated cells `$35-$40` and `$56-$61` select the two forced-player
+displacement handlers. All upward room cells are no-ops. Horizontal mutable
+cell pairs select the six inventory-backed action handlers. Runtime targets
+mostly share one common map, with direction-specific behavior for `$8A-$8F`.
+
+The `ASL A` dispatch permits a logical `$A7` index. Downward and upward reads
+overlap the first pointer of the following room table, which is `$926B` and is
+safe. The physical horizontal runtime table ends at `$A6`; a hypothetical
+`$A7` read crosses `$926B-$926C` and forms `$B060`. The validator rejects that
+case explicitly pending proof that no remaining dynamic object transition can
+produce type `$A7` on the horizontal path.
+
 `RoomObjectCounts` at `$AB4A-$ABAD` exactly matches the 100 decoded static
 lists. `RuntimeObjectOffsetByCount` at `$8F10-$8F28` is the sequence
 `0,6,...,144`, allowing cell-derived objects to follow the static records.

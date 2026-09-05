@@ -2,6 +2,42 @@
   "schema_version": 1,
   "overrides": [
     {
+      "instruction": "0x8386",
+      "expected": "a:$9040,X",
+      "operand": "PlayerUpwardRoomCellCollisionHandlerPointers + 1,X",
+      "evidence": "adjacent indexed byte is the upward room-cell handler high byte"
+    },
+    {
+      "instruction": "0x8393",
+      "expected": "a:$9108,X",
+      "operand": "PlayerUpwardRuntimeCollisionHandlerPointerEntries80ToA6 + 1,X",
+      "evidence": "adjacent indexed byte is the upward runtime handler high byte"
+    },
+    {
+      "instruction": "0x8423",
+      "expected": "a:$8F2A,X",
+      "operand": "PlayerDownwardRoomCellCollisionHandlerPointers + 1,X",
+      "evidence": "adjacent indexed byte is the downward room-cell handler high byte"
+    },
+    {
+      "instruction": "0x8430",
+      "expected": "a:$8FF2,X",
+      "operand": "PlayerDownwardRuntimeCollisionHandlerPointerEntries80ToA6 + 1,X",
+      "evidence": "adjacent indexed byte is the downward runtime handler high byte"
+    },
+    {
+      "instruction": "0x85AF",
+      "expected": "a:$9156,X",
+      "operand": "PlayerHorizontalRoomCellCollisionHandlerPointers + 1,X",
+      "evidence": "adjacent indexed byte is the horizontal room-cell handler high byte"
+    },
+    {
+      "instruction": "0x85BC",
+      "expected": "a:$921E,X",
+      "operand": "PlayerHorizontalRuntimeCollisionHandlerPointerEntries80ToA6 + 1,X",
+      "evidence": "adjacent indexed byte is the horizontal runtime handler high byte"
+    },
+    {
       "instruction": "0x875F",
       "expected": "#$A8",
       "operand": "#RuntimeObjectPersistentTypeEnd",
@@ -192,6 +228,36 @@
       "expected": "#$28",
       "operand": "#RuntimeType9FInvulnerabilityDuration",
       "evidence": "matching type $9F collision refreshes invulnerability to 40 ticks"
+    },
+    {
+      "instruction": "0x8D80",
+      "expected": "#$91",
+      "operand": "#RuntimeType81ReplacementType",
+      "evidence": "type $81 collision transforms the current object into runtime type $91"
+    },
+    {
+      "instruction": "0x8D87",
+      "expected": "#$10",
+      "operand": "#RuntimeType81HorizontalShift",
+      "evidence": "the transformed current object moves one 16-pixel cell left"
+    },
+    {
+      "instruction": "0x8D91",
+      "expected": "#$59",
+      "operand": "#RuntimeType81CloneRoom",
+      "evidence": "only one-based room $59 creates the additional type-$91 record"
+    },
+    {
+      "instruction": "0x8D95",
+      "expected": "#$91",
+      "operand": "#RuntimeType81ReplacementType",
+      "evidence": "the extra record uses the same runtime type $91"
+    },
+    {
+      "instruction": "0x8D9C",
+      "expected": "#$10",
+      "operand": "#RuntimeType81HorizontalShift",
+      "evidence": "the clone is placed one further 16-pixel cell left"
     },
     {
       "instruction": "0x8DD3",
@@ -2862,6 +2928,84 @@
       "expected": "#$F0",
       "operand": "#OamHiddenY",
       "evidence": "a wrapped second player component is hidden below the visible screen"
+    },
+    {
+      "instruction": "0xFE40",
+      "expected": "#$21",
+      "operand": "#GameOverMessagePpuAddressHi",
+      "evidence": "game-over text begins at nametable address $21EC"
+    },
+    {
+      "instruction": "0xFE45",
+      "expected": "#$EC",
+      "operand": "#GameOverMessagePpuAddressLo",
+      "evidence": "game-over text begins at nametable address $21EC"
+    },
+    {
+      "instruction": "0xFE4A",
+      "expected": "#$FE",
+      "operand": "#>GameOverMessageTiles",
+      "evidence": "message pointer high byte selects the typed game-over tile string"
+    },
+    {
+      "instruction": "0xFE4E",
+      "expected": "#$84",
+      "operand": "#<GameOverMessageTiles",
+      "evidence": "message pointer low byte selects the typed game-over tile string"
+    },
+    {
+      "instruction": "0xFE5E",
+      "expected": "#$0A",
+      "operand": "#EndSequencePpuMask",
+      "evidence": "ending screens enable background rendering with the shared mask"
+    },
+    {
+      "instruction": "0xFE64",
+      "expected": "#$30",
+      "operand": "#EndSequencePpuControl",
+      "evidence": "ending screens select the shared PPU control state"
+    },
+    {
+      "instruction": "0xFE77",
+      "expected": "#$3C",
+      "operand": "#GameOverRestartDelayFrames",
+      "evidence": "game over waits 60 additional vblanks after its audio stream ends"
+    },
+    {
+      "instruction": "0xFE91",
+      "expected": "#$14",
+      "operand": "#CompletionNametableChrPage",
+      "evidence": "completion copies four CHR pages beginning at PPU page $14"
+    },
+    {
+      "instruction": "0xFE96",
+      "expected": "#$C4",
+      "operand": "#>CompletionPaletteData",
+      "evidence": "completion uploads the 32-byte palette beginning at $C4FD"
+    },
+    {
+      "instruction": "0xFE9A",
+      "expected": "#$FD",
+      "operand": "#<CompletionPaletteData",
+      "evidence": "completion uploads the 32-byte palette beginning at $C4FD"
+    },
+    {
+      "instruction": "0xFEA1",
+      "expected": "#$00",
+      "operand": "#CompletionChrBank",
+      "evidence": "completion restores CNROM bank zero after copying nametable pages"
+    },
+    {
+      "instruction": "0xFEBA",
+      "expected": "#$0A",
+      "operand": "#EndSequencePpuMask",
+      "evidence": "completion enables background rendering with the shared mask"
+    },
+    {
+      "instruction": "0xFEC0",
+      "expected": "#$30",
+      "operand": "#EndSequencePpuControl",
+      "evidence": "completion selects the shared PPU control state"
     }
   ]
 }

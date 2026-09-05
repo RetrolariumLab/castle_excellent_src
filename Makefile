@@ -23,11 +23,12 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/preservation/prg_881a_8c7f.asm \
 	src/game/objects/collectible_collision_handlers.asm \
 	src/game/objects/collectible_type97.asm src/game/scoring/add_score.asm \
-	src/game/collision/runtime_type9f.asm src/preservation/prg_8d57_8daa.asm \
+	src/game/collision/runtime_type9f.asm src/game/collision/runtime_types81_82.asm \
 	src/game/player/death_transition.asm \
 	src/game/collision/player_sample.asm \
 	src/game/rooms/sample_address.asm \
-	src/game/objects/runtime_record_offsets.asm src/preservation/prg_8f29_949b.asm \
+	src/game/objects/runtime_record_offsets.asm \
+	src/game/collision/player_movement_handler_tables.asm \
 	src/game/collision/player_handler_tables.asm \
 	src/game/collision/player_update.asm \
 	src/game/player/transition_reload.asm \
@@ -40,7 +41,7 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/collision/object_filters.asm src/game/collision/point_sample.asm \
 	src/game/collision/room_sample.asm \
 	src/preservation/prg_a044_a2b0.asm \
-	src/game/collision/runtime_overlap.asm src/preservation/prg_a2aa_a2b0.asm \
+	src/game/collision/runtime_overlap.asm src/data/unreferenced_nmi_task_index_bytes.asm \
 	src/game/new_game.asm \
 	src/rendering/room_palette.asm \
 	src/game/rooms/load_room.asm src/game/rooms/runtime_reset.asm \
@@ -69,7 +70,8 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/rooms/persistent_state_load.asm \
 	src/game/objects/room_data.asm src/preservation/prg_f8fc_fbfd.asm \
 	src/game/save_load.asm \
-	src/game/rooms/persistent_state_save.asm src/preservation/prg_fe31_ffff.asm \
+	src/game/rooms/persistent_state_save.asm src/game/end_sequences.asm \
+	src/preservation/prg_fee8_ffff.asm \
 	src/memory/hardware.inc src/memory/ram.inc
 
 GHIDRA_FACTS := build/ghidra/instructions.tsv
@@ -137,9 +139,13 @@ TIMEOUT_FRAMES ?= 15000
 	collectible-collision-handlers validate-collectible-collision-handlers \
 	score-award validate-score-award \
 	runtime-type9f-collision validate-runtime-type9f-collision \
+	runtime-types81-82-collision validate-runtime-types81-82-collision \
+	unreferenced-nmi-task-bytes validate-unreferenced-nmi-task-bytes \
+	end-sequences validate-end-sequences \
 	player-hazard-state validate-player-hazard object-player-proximity \
 	validate-object-player-proximity pause-input-state validate-pause-input \
 	collision-table-state validate-collision-tables \
+	collision-handler-tables validate-collision-handler-tables \
 	frame-sprite-state validate-frame-sprites \
 	metasprite-state validate-metasprites object-catalog validate-object-catalog
 
@@ -514,6 +520,24 @@ runtime-type9f-collision: $(ROM)
 validate-runtime-type9f-collision: $(ROM)
 	$(PYTHON) scripts/runtime_type9f_collision.py --image "$(ROM)" --validate
 
+runtime-types81-82-collision: $(ROM)
+	$(PYTHON) scripts/runtime_types81_82_collision.py --image "$(ROM)" --pretty
+
+validate-runtime-types81-82-collision: $(ROM)
+	$(PYTHON) scripts/runtime_types81_82_collision.py --image "$(ROM)" --validate
+
+unreferenced-nmi-task-bytes: ghidra-analyze $(ROM)
+	$(PYTHON) scripts/unreferenced_nmi_task_index_bytes.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
+
+validate-unreferenced-nmi-task-bytes: ghidra-analyze $(ROM)
+	$(PYTHON) scripts/unreferenced_nmi_task_index_bytes.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
+
+end-sequences: $(ROM)
+	$(PYTHON) scripts/end_sequences.py --image "$(ROM)" --pretty
+
+validate-end-sequences: $(ROM)
+	$(PYTHON) scripts/end_sequences.py --image "$(ROM)" --validate
+
 player-collision-dispatch: $(ROM)
 	$(PYTHON) scripts/player_collision_dispatch.py --image "$(ROM)" --pretty
 
@@ -544,6 +568,12 @@ collision-table-state: $(ROM)
 validate-collision-tables: $(ROM)
 	$(PYTHON) scripts/collision_tables.py --image "$(ROM)" --validate
 
+collision-handler-tables: ghidra-analyze $(ROM)
+	$(PYTHON) scripts/player_movement_collision_tables.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --pretty
+
+validate-collision-handler-tables: ghidra-analyze $(ROM)
+	$(PYTHON) scripts/player_movement_collision_tables.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --validate
+
 frame-sprite-state: $(ROM)
 	$(PYTHON) scripts/frame_sprites.py --image "$(ROM)" --pretty
 
@@ -562,7 +592,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-score-award validate-runtime-type9f-collision validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-end-sequences validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

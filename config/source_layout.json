@@ -20,12 +20,12 @@
         "../game/objects/collectible_type97.asm",
         "../game/scoring/add_score.asm",
         "../game/collision/runtime_type9f.asm",
-        "../preservation/prg_8d57_8daa.asm",
+        "../game/collision/runtime_types81_82.asm",
         "../game/player/death_transition.asm",
         "../game/collision/player_sample.asm",
         "../game/rooms/sample_address.asm",
         "../game/objects/runtime_record_offsets.asm",
-        "../preservation/prg_8f29_949b.asm",
+        "../game/collision/player_movement_handler_tables.asm",
         "../game/collision/player_handler_tables.asm",
         "../game/collision/player_update.asm",
         "../game/player/transition_reload.asm",
@@ -44,7 +44,7 @@
         "../game/collision/room_sample.asm",
         "../preservation/prg_a044_a2b0.asm",
         "../game/collision/runtime_overlap.asm",
-        "../preservation/prg_a2aa_a2b0.asm",
+        "../data/unreferenced_nmi_task_index_bytes.asm",
         "../game/new_game.asm",
         "../rendering/room_palette.asm",
         "../game/rooms/load_room.asm",
@@ -92,7 +92,8 @@
         "../preservation/prg_f8fc_fbfd.asm",
         "../game/save_load.asm",
         "../game/rooms/persistent_state_save.asm",
-        "../preservation/prg_fe31_ffff.asm"
+        "../game/end_sequences.asm",
+        "../preservation/prg_fee8_ffff.asm"
       ]
     },
     {
@@ -168,10 +169,10 @@
       "title": "Runtime type $9F player collision handler"
     },
     {
-      "path": "src/preservation/prg_8d57_8daa.asm",
+      "path": "src/game/collision/runtime_types81_82.asm",
       "start": "0x8D57",
       "end": "0x8DAB",
-      "title": "Preservation PRG before player death transition"
+      "title": "Runtime types $81 and $82 player collision handlers"
     },
     {
       "path": "src/game/player/death_transition.asm",
@@ -198,10 +199,10 @@
       "title": "Runtime object record offsets by object count"
     },
     {
-      "path": "src/preservation/prg_8f29_949b.asm",
+      "path": "src/game/collision/player_movement_handler_tables.asm",
       "start": "0x8F29",
       "end": "0x926B",
-      "title": "Preservation PRG before player collision handler tables"
+      "title": "Directional player collision handler pointer matrices"
     },
     {
       "path": "src/game/collision/player_handler_tables.asm",
@@ -312,10 +313,10 @@
       "title": "Runtime-object overlap scan"
     },
     {
-      "path": "src/preservation/prg_a2aa_a2b0.asm",
+      "path": "src/data/unreferenced_nmi_task_index_bytes.asm",
       "start": "0xA2AA",
       "end": "0xA2B1",
-      "title": "Preservation helper before new-game initialization"
+      "title": "Unreferenced code-shaped NMI task-index bytes"
     },
     {
       "path": "src/game/new_game.asm",
@@ -600,10 +601,16 @@
       "title": "Room-state snapshot persistence writer"
     },
     {
-      "path": "src/preservation/prg_fe31_ffff.asm",
+      "path": "src/game/end_sequences.asm",
       "start": "0xFE31",
+      "end": "0xFEE8",
+      "title": "Game-over and type $82 completion sequences"
+    },
+    {
+      "path": "src/preservation/prg_fee8_ffff.asm",
+      "start": "0xFEE8",
       "end": "0x10000",
-      "title": "Preservation PRG after persistent-state saving"
+      "title": "Preservation padding, room-cell tile tables, and vectors"
     }
   ]
 }

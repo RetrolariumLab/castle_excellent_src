@@ -5,3 +5,8 @@ instruction 8D02 Type97TransformJumpDecodedAsRor
 # $ADE6 bound. Its synthetic case $66 lands on $A207, the operand byte of the
 # real LDA $28 instruction at $A206 in the runtime-object-only point sampler.
 instruction A207 OverlongObjectSpriteSwitchCase66
+
+# The completion sequence enters at $FE8E. Ghidra's earlier linear sweep
+# started inside the JSR $C4CD operand and split the following LDY #$00.
+instruction FEA0 CompletionPaletteCallOperand
+instruction FEA2 CompletionPaletteCallFalseBrk
