@@ -366,6 +366,23 @@ three-byte object and five-byte mutable-cell bitmaps, resets runtime/NMI/screen
 state, rebuilds attributes and scroll, and resumes rendering before NMI. The
 independent model fixes the full call order and all countdown/protection cases.
 
+`SaveCurrentRoomObjectState` owns the outgoing snapshot used by that reload and
+by all four directional transitions. It scans the type byte of each six-byte
+runtime record. Types `$80-$A7` clear their slot bit as still-active persistent
+objects; every other value sets it as removed, absent, or transient. The 24 bits
+are copied from scoped scratch `$16-$18` to `$0713-$0715` with the room number.
+
+Two room-cell handler families force horizontal player movement. Incrementing
+animated cells `$56-$61` try X minus two; decrementing cells `$35-$40` try X
+plus two. Both sample the entering edge at Y offsets 0, 7, and 15, stop at the
+first collision, and share the coordinate/latch commit path only when clear.
+
+Six runtime collision handlers at `$8C80-$8CF1` collect types `$83`, `$96`,
+and `$98-$9B` only when the shared proximity predicate returns carry clear.
+They award the exact score amount, choose collected-object state 6-9, and use
+the common transformation tail. Types `$83/$96` additionally update their
+protection/audio or effect-latch state before transformation.
+
 `SampleCollisionAtPixel` first resolves a 320x160 pixel coordinate to the
 20x20 room buffer and one of the cell's two eight-pixel collision halves. A
 nonzero room flag wins immediately; its bit 0 and bit 7 become carry and

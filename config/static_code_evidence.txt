@@ -2,6 +2,31 @@
 # rom_sha1 42f7975da9a68a74e141353eb6e2bdc676fc1f77
 # kind start end (inclusive CPU addresses)
 #
+# Five direct calls at $868C/$86B2/$86E6/$872F/$9434 prove the current-room
+# object-state saver and its complete 24-record traversal.
+code 8758 8784
+
+# Room-cell collision-handler entries $35-$40 at $8F93-$8FA9 select $87CB,
+# while entries $56-$61 at $8FD5-$8FEB select $8785. Internal branches and
+# calls prove both complete handlers through the shared boundary at $881A.
+code 8785 8819
+
+# Player runtime-collision pointer entries at $933A/$9360/$9364/$9366/$9368/
+# $936A select the complete collectible handlers at $8C80-$8CF1.
+code 8C80 8CF1
+
+# Player runtime-collision pointer entry $9362 selects the type-$97 handler;
+# its direct flow ends at the shared collected-object transformation tail.
+code 8CF2 8D03
+
+# Thirteen direct calls select $8D04, whose two internal calls prove the score
+# threshold helper and complete award/life flow through $8D3C.
+code 8D04 8D3C
+
+# Runtime collision-handler pointer entry $9372 selects type $9F at $8D3D;
+# entry $9338 selects the next handler at $8D57 and proves the complete range.
+code 8D3D 8D56
+
 # Four animated-cell and fifty-seven direct-death handler table entries plus
 # the hazard-contact jump at $93F2 prove both complete player-death paths.
 code 8DAB 8DD2

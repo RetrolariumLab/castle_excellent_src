@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 70 semantic and 8 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 76 semantic and 10 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 21,919 PRG bytes (66.89%): `$E45D-$E8DE`
+The promoted ranges currently cover 22,328 PRG bytes (68.14%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -220,6 +220,48 @@ existing transition makes the handler a no-op; otherwise it installs a
 or latches game over at zero, and selects audio track set 2. The independent
 model checks all 65,536 guard pairs, all animation/life byte values, the exact
 40 bytes, and every pointer source.
+
+The current-room object-state save slice adds `$8758-$8784`. Before a room
+transition or death reload, it scans all 24 six-byte runtime records and rotates
+one bit per slot into a three-byte little-endian bitmap. Active persistent types
+`$80-$A7` produce zero bits; empty, removed, and transient values produce one
+bits so the later apply pass can suppress those records. It then snapshots the
+one-based room number and bitmap. Five direct calls prove the complete routine;
+the independent model checks the exact 45 bytes, all 256 type values, and every
+slot-to-bit mapping.
+
+The adjacent animated-cell displacement slice adds `$8785-$8819`. Twelve
+incrementing cell identities `$56-$61` select the left handler and twelve
+decrementing identities `$35-$40` select the right handler. Each computes a
+two-pixel candidate, rejects the signed left edge or exact `$013F` right limit,
+then probes the top, middle, and bottom of the entering player edge. Only three
+clear results commit the 16-bit X coordinate and movement latch. The model
+checks the exact 149 bytes, all 24 pointer entries, six sampler calls, every
+16-bit X value, every byte Y value, and all collision-result patterns.
+
+The collectible collision slice adds `$8C80-$8CF1`. Six runtime-type table
+entries guard collection with the shared object/player proximity predicate,
+award 20, 40, 80, or 100 score units, and select collected states 6-9. Type
+`$83` also increments its screen state, conditionally starts audio track set 1,
+and installs 40 protection ticks; type `$96` sets a dedicated effect latch.
+The model checks the exact 114 bytes, six table targets, all call/jump topology,
+and 786,432 proximity, screen-state, and protection combinations.
+
+The adjacent type `$97` and score slice adds `$8CF2-$8D3C`. Collection awards
+100 score units, then increments reserve lives directly and enters collected
+state 9. `AddPlayerScore` suppresses all mutation during demo playback; in live
+play it performs a wrapping 16-bit addition and compares the score divided by
+1000 before and after the award. A changed quotient grants one life, saturating
+at `$FF`, before type `$97` performs its separate wrapping increment. The model
+checks the exact 75 bytes, all 13 score call sites, the runtime handler pointer,
+the division-helper topology, and 378,880 score, award, and life cases.
+
+The type `$9F` player-collision slice adds `$8D3D-$8D56`. It is active only
+during the negative half of `RoomFrameCounter` and only when the runtime
+object's low X byte equals the player's. A match starts audio track set 3 when
+the prior invulnerability timer is zero, then always refreshes that timer to
+40 ticks. The model checks the exact 26 bytes, current and next handler-table
+entries, the audio call, and 66,048 frame, X-pair, and timer states.
 
 The frame-level player collision slice adds `$9386-$93F5`. With no active
 transition it samples and dispatches seven ordered points: four player corners,

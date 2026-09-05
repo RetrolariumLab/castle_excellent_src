@@ -97,6 +97,14 @@ routine. `$07CD` selects the fixed protection base during transition reload.
 These names remain scoped because the same scratch addresses serve unrelated
 code elsewhere.
 
+Within `$8758-$8784`, the same zero-page `$16-$18` bytes are the outgoing room
+object-state accumulator. Each of the 24 runtime-record type bytes contributes
+one bit before the completed three-byte value is copied to `$0713-$0715`.
+
+Within `$8785-$8819`, `$21-$22` hold the candidate player X and `$23-$24`
+hold the right-edge collision probe. A successful animated-cell displacement
+sets the contextual movement latch at `$0774`; blocked paths preserve it.
+
 Within `$9583-$95BE`, `$31-$32` are the little-endian runtime-object handler
 pointer and `$07C6` is the shared update flag cleared before each record. The
 pointer aliases remain scoped to the dispatcher; `$0043` is global because the

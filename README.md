@@ -189,7 +189,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 365 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 396 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -197,11 +197,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,844 instructions after 19
+  disagreements. Evidence-refined Ghidra exports 10,233 instructions after 25
   static code ranges recover pointer-selected entries and 57 evidence-backed data
   ranges remove 192 false-positive instructions. A separate registry clears
-  one overextended switch target embedded in a real instruction operand. The
-  source layout owns 21,919 PRG bytes semantically (66.89%).
+  three overextended switch targets embedded in real instruction operands. The
+  source layout owns 22,328 PRG bytes semantically (68.14%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -320,6 +320,16 @@ make player-collision-dispatch # inspect room/runtime collision handler selectio
 make validate-player-collision-dispatch # validate handler tables and synthetic return
 make player-transition-reload # inspect countdown, protection, and room reload
 make validate-player-transition-reload # validate all countdown/protection cases
+make room-object-state-save # inspect the outgoing 24-object state bitmap
+make validate-room-object-state-save # validate all type and slot mappings
+make player-animated-cell-displacement # inspect forced horizontal movement
+make validate-player-animated-cell-displacement # validate bounds and probes
+make collectible-collision-handlers # inspect six collectible effects
+make validate-collectible-collision-handlers # validate pointers and state cases
+make score-award     # inspect type-$97 collection and score/life transitions
+make validate-score-award # validate score topology and exhaustive state cases
+make runtime-type9f-collision # inspect the phase/X guarded type-$9F effect
+make validate-runtime-type9f-collision # validate its pointer and state domains
 make player-hazard-state # inspect protection timers and hazard contact
 make validate-player-hazard # validate all timer/probe/cell input domains
 make object-player-proximity # inspect the object/player carry predicate

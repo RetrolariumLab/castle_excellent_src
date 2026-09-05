@@ -13,6 +13,14 @@
         "famicom_data_io.asm",
         "../system/startup.asm",
         "../preservation/prg_82ce_8f0f.asm",
+        "../game/rooms/object_state_save.asm",
+        "../game/player/animated_cell_displacement.asm",
+        "../preservation/prg_881a_8c7f.asm",
+        "../game/objects/collectible_collision_handlers.asm",
+        "../game/objects/collectible_type97.asm",
+        "../game/scoring/add_score.asm",
+        "../game/collision/runtime_type9f.asm",
+        "../preservation/prg_8d57_8daa.asm",
         "../game/player/death_transition.asm",
         "../game/collision/player_sample.asm",
         "../game/rooms/sample_address.asm",
@@ -114,8 +122,56 @@
     {
       "path": "src/preservation/prg_82ce_8f0f.asm",
       "start": "0x82CE",
-      "end": "0x8DAB",
+      "end": "0x8758",
       "title": "Preservation PRG after the main loop"
+    },
+    {
+      "path": "src/game/rooms/object_state_save.asm",
+      "start": "0x8758",
+      "end": "0x8785",
+      "title": "Current-room runtime object-state bitmap save"
+    },
+    {
+      "path": "src/game/player/animated_cell_displacement.asm",
+      "start": "0x8785",
+      "end": "0x881A",
+      "title": "Animated-cell forced player displacement"
+    },
+    {
+      "path": "src/preservation/prg_881a_8c7f.asm",
+      "start": "0x881A",
+      "end": "0x8C80",
+      "title": "Preservation PRG before collectible collision handlers"
+    },
+    {
+      "path": "src/game/objects/collectible_collision_handlers.asm",
+      "start": "0x8C80",
+      "end": "0x8CF2",
+      "title": "Runtime collectible collision handlers"
+    },
+    {
+      "path": "src/game/objects/collectible_type97.asm",
+      "start": "0x8CF2",
+      "end": "0x8D04",
+      "title": "Runtime type $97 collectible collision handler"
+    },
+    {
+      "path": "src/game/scoring/add_score.asm",
+      "start": "0x8D04",
+      "end": "0x8D3D",
+      "title": "Player score award and extra-life threshold"
+    },
+    {
+      "path": "src/game/collision/runtime_type9f.asm",
+      "start": "0x8D3D",
+      "end": "0x8D57",
+      "title": "Runtime type $9F player collision handler"
+    },
+    {
+      "path": "src/preservation/prg_8d57_8daa.asm",
+      "start": "0x8D57",
+      "end": "0x8DAB",
+      "title": "Preservation PRG before player death transition"
     },
     {
       "path": "src/game/player/death_transition.asm",

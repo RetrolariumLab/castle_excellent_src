@@ -156,7 +156,8 @@
     },
     {
       "address": "0x0713",
-      "name": "CurrentRoomObjectState"
+      "name": "CurrentRoomObjectState",
+      "size": 3
     },
     {
       "address": "0x0716",
@@ -1268,6 +1269,109 @@
       "name": "TransitionInvulnerabilityCountdown",
       "start": "0x952D",
       "end": "0x9552"
+    },
+    {
+      "address": "0x0016",
+      "name": "SavedRoomObjectStateBits",
+      "size": 3,
+      "start": "0x8758",
+      "end": "0x8785"
+    },
+    {
+      "address": "0x0021",
+      "name": "AnimatedCellPlayerXLo",
+      "start": "0x8785",
+      "end": "0x881A"
+    },
+    {
+      "address": "0x0022",
+      "name": "AnimatedCellPlayerXHi",
+      "start": "0x8785",
+      "end": "0x881A"
+    },
+    {
+      "address": "0x0023",
+      "name": "AnimatedCellPlayerEdgeXLo",
+      "start": "0x8785",
+      "end": "0x881A"
+    },
+    {
+      "address": "0x0024",
+      "name": "AnimatedCellPlayerEdgeXHi",
+      "start": "0x8785",
+      "end": "0x881A"
+    },
+    {
+      "address": "0x0774",
+      "name": "PlayerAnimatedCellMovementLatch",
+      "start": "0x8785",
+      "end": "0x881A"
+    },
+    {
+      "address": "0x07CD",
+      "name": "RuntimeType83ScreenState",
+      "start": "0x8C80",
+      "end": "0x8CF2"
+    },
+    {
+      "address": "0x0027",
+      "name": "ScoreThousandsQuotient",
+      "start": "0x8D04",
+      "end": "0x8D3D"
+    },
+    {
+      "address": "0x000B",
+      "name": "AwardPlayerScoreLo",
+      "start": "0x8D04",
+      "end": "0x8D3D"
+    },
+    {
+      "address": "0x000C",
+      "name": "AwardPlayerScoreHi",
+      "start": "0x8D04",
+      "end": "0x8D3D"
+    },
+    {
+      "address": "0x0029",
+      "name": "ScoreDivisionDivisorLo",
+      "start": "0x8D04",
+      "end": "0x8D3D"
+    },
+    {
+      "address": "0x002A",
+      "name": "ScoreDivisionDivisorHi",
+      "start": "0x8D04",
+      "end": "0x8D3D"
+    },
+    {
+      "address": "0x002B",
+      "name": "ScoreDivisionDividendLo",
+      "start": "0x8D04",
+      "end": "0x8D3D"
+    },
+    {
+      "address": "0x002C",
+      "name": "ScoreDivisionDividendHi",
+      "start": "0x8D04",
+      "end": "0x8D3D"
+    },
+    {
+      "address": "0x000E",
+      "name": "RuntimeType9FInvulnerabilityCountdown",
+      "start": "0x8D3D",
+      "end": "0x8D57"
+    },
+    {
+      "address": "0x000D",
+      "name": "CollectibleHazardProtectionCountdown",
+      "start": "0x8C80",
+      "end": "0x8CF2"
+    },
+    {
+      "address": "0x000F",
+      "name": "RuntimeType96EffectLatch",
+      "start": "0x8C80",
+      "end": "0x8CF2"
     },
     {
       "address": "0x0014",

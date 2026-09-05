@@ -2,6 +2,198 @@
   "schema_version": 1,
   "overrides": [
     {
+      "instruction": "0x875F",
+      "expected": "#$A8",
+      "operand": "#RuntimeObjectPersistentTypeEnd",
+      "evidence": "runtime types $80-$A7 remain active persistent room objects"
+    },
+    {
+      "instruction": "0x8769",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the state saver advances by one complete runtime-object record"
+    },
+    {
+      "instruction": "0x876C",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the state saver scans the complete 24-record runtime pool"
+    },
+    {
+      "instruction": "0x8788",
+      "expected": "#$02",
+      "operand": "#AnimatedCellPlayerStep",
+      "evidence": "incrementing animated cells displace the player two pixels left"
+    },
+    {
+      "instruction": "0x87A2",
+      "expected": "#$07",
+      "operand": "#AnimatedCellPlayerMiddleYOffset",
+      "evidence": "the middle collision probe is seven pixels below the player top"
+    },
+    {
+      "instruction": "0x87B1",
+      "expected": "#$0F",
+      "operand": "#AnimatedCellPlayerBottomYOffset",
+      "evidence": "the bottom collision probe is fifteen pixels below the player top"
+    },
+    {
+      "instruction": "0x87C5",
+      "expected": "#$FF",
+      "operand": "#AnimatedCellMovementLatchSet",
+      "evidence": "a successful forced displacement latches the movement state"
+    },
+    {
+      "instruction": "0x87CE",
+      "expected": "#$02",
+      "operand": "#AnimatedCellPlayerStep",
+      "evidence": "decrementing animated cells displace the player two pixels right"
+    },
+    {
+      "instruction": "0x87DB",
+      "expected": "#$11",
+      "operand": "#AnimatedCellPlayerRightEdgeOffset",
+      "evidence": "the right collision edge is seventeen pixels beyond the old player X"
+    },
+    {
+      "instruction": "0x87E7",
+      "expected": "#$3F",
+      "operand": "#AnimatedCellPlayerRightLimitLo",
+      "evidence": "low-byte half of the original-X comparison against $013F"
+    },
+    {
+      "instruction": "0x87EB",
+      "expected": "#$01",
+      "operand": "#AnimatedCellPlayerRightLimitHi",
+      "evidence": "high-byte half of the original-X comparison against $013F"
+    },
+    {
+      "instruction": "0x87FD",
+      "expected": "#$07",
+      "operand": "#AnimatedCellPlayerMiddleYOffset",
+      "evidence": "the middle collision probe is seven pixels below the player top"
+    },
+    {
+      "instruction": "0x880C",
+      "expected": "#$0F",
+      "operand": "#AnimatedCellPlayerBottomYOffset",
+      "evidence": "the bottom collision probe is fifteen pixels below the player top"
+    },
+    {
+      "instruction": "0x8C89",
+      "expected": "#$64",
+      "operand": "#CollectibleScore100",
+      "evidence": "runtime type $83 awards 100 score units"
+    },
+    {
+      "instruction": "0x8C95",
+      "expected": "#$28",
+      "operand": "#RuntimeType83ProtectionDuration",
+      "evidence": "runtime type $83 installs 40 hazard-protection ticks"
+    },
+    {
+      "instruction": "0x8C99",
+      "expected": "#$09",
+      "operand": "#CollectedObjectState9",
+      "evidence": "runtime type $83 enters collected-object state 9"
+    },
+    {
+      "instruction": "0x8CA4",
+      "expected": "#$FF",
+      "operand": "#RuntimeType96EffectSet",
+      "evidence": "runtime type $96 sets its dedicated effect latch"
+    },
+    {
+      "instruction": "0x8CA8",
+      "expected": "#$64",
+      "operand": "#CollectibleScore100",
+      "evidence": "runtime type $96 awards 100 score units"
+    },
+    {
+      "instruction": "0x8CAD",
+      "expected": "#$09",
+      "operand": "#CollectedObjectState9",
+      "evidence": "runtime type $96 enters collected-object state 9"
+    },
+    {
+      "instruction": "0x8CB8",
+      "expected": "#$14",
+      "operand": "#CollectibleScore20",
+      "evidence": "runtime type $98 awards 20 score units"
+    },
+    {
+      "instruction": "0x8CBD",
+      "expected": "#$06",
+      "operand": "#CollectedObjectState6",
+      "evidence": "runtime type $98 enters collected-object state 6"
+    },
+    {
+      "instruction": "0x8CC8",
+      "expected": "#$28",
+      "operand": "#CollectibleScore40",
+      "evidence": "runtime type $99 awards 40 score units"
+    },
+    {
+      "instruction": "0x8CCD",
+      "expected": "#$07",
+      "operand": "#CollectedObjectState7",
+      "evidence": "runtime type $99 enters collected-object state 7"
+    },
+    {
+      "instruction": "0x8CD8",
+      "expected": "#$50",
+      "operand": "#CollectibleScore80",
+      "evidence": "runtime type $9A awards 80 score units"
+    },
+    {
+      "instruction": "0x8CDD",
+      "expected": "#$08",
+      "operand": "#CollectedObjectState8",
+      "evidence": "runtime type $9A enters collected-object state 8"
+    },
+    {
+      "instruction": "0x8CE8",
+      "expected": "#$64",
+      "operand": "#CollectibleScore100",
+      "evidence": "runtime type $9B awards 100 score units"
+    },
+    {
+      "instruction": "0x8CED",
+      "expected": "#$09",
+      "operand": "#CollectedObjectState9",
+      "evidence": "runtime type $9B enters collected-object state 9"
+    },
+    {
+      "instruction": "0x8CF8",
+      "expected": "#$64",
+      "operand": "#CollectibleScore100",
+      "evidence": "runtime type $97 awards 100 score units"
+    },
+    {
+      "instruction": "0x8CFF",
+      "expected": "#$09",
+      "operand": "#CollectedObjectState9",
+      "evidence": "runtime type $97 enters collected-object state 9"
+    },
+    {
+      "instruction": "0x8D32",
+      "expected": "#$03",
+      "operand": "#ScoreLifeThresholdHi",
+      "evidence": "score awards compare adjacent 1000-point quotient buckets"
+    },
+    {
+      "instruction": "0x8D36",
+      "expected": "#$E8",
+      "operand": "#ScoreLifeThresholdLo",
+      "evidence": "low byte completes the 16-bit 1000-point divisor"
+    },
+    {
+      "instruction": "0x8D52",
+      "expected": "#$28",
+      "operand": "#RuntimeType9FInvulnerabilityDuration",
+      "evidence": "matching type $9F collision refreshes invulnerability to 40 ticks"
+    },
+    {
       "instruction": "0x8DD3",
       "expected": "#$10",
       "operand": "#PlayerCollisionScreenYFirst",

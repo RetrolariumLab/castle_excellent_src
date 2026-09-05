@@ -910,14 +910,14 @@ Label_C464:
     STA $2C
     LDA #$03
     STA $29
-    JSR Func_C47A
+    JSR DivideUnsigned16
     LDA $27
     STA $34
 
 Label_C479:
     RTS
 
-Func_C47A:
+DivideUnsigned16:
     LDA $29
     ORA $2A
     BNE Label_C482

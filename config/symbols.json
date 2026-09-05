@@ -434,6 +434,198 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x875A",
+      "name": "EncodeNextRoomObjectStateBit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8761",
+      "name": "RotateRoomObjectStateBit",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8785",
+      "name": "MovePlayerLeftOnIncrementingAnimatedCell",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x87BD",
+      "name": "CommitAnimatedCellPlayerDisplacement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x87CA",
+      "name": "ReturnFromAnimatedCellPlayerDisplacement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x87CB",
+      "name": "MovePlayerRightOnDecrementingAnimatedCell",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C6E",
+      "name": "TransformCollectedRuntimeObject",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x8C80",
+      "name": "CollectRuntimeType83",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C86",
+      "name": "ApplyRuntimeType83Collectible",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C95",
+      "name": "SetRuntimeType83Protection",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C9E",
+      "name": "CollectRuntimeType96",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CA4",
+      "name": "ApplyRuntimeType96Collectible",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CB2",
+      "name": "CollectRuntimeType98",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CB8",
+      "name": "ApplyRuntimeType98Collectible",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CC2",
+      "name": "CollectRuntimeType99",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CC8",
+      "name": "ApplyRuntimeType99Collectible",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CD2",
+      "name": "CollectRuntimeType9A",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CD8",
+      "name": "ApplyRuntimeType9ACollectible",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CE2",
+      "name": "CollectRuntimeType9B",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CE8",
+      "name": "ApplyRuntimeType9BCollectible",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CF2",
+      "name": "CollectRuntimeType97",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8CF8",
+      "name": "ApplyRuntimeType97Collectible",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D04",
+      "name": "AddPlayerScore",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D19",
+      "name": "CompareScoreLifeThreshold",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D27",
+      "name": "ReturnFromAddPlayerScore",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D28",
+      "name": "DiscardDemoScoreAward",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D2A",
+      "name": "ComputePlayerScoreThousands",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D3D",
+      "name": "HandleRuntimeType9FPlayerCollision",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D4A",
+      "name": "ReturnFromRuntimeType9FXMismatch",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D4B",
+      "name": "CheckRuntimeType9FAudio",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D52",
+      "name": "RefreshRuntimeType9FInvulnerability",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8D56",
+      "name": "ReturnFromRuntimeType9FCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8DAB",
       "name": "HandleAnimatedPlayerHazard",
       "kind": "routine",
@@ -3150,6 +3342,12 @@
       "name": "UpdateHorizontalScroll",
       "kind": "routine",
       "confidence": "confirmed"
+    },
+    {
+      "address": "0xC47A",
+      "name": "DivideUnsigned16",
+      "kind": "routine",
+      "confidence": "high"
     },
     {
       "address": "0xC4CD",
