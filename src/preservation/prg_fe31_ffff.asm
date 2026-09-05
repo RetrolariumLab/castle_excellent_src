@@ -3,7 +3,7 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-Func_FE31:
+RunGameOverSequence:
     JSR Func_FED5
     JSR ClearRoomNametablesAndSprites
     JSR DisableNmi

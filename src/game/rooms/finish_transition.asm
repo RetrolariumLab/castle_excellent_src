@@ -12,10 +12,10 @@ FinishRoomTransition:
     STA RoomRuntimeLoadMirror + $0C
     LDA TransitionPlayerY
     STA RoomRuntimeLoadMirror + $0D
-    LDA TransitionStateByte0
-    STA TransitionStateMirror0
-    LDA TransitionStateByte1
-    STA TransitionStateMirror1
+    LDA TransitionHazardProtectionCountdown
+    STA TransitionHazardProtectionMirror
+    LDA TransitionInvulnerabilityCountdown
+    STA TransitionInvulnerabilityMirror
     JSR ResetPpuScroll
     JSR EnableNmi
     JMP WaitForVblankAndEnableRendering

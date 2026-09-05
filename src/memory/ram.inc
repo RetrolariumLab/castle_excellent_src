@@ -26,6 +26,10 @@ RuntimeObjectHandlerPointerLo = $0031
 RuntimeObjectHandlerPointerHi = $0032
 RuntimeObjectUpdateSharedFlag = $07C6
 
+; Contextual player collision-result dispatch at $9477-$949B
+PlayerCollisionHandlerPointerLo = $0031
+PlayerCollisionHandlerPointerHi = $0032
+
 ; Contextual result buffer for controller polling at $80FF-$8157
 PolledControllerButtons = $0020
 
@@ -98,6 +102,31 @@ RuntimeObjectRecordBytes = $90
 RuntimeObjectRecordCount = 24
 RuntimeObjectTypeIndexMask = $7F
 RuntimeObjectVisibleYLimit = $A0
+RoomCellSampleY = $001B
+RoomCellSampleXLo = $0027
+RoomCellSampleXHi = $0028
+RoomCellSampleColumnLo = $0029
+RoomCellSampleColumnHi = $002A
+RoomCellSamplePointerLo = $002B
+RoomCellSamplePointerHi = $002C
+PlayerCollisionSampleY = $001B
+PlayerCollisionObjectIndex = $001D
+PlayerCollisionSampleXLo = $0027
+PlayerCollisionSampleXHi = $0028
+PlayerCollisionSampleColumn = $0029
+PlayerCollisionCellPointerLo = $002B
+PlayerCollisionCellPointerHi = $002C
+PlayerCollisionDeltaXLo = $002B
+PlayerCollisionDeltaXHi = $002C
+PlayerCollisionMotionState = $003C
+PlayerCollisionObjectFilterActive = $07CB
+PlayerCollisionAnimationCounter = $0040
+PlayerCollisionScreenYFirst = $10
+PlayerCollisionScreenYEnd = $B0
+PlayerCollisionScreenXEndLo = $40
+PlayerCollisionRuntimeTypeEnd = $A8
+PlayerCollisionSpecialRuntimeType = $86
+PlayerCollisionSpecialPhaseThreshold = $08
 ObjectSpanXLo = $0044
 ObjectSpanXHi = $0045
 ObjectSpanY = $0046
@@ -317,10 +346,13 @@ HazardCellRowPointerLo = $002B
 TransitionPlayerXLo = $0010
 TransitionPlayerXHi = $0011
 TransitionPlayerY = $0012
-TransitionStateByte0 = $000D
-TransitionStateByte1 = $000E
-TransitionStateMirror0 = $0014
-TransitionStateMirror1 = $0015
+TransitionHazardProtectionCountdown = $000D
+TransitionInvulnerabilityCountdown = $000E
+TransitionHazardProtectionMirror = $0014
+TransitionInvulnerabilityMirror = $0015
+PlayerTransitionScreenState = $07CD
+ReloadRoomObjectStateBits = $0016
+ReloadRoomMutableCellStateBits = $0019
 
 NmiTaskRequests = $0785
 NmiTaskRequestCount = 23

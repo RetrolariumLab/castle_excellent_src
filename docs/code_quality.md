@@ -33,7 +33,13 @@ The quality targets follow the same contract as the sibling
   room/object point sampling across all cell halves, animation phases, runtime
   slots and the complete 320x160 coordinate domain, plus
   the room-only four-call sampler across every pixel, cell half, and animation
-  sign, plus
+  sign, plus the shared seven-call row/column address helper across all 65,792
+  possible 16-bit X and byte-wide Y machine-value combinations, plus
+  the 28-call player sampler across screen bounds, player cell flags, all
+  runtime types and slots, restricted filtering, and type-`$86` phase/motion
+  geometry, plus
+  the seven-call player collision dispatcher, both handler tables, all 140
+  consumed identities, and its synthetic return address, plus
   the resumable runtime-object overlap scan across all pool offsets and more
   than one million active-type and dimension-boundary cases, plus
   pause edges and paused scrolling across complete button/state byte domains,

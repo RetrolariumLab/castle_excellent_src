@@ -242,6 +242,13 @@ The last height byte at `$AB49` is also the byte immediately before
 fifth data structure. `scripts/collision_tables.py` proves the four physical
 ranges and all 18 exact code consumers.
 
+Player collision results select one of two little-endian pointer tables.
+`PlayerRoomCellCollisionHandlerPointers` at `$926C-$9333` has 100 entries
+indexed directly by cell type. `PlayerRuntimeCollisionHandlerPointers` at
+`$9334-$9385` has 41 physical entries indexed by the type's low seven bits;
+the player sampler consumes `$80-$A7`, leaving the final `$A8` entry outside
+that call path. The shared `$926B` target is a one-byte no-op `RTS`.
+
 `RoomObjectCounts` at `$AB4A-$ABAD` exactly matches the 100 decoded static
 lists. `RuntimeObjectOffsetByCount` at `$8F10-$8F28` is the sequence
 `0,6,...,144`, allowing cell-derived objects to follow the static records.

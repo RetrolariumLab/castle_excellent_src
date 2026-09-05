@@ -87,16 +87,36 @@ payload and `$13` as its separate tail byte. Runtime offsets 11-13 restore the
 global player X/Y fields before the loaded room and player-adjacent mutable cell
 are rebuilt.
 
-Within `$952D-$9551`, zero-page `$10-$12` are the saved player X low/high and Y
-bytes copied into `RoomRuntimeLoadMirror + $0B..$0D`. Bytes `$0D-$0E` are two
-additional transition-state values copied to `$14-$15`. These seven names are
-strictly scoped to transition completion because the same scratch addresses
-serve unrelated code elsewhere.
+Within `$93F6-$9551`, zero-page `$10-$12` are the saved player X low/high and Y
+bytes restored after death and later copied into
+`RoomRuntimeLoadMirror + $0B..$0D`. Bytes `$0D-$0E` are two additional
+transition-state values copied to `$14-$15`; `$14` feeds the protection
+extension on death reload. `$16-$18` and `$19-$1D` temporarily carry the
+three-byte object and five-byte mutable-cell persistent state into the apply
+routine. `$07CD` selects the fixed protection base during transition reload.
+These names remain scoped because the same scratch addresses serve unrelated
+code elsewhere.
 
 Within `$9583-$95BE`, `$31-$32` are the little-endian runtime-object handler
 pointer and `$07C6` is the shared update flag cleared before each record. The
 pointer aliases remain scoped to the dispatcher; `$0043` is global because the
 selected handlers repeatedly recover the same current six-byte record offset.
+
+Within `$8DD3-$8ECA`, `$1B` and `$27-$28` retain the rebased Y and 16-bit X
+sample. `$1D` scans the 24 runtime records; `$29` selects the room-cell column;
+and `$2B-$2C` first address the room row, then hold the object-relative X delta.
+Scoped `$07CB` is a one-shot nonzero request to accept only runtime types
+`$90-$95`, and is cleared on every return. `$3C` and `$40` provide the player
+motion and room-cell animation phases used by the two special cases.
+
+Within `$9477-$949B`, `$31-$32` are the selected player collision-handler
+pointer. The dispatcher fills them from the room-cell or runtime-object table,
+then consumes them in a synthetic indirect call.
+
+Within `$8ECB-$8F0F`, `$27-$28` and `$1B` retain the caller's 16-bit X and
+byte Y. `$29-$2A` become X shifted right four places, while `$2B-$2C` hold the
+first room-cell address for row `Y >> 3`. These aliases are scoped to the
+shared sample-address builder.
 
 Within `$A0C4-$A1A2`, `$1B` and `$27-$28` retain the sampled Y and 16-bit X,
 while `$1D` indexes the 24-slot runtime pool. During room lookup `$29-$2C`

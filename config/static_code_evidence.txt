@@ -2,6 +2,27 @@
 # rom_sha1 42f7975da9a68a74e141353eb6e2bdc676fc1f77
 # kind start end (inclusive CPU addresses)
 #
+# Four animated-cell and fifty-seven direct-death handler table entries plus
+# the hazard-contact jump at $93F2 prove both complete player-death paths.
+code 8DAB 8DD2
+
+# Twenty-eight direct calls and native runtime execution prove the player
+# room-cell/runtime-object collision sampler and its complete internal flow.
+code 8DD3 8ECA
+
+# Seven direct calls at $89FC/$8ACA/$8AF4/$8DF7/$9B0D/$A1AD/$A88A prove
+# the shared room-cell sample address builder and its complete internal flow.
+code 8ECB 8F0F
+
+# The main loop directly calls $9386; native execution covers the seven-probe
+# path, and direct flow plus the death countdown prove transition completion,
+# persistent-state reload, game-over, and rendering-resume branches.
+code 9386 9476
+
+# Seven direct calls and native execution prove the player collision-result
+# handler dispatcher, including its synthetic JSR return shim.
+code 9477 949B
+
 # Three direct JSR instructions at $9855, $993D, and $99B0 target the shared
 # player/object-span overlap helper below. Its internal conditional branches
 # remain within the contiguous routine and both paths terminate with RTS.

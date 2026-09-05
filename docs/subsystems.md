@@ -325,6 +325,47 @@ bytes each, but their logical `$80-$A7` domains intentionally consume two
 nonzero bytes from the next routine, preserving the expected result for the two
 dynamically created types beyond `$A5`.
 
+`SamplePlayerCollisionAtScreenPixel` converts the player's screen-coordinate
+probes into the 20x20 room buffer after excluding the 16-pixel status row. It
+uses the player-specific half table, then scans the 24-record pool when the
+room half is passable. A caller latch can restrict candidates to `$90-$95`;
+type `$86` additionally changes its vertical hit region with room-frame phase
+and player motion. Every return clears that one-shot latch.
+
+`DispatchPlayerCollisionSample` routes each of the seven frame-level samples
+through either `PlayerRoomCellCollisionHandlerPointers` or
+`PlayerRuntimeCollisionHandlerPointers`. The high type bit selects the table;
+the doubled remaining identity selects its interleaved pointer. A manually
+pushed return address makes the indirect jump behave as a call.
+
+`HandleAnimatedPlayerHazard` first makes room-cell types `$45-$48` lethal only
+while the shared animation counter is nonnegative. `StartPlayerDeathTransition`
+is shared directly by another 39 room-cell and 18 runtime-object identities,
+with a further direct entry from the frame-level hazard-contact check.
+Invulnerability or an active transition returns without mutation.
+Otherwise it starts a `$80`-frame transition, clears the player action
+countdown, decrements a nonzero reserve-life count or sets `GameOverActive` to
+`$FF`, then selects audio track set 2. The ROM-backed model covers every guard
+pair, every animation/reserve-life value, all table references, and the direct
+jump.
+
+`UpdatePlayerCollisionState` is the frame-level owner of seven ordered player
+probes. It dispatches the four corners, center, top-center, and top-right a
+second time, preserving that duplicate because handlers may mutate shared
+state between dispatches. A nonzero transition skips the probes for the
+countdown/reload path. Otherwise the final hazard flag starts death only when
+the protection countdown is zero. The model checks coordinate wrap, call order,
+all state boundaries, and the sole main-loop caller.
+
+`AdvancePlayerTransitionCountdown` owns the matching `$93F6-$9476` completion
+path. On the final tick it restores saved X/Y, extends hazard protection from
+the transition mirror or a fixed screen-state base, then either runs game over
+or rebuilds the current room. The reload path saves the outgoing object bitmap,
+decodes the one-based current room, loads objects, copies and applies the
+three-byte object and five-byte mutable-cell bitmaps, resets runtime/NMI/screen
+state, rebuilds attributes and scroll, and resumes rendering before NMI. The
+independent model fixes the full call order and all countdown/protection cases.
+
 `SampleCollisionAtPixel` first resolves a 320x160 pixel coordinate to the
 20x20 room buffer and one of the cell's two eight-pixel collision halves. A
 nonzero room flag wins immediately; its bit 0 and bit 7 become carry and
@@ -334,6 +375,11 @@ scan all 24 runtime records in order, excluding `CurrentObjectOffset`, and
 return the first object containing the sample point. Y distinguishes a runtime
 object (`1`) from a room/empty result, and object carry comes from the shared
 solidity filter.
+
+`PrepareRoomCellSampleAddress` is the shared arithmetic below these samplers
+and the player hazard probe. It preserves A:X/Y in scratch, produces the first
+cell address of row `Y >> 3`, shifts the complete 16-bit X to a cell column,
+and exposes X bit 3 as carry for the horizontal half selector.
 
 `SampleRoomCollisionAtPixel` is a smaller four-call variant for paired object
 movement probes. It always returns the addressed cell and its flags, including

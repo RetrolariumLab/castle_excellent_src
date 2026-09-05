@@ -428,10 +428,130 @@
       "confidence": "high"
     },
     {
+      "address": "0x8758",
+      "name": "SaveCurrentRoomObjectState",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DAB",
+      "name": "HandleAnimatedPlayerHazard",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DB0",
+      "name": "StartPlayerDeathTransition",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DB8",
+      "name": "BeginPlayerDeathTransition",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DCB",
+      "name": "SetPlayerGameOver",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DD0",
+      "name": "StartPlayerDeathAudio",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DD3",
+      "name": "SamplePlayerCollisionAtScreenPixel",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DE7",
+      "name": "ReturnEmptyPlayerCollisionSample",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8DF0",
+      "name": "SamplePlayerRoomCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8E1C",
+      "name": "ReturnPlayerRoomCellCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8E2B",
+      "name": "ScanPlayerCollisionObjects",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8E2F",
+      "name": "TestNextPlayerCollisionObject",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8E4D",
+      "name": "TestPlayerCollisionObjectGeometry",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8E79",
+      "name": "RestoreSpecialObjectVerticalDelta",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8E7A",
+      "name": "TestPlayerCollisionObjectHorizontalSpan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8EA5",
+      "name": "ApplyPlayerCollisionObjectPassThroughFilter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8EAD",
+      "name": "ReturnPlayerObjectCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8EB7",
+      "name": "AdvancePlayerCollisionObjectScan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8EC2",
+      "name": "ReturnNoPlayerCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x8ECB",
       "name": "PrepareRoomCellSampleAddress",
       "kind": "routine",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8EF0",
+      "name": "FinishRoomCellSampleRowPointer",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0x8F10",
@@ -440,10 +560,112 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x926B",
+      "name": "ReturnFromPlayerCollisionHandler",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x926C",
+      "name": "PlayerRoomCellCollisionHandlerPointers",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9334",
+      "name": "PlayerRuntimeCollisionHandlerPointers",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0x9386",
       "name": "UpdatePlayerCollisionState",
       "kind": "routine",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x938E",
+      "name": "SamplePlayerCollisionPoints",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x93F5",
+      "name": "ReturnFromPlayerCollisionUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x93F6",
+      "name": "AdvancePlayerTransitionCountdown",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x93FC",
+      "name": "CompletePlayerTransition",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9417",
+      "name": "SelectPlayerTransitionProtectionBase",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x941E",
+      "name": "AddPlayerTransitionProtectionBonus",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9423",
+      "name": "FinishPlayerTransitionState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9434",
+      "name": "ReloadCurrentRoomAfterPlayerTransition",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9442",
+      "name": "CopyReloadRoomObjectState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x944C",
+      "name": "CopyReloadRoomMutableCellState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9477",
+      "name": "DispatchPlayerCollisionSample",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9488",
+      "name": "SelectPlayerRuntimeCollisionHandler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9492",
+      "name": "InvokePlayerCollisionHandler",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x949B",
+      "name": "ReturnFromPlayerCollisionDispatch",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0x949C",
@@ -4199,6 +4421,12 @@
       "address": "0xFE30",
       "name": "ReturnRoomPersistentStateSaved",
       "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFE31",
+      "name": "RunGameOverSequence",
+      "kind": "routine",
       "confidence": "confirmed"
     },
     {

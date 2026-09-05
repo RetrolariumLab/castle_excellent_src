@@ -2,6 +2,114 @@
   "schema_version": 1,
   "overrides": [
     {
+      "instruction": "0x8DD3",
+      "expected": "#$10",
+      "operand": "#PlayerCollisionScreenYFirst",
+      "evidence": "player collision coordinates begin below the 16-pixel status row"
+    },
+    {
+      "instruction": "0x8DD7",
+      "expected": "#$B0",
+      "operand": "#PlayerCollisionScreenYEnd",
+      "evidence": "the 160-pixel gameplay field ends at screen Y $B0"
+    },
+    {
+      "instruction": "0x8DE3",
+      "expected": "#$40",
+      "operand": "#PlayerCollisionScreenXEndLo",
+      "evidence": "page one accepts low X below $40 for a 320-pixel room"
+    },
+    {
+      "instruction": "0x8DE8",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "out-of-bounds player collision samples return the empty-cell sentinel"
+    },
+    {
+      "instruction": "0x8DF3",
+      "expected": "#$10",
+      "operand": "#PlayerCollisionScreenYFirst",
+      "evidence": "screen Y is rebased past the 16-pixel status row"
+    },
+    {
+      "instruction": "0x8DFE",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the empty room-cell sentinel falls through to runtime-object sampling"
+    },
+    {
+      "instruction": "0x8E3A",
+      "expected": "#$A8",
+      "operand": "#PlayerCollisionRuntimeTypeEnd",
+      "evidence": "runtime collision consumers accept the proven type domain $80-$A7"
+    },
+    {
+      "instruction": "0x8E5A",
+      "expected": "#$86",
+      "operand": "#PlayerCollisionSpecialRuntimeType",
+      "evidence": "runtime type $86 alone receives phase- and motion-dependent vertical filtering"
+    },
+    {
+      "instruction": "0x8E66",
+      "expected": "#$08",
+      "operand": "#PlayerCollisionSpecialPhaseThreshold",
+      "evidence": "the high nibble of the room frame counter divides the special behavior into two halves"
+    },
+    {
+      "instruction": "0x8EBB",
+      "expected": "#$18",
+      "operand": "#RuntimeObjectRecordCount",
+      "evidence": "the sampler scans all 24 six-byte runtime records"
+    },
+    {
+      "instruction": "0x8EC3",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "an exhausted runtime scan returns the empty-cell sentinel"
+    },
+    {
+      "instruction": "0x8EF8",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "the computed row offset is based at the decoded room buffer $0400"
+    },
+    {
+      "instruction": "0x947B",
+      "expected": "a:$926C,X",
+      "operand": "PlayerRoomCellCollisionHandlerPointers,X",
+      "evidence": "carry-clear sample identities index the 100-entry room-cell handler table"
+    },
+    {
+      "instruction": "0x9480",
+      "expected": "a:$926D,X",
+      "operand": "PlayerRoomCellCollisionHandlerPointers + 1,X",
+      "evidence": "the adjacent byte is the selected room-cell handler high byte"
+    },
+    {
+      "instruction": "0x9488",
+      "expected": "a:$9334,X",
+      "operand": "PlayerRuntimeCollisionHandlerPointers,X",
+      "evidence": "carry-set sample identities index the runtime-type handler table"
+    },
+    {
+      "instruction": "0x948D",
+      "expected": "a:$9335,X",
+      "operand": "PlayerRuntimeCollisionHandlerPointers + 1,X",
+      "evidence": "the adjacent byte is the selected runtime handler high byte"
+    },
+    {
+      "instruction": "0x9492",
+      "expected": "#$94",
+      "operand": "#>(ReturnFromPlayerCollisionDispatch - 1)",
+      "evidence": "the synthetic indirect call pushes the high byte of its RTS return address"
+    },
+    {
+      "instruction": "0x9495",
+      "expected": "#$9A",
+      "operand": "#<(ReturnFromPlayerCollisionDispatch - 1)",
+      "evidence": "the synthetic indirect call pushes the low byte of its RTS return address"
+    },
+    {
       "instruction": "0x949F",
       "expected": "#$FF",
       "operand": "#NmiTaskPending",

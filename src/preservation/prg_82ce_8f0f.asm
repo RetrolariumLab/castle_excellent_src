@@ -1,5 +1,5 @@
 ; Preservation PRG after the main loop
-; CPU range $82CE-$8F0F
+; CPU range $82CE-$8DAA
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
@@ -89,16 +89,16 @@ Label_834A:
 Label_8357:
     JSR GetPlayerXPlus7
     LDY $1A
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCS Label_837D
     LDA PlayerXHi
     LDX PlayerXLo
     LDY $1A
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCS Label_837D
     JSR GetPlayerXPlus15
     LDY $1A
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCS Label_837D
     DEC PlayerY
     DEC PlayerY
@@ -141,7 +141,7 @@ Label_83A8:
     ADC $1F
     TAY
     JSR GetPlayerXPlus7
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCC Label_83C5
     STA $30
     JSR ClassifyAnimatedCollisionCell
@@ -155,7 +155,7 @@ Label_83C5:
     TAY
     LDX PlayerXLo
     LDA PlayerXHi
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCC Label_83DD
     STA $2F
     JSR ClassifyAnimatedCollisionCell
@@ -168,7 +168,7 @@ Label_83DD:
     ADC $1F
     TAY
     JSR GetPlayerXPlus15
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCS Label_840F
     LDA $1E
     BEQ Label_83F8
@@ -400,7 +400,7 @@ Label_855D:
     STY $1E
     LDA $22
     LDX $21
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCS Label_85A6
     LDA #$FF
     STA a:$07CB
@@ -411,7 +411,7 @@ Label_855D:
     STY $1E
     LDA $22
     LDX $21
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCS Label_85A6
     LDA #$FF
     STA a:$07CB
@@ -419,7 +419,7 @@ Label_855D:
     LDX $21
     LDY PlayerY
     STY $1E
-    JSR Func_8DD3
+    JSR SamplePlayerCollisionAtScreenPixel
     BCS Label_85A6
     LDA $24
     STA PlayerXHi
@@ -564,7 +564,7 @@ Label_867A:
     AND #$F8
     STA PlayerXLo
     STA $10
-    JSR Func_8758
+    JSR SaveCurrentRoomObjectState
     JSR MoveToRoomAbove
     LDA #$00
     STA a:$07CD
@@ -582,7 +582,7 @@ Label_86A0:
     AND #$F8
     STA PlayerXLo
     STA $10
-    JSR Func_8758
+    JSR SaveCurrentRoomObjectState
     JSR MoveToRoomBelow
     LDA #$00
     STA a:$07CD
@@ -608,7 +608,7 @@ Label_86D6:
     STA $11
     LDA PlayerY
     STA $12
-    JSR Func_8758
+    JSR SaveCurrentRoomObjectState
     JSR MoveToRoomLeft
     LDA #$00
     STA a:$07CD
@@ -646,7 +646,7 @@ Label_8721:
     STA $11
     LDA PlayerY
     STA $12
-    JSR Func_8758
+    JSR SaveCurrentRoomObjectState
     JSR MoveToRoomRight
     LDA #$00
     STA a:$07CD
@@ -666,7 +666,7 @@ Label_8721:
 Label_8755:
     JMP FinishRoomTransition
 
-Func_8758:
+SaveCurrentRoomObjectState:
     LDX #$00
 
 Label_875A:
@@ -1144,232 +1144,4 @@ Func_8D2A:
     .byte $8E, $FE, $60, $20, $A9, $A8, $B0, $FA, $20, $8D, $B8, $A5, $DB, $05, $DC, $D0
     .byte $FA, $A6, $41, $A9, $91, $95, $4A, $B5, $4B, $38, $E9, $10, $95, $4B, $B0, $02
     .byte $D6, $4C, $A5, $37, $C9, $59, $D0, $15, $A9, $91, $85, $D4, $B5, $4B, $38, $E9
-    .byte $10, $85, $D5, $B5, $4C, $E9, $00, $85, $D6, $B5, $4D, $85, $D7, $60, $A5, $40
-    .byte $10, $01, $60
-
-Label_8DB0:
-    LDA PlayerDeathInvulnerabilityCountdown
-    ORA PlayerTransitionCountdown
-    BEQ Label_8DB8
-    RTS
-
-Label_8DB8:
-    LDA #$80
-    STA PlayerTransitionCountdown
-    LDA #$00
-    STA a:$0779
-    LDA PlayerLives
-    BEQ Label_8DCB
-    DEC PlayerLives
-    JMP Label_8DD0
-
-Label_8DCB:
-    LDA #$FF
-    STA GameOverActive
-
-Label_8DD0:
-    JMP LoadAudioTrackSet2
-
-Func_8DD3:
-    CPY #$10
-    BCC Label_8DE7
-    CPY #$B0
-    BCS Label_8DE7
-    CMP #$00
-    BEQ Label_8DF0
-    CMP #$01
-    BNE Label_8DE7
-    CPX #$40
-    BCC Label_8DF0
-
-Label_8DE7:
-    CLC
-    LDA #$53
-    LDX #$00
-    STX a:$07CB
-    RTS
-
-Label_8DF0:
-    PHA
-    TYA
-    SEC
-    SBC #$10
-    TAY
-    PLA
-    JSR PrepareRoomCellSampleAddress
-    LDY $29
-    LDA ($2B),Y
-    CMP #$53
-    BEQ Label_8E2B
-    TAX
-    LDA $27
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    TXA
-    ROL A
-    TAX
-    LDA PlayerCollisionFlagsByRoomCellHalf,X
-    BEQ Label_8E2B
-    JSR ClassifyCollisionCellPairIndex
-    BNE Label_8E1C
-    LDY $40
-    BPL Label_8E1C
-    LDA #$00
-
-Label_8E1C:
-    PHA
-    LDA #$00
-    STA a:$07CB
-    PLA
-    PHA
-    LSR A
-    PLA
-    PHP
-    TXA
-    LSR A
-    PLP
-    RTS
-
-Label_8E2B:
-    LDY #$00
-    STY $1D
-
-Label_8E2F:
-    LDY $1D
-    LDX RuntimeObjectOffsetByCount,Y
-    STX CurrentObjectOffset
-    LDA RuntimeObjectRecords,X
-    BEQ Label_8EB7
-    CMP #$A8
-    BCS Label_8EB7
-    DEC a:$07CB
-    INC a:$07CB
-    BEQ Label_8E4D
-    LDA RuntimeObjectRecords,X
-    JSR IsRuntimeObjectType90To95
-    BCC Label_8EB7
-
-Label_8E4D:
-    TAY
-    LDA $1B
-    SEC
-    SBC RuntimeObjectY,X
-    BCC Label_8EB7
-    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
-    BCS Label_8EB7
-    CPY #$86
-    BNE Label_8E7A
-    PHA
-    LDA RoomFrameCounter
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    CMP #$08
-    BCS Label_8E79
-    PLA
-    CMP #$F8
-    BCC Label_8EB7
-    LDA $3C
-    BEQ Label_8E7A
-    BNE Label_8EB7
-    PLA
-    JMP Label_8EB7
-
-Label_8E79:
-    PLA
-
-Label_8E7A:
-    LDA $27
-    STA $2B
-    LDA $28
-    STA $2C
-    LDA $2B
-    SEC
-    SBC RuntimeObjectXLo,X
-    STA $2B
-    LDA $2C
-    SBC RuntimeObjectXHi,X
-    BCC Label_8EB7
-    STA $2C
-    LDA $2B
-    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
-    BCS Label_8EB7
-    LDA $2C
-    BNE Label_8EB7
-    LDA RuntimeObjectRecords,X
-    JSR GetRuntimeObjectSolidFlag
-    CLC
-    BEQ Label_8EA5
-    SEC
-
-Label_8EA5:
-    LDA RuntimeObjectRecords,X
-    JSR GetRuntimeObjectType84To89Filter
-    BNE Label_8EAD
-    CLC
-
-Label_8EAD:
-    LDA RuntimeObjectRecords,X
-    LDY #$00
-    STY a:$07CB
-    LDY #$01
-    RTS
-
-Label_8EB7:
-    INC $1D
-    LDA $1D
-    CMP #$18
-    BCS Label_8EC2
-    JMP Label_8E2F
-
-Label_8EC2:
-    CLC
-    LDA #$53
-    LDY #$00
-    STY a:$07CB
-    RTS
-
-PrepareRoomCellSampleAddress:
-    STA $28
-    STA $2A
-    STX $27
-    STX $29
-    STY $1B
-    LDA #$00
-    STA $2C
-    TYA
-    LSR A
-    LSR A
-    LSR A
-    STA $2B
-    ASL $2B
-    ROL $2C
-    ASL $2B
-    ROL $2C
-    CLC
-    ADC $2B
-    STA $2B
-    BCC Label_8EF0
-    INC $2C
-
-Label_8EF0:
-    ASL $2B
-    ROL $2C
-    ASL $2B
-    ROL $2C
-    LDA #$04
-    CLC
-    ADC $2C
-    STA $2C
-    LSR $2A
-    ROR $29
-    LSR $2A
-    ROR $29
-    LSR $2A
-    ROR $29
-    LSR $2A
-    ROR $29
-    RTS
+    .byte $10, $85, $D5, $B5, $4C, $E9, $00, $85, $D6, $B5, $4D, $85, $D7, $60

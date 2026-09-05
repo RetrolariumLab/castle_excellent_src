@@ -25,6 +25,19 @@ evidence, and tested decoders for game data.
   snapshot orchestration now form a semantic vertical slice. Pixel-to-tile
   conversion, room-cell addressing, mutable-anchor lookup, and ordinal-based
   restoration are reconstructed with their persistence/render side effects.
+  The primary player collision sampler now owns its 320x160 screen-to-room
+  transform, player-specific cell flags, 24-record object scan, restricted
+  `$90-$95` mode, and phase-dependent type-`$86` geometry.
+  The shared death handler now exposes its animated-cell phase predicate,
+  invulnerability/transition guard, 128-frame transition, action reset,
+  reserve-life branch, game-over latch, and death-audio selection for all 61
+  collision-table identities.
+  Frame-level collision orchestration now names all seven ordered player probes,
+  their sample/dispatch pairs, the active-transition bypass, and the final
+  protected-hazard death decision.
+  Transition completion now restores saved player coordinates, extends hazard
+  protection, selects game over or a complete persistent-state room reload,
+  and documents the exact rendering-resume order.
   Six inventory-backed handlers now connect persistent cell pairs to all six
   counters, player-motion/alignment guards, boundary delay, and opening sound.
   Four room-transition helpers now expose the one-based 10x10 castle grid,
@@ -101,6 +114,15 @@ evidence, and tested decoders for game data.
   object across the complete 320x160 room domain.
 - `scripts/room_collision_sample.py` proves the room-only four-call variant
   across every room pixel, cell half, and animation-counter sign.
+- `scripts/room_cell_sample_address.py` proves the shared seven-call address
+  builder, including its row pointer, full 16-bit column shift, and half-cell
+  carry across every possible X/Y machine-value combination.
+- `scripts/player_collision_sample.py` proves the 28-call player sampler,
+  including screen bounds, cell flags, runtime geometry/type filtering, scan
+  order, and the special type-`$86` phase and motion behavior.
+- `scripts/player_collision_dispatch.py` proves the seven-call result
+  dispatcher, both 100/41-entry handler tables, room/runtime selection, and
+  its synthetic indirect-call return address.
 - `scripts/runtime_object_overlap.py` proves the 24-record active-object scan,
   asymmetric width bounds, vertical dimension test, first-match/resume order,
   and the carry-clear match versus carry-set exhaustion contract.
@@ -167,7 +189,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 317 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 365 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -175,11 +197,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,841 instructions after 14
-  static code ranges recover pointer-selected entries and 55 evidence-backed data
+  disagreements. Evidence-refined Ghidra exports 9,844 instructions after 19
+  static code ranges recover pointer-selected entries and 57 evidence-backed data
   ranges remove 192 false-positive instructions. A separate registry clears
   one overextended switch target embedded in a real instruction operand. The
-  source layout owns 21,001 PRG bytes semantically (64.09%).
+  source layout owns 21,919 PRG bytes semantically (66.89%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -286,6 +308,18 @@ make mutable-cell-action-state # inspect inventory-backed cell actions
 make validate-mutable-cell-actions # validate all action mappings and guards
 make room-navigation-state # inspect the one-based 10x10 castle grid
 make validate-room-navigation # validate every room movement and edge table
+make room-cell-sample-address # inspect shared room-cell address arithmetic
+make validate-room-cell-sample-address # validate all 16-bit X and byte Y inputs
+make player-death-transition # inspect death guards, lives, and game-over state
+make validate-player-death-transition # validate all death guard/life domains
+make player-collision-sample # inspect player cell/object collision sampling
+make validate-player-collision-sample # validate all proven player sample domains
+make player-collision-update # inspect the seven frame-level player probes
+make validate-player-collision-update # validate probe order and hazard dispatch
+make player-collision-dispatch # inspect room/runtime collision handler selection
+make validate-player-collision-dispatch # validate handler tables and synthetic return
+make player-transition-reload # inspect countdown, protection, and room reload
+make validate-player-transition-reload # validate all countdown/protection cases
 make player-hazard-state # inspect protection timers and hazard contact
 make validate-player-hazard # validate all timer/probe/cell input domains
 make object-player-proximity # inspect the object/player carry predicate
@@ -343,6 +377,9 @@ scripts/controller_input.py controller serial-polling model
 scripts/famicom_data_io.py pulse and expansion data-transport model
 scripts/save_data.py     394-byte save-payload codec and validator
 scripts/room_cell_coordinates.py room-cell coordinate and mutation model
+scripts/room_cell_sample_address.py shared collision-sample address model
+scripts/player_collision_sample.py player room-cell/object collision model
+scripts/player_collision_dispatch.py player collision-handler dispatch model
 scripts/room_navigation.py one-based 10x10 castle navigation model
 scripts/player_hazard_state.py protection countdown and hazard-probe model
 scripts/object_player_proximity.py runtime-object/player proximity model
@@ -385,13 +422,20 @@ src/game/rooms/load_room.asm top-level room-loading orchestration
 src/game/rooms/state_orchestration.asm snapshot selection and rotation
 src/game/rooms/persistent_state_*.asm offsets plus apply/load/save paths
 src/game/rooms/cell_coordinates.asm pixel, tile, and room-cell addressing
+src/game/rooms/sample_address.asm shared collision-sample address preparation
 src/game/rooms/mutable_cell_*.asm actions, lookup, predicates, and restoration
 src/game/rooms/navigation.asm boundary-safe castle room movement
+src/game/player/death_transition.asm guarded death and reserve-life transition
+src/game/player/transition_reload.asm countdown and persistent room reload
 src/game/player/hazard_state.asm protection decay and hazard-cell contact
 src/game/objects/player_proximity.asm shared object/player interaction predicate
 src/game/objects/player_span_overlap.asm shared player/object-span predicate
 src/game/objects/transient_lifecycle.asm type 32/40/41 lifecycle handlers
 src/game/collision/object_filters.asm animated-cell and runtime-type filters
+src/game/collision/player_sample.asm player room-cell/object collision sampler
+src/game/collision/player_handler_tables.asm player collision handler pointers
+src/game/collision/player_update.asm frame collision probes and hazard dispatch
+src/game/collision/player_dispatch.asm player collision-handler dispatch
 src/game/collision/point_sample.asm room-cell/runtime-object point sampler
 src/game/collision/room_sample.asm room-cell-only point sampler
 src/game/collision/runtime_overlap.asm active-object span overlap scan

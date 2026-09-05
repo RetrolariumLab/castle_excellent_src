@@ -384,10 +384,136 @@
       "end": "0x8217"
     },
     {
+      "address": "0x001B",
+      "name": "RoomCellSampleY",
+      "start": "0x8ECB",
+      "end": "0x8F10"
+    },
+    {
+      "address": "0x001B",
+      "name": "PlayerCollisionSampleY",
+      "start": "0x8DD3",
+      "end": "0x8ECB"
+    },
+    {
+      "address": "0x001D",
+      "name": "PlayerCollisionObjectIndex",
+      "start": "0x8DD3",
+      "end": "0x8ECB"
+    },
+    {
+      "address": "0x0027",
+      "name": "PlayerCollisionSampleXLo",
+      "start": "0x8DD3",
+      "end": "0x8ECB"
+    },
+    {
+      "address": "0x0028",
+      "name": "PlayerCollisionSampleXHi",
+      "start": "0x8DD3",
+      "end": "0x8ECB"
+    },
+    {
+      "address": "0x0029",
+      "name": "PlayerCollisionSampleColumn",
+      "start": "0x8DD3",
+      "end": "0x8ECB"
+    },
+    {
+      "address": "0x002B",
+      "name": "PlayerCollisionCellPointerLo",
+      "start": "0x8DF0",
+      "end": "0x8E2B"
+    },
+    {
+      "address": "0x002C",
+      "name": "PlayerCollisionCellPointerHi",
+      "start": "0x8DF0",
+      "end": "0x8E2B"
+    },
+    {
+      "address": "0x002B",
+      "name": "PlayerCollisionDeltaXLo",
+      "start": "0x8E4D",
+      "end": "0x8EAD"
+    },
+    {
+      "address": "0x002C",
+      "name": "PlayerCollisionDeltaXHi",
+      "start": "0x8E4D",
+      "end": "0x8EAD"
+    },
+    {
+      "address": "0x003C",
+      "name": "PlayerCollisionMotionState",
+      "start": "0x8DD3",
+      "end": "0x8ECB"
+    },
+    {
+      "address": "0x0040",
+      "name": "PlayerCollisionAnimationCounter",
+      "start": "0x8DAB",
+      "end": "0x8ECB"
+    },
+    {
+      "address": "0x07CB",
+      "name": "PlayerCollisionObjectFilterActive",
+      "start": "0x8DD3",
+      "end": "0x8ECB"
+    },
+    {
+      "address": "0x0027",
+      "name": "RoomCellSampleXLo",
+      "start": "0x8ECB",
+      "end": "0x8F10"
+    },
+    {
+      "address": "0x0028",
+      "name": "RoomCellSampleXHi",
+      "start": "0x8ECB",
+      "end": "0x8F10"
+    },
+    {
+      "address": "0x0029",
+      "name": "RoomCellSampleColumnLo",
+      "start": "0x8ECB",
+      "end": "0x8F10"
+    },
+    {
+      "address": "0x002A",
+      "name": "RoomCellSampleColumnHi",
+      "start": "0x8ECB",
+      "end": "0x8F10"
+    },
+    {
+      "address": "0x002B",
+      "name": "RoomCellSamplePointerLo",
+      "start": "0x8ECB",
+      "end": "0x8F10"
+    },
+    {
+      "address": "0x002C",
+      "name": "RoomCellSamplePointerHi",
+      "start": "0x8ECB",
+      "end": "0x8F10"
+    },
+    {
       "address": "0x0031",
       "name": "RuntimeObjectHandlerPointerLo",
       "start": "0x9583",
       "end": "0x95BF"
+    },
+    {
+      "address": "0x0031",
+      "name": "PlayerCollisionHandlerPointerLo",
+      "start": "0x9477",
+      "end": "0x949C"
+    },
+    {
+      "address": "0x0032",
+      "name": "PlayerCollisionHandlerPointerHi",
+      "start": "0x9477",
+      "end": "0x949C"
     },
     {
       "address": "0x0032",
@@ -758,7 +884,7 @@
     {
       "address": "0x0779",
       "name": "PlayerActionCountdown",
-      "start": "0xAC13",
+      "start": "0x8DB0",
       "end": "0xADE7"
     },
     {
@@ -1116,42 +1242,62 @@
     {
       "address": "0x0010",
       "name": "TransitionPlayerXLo",
-      "start": "0x952D",
+      "start": "0x93F6",
       "end": "0x9552"
     },
     {
       "address": "0x0011",
       "name": "TransitionPlayerXHi",
-      "start": "0x952D",
+      "start": "0x93F6",
       "end": "0x9552"
     },
     {
       "address": "0x0012",
       "name": "TransitionPlayerY",
-      "start": "0x952D",
+      "start": "0x93F6",
       "end": "0x9552"
     },
     {
       "address": "0x000D",
-      "name": "TransitionStateByte0",
+      "name": "TransitionHazardProtectionCountdown",
       "start": "0x952D",
       "end": "0x9552"
     },
     {
       "address": "0x000E",
-      "name": "TransitionStateByte1",
+      "name": "TransitionInvulnerabilityCountdown",
       "start": "0x952D",
       "end": "0x9552"
     },
     {
       "address": "0x0014",
-      "name": "TransitionStateMirror0",
-      "start": "0x952D",
+      "name": "TransitionHazardProtectionMirror",
+      "start": "0x93F6",
       "end": "0x9552"
     },
     {
+      "address": "0x07CD",
+      "name": "PlayerTransitionScreenState",
+      "start": "0x93F6",
+      "end": "0x9477"
+    },
+    {
+      "address": "0x0016",
+      "name": "ReloadRoomObjectStateBits",
+      "size": 3,
+      "start": "0x93F6",
+      "end": "0x9477"
+    },
+    {
+      "address": "0x0019",
+      "name": "ReloadRoomMutableCellStateBits",
+      "size": 5,
+      "start": "0x93F6",
+      "end": "0x9477"
+    },
+    {
       "address": "0x0015",
-      "name": "TransitionStateMirror1",
+      "name": "TransitionInvulnerabilityMirror",
       "start": "0x952D",
       "end": "0x9552"
     },

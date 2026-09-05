@@ -18,8 +18,14 @@ DEBUG := $(BUILD_DIR)/castle_excellent.dbg
 SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.asm \
 	src/input/controllers.asm src/system/ppu.asm \
 	src/input/famicom_data_io.asm src/system/startup.asm \
-	src/preservation/prg_82ce_8f0f.asm \
+	src/preservation/prg_82ce_8f0f.asm src/game/player/death_transition.asm \
+	src/game/collision/player_sample.asm \
+	src/game/rooms/sample_address.asm \
 	src/game/objects/runtime_record_offsets.asm src/preservation/prg_8f29_949b.asm \
+	src/game/collision/player_handler_tables.asm \
+	src/game/collision/player_update.asm \
+	src/game/player/transition_reload.asm \
+	src/game/collision/player_dispatch.asm \
 	src/rendering/room_cell_updates.asm src/game/x_coordinates.asm \
 	src/game/rooms/finish_transition.asm src/game/collision/cell_samples.asm \
 	src/system/nmi_tasks.asm src/game/objects/update_dispatch.asm \
@@ -114,6 +120,12 @@ TIMEOUT_FRAMES ?= 15000
 	validate-room-cell-animation hud-format-state validate-hud-format \
 	mutable-cell-action-state validate-mutable-cell-actions \
 	room-navigation-state validate-room-navigation \
+	room-cell-sample-address validate-room-cell-sample-address \
+	player-death-transition validate-player-death-transition \
+	player-collision-sample validate-player-collision-sample \
+	player-collision-update validate-player-collision-update \
+	player-collision-dispatch validate-player-collision-dispatch \
+	player-transition-reload validate-player-transition-reload \
 	player-hazard-state validate-player-hazard object-player-proximity \
 	validate-object-player-proximity pause-input-state validate-pause-input \
 	collision-table-state validate-collision-tables \
@@ -431,6 +443,42 @@ room-navigation-state: $(ROM)
 validate-room-navigation: $(ROM)
 	$(PYTHON) scripts/room_navigation.py --image "$(ROM)" --validate
 
+room-cell-sample-address: $(ROM)
+	$(PYTHON) scripts/room_cell_sample_address.py --image "$(ROM)" --pretty
+
+validate-room-cell-sample-address: $(ROM)
+	$(PYTHON) scripts/room_cell_sample_address.py --image "$(ROM)" --validate
+
+player-death-transition: $(ROM)
+	$(PYTHON) scripts/player_death_transition.py --image "$(ROM)" --pretty
+
+validate-player-death-transition: $(ROM)
+	$(PYTHON) scripts/player_death_transition.py --image "$(ROM)" --validate
+
+player-collision-sample: $(ROM)
+	$(PYTHON) scripts/player_collision_sample.py --image "$(ROM)" --pretty
+
+validate-player-collision-sample: $(ROM)
+	$(PYTHON) scripts/player_collision_sample.py --image "$(ROM)" --validate
+
+player-collision-update: $(ROM)
+	$(PYTHON) scripts/player_collision_update.py --image "$(ROM)" --pretty
+
+validate-player-collision-update: $(ROM)
+	$(PYTHON) scripts/player_collision_update.py --image "$(ROM)" --validate
+
+player-transition-reload: $(ROM)
+	$(PYTHON) scripts/player_transition_reload.py --image "$(ROM)" --pretty
+
+validate-player-transition-reload: $(ROM)
+	$(PYTHON) scripts/player_transition_reload.py --image "$(ROM)" --validate
+
+player-collision-dispatch: $(ROM)
+	$(PYTHON) scripts/player_collision_dispatch.py --image "$(ROM)" --pretty
+
+validate-player-collision-dispatch: $(ROM)
+	$(PYTHON) scripts/player_collision_dispatch.py --image "$(ROM)" --validate
+
 player-hazard-state: $(ROM)
 	$(PYTHON) scripts/player_hazard_state.py --image "$(ROM)" --pretty
 
@@ -473,7 +521,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

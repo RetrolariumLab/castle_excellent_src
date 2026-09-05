@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 63 semantic and 8 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 70 semantic and 8 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 21,001 PRG bytes (64.09%): `$E45D-$E8DE`
+The promoted ranges currently cover 21,919 PRG bytes (66.89%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -184,6 +184,62 @@ The coordinate slice adds `$94DB-$952C`. Two player entries add 7 or 15 to the
 X=low. The independent 6502 arithmetic model exhaustively checks all 65,536
 input positions, every helper offset, low-byte carry and borrow, and 16-bit
 wraparound.
+
+The shared room-address slice adds `$8ECB-$8F0F`. Seven collision and hazard
+callers pass 16-bit X in A:X and byte Y in Y. The helper preserves those inputs
+in scoped scratch, computes a row pointer as `$0400 + (Y >> 3) * 20`, shifts
+the full X right four places into a 12-bit cell column, and leaves original X
+bit 3 in carry for half-cell selection. Its model verifies the exact 69 bytes,
+all seven call sites, every 16-bit X value, and every byte-wide Y value.
+
+The player collision slice adds `$8DD3-$8ECA`. Twenty-eight call sites provide
+screen X in A:X and screen Y in Y; the routine rejects pixels outside the
+320x160 gameplay field below the 16-pixel status row. Player-specific cell-half
+flags take priority, while empty or passable halves scan all 24 runtime records.
+A nonzero request flag restricts that scan to types `$90-$95`; type `$86` also
+has phase-, motion-, and vertical-half-dependent geometry. The independent
+model verifies the exact 248 bytes and 176,888 boundary, cell, type, geometry,
+special-state, and slot-order cases.
+
+The player collision dispatch slice adds `$926B-$9385` and `$9477-$949B`.
+Seven frame-level samples use the collision identity's high bit to select a
+100-entry room-cell table or a 41-entry runtime-type table at `$926C/$9334`.
+The doubled low seven bits select an interleaved pointer. The dispatcher pushes
+`ReturnFromPlayerCollisionDispatch - 1` before its indirect jump, turning the
+handler's `RTS` into a synthetic call and returning through the final local
+`RTS`. Both exact tables, all 140 consumed identities, seven call sites, and
+the 37-byte dispatcher are independently checked; the tables and their shared
+no-op target now own a separate semantic data module.
+
+The player death-transition slice adds `$8DAB-$8DD2`. Four animated room-cell
+types first use the shared animation counter sign to select harmless or lethal
+phase. Fifty-seven further room-cell/runtime-object entries plus the direct
+hazard-contact jump converge on the death entry. Nonzero invulnerability or an
+existing transition makes the handler a no-op; otherwise it installs a
+128-frame transition, clears the action countdown, consumes one reserve life
+or latches game over at zero, and selects audio track set 2. The independent
+model checks all 65,536 guard pairs, all animation/life byte values, the exact
+40 bytes, and every pointer source.
+
+The frame-level player collision slice adds `$9386-$93F5`. With no active
+transition it samples and dispatches seven ordered points: four player corners,
+center, top-center, and a deliberate second top-right sample. An active
+transition instead jumps directly to its countdown path. After all probes, a
+nonzero hazard-contact flag starts death only when hazard protection is zero.
+The model checks the exact 112 bytes and sole main-loop call, all 16-bit X and
+byte Y wrap boundaries, the exact 14-call sequence, and transition/contact/
+protection decisions.
+
+The transition-reload slice adds `$93F6-$9476`. The byte countdown completes
+only on `1 -> 0` and preserves the original `0 -> $FF` edge. Completion restores
+saved player X/Y and either keeps protection unchanged, adds ten to the greater
+of its current and mirrored values, or uses the screen-state override to set
+`$32`. Zero reserve lives plus a nonzero game-over latch branches to the game-
+over sequence; otherwise the current room is decoded, objects are loaded, both
+persistent bitmaps are copied and applied, runtime/render state is rebuilt, and
+NMI is resumed in the exact 13-call order. The model verifies all countdown
+bytes, 131,072 protection combinations, exact bitmap widths, room indexing,
+the 129 code bytes, and both terminal branches.
 
 The adjacent transition/collision slice adds `$952D-$9577`.
 `FinishRoomTransition` restores gameplay mode, mirrors player X/Y and two

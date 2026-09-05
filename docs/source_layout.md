@@ -10,9 +10,16 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/system/ppu.asm` | `$8158-$817F` | PPU state helpers and CNROM bank selection |
 | `src/input/famicom_data_io.asm` | `$8180-$8224` | transport selection and expansion-port serial I/O |
 | `src/system/startup.asm` | `$8225-$82CD` | reset, cold/warm boot state, and NMI-paced main loop |
-| `src/preservation/prg_82ce_8f0f.asm` | `$82CE-$8F0F` | unresolved player movement and early gameplay logic |
+| `src/preservation/prg_82ce_8f0f.asm` | `$82CE-$8DAA` | unresolved player movement and early gameplay logic |
+| `src/game/player/death_transition.asm` | `$8DAB-$8DD2` | animated hazard phase, guarded death, reserve lives, game over, and audio |
+| `src/game/collision/player_sample.asm` | `$8DD3-$8ECA` | player room-cell and runtime-object collision sampler |
+| `src/game/rooms/sample_address.asm` | `$8ECB-$8F0F` | room-row pointer and 16-bit collision-sample column preparation |
 | `src/game/objects/runtime_record_offsets.asm` | `$8F10-$8F28` | six-byte record offsets by object count |
-| `src/preservation/prg_8f29_949b.asm` | `$8F29-$949B` | unresolved early object/game logic before row updates |
+| `src/preservation/prg_8f29_949b.asm` | `$8F29-$926A` | unresolved early object/game logic before collision tables |
+| `src/game/collision/player_handler_tables.asm` | `$926B-$9385` | shared no-op plus 100 room and 41 runtime collision handlers |
+| `src/game/collision/player_update.asm` | `$9386-$93F5` | seven frame-level probes and protected-hazard death dispatch |
+| `src/game/player/transition_reload.asm` | `$93F6-$9476` | transition countdown, protection, game over, and current-room reload |
+| `src/game/collision/player_dispatch.asm` | `$9477-$949B` | room-cell/runtime-object collision-result handler dispatch |
 | `src/rendering/room_cell_updates.asm` | `$949C-$94DA` | room-cell row calculation and NMI update requests |
 | `src/game/x_coordinates.asm` | `$94DB-$952C` | player and runtime-object 16-bit X-coordinate helpers |
 | `src/game/rooms/finish_transition.asm` | `$952D-$9551` | room-transition state mirroring and rendering resume |

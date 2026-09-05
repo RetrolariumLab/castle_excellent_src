@@ -13,8 +13,15 @@
         "famicom_data_io.asm",
         "../system/startup.asm",
         "../preservation/prg_82ce_8f0f.asm",
+        "../game/player/death_transition.asm",
+        "../game/collision/player_sample.asm",
+        "../game/rooms/sample_address.asm",
         "../game/objects/runtime_record_offsets.asm",
         "../preservation/prg_8f29_949b.asm",
+        "../game/collision/player_handler_tables.asm",
+        "../game/collision/player_update.asm",
+        "../game/player/transition_reload.asm",
+        "../game/collision/player_dispatch.asm",
         "../rendering/room_cell_updates.asm",
         "../game/x_coordinates.asm",
         "../game/rooms/finish_transition.asm",
@@ -107,8 +114,26 @@
     {
       "path": "src/preservation/prg_82ce_8f0f.asm",
       "start": "0x82CE",
-      "end": "0x8F10",
+      "end": "0x8DAB",
       "title": "Preservation PRG after the main loop"
+    },
+    {
+      "path": "src/game/player/death_transition.asm",
+      "start": "0x8DAB",
+      "end": "0x8DD3",
+      "title": "Player death-transition state and reserve-life handling"
+    },
+    {
+      "path": "src/game/collision/player_sample.asm",
+      "start": "0x8DD3",
+      "end": "0x8ECB",
+      "title": "Player room-cell and runtime-object collision sampler"
+    },
+    {
+      "path": "src/game/rooms/sample_address.asm",
+      "start": "0x8ECB",
+      "end": "0x8F10",
+      "title": "Room-cell sample address preparation"
     },
     {
       "path": "src/game/objects/runtime_record_offsets.asm",
@@ -119,8 +144,32 @@
     {
       "path": "src/preservation/prg_8f29_949b.asm",
       "start": "0x8F29",
+      "end": "0x926B",
+      "title": "Preservation PRG before player collision handler tables"
+    },
+    {
+      "path": "src/game/collision/player_handler_tables.asm",
+      "start": "0x926B",
+      "end": "0x9386",
+      "title": "Player room-cell and runtime-object collision handler tables"
+    },
+    {
+      "path": "src/game/collision/player_update.asm",
+      "start": "0x9386",
+      "end": "0x93F6",
+      "title": "Frame-level player collision sampling and hazard dispatch"
+    },
+    {
+      "path": "src/game/player/transition_reload.asm",
+      "start": "0x93F6",
+      "end": "0x9477",
+      "title": "Player transition countdown and current-room reload"
+    },
+    {
+      "path": "src/game/collision/player_dispatch.asm",
+      "start": "0x9477",
       "end": "0x949C",
-      "title": "Preservation PRG before room-cell row update requests"
+      "title": "Player collision-result handler dispatch"
     },
     {
       "path": "src/rendering/room_cell_updates.asm",

@@ -355,6 +355,84 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   all 24 offsets, 1,052,928 type/X/Y cases, deterministic regeneration, and
   byte-identical build
 
+### OBJ-010 - player room/object collision sample
+
+- Status: resolved
+- Boundary: A:X screen X must be 0-319 and Y must be 16-175; Y is then rebased
+  to the 160-pixel room field
+- Room result: player-specific cell-half flags return before runtime objects;
+  `$45-$48` preserve cell identity while a negative animation phase suppresses
+  collision flags
+- Object result: passable halves scan 24 records in order; a nonzero one-shot
+  latch accepts only `$90-$95`, and is cleared on every return
+- Special case: during the first half of the 256-frame room cycle, type `$86`
+  matches only its lower eight pixels and only while player motion state is zero
+- Evidence: semantic `$8DD3-$8ECA`, 28 direct calls, native runtime execution,
+  exact 248-byte image, 176,888 boundary/cell/type/geometry/state/slot cases,
+  deterministic regeneration, and byte-identical build
+
+### OBJ-011 - player collision-result dispatch
+
+- Status: resolved
+- Selection: `ASL` doubles the sample identity and moves its high bit to carry;
+  carry clear selects 100 room-cell pointers, carry set selects 41 runtime-type
+  pointers indexed by the low seven bits
+- Call contract: the dispatcher pushes `$949A`, jumps through `$31-$32`, and
+  the selected handler's `RTS` resumes at the local `$949B` return
+- Tables: `$926C-$9333` has three unique room targets; `$9334-$9385` has 18
+  unique runtime targets, with the final physical entry outside the sampler's
+  consumed `$80-$A7` type domain
+- Evidence: semantic `$926B-$9385` and `$9477-$949B`, seven direct calls,
+  native runtime coverage, exact 37-byte code and 282 table bytes, all 140
+  consumed identities, deterministic regeneration, and byte-identical build
+
+### PLAYER-001 - player death transition
+
+- Status: resolved
+- Entry guards: either nonzero invulnerability at `$0E` or an active transition
+  at `$0772` returns without changing player state
+- Start: installs transition countdown `$80`, clears the action countdown, and
+  selects audio track set 2
+- Lives: a nonzero reserve count is decremented; zero instead latches
+  `GameOverActive=$FF` without wrapping the reserve count
+- Sources: 39 room-cell types, 18 runtime-object types, and the direct
+  hazard-contact jump at `$93F2` all select the same handler
+- Animated source: room-cell types `$45-$48` first test the animation-counter
+  sign; its negative phase returns, while its nonnegative phase enters death
+- Evidence: semantic `$8DAB-$8DD2`, exact 40 bytes and 61 table references,
+  complete animation/guard/life domains, deterministic regeneration, and
+  byte-identical build
+
+### PLAYER-002 - frame-level player collision probes
+
+- Status: resolved
+- Order: top-left, top-right, bottom-left, bottom-right, center, top-center,
+  then top-right again; each point is sampled and immediately dispatched
+- Transition: nonzero `$0772` bypasses all probes and enters the transition
+  countdown/reload path at `$93F6`
+- Hazard: after the seven handlers, nonzero `$077C` with zero protection `$0D`
+  jumps to `StartPlayerDeathTransition`
+- Evidence: sole main-loop call at `$82A5`, native execution through `$93ED`,
+  semantic `$9386-$93F5`, exact 112 bytes, complete coordinate/state boundary
+  model, deterministic regeneration, and byte-identical build
+
+### PLAYER-003 - death-transition room reload
+
+- Status: resolved
+- Countdown: `$0772` decrements each frame; only `1 -> 0` completes, while an
+  unexpected zero input wraps to `$FF`
+- Restore: saved `$10-$12` replace player X/Y; hazard protection is unchanged
+  when both transition inputs are zero, otherwise it becomes `max(mirror,
+  current)+10`, except nonzero `$07CD` forces `$28+10=$32`
+- Game over: zero reserve lives and nonzero `GameOverActive` enter the terminal
+  game-over sequence instead of reloading the room
+- Reload: save current object state, decode `room-1`, load objects, copy/apply
+  the 3-byte object and 5-byte mutable-cell bitmaps, reset runtime/render state,
+  rebuild attributes/scroll, enable rendering, then enable NMI
+- Evidence: semantic `$93F6-$9476`, direct flow from the proven frame updater,
+  exact 129 bytes, exhaustive countdown/protection model, deterministic
+  regeneration, and byte-identical build
+
 ### GAME-001 - new-game state initialization
 
 - Status: resolved
@@ -531,6 +609,18 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   numeric until dynamic transitions or behavior establish their identities
 - Evidence: all 100 object lists and decoded rooms, exact handler tables,
   initial-state overlap, dimension tables, occurrence/room aggregation, and
+  byte-identical build
+
+### DATA-008 - room-cell sample address builder
+
+- Status: resolved
+- Address: semantic `$8ECB-$8F0F`, called directly at seven collision and
+  hazard sites
+- Contract: A:X is a 16-bit pixel X and Y is byte-wide pixel Y; the helper
+  returns row pointer `$0400 + (Y >> 3) * 20`, column `X >> 4`, and original X
+  bit 3 in carry for selecting a cell's horizontal half
+- Evidence: exact 69-byte routine image, all seven direct call instructions,
+  exhaustive 65,792 X/Y machine-value cases, deterministic regeneration, and
   byte-identical build
 
 ### ROOM-001 - room-loading orchestration

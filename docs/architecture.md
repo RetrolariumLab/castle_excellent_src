@@ -278,6 +278,21 @@ Both physical tables stop at type `$A5`, while legal consumer types `$A6/$A7`
 deliberately read the first two opcode bytes of the following routine. Those
 overlap values are nonzero and therefore preserve the filter semantics.
 
+`SamplePlayerCollisionAtScreenPixel` is the player-specific front end. A:X is
+screen X and Y is screen Y; only X 0-319 and Y 16-175 enter the room buffer,
+with Y rebased past the status row. Nonzero player cell-half flags return first.
+Otherwise the routine scans all 24 runtime records and returns the first point
+match. Its one-shot filter mode admits only `$90-$95`; runtime types `$84-$89`
+remain pass-through in carry, and type `$86` narrows to its lower eight pixels
+during the early room-frame phase when player motion is idle.
+
+`DispatchPlayerCollisionSample` consumes that result at seven frame-level
+probe sites. `ASL` both doubles the identity and moves its runtime marker into
+carry, selecting the 100-entry room-cell table or 41-entry runtime table. It
+loads a zero-page handler pointer, pushes its local return address minus one,
+and jumps indirectly; the selected handler's `RTS` therefore resumes at the
+dispatcher's final `RTS`.
+
 `SampleCollisionAtPixel` receives X high in A, X low in X, and pixel Y in Y.
 It addresses `RoomCells[(Y >> 3) * 20 + (X >> 4)]` and selects the cell's
 eight-pixel collision half with X bit 3. A colliding half returns its cell type
@@ -287,6 +302,12 @@ paused phase. Empty or passable halves scan all 24 runtime records, omit the
 current record, and return the first point-containing type `$80-$A7`; Y=1
 distinguishes that object result, `$42` receives its record offset, and carry
 reports the type's solidity. No match returns `$53`, Y=0, and carry clear.
+
+All room samplers share `PrepareRoomCellSampleAddress`. It converts A:X and Y
+to a row pointer `$0400 + (Y >> 3) * 20` plus the full 16-bit X shifted right
+four places. The final rotate intentionally leaves original X bit 3 in carry,
+so callers can select the left or right eight-pixel collision half without a
+second mask.
 
 `SampleRoomCollisionAtPixel` is the room-only variant used by four paired-edge
 movement probes. It calls the shared address builder, applies the same half

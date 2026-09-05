@@ -26,7 +26,7 @@ payload, full image, and extracted CHR.
 | `check-assets` | alias for `verify-assets` |
 | `verify` | aggregate of every target above |
 | `rom-info` | print and validate identities for original and built images |
-| `release-check` | lint, tests, source regeneration, ROM, room, screen, input, audio, data-I/O, save-payload, mutable-cell action/coordinate, castle navigation, player hazard/protection, object proximity/span, transient-object lifecycles, object collision filters, combined and room-only point sampling, overlap scan, and pause input, collision tables, frame sprites, metasprite composition/data, unified object catalog, transition, collision-cell/index, object-dispatch, new-game, room-runtime, room-cell-animation, and HUD-format checks |
+| `release-check` | lint, tests, source regeneration, ROM, room, screen, input, audio, data-I/O, save-payload, mutable-cell action/coordinate, castle navigation, shared room-cell sample addressing, player collision sampling/dispatch and hazard/protection, object proximity/span, transient-object lifecycles, object collision filters, combined and room-only point sampling, overlap scan, and pause input, collision tables, frame sprites, metasprite composition/data, unified object catalog, transition, collision-cell/index, object-dispatch, new-game, room-runtime, room-cell-animation, and HUD-format checks |
 | `check` | alias for `release-check` |
 
 Focused region targets compare only their named output region. For example,
