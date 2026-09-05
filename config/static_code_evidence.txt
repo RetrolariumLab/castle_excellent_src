@@ -118,6 +118,15 @@ code A60F A615
 # the shared two-component render tail at $AE0C as well.
 code ADE7 AE74
 
+# Reset, castle-map, and completion call sites prove the title loop and shared
+# four-page CHR-to-nametable copier, including both title exit paths.
+code F8FC F9AC
+
+# Main-loop and load-error entries plus internal menu control flow prove the
+# sub-command input/menu code around the separately typed text block.
+code F9AD FB76
+code FBAC FBFD
+
 # Runtime type $82 exits the synthetic collision call and directly jumps to
 # $FE8E; its internal branches, terminal self-loop, and high-score call prove
 # the full sequence through the shared helper return.

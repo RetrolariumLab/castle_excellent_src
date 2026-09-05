@@ -3392,6 +3392,12 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xB7FD",
+      "name": "InitializeTitleDemoPlayback",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xB80A",
       "name": "ReadDemoController1",
       "kind": "routine",
@@ -4628,9 +4634,39 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xF925",
+      "name": "WaitForTitleSetupVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xF93C",
+      "name": "WaitForTitleFrameVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xF94A",
+      "name": "CheckTitleTimeout",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xF968",
+      "name": "ExitTitleScreen",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xF973",
       "name": "CopyChrNametablePagesToVram",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xF983",
+      "name": "CopyNextChrNametablePageByte",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
@@ -4646,9 +4682,27 @@
       "confidence": "high"
     },
     {
+      "address": "0xF9B3",
+      "name": "CheckSubCommandDemoGate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xF9B9",
+      "name": "DetectSubCommandOpenEdge",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xF9CC",
       "name": "OpenSubCommandMenu",
       "kind": "label",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xF9D7",
+      "name": "WaitForSubCommandMenuVblank",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
@@ -4658,9 +4712,99 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0xFAF5",
+      "name": "WaitForSubCommandInputVblank",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB1E",
+      "name": "WrapSubCommandSelectionForward",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB27",
+      "name": "CheckSubCommandStartButton",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB32",
+      "name": "CheckSubCommandAButton",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB3D",
+      "name": "CheckSubCommandUpButton",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB4E",
+      "name": "RedrawSubCommandSelection",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
       "address": "0xFB51",
       "name": "ExitSubCommandMenu",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB62",
+      "name": "ExecuteSubCommandSelection",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB71",
+      "name": "ExecuteSubCommandLoad",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB74",
+      "name": "ExecuteSubCommandSave",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB77",
+      "name": "SubCommandTitleText",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB83",
+      "name": "SubCommandLoadText",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB88",
+      "name": "SubCommandSaveText",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB8D",
+      "name": "SubCommandResetText",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB93",
+      "name": "SubCommandBackText",
+      "kind": "data",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFB98",
+      "name": "SubCommandGameText",
+      "kind": "data",
       "confidence": "confirmed"
     },
     {
@@ -4674,6 +4818,54 @@
       "name": "SaveTransferMessage",
       "kind": "data",
       "confidence": "high"
+    },
+    {
+      "address": "0xFBAC",
+      "name": "ResetCurrentRoomFromSubCommand",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFBB3",
+      "name": "BeginSubCommandCurrentRoomReset",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFBB8",
+      "name": "CopySubCommandCurrentRoomState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFBC0",
+      "name": "RestoreSubCommandPlayerState",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFBD6",
+      "name": "ReturnToPreviousRoomFromSubCommand",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFBDD",
+      "name": "CheckSubCommandPreviousRoomSnapshot",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFBE5",
+      "name": "BeginSubCommandPreviousRoomRestore",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xFBEC",
+      "name": "CopySubCommandPreviousRoomState",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0xFBFE",

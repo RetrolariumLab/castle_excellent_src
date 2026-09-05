@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 87 semantic and 6 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 93 semantic and 5 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 24,032 PRG bytes (73.34%): `$E45D-$E8DE`
+The promoted ranges currently cover 24,802 PRG bytes (75.69%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -45,6 +45,17 @@ object counts, and cell-derived object creation. These claims are independently
 covered by all-100-room decoding, attribute construction, exact object-stream
 round trips, both offset/bitmap-width checks, marker/capacity checks, typed PRG
 ranges, Ghidra facts, and the byte-identical build.
+
+The title/sub-command slice promotes `$F8FC-$FBFD` into six semantic modules.
+The title path uploads its overlapping palette, copies four CHR-ROM pages into
+the nametable, edge-detects Start, and enters attract mode after the 16-bit
+timeout. The controller-2 sub-command path gates on game-over/demo state,
+renders six typed strings, wraps a five-entry selection, dispatches
+reset/back/load/save/exit, and restores current or previous room state through
+the established snapshot pipeline. Its independent model pins all six range
+hashes, transfer topology, eight strings, the 768-frame timeout, all three
+four-page copy call sites, 327,680 menu-input cases, 262,144 entry-gating
+cases, and both guarded room-restoration actions.
 
 The room-loading vertical slice adds `$9578-$9582`, `$A35C-$A3AB`,
 `$B64C-$B7FC`, and `$EC63-$ECB6`. It marks the one-based visited-room flag,

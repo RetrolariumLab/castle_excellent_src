@@ -2,6 +2,97 @@
   "schema_version": 1,
   "symbols": [
     {
+      "address": "0x0021",
+      "name": "TitlePalettePointerLo",
+      "start": "0xF8FC",
+      "end": "0xF90C"
+    },
+    {
+      "address": "0x0022",
+      "name": "TitlePalettePointerHi",
+      "start": "0xF8FC",
+      "end": "0xF90C"
+    },
+    {
+      "address": "0x0021",
+      "name": "TitleFrameCounterLo",
+      "start": "0xF90C",
+      "end": "0xF973"
+    },
+    {
+      "address": "0x0022",
+      "name": "TitleFrameCounterHi",
+      "start": "0xF90C",
+      "end": "0xF973"
+    },
+    {
+      "address": "0x0016",
+      "name": "ChrNametableCopySourcePage",
+      "start": "0xF973",
+      "end": "0xF9AD"
+    },
+    {
+      "address": "0x0017",
+      "name": "ChrNametableCopyDestinationPage",
+      "start": "0xF973",
+      "end": "0xF9AD"
+    },
+    {
+      "address": "0x0021",
+      "name": "SubCommandTextPointerLo",
+      "start": "0xF9CC",
+      "end": "0xFA74"
+    },
+    {
+      "address": "0x0022",
+      "name": "SubCommandTextPointerHi",
+      "start": "0xF9CC",
+      "end": "0xFA74"
+    },
+    {
+      "address": "0x001C",
+      "name": "SubCommandPreviousButtons",
+      "start": "0xF9CC",
+      "end": "0xFB51"
+    },
+    {
+      "address": "0x001D",
+      "name": "SubCommandSelection",
+      "start": "0xF9CC",
+      "end": "0xFB77"
+    },
+    {
+      "address": "0x0021",
+      "name": "SubCommandCursorPpuAddressLo",
+      "start": "0xFA74",
+      "end": "0xFAF5"
+    },
+    {
+      "address": "0x0022",
+      "name": "SubCommandCursorPpuAddressHi",
+      "start": "0xFA74",
+      "end": "0xFAF5"
+    },
+    {
+      "address": "0x001F",
+      "name": "SubCommandTransportMode",
+      "start": "0xFB27",
+      "end": "0xFB51"
+    },
+    {
+      "address": "0x0005",
+      "name": "SubCommandActiveRoomRuntimeState",
+      "size": 14,
+      "start": "0xFBAC",
+      "end": "0xFBFE"
+    },
+    {
+      "address": "0x07CD",
+      "name": "SubCommandScreenState",
+      "start": "0xFBAC",
+      "end": "0xFBFE"
+    },
+    {
       "address": "0x0000",
       "name": "FrameCounter"
     },

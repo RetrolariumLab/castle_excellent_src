@@ -91,7 +91,12 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/rooms/mutable_cell_state_apply.asm` | `$EDEF-$EE55` | mutable-cell state-bit application |
 | `src/game/rooms/persistent_state_load.asm` | `$EE56-$EF05` | snapshot restore and persistent-state loading |
 | `src/game/objects/room_data.asm` | `$EF06-$F8FB` | packed-state offsets and 100 terminated object lists |
-| `src/preservation/prg_f8fc_fbfd.asm` | `$F8FC-$FBFD` | unresolved title and sub-command UI |
+| `src/ui/title_screen.asm` | `$F8FC-$F972` | title screen, Start edge, and attract timeout |
+| `src/rendering/chr_nametable_copy.asm` | `$F973-$F9AC` | four-page CHR-ROM to nametable copy |
+| `src/ui/sub_command_input.asm` | `$F9AD-$F9CB` | menu entry gating and controller-2 edge detection |
+| `src/ui/sub_command_menu.asm` | `$F9CC-$FB76` | menu rendering, selection, and dispatch |
+| `src/data/sub_command_text.asm` | `$FB77-$FBAB` | menu and transfer-status tile text |
+| `src/ui/sub_command_room_actions.asm` | `$FBAC-$FBFD` | current/previous-room restoration actions |
 | `src/game/save_load.asm` | `$FBFE-$FDC4` | save/load payload, validation, messages, and room restoration |
 | `src/game/rooms/persistent_state_save.asm` | `$FDC5-$FE30` | snapshot persistence writer |
 | `src/game/end_sequences.asm` | `$FE31-$FEE7` | game over, type `$82` completion, and high-score update |
@@ -102,9 +107,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 63 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 98 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 62 in CPU-address order. Ghidra-defined instructions are emitted
+following 97 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

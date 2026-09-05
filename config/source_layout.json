@@ -93,7 +93,12 @@
         "../game/rooms/mutable_cell_state_apply.asm",
         "../game/rooms/persistent_state_load.asm",
         "../game/objects/room_data.asm",
-        "../preservation/prg_f8fc_fbfd.asm",
+        "../ui/title_screen.asm",
+        "../rendering/chr_nametable_copy.asm",
+        "../ui/sub_command_input.asm",
+        "../ui/sub_command_menu.asm",
+        "../data/sub_command_text.asm",
+        "../ui/sub_command_room_actions.asm",
         "../game/save_load.asm",
         "../game/rooms/persistent_state_save.asm",
         "../game/end_sequences.asm",
@@ -613,10 +618,40 @@
       "title": "Room object state offsets and terminated object lists"
     },
     {
-      "path": "src/preservation/prg_f8fc_fbfd.asm",
+      "path": "src/ui/title_screen.asm",
       "start": "0xF8FC",
+      "end": "0xF973",
+      "title": "Title screen, input edge, and attract-mode timeout"
+    },
+    {
+      "path": "src/rendering/chr_nametable_copy.asm",
+      "start": "0xF973",
+      "end": "0xF9AD",
+      "title": "Four-page CHR-ROM to PPU nametable copier"
+    },
+    {
+      "path": "src/ui/sub_command_input.asm",
+      "start": "0xF9AD",
+      "end": "0xF9CC",
+      "title": "Sub-command menu entry gating and controller edge detection"
+    },
+    {
+      "path": "src/ui/sub_command_menu.asm",
+      "start": "0xF9CC",
+      "end": "0xFB77",
+      "title": "Sub-command menu rendering, selection, and dispatch"
+    },
+    {
+      "path": "src/data/sub_command_text.asm",
+      "start": "0xFB77",
+      "end": "0xFBAC",
+      "title": "Sub-command menu and transfer-status tile text"
+    },
+    {
+      "path": "src/ui/sub_command_room_actions.asm",
+      "start": "0xFBAC",
       "end": "0xFBFE",
-      "title": "Preservation PRG before save and load orchestration"
+      "title": "Sub-command current and previous room restoration"
     },
     {
       "path": "src/game/save_load.asm",

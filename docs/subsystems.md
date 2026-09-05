@@ -423,9 +423,9 @@ alone must not be used to classify any other unobserved byte.
 
 ## Tail tables and vectors (`$F8FC-$FFFF`)
 
-The save/load module at `$FBFE-$FDC4` is semantic. The adjacent title and
-sub-command UI remains preservation source, as does the post-save tail. The
-final known tables map each logical room cell to its left and right background
-tile, followed by the NMI, reset, and IRQ vectors. Remaining mixed ranges stay
-unpromoted until more static consumers and runtime scenarios establish tighter
-boundaries.
+`$F8FC-$FBFD` is semantic title and sub-command source: title setup/timeout,
+the shared four-page CHR-to-nametable copier, menu input/render/dispatch, typed
+menu/transfer text, and current/previous-room restoration. `$FBFE-$FDC4` owns
+save/load; the persistence writer, ending sequences, tail padding, tile tables,
+and vectors complete the remaining PRG tail. No tail preservation range
+remains.

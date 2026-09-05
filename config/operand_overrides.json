@@ -3086,6 +3086,180 @@
       "evidence": "title screen uploads the 32-byte palette beginning at $C50D"
     },
     {
+      "instruction": "0xF8FC",
+      "expected": "#$18",
+      "operand": "#TitleNametableChrPage",
+      "evidence": "title screen copies four pages beginning at CHR page $18"
+    },
+    {
+      "instruction": "0xF90C",
+      "expected": "#$01",
+      "operand": "#TitleChrBank",
+      "evidence": "title setup selects CNROM bank one"
+    },
+    {
+      "instruction": "0xF92A",
+      "expected": "#$0A",
+      "operand": "#TitlePpuMask",
+      "evidence": "title screen enables background rendering"
+    },
+    {
+      "instruction": "0xF92F",
+      "expected": "#$38",
+      "operand": "#TitlePpuControl",
+      "evidence": "title screen selects its NMI and nametable control state"
+    },
+    {
+      "instruction": "0xF94C",
+      "expected": "#$03",
+      "operand": "#TitleTimeoutHighByte",
+      "evidence": "the title timeout expires after 768 vblank iterations"
+    },
+    {
+      "instruction": "0xF957",
+      "expected": "#$08",
+      "operand": "#SubCommandStartButtonMask",
+      "evidence": "the title screen exits on a fresh Start edge"
+    },
+    {
+      "instruction": "0xF975",
+      "expected": "#$20",
+      "operand": "#ChrNametableDestinationFirstPage",
+      "evidence": "CHR nametable copies begin at PPU page $20"
+    },
+    {
+      "instruction": "0xF97C",
+      "expected": "#$03",
+      "operand": "#ChrNametableCopyBank",
+      "evidence": "the copier selects the CHR bank containing nametable source pages"
+    },
+    {
+      "instruction": "0xF9A8",
+      "expected": "#$24",
+      "operand": "#ChrNametableDestinationEndPage",
+      "evidence": "the copier stops after destination pages $20 through $23"
+    },
+    {
+      "instruction": "0xF9C1",
+      "expected": "#$03",
+      "operand": "#SubCommandOpenButtonMask",
+      "evidence": "a fresh controller-two A or B edge opens the sub-command menu"
+    },
+    {
+      "instruction": "0xF9E9",
+      "expected": "#$FB",
+      "operand": "#>SubCommandTitleText",
+      "evidence": "menu heading pointer high byte"
+    },
+    {
+      "instruction": "0xF9ED",
+      "expected": "#$77",
+      "operand": "#<SubCommandTitleText",
+      "evidence": "menu heading pointer low byte"
+    },
+    {
+      "instruction": "0xFA01",
+      "expected": "#$FB",
+      "operand": "#>SubCommandResetText",
+      "evidence": "RESET menu pointer high byte"
+    },
+    {
+      "instruction": "0xFA05",
+      "expected": "#$8D",
+      "operand": "#<SubCommandResetText",
+      "evidence": "RESET menu pointer low byte"
+    },
+    {
+      "instruction": "0xFA19",
+      "expected": "#$FB",
+      "operand": "#>SubCommandBackText",
+      "evidence": "BACK menu pointer high byte"
+    },
+    {
+      "instruction": "0xFA1D",
+      "expected": "#$93",
+      "operand": "#<SubCommandBackText",
+      "evidence": "BACK menu pointer low byte"
+    },
+    {
+      "instruction": "0xFA31",
+      "expected": "#$FB",
+      "operand": "#>SubCommandLoadText",
+      "evidence": "LOAD menu pointer high byte"
+    },
+    {
+      "instruction": "0xFA35",
+      "expected": "#$83",
+      "operand": "#<SubCommandLoadText",
+      "evidence": "LOAD menu pointer low byte"
+    },
+    {
+      "instruction": "0xFA49",
+      "expected": "#$FB",
+      "operand": "#>SubCommandSaveText",
+      "evidence": "SAVE menu pointer high byte"
+    },
+    {
+      "instruction": "0xFA4D",
+      "expected": "#$88",
+      "operand": "#<SubCommandSaveText",
+      "evidence": "SAVE menu pointer low byte"
+    },
+    {
+      "instruction": "0xFA61",
+      "expected": "#$FB",
+      "operand": "#>SubCommandGameText",
+      "evidence": "GAME menu pointer high byte"
+    },
+    {
+      "instruction": "0xFA65",
+      "expected": "#$98",
+      "operand": "#<SubCommandGameText",
+      "evidence": "GAME menu pointer low byte"
+    },
+    {
+      "instruction": "0xFAED",
+      "expected": "#$6B",
+      "operand": "#SubCommandCursorTile",
+      "evidence": "menu cursor uses tile $6B"
+    },
+    {
+      "instruction": "0xFB0F",
+      "expected": "#$24",
+      "operand": "#SubCommandNextButtonMask",
+      "evidence": "Select or Down advances the menu selection"
+    },
+    {
+      "instruction": "0xFB17",
+      "expected": "#$05",
+      "operand": "#SubCommandSelectionCount",
+      "evidence": "the menu contains five selections"
+    },
+    {
+      "instruction": "0xFB28",
+      "expected": "#$08",
+      "operand": "#SubCommandStartButtonMask",
+      "evidence": "Start confirms with expansion-port transport"
+    },
+    {
+      "instruction": "0xFB33",
+      "expected": "#$01",
+      "operand": "#SubCommandAButtonMask",
+      "evidence": "A confirms with pulse transport"
+    },
+    {
+      "instruction": "0xFB3E",
+      "expected": "#$10",
+      "operand": "#SubCommandUpButtonMask",
+      "evidence": "Up decrements the menu selection"
+    },
+    {
+      "instruction": "0xFB4A",
+      "expected": "#$04",
+      "operand": "#SubCommandLastSelection",
+      "evidence": "decrementing before RESET wraps to GAME"
+    },
+    {
       "instruction": "0xFE96",
       "expected": "#$C4",
       "operand": "#>CompletionPaletteData",

@@ -71,7 +71,10 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/rooms/state_orchestration.asm src/game/rooms/persistent_state_apply.asm \
 	src/game/objects/stream_seek.asm src/game/rooms/mutable_cell_state_apply.asm \
 	src/game/rooms/persistent_state_load.asm \
-	src/game/objects/room_data.asm src/preservation/prg_f8fc_fbfd.asm \
+	src/game/objects/room_data.asm src/ui/title_screen.asm \
+	src/rendering/chr_nametable_copy.asm src/ui/sub_command_input.asm \
+	src/ui/sub_command_menu.asm src/data/sub_command_text.asm \
+	src/ui/sub_command_room_actions.asm \
 	src/game/save_load.asm \
 	src/game/rooms/persistent_state_save.asm src/game/end_sequences.asm \
 	src/data/prg_tail_padding.asm src/rendering/room_cell_tile_tables.asm \
@@ -147,6 +150,7 @@ TIMEOUT_FRAMES ?= 15000
 	runtime-types81-82-collision validate-runtime-types81-82-collision \
 	unreferenced-nmi-task-bytes validate-unreferenced-nmi-task-bytes \
 	unreferenced-runtime-only-sample validate-unreferenced-runtime-only-sample \
+	title-sub-command validate-title-sub-command \
 	end-sequences validate-end-sequences \
 	prg-tail-data validate-prg-tail-data \
 	palette-data validate-palette-data \
@@ -552,6 +556,12 @@ unreferenced-runtime-only-sample: ghidra-analyze $(ROM)
 validate-unreferenced-runtime-only-sample: ghidra-analyze $(ROM)
 	$(PYTHON) scripts/unreferenced_runtime_only_sample.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --comparison-image "Castlequest (U) [!].nes" --validate
 
+title-sub-command: $(ROM)
+	$(PYTHON) scripts/title_sub_command.py --image "$(ROM)" --pretty
+
+validate-title-sub-command: $(ROM)
+	$(PYTHON) scripts/title_sub_command.py --image "$(ROM)" --validate
+
 end-sequences: $(ROM)
 	$(PYTHON) scripts/end_sequences.py --image "$(ROM)" --pretty
 
@@ -624,7 +634,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-runtime-only-sample validate-title-sub-command validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

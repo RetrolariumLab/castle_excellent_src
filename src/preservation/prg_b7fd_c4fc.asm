@@ -3,7 +3,7 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-Func_B7FD:
+InitializeTitleDemoPlayback:
     LDA #$2C
     STA $FD
     LDA #$B8
