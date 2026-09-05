@@ -22,8 +22,7 @@ Label_A1E8:
     BCS Label_A239
     LDA $27
     STA $2B
-    .byte $A5
-    PLP
+    .byte $A5, $28
     STA $2C
     LDA $2B
     SEC

@@ -174,6 +174,29 @@ class PrgDataRangeTests(unittest.TestCase):
             with self.assertRaisesRegex(project.ProjectError, "unsorted"):
                 project.load_code_evidence(evidence, "static")
 
+    def test_loads_sorted_false_instruction_starts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = Path(directory) / "false-instructions.txt"
+            registry.write_text(
+                "# switch overreach\ninstruction A207 OverlongSwitchCase\n"
+                "instruction B123 RecursiveDecodeArtifact\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                project.load_false_instruction_starts(registry),
+                [(0xA207, "OverlongSwitchCase"), (0xB123, "RecursiveDecodeArtifact")],
+            )
+
+    def test_rejects_unsorted_false_instruction_starts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = Path(directory) / "false-instructions.txt"
+            registry.write_text(
+                "instruction B123 Later\ninstruction A207 Earlier\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(project.ProjectError, "unsorted"):
+                project.load_false_instruction_starts(registry)
+
     def test_rejects_static_code_in_typed_data(self) -> None:
         ranges = [("table", 0xA000, 0xA0FF, "LookupTable")]
         with tempfile.TemporaryDirectory() as directory:

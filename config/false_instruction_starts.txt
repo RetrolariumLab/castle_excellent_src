@@ -1,0 +1,4 @@
+# Ghidra extends the 42-entry object-sprite dispatch table past its proven
+# $ADE6 bound. Its synthetic case $66 lands on $A207, the operand byte of the
+# real LDA $28 instruction at $A206 in the runtime-object-only point sampler.
+instruction A207 OverlongObjectSpriteSwitchCase66

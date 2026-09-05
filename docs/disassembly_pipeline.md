@@ -15,6 +15,7 @@ tools/disassembly.lock.json
   -> headless NES ROM import
   -> PRG0::$8000-$FFFF; CHR mapping skipped
   -> Ghidra recursive 6502 analysis
+  -> config/false_instruction_starts.txt proven analyzer-overreach removals
   -> config/static_code_evidence.txt pointer/control-flow-proven code ranges
   -> config/runtime_evidence.txt code ranges from pinned FCEUX CDL
   -> clear conflicting auto-data and disassemble both evidence classes
@@ -87,3 +88,11 @@ overlap between typed data and either code-evidence class. Static and runtime
 code ranges may overlap when independent evidence corroborates an entry.
 Unclassified regions still require broader traces and byte-level proofs before
 final types.
+
+`config/false_instruction_starts.txt` handles the narrower case where an
+analyzer-created entry lands inside a real instruction operand rather than in
+typed data. The current entry removes `$A207`: Ghidra extrapolates object-sprite
+switch case `$66` beyond the proven 42-entry table, but `$A207` is byte two of
+the linear `LDA $28` at `$A206`. The false start is cleared before static and
+runtime evidence are disassembled, so the exported fact stream retains the
+real instruction boundary.

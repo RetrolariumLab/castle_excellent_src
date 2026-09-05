@@ -53,6 +53,11 @@ contiguous coverage of `$8000-$FFFF` and rejects boundaries that split an
 instruction. Formatting is safe because the release check rebuilds the ROM and
 compares every byte with the reference.
 
+The Ghidra gate also applies an explicit false-instruction-start registry
+before evidence disassembly. This prevents an analyzer switch-table overreach
+from splitting a proven linear instruction while keeping the correction
+reviewable and reproducible.
+
 Comments that contain only an address, optionally followed by encoded bytes,
 such as `; $B173` or `; $82AD D0 01`, are rejected as
 `machine-code-comment`. They duplicate the assembler listing without

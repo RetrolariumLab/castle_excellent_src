@@ -100,6 +100,15 @@ def command_inspect(args: argparse.Namespace) -> None:
 def command_export_facts(args: argparse.Namespace) -> None:
     output = Path(args.output).resolve()
     scripts: list[tuple[str, list[str]]] = []
+    if args.false_instructions:
+        false_instructions = Path(args.false_instructions).resolve()
+        if not false_instructions.is_file():
+            raise PipelineError(
+                f"false-instruction registry not found: {false_instructions}"
+            )
+        scripts.append(
+            ("ClearFalseInstructions.java", [str(false_instructions)])
+        )
     if args.static_evidence:
         evidence = Path(args.static_evidence).resolve()
         if not evidence.is_file():
@@ -136,6 +145,7 @@ def main() -> int:
     facts.add_argument("--static-evidence")
     facts.add_argument("--runtime-evidence")
     facts.add_argument("--data-ranges")
+    facts.add_argument("--false-instructions")
     facts.set_defaults(handler=command_export_facts)
     args = parser.parse_args()
     try:

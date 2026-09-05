@@ -110,6 +110,49 @@ def load_code_evidence(
     return ranges
 
 
+def load_false_instruction_starts(path: Path) -> list[tuple[int, str]]:
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except OSError as exc:
+        raise ProjectError(
+            f"cannot read false-instruction registry {path}: {exc}"
+        ) from exc
+    entries: list[tuple[int, str]] = []
+    previous = 0x7FFF
+    for line_number, raw in enumerate(lines, 1):
+        fields = raw.split()
+        if not fields or fields[0].startswith("#"):
+            continue
+        if len(fields) != 3 or fields[0] != "instruction":
+            raise ProjectError(
+                f"invalid false-instruction entry at {path}:{line_number}"
+            )
+        try:
+            address = int(fields[1], 16)
+        except ValueError as exc:
+            raise ProjectError(
+                f"invalid false-instruction address at {path}:{line_number}"
+            ) from exc
+        if not 0x8000 <= address <= 0xFFFF:
+            raise ProjectError(
+                f"false-instruction address is out of bounds at {path}:{line_number}"
+            )
+        if address <= previous:
+            raise ProjectError(
+                f"false-instruction entries overlap or are unsorted at "
+                f"{path}:{line_number}"
+            )
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", fields[2]):
+            raise ProjectError(
+                f"invalid false-instruction name at {path}:{line_number}"
+            )
+        entries.append((address, fields[2]))
+        previous = address
+    if not entries:
+        raise ProjectError(f"false-instruction registry is empty: {path}")
+    return entries
+
+
 def validate_code_data_separation(
     data_ranges: list[tuple[str, int, int, str]],
     evidence_path: Path,
@@ -358,6 +401,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         "config/static_code_evidence.txt",
         "config/runtime_evidence.txt",
         "config/prg_data_ranges.txt",
+        "config/false_instruction_starts.txt",
         "docs/code_quality.md",
         "docs/source_reconstruction.md",
         "docs/verification.md",
@@ -484,6 +528,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         "scripts/room_screen_data.py",
         "scripts/audio_data.py",
         "tools/ghidra_scripts/ApplyCodeEvidence.java",
+        "tools/ghidra_scripts/ClearFalseInstructions.java",
         "tools/ghidra_scripts/ClearKnownData.java",
     )
     missing = [name for name in required if not (ROOT / name).is_file()]
@@ -514,6 +559,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         if not (ROOT / region.path).is_file():
             raise ProjectError(f"source-layout module not found: {region.path}")
     data_ranges = load_prg_data_ranges(ROOT / "config/prg_data_ranges.txt")
+    load_false_instruction_starts(ROOT / "config/false_instruction_starts.txt")
     validate_code_data_separation(
         data_ranges, ROOT / "config/static_code_evidence.txt", "static"
     )

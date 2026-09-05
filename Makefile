@@ -81,6 +81,7 @@ RUNTIME_REPORT := $(RUNTIME_DIR)/suite.json
 STATIC_CODE_EVIDENCE := config/static_code_evidence.txt
 RUNTIME_EVIDENCE := config/runtime_evidence.txt
 PRG_DATA_RANGES := config/prg_data_ranges.txt
+FALSE_INSTRUCTION_STARTS := config/false_instruction_starts.txt
 BOOT_FRAMES ?= 900
 TITLE_FRAMES ?= 1800
 TIMEOUT_FRAMES ?= 15000
@@ -217,7 +218,7 @@ ghidra-inspect: ghidra-bootstrap
 	$(PYTHON) scripts/run_ghidra.py inspect --image "$(REFERENCE_ROM)" --output build/ghidra/program.json
 
 ghidra-analyze: ghidra-bootstrap
-	$(PYTHON) scripts/run_ghidra.py export-facts --image "$(REFERENCE_ROM)" --static-evidence "$(STATIC_CODE_EVIDENCE)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --data-ranges "$(PRG_DATA_RANGES)" --output "$(GHIDRA_FACTS)"
+	$(PYTHON) scripts/run_ghidra.py export-facts --image "$(REFERENCE_ROM)" --false-instructions "$(FALSE_INSTRUCTION_STARTS)" --static-evidence "$(STATIC_CODE_EVIDENCE)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --data-ranges "$(PRG_DATA_RANGES)" --output "$(GHIDRA_FACTS)"
 
 disassemble: ghidra-analyze $(PRG_ASSET)
 	$(PYTHON) scripts/generate_disassembly.py write --prg "$(PRG_ASSET)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --memory-symbols "$(MEMORY_SYMBOLS)" --operand-overrides "$(OPERAND_OVERRIDES)" --layout "$(SOURCE_LAYOUT)"
