@@ -277,12 +277,24 @@ indexes. The update table has 16 distinct targets and 23 indexes use the shared
 no-op `$A2A9`; the nonzero sprite domain has 40 distinct selectors because
 indexes 29 and 30 share `$B089`.
 
+`RuntimeObjectType32ReplacementTypes` at `$A00D-$A01B` contains 15 runtime
+type bytes. `FrameCounterModulo30 >> 1` indexes it, so each entry owns two of
+the counter's 30 phases. Its values are restricted to `$84`, `$85`, and `$87`.
+
+The filter tables at `$A06B-$A090` and `$A09E-$A0C3` each store 38 physical
+bytes for runtime types `$80-$A5`. Their indexed operands subtract `$80` from
+the table address. Callers admit types through `$A7`, so the logical final two
+entries are the first two opcode bytes of the following routine: `$A8,$08` for
+the type-84-to-89 filter and `$C0,$A0` for solidity. All four values are
+nonzero; the overlap is therefore behaviorally meaningful and tested.
+
 Loading writes runtime type at record `+0`, scales X by 16 into the 16-bit
 field at `+1/+2`, and scales Y by 8 into `+3`. Runtime types `$90-$95` receive
 an additional four-pixel X offset. Record `+4` is initialized to zero except
 for encoded types `$12-$29`, where the overlapping state table supplies its
-initial value. The meaning of record `+5` and the later state transitions of
-`+4` remain open.
+initial value. The global meaning of record `+5` and most later state
+transitions of `+4` remain open; type index 41 specifically uses `+5` as a
+lifetime countdown, while types 32 and 40 have now-confirmed `+4` lifecycles.
 
 Collision callers read record `+1/+2` through shared helpers returning
 A=high/X=low. The fixed probe offsets are 0, +7, +8, +15, +17, and -2; all use

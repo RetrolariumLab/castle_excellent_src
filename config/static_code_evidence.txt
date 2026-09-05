@@ -2,6 +2,34 @@
 # rom_sha1 42f7975da9a68a74e141353eb6e2bdc676fc1f77
 # kind start end (inclusive CPU addresses)
 #
+# Three direct JSR instructions at $9855, $993D, and $99B0 target the shared
+# player/object-span overlap helper below. Its internal conditional branches
+# remain within the contiguous routine and both paths terminate with RTS.
+code 9613 965B
+
+# Runtime-object handler pointer entry 32 at $95FF targets $9FF3. Its direct
+# branches prove the complete handler through $A00C; the following indexed
+# replacement-type table is classified separately as typed data.
+code 9FF3 A00C
+
+# Direct calls at $83BE/$83D6, $8655/$8EA7, and $8E9E/$A189/$A22D prove
+# three complete collision-classification helpers. Their two indexed lookup
+# payloads are registered separately as typed data.
+code A044 A06A
+code A091 A09D
+
+# Thirty aligned direct JSR sites across the runtime-object handlers prove the
+# complete room-cell/runtime-object point sampler and all of its internal paths.
+code A0C4 A1A2
+
+# Four aligned direct JSR sites at $8BD2/$8BE4 and $99E1/$99F3 prove the
+# complete room-cell-only sampler and both of its return paths.
+code A1A3 A1D3
+
+# Direct calls at $8B8F and $9996 prove the complete runtime-object overlap
+# scan through its shared no-match/no-op return at $A2A9.
+code A247 A2A9
+
 # The collision-handler pointer table based at $9155 selects each address below
 # for both halves of one persistent mutable-cell pair:
 #   $9187/$9189 -> $A5DD for cell types $19/$1A

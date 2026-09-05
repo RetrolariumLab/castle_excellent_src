@@ -257,6 +257,51 @@ implements an indirect subroutine call by pushing `$95B2`, one byte before
 `AdvanceRuntimeObjectUpdate`, and jumping through `$31/$32`; the handler's
 `RTS` therefore lands at `$95B3` and continues with the next six-byte record.
 
+Three handlers call `TestPlayerAgainstObjectSpan` with a candidate object's
+16-bit X in `$44/$45`, Y in `$46`, and width in `$47`. The shared predicate
+accepts the 16-pixel vertical interval immediately below that Y origin and the
+horizontal interval `[max(0, objectX-15), objectX+width)`. Carry clear denotes
+overlap; every rejection explicitly returns carry set.
+
+Three unsourced runtime types have short, self-contained lifecycle handlers.
+Type index 32 is a delayed replacement record: after its state countdown, the
+paired modulo-30 phase selects type `$84`, `$85`, or `$87`, while global frame
+parity selects replacement state zero or `$FF`. Type index 40 is cleared when
+its incremented state reaches 15. Type index 41 moves Y upward every odd room
+frame until byte five expires. Both expiration paths clear all six record bytes.
+
+`ClassifyAnimatedCollisionCell` recognizes both 12-cell animation families and
+returns a direction discriminator in Y. Runtime-object collision then uses two
+biased type lookups. `GetRuntimeObjectSolidFlag` marks `$81-$83`, `$90-$9C`,
+and `$9F` non-solid; the adjacent filter returns zero exactly for `$84-$89`.
+Both physical tables stop at type `$A5`, while legal consumer types `$A6/$A7`
+deliberately read the first two opcode bytes of the following routine. Those
+overlap values are nonzero and therefore preserve the filter semantics.
+
+`SampleCollisionAtPixel` receives X high in A, X low in X, and pixel Y in Y.
+It addresses `RoomCells[(Y >> 3) * 20 + (X >> 4)]` and selects the cell's
+eight-pixel collision half with X bit 3. A colliding half returns its cell type
+in A and preserves collision bits 0 and 7 as C and N. The `$45-$48` cell family
+uses the sign of `RoomCellAnimationCounter` to suppress those flags during its
+paused phase. Empty or passable halves scan all 24 runtime records, omit the
+current record, and return the first point-containing type `$80-$A7`; Y=1
+distinguishes that object result, `$42` receives its record offset, and carry
+reports the type's solidity. No match returns `$53`, Y=0, and carry clear.
+
+`SampleRoomCollisionAtPixel` is the room-only variant used by four paired-edge
+movement probes. It calls the shared address builder, applies the same half
+table and animation gate, and returns even a zero collision flag without
+consulting runtime objects. Its out-of-range path differs slightly: X becomes
+zero while the caller's Y is preserved.
+
+`FindRuntimeObjectOverlappingSpan` scans the same pool in six-byte steps from
+the caller-provided X offset. Only active types `$80-$A7` participate. The
+supplied Y must lie in `[objectY, objectY+height)`, while object X must lie in
+`[max(0, spanX-objectWidth+1), spanX+spanWidth)`. The first match returns its
+record offset in X with carry clear. Exhaustion reaches `$90` and returns carry
+set through `ReturnFromRuntimeObjectHandler`, which is also the shared no-op
+target for 23 update-dispatch entries.
+
 `BuildFrameSprites` at `$AC13` is the rendering-side counterpart. It marks the
 staging buffer busy, fills all 256 bytes with hidden Y `$F0`, draws the player
 into records 0-1 and an optional action tile into record 2, then begins object

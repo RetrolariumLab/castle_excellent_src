@@ -19,7 +19,15 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/collision/cell_samples.asm` | `$9552-$9577` | runtime-type filtering and mutable-cell collision normalization |
 | `src/system/nmi_tasks.asm` | `$9578-$9582` | reset all 23 NMI task requests |
 | `src/game/objects/update_dispatch.asm` | `$9583-$9612` | 24-record update dispatcher and 42 handler pointers |
-| `src/preservation/prg_9613_a2b0.asm` | `$9613-$A2B0` | unresolved object handlers and gameplay logic |
+| `src/game/objects/player_span_overlap.asm` | `$9613-$965B` | player and object-span overlap test |
+| `src/preservation/prg_9613_a2b0.asm` | `$965C-$9FF2` | unresolved object handlers before transient lifecycles |
+| `src/game/objects/transient_lifecycle.asm` | `$9FF3-$A043` | transient type 32/40/41 lifecycles and replacement table |
+| `src/game/collision/object_filters.asm` | `$A044-$A0C3` | animated-cell and runtime-object collision filters |
+| `src/game/collision/point_sample.asm` | `$A0C4-$A1A2` | room-cell and runtime-object point collision sample |
+| `src/game/collision/room_sample.asm` | `$A1A3-$A1D3` | room-cell-only collision sample |
+| `src/preservation/prg_a044_a2b0.asm` | `$A1D4-$A246` | unresolved collision sampler before runtime overlap |
+| `src/game/collision/runtime_overlap.asm` | `$A247-$A2A9` | runtime-object overlap scan and shared no-op return |
+| `src/preservation/prg_a2aa_a2b0.asm` | `$A2AA-$A2B0` | unresolved helper before new-game initialization |
 | `src/game/new_game.asm` | `$A2B1-$A350` | new-game state and persistent-region initialization |
 | `src/rendering/room_palette.asm` | `$A351-$A35B` | room palette pointer setup and upload |
 | `src/game/rooms/load_room.asm` | `$A35C-$A3AB` | top-level room loading and audio selection |

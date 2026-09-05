@@ -402,6 +402,162 @@
       "end": "0x95BF"
     },
     {
+      "address": "0x0044",
+      "name": "ObjectSpanXLo",
+      "start": "0x9613",
+      "end": "0x965C"
+    },
+    {
+      "address": "0x0045",
+      "name": "ObjectSpanXHi",
+      "start": "0x9613",
+      "end": "0x965C"
+    },
+    {
+      "address": "0x0046",
+      "name": "ObjectSpanY",
+      "start": "0x9613",
+      "end": "0x965C"
+    },
+    {
+      "address": "0x0047",
+      "name": "ObjectSpanWidth",
+      "start": "0x9613",
+      "end": "0x965C"
+    },
+    {
+      "address": "0x0048",
+      "name": "ObjectSpanBoundaryXLo",
+      "start": "0x9613",
+      "end": "0x965C"
+    },
+    {
+      "address": "0x0049",
+      "name": "ObjectSpanBoundaryXHi",
+      "start": "0x9613",
+      "end": "0x965C"
+    },
+    {
+      "address": "0x001B",
+      "name": "CollisionSampleY",
+      "start": "0xA0C4",
+      "end": "0xA1D4"
+    },
+    {
+      "address": "0x001D",
+      "name": "CollisionSampleObjectIndex",
+      "start": "0xA0C4",
+      "end": "0xA1A3"
+    },
+    {
+      "address": "0x0027",
+      "name": "CollisionSampleXLo",
+      "start": "0xA0C4",
+      "end": "0xA1D4"
+    },
+    {
+      "address": "0x0028",
+      "name": "CollisionSampleXHi",
+      "start": "0xA0C4",
+      "end": "0xA1D4"
+    },
+    {
+      "address": "0x0029",
+      "name": "CollisionSampleColumn",
+      "start": "0xA0C4",
+      "end": "0xA1D4"
+    },
+    {
+      "address": "0x002A",
+      "name": "CollisionSampleShiftXHi",
+      "start": "0xA0C4",
+      "end": "0xA1D4"
+    },
+    {
+      "address": "0x002B",
+      "name": "CollisionSampleCellPointerLo",
+      "start": "0xA0C4",
+      "end": "0xA13C"
+    },
+    {
+      "address": "0x002C",
+      "name": "CollisionSampleCellPointerHi",
+      "start": "0xA0C4",
+      "end": "0xA13C"
+    },
+    {
+      "address": "0x0040",
+      "name": "CollisionSampleAnimationCounter",
+      "start": "0xA0C4",
+      "end": "0xA1D4"
+    },
+    {
+      "address": "0x002B",
+      "name": "CollisionSampleDeltaXLo",
+      "start": "0xA13C",
+      "end": "0xA1A3"
+    },
+    {
+      "address": "0x002C",
+      "name": "CollisionSampleDeltaXHi",
+      "start": "0xA13C",
+      "end": "0xA1A3"
+    },
+    {
+      "address": "0x0042",
+      "name": "CollisionSampleObjectOffset",
+      "start": "0xA13C",
+      "end": "0xA1A3"
+    },
+    {
+      "address": "0x002B",
+      "name": "RoomCollisionSampleCellPointerLo",
+      "start": "0xA1A3",
+      "end": "0xA1D4"
+    },
+    {
+      "address": "0x002C",
+      "name": "RoomCollisionSampleCellPointerHi",
+      "start": "0xA1A3",
+      "end": "0xA1D4"
+    },
+    {
+      "address": "0x0044",
+      "name": "RuntimeOverlapSpanXLo",
+      "start": "0xA247",
+      "end": "0xA2AA"
+    },
+    {
+      "address": "0x0045",
+      "name": "RuntimeOverlapSpanXHi",
+      "start": "0xA247",
+      "end": "0xA2AA"
+    },
+    {
+      "address": "0x0046",
+      "name": "RuntimeOverlapSpanY",
+      "start": "0xA247",
+      "end": "0xA2AA"
+    },
+    {
+      "address": "0x0047",
+      "name": "RuntimeOverlapSpanWidth",
+      "start": "0xA247",
+      "end": "0xA2AA"
+    },
+    {
+      "address": "0x0048",
+      "name": "RuntimeOverlapBoundaryXLo",
+      "start": "0xA247",
+      "end": "0xA2AA"
+    },
+    {
+      "address": "0x0049",
+      "name": "RuntimeOverlapBoundaryXHi",
+      "start": "0xA247",
+      "end": "0xA2AA"
+    },
+    {
       "address": "0x0034",
       "name": "ResetPendingScrollX",
       "start": "0xC55D",

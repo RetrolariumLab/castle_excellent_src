@@ -620,10 +620,220 @@
       "confidence": "confirmed"
     },
     {
-      "address": "0xA0C4",
-      "name": "SampleRoomCollisionCell",
+      "address": "0x9613",
+      "name": "TestPlayerAgainstObjectSpan",
       "kind": "routine",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9638",
+      "name": "ComparePlayerXWithObjectSpanStart",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x965A",
+      "name": "ReturnPlayerOutsideObjectSpan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9FF3",
+      "name": "UpdateRuntimeObjectType32",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9FF8",
+      "name": "ReplaceRuntimeObjectType32",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA000",
+      "name": "StoreRuntimeObjectType32State",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA00D",
+      "name": "RuntimeObjectType32ReplacementTypes",
+      "kind": "table",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA01C",
+      "name": "UpdateRuntimeObjectType40",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA024",
+      "name": "ClearCurrentRuntimeObject",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA032",
+      "name": "ReturnFromTransientObjectUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA033",
+      "name": "UpdateRuntimeObjectType41",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA03F",
+      "name": "TickRuntimeObjectType41Lifetime",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA044",
+      "name": "ClassifyAnimatedCollisionCell",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA050",
+      "name": "TestIncrementingAnimatedCollisionCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA05C",
+      "name": "ReturnNonAnimatedCollisionCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA05E",
+      "name": "GetRuntimeObjectType84To89Filter",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA067",
+      "name": "ReturnNonRuntimeObjectType84To89Filter",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA06B",
+      "name": "RuntimeObjectType84To89FilterValues",
+      "kind": "table",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA091",
+      "name": "GetRuntimeObjectSolidFlag",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA09A",
+      "name": "ReturnNonRuntimeObjectSolidFlag",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA09E",
+      "name": "RuntimeObjectSolidFlags",
+      "kind": "table",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA0C4",
+      "name": "SampleCollisionAtPixel",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA0CE",
+      "name": "AddressCollisionSampleCell",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA0F3",
+      "name": "FinishCollisionSampleRowPointer",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA134",
+      "name": "ReturnRoomCellCollisionSample",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA13C",
+      "name": "ScanRuntimeObjectsAtCollisionPoint",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA140",
+      "name": "TestNextRuntimeObjectAtCollisionPoint",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA190",
+      "name": "ReturnRuntimeObjectCollisionSample",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA195",
+      "name": "AdvanceRuntimeObjectCollisionSample",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA1A3",
+      "name": "SampleRoomCollisionAtPixel",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA1AD",
+      "name": "AddressRoomCollisionSample",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA1CC",
+      "name": "ReturnRoomCollisionSample",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA247",
+      "name": "FindRuntimeObjectOverlappingSpan",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA274",
+      "name": "ClampRuntimeOverlapLeftBoundary",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA27E",
+      "name": "TestRuntimeOverlapHorizontalBounds",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0xA2A0",
+      "name": "AdvanceRuntimeOverlapCandidate",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0xA2A9",

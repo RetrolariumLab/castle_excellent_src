@@ -23,7 +23,13 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/rendering/room_cell_updates.asm src/game/x_coordinates.asm \
 	src/game/rooms/finish_transition.asm src/game/collision/cell_samples.asm \
 	src/system/nmi_tasks.asm src/game/objects/update_dispatch.asm \
-	src/preservation/prg_9613_a2b0.asm src/game/new_game.asm \
+	src/game/objects/player_span_overlap.asm \
+	src/preservation/prg_9613_a2b0.asm src/game/objects/transient_lifecycle.asm \
+	src/game/collision/object_filters.asm src/game/collision/point_sample.asm \
+	src/game/collision/room_sample.asm \
+	src/preservation/prg_a044_a2b0.asm \
+	src/game/collision/runtime_overlap.asm src/preservation/prg_a2aa_a2b0.asm \
+	src/game/new_game.asm \
 	src/rendering/room_palette.asm \
 	src/game/rooms/load_room.asm src/game/rooms/runtime_reset.asm \
 	src/game/rooms/cell_animation.asm src/rendering/status_format.asm \
@@ -96,7 +102,13 @@ TIMEOUT_FRAMES ?= 15000
 	validate-save-data room-cell-state validate-room-cells x-coordinate-state \
 	validate-x-coordinates transition-state validate-transition \
 	collision-state validate-collision object-dispatch-state \
-	validate-object-dispatch new-game-state validate-new-game \
+	validate-object-dispatch player-object-span validate-player-object-span \
+	transient-object-state validate-transient-objects \
+	object-collision-filters validate-object-collision-filters \
+	collision-point-sample validate-collision-point-sample \
+	room-collision-sample validate-room-collision-sample \
+	runtime-overlap-state validate-runtime-overlap \
+	new-game-state validate-new-game \
 	room-runtime-state validate-room-runtime room-cell-animation-state \
 	validate-room-cell-animation hud-format-state validate-hud-format \
 	mutable-cell-action-state validate-mutable-cell-actions \
@@ -346,6 +358,42 @@ object-dispatch-state: $(ROM)
 validate-object-dispatch: $(ROM)
 	$(PYTHON) scripts/runtime_object_dispatch.py --image "$(ROM)" --validate
 
+player-object-span: $(ROM)
+	$(PYTHON) scripts/player_object_span.py --image "$(ROM)" --pretty
+
+validate-player-object-span: $(ROM)
+	$(PYTHON) scripts/player_object_span.py --image "$(ROM)" --validate
+
+transient-object-state: $(ROM)
+	$(PYTHON) scripts/transient_object_lifecycle.py --image "$(ROM)" --pretty
+
+validate-transient-objects: $(ROM)
+	$(PYTHON) scripts/transient_object_lifecycle.py --image "$(ROM)" --validate
+
+object-collision-filters: $(ROM)
+	$(PYTHON) scripts/object_collision_filters.py --image "$(ROM)" --pretty
+
+validate-object-collision-filters: $(ROM)
+	$(PYTHON) scripts/object_collision_filters.py --image "$(ROM)" --validate
+
+collision-point-sample: $(ROM)
+	$(PYTHON) scripts/collision_point_sample.py --image "$(ROM)" --pretty
+
+validate-collision-point-sample: $(ROM)
+	$(PYTHON) scripts/collision_point_sample.py --image "$(ROM)" --validate
+
+room-collision-sample: $(ROM)
+	$(PYTHON) scripts/room_collision_sample.py --image "$(ROM)" --pretty
+
+validate-room-collision-sample: $(ROM)
+	$(PYTHON) scripts/room_collision_sample.py --image "$(ROM)" --validate
+
+runtime-overlap-state: $(ROM)
+	$(PYTHON) scripts/runtime_object_overlap.py --image "$(ROM)" --pretty
+
+validate-runtime-overlap: $(ROM)
+	$(PYTHON) scripts/runtime_object_overlap.py --image "$(ROM)" --validate
+
 new-game-state: $(ROM)
 	$(PYTHON) scripts/new_game_state.py --image "$(ROM)" --pretty
 
@@ -424,7 +472,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

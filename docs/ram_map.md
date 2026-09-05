@@ -98,6 +98,14 @@ pointer and `$07C6` is the shared update flag cleared before each record. The
 pointer aliases remain scoped to the dispatcher; `$0043` is global because the
 selected handlers repeatedly recover the same current six-byte record offset.
 
+Within `$A0C4-$A1A2`, `$1B` and `$27-$28` retain the sampled Y and 16-bit X,
+while `$1D` indexes the 24-slot runtime pool. During room lookup `$29-$2C`
+form the cell column and pointer; during object lookup `$2B-$2C` become the
+16-bit X delta. `$40` is the shared room-cell animation counter whose sign
+suppresses `$45-$48` collision flags, and `$42` receives the matched object
+offset. The adjacent room-only sampler reuses the coordinate, pointer, and
+animation fields through `$A1D3`; all aliases remain scoped to these samplers.
+
 Within `$A2B1-$A350`, `$05-$12` are treated as one 14-byte new-game runtime
 record. Scoped names also cover its transition byte, player motion/cell state,
 collision probe state, and two motion counters without asserting those scratch

@@ -21,7 +21,15 @@
         "../game/collision/cell_samples.asm",
         "../system/nmi_tasks.asm",
         "../game/objects/update_dispatch.asm",
+        "../game/objects/player_span_overlap.asm",
         "../preservation/prg_9613_a2b0.asm",
+        "../game/objects/transient_lifecycle.asm",
+        "../game/collision/object_filters.asm",
+        "../game/collision/point_sample.asm",
+        "../game/collision/room_sample.asm",
+        "../preservation/prg_a044_a2b0.asm",
+        "../game/collision/runtime_overlap.asm",
+        "../preservation/prg_a2aa_a2b0.asm",
         "../game/new_game.asm",
         "../rendering/room_palette.asm",
         "../game/rooms/load_room.asm",
@@ -151,10 +159,58 @@
       "title": "Runtime-object update dispatcher and handler table"
     },
     {
-      "path": "src/preservation/prg_9613_a2b0.asm",
+      "path": "src/game/objects/player_span_overlap.asm",
       "start": "0x9613",
+      "end": "0x965C",
+      "title": "Player and object-span overlap test"
+    },
+    {
+      "path": "src/preservation/prg_9613_a2b0.asm",
+      "start": "0x965C",
+      "end": "0x9FF3",
+      "title": "Preservation runtime-object handlers before transient lifecycles"
+    },
+    {
+      "path": "src/game/objects/transient_lifecycle.asm",
+      "start": "0x9FF3",
+      "end": "0xA044",
+      "title": "Transient runtime-object lifecycles and replacement table"
+    },
+    {
+      "path": "src/game/collision/object_filters.asm",
+      "start": "0xA044",
+      "end": "0xA0C4",
+      "title": "Animated-cell and runtime-object collision filters"
+    },
+    {
+      "path": "src/game/collision/point_sample.asm",
+      "start": "0xA0C4",
+      "end": "0xA1A3",
+      "title": "Room-cell and runtime-object point collision sample"
+    },
+    {
+      "path": "src/game/collision/room_sample.asm",
+      "start": "0xA1A3",
+      "end": "0xA1D4",
+      "title": "Room-cell-only collision sample"
+    },
+    {
+      "path": "src/preservation/prg_a044_a2b0.asm",
+      "start": "0xA1D4",
+      "end": "0xA247",
+      "title": "Preservation collision samplers before runtime overlap"
+    },
+    {
+      "path": "src/game/collision/runtime_overlap.asm",
+      "start": "0xA247",
+      "end": "0xA2AA",
+      "title": "Runtime-object overlap scan"
+    },
+    {
+      "path": "src/preservation/prg_a2aa_a2b0.asm",
+      "start": "0xA2AA",
       "end": "0xA2B1",
-      "title": "Preservation runtime-object handlers"
+      "title": "Preservation helper before new-game initialization"
     },
     {
       "path": "src/game/new_game.asm",

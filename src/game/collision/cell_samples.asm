@@ -15,7 +15,7 @@ ReturnRuntimeObjectTypeOutsideRange:
     RTS
 
 SampleNormalizedRoomCollisionCell:
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     PHP
     CMP #$62
     BEQ NormalizeMutableCollisionCell

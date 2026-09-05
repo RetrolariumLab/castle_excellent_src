@@ -85,6 +85,14 @@
   shared indexes 29/30, and the unreachable type-09 tail kept as typed data;
 - [x] correlate encoded room types, loader states, runtime indexes, update and
   sprite dispatch, collision dimensions, room use, and cell-marker sources;
+- [x] reconstruct the shared player/object-span test, its saturated 16-bit X
+  bounds, 16-pixel Y interval, and all three direct callers;
+- [x] reconstruct transient runtime types 32, 40, and 41, including type
+  replacement, state lifetime, odd-frame motion, and full-record clearing;
+- [x] reconstruct animated-cell direction classification and both runtime-type
+  collision filters, including their overlapping logical table tails;
+- [x] reconstruct the resumable 24-record runtime-object overlap scan, exact
+  dimension bounds, active-type filter, and shared carry/no-op return;
 - [x] reconstruct five common metasprite composition paths, horizontal page
   clipping/OAM compaction, and all 203 tile/attribute descriptor pairs;
 - [x] reconstruct the NMI status task, its foreground-formatting interlock,

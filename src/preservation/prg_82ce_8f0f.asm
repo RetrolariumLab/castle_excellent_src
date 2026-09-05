@@ -144,7 +144,7 @@ Label_83A8:
     JSR Func_8DD3
     BCC Label_83C5
     STA $30
-    JSR Func_A044
+    JSR ClassifyAnimatedCollisionCell
     BCS Label_840F
     INC $1E
 
@@ -158,7 +158,7 @@ Label_83C5:
     JSR Func_8DD3
     BCC Label_83DD
     STA $2F
-    JSR Func_A044
+    JSR ClassifyAnimatedCollisionCell
     BCS Label_840F
     INC $1E
 
@@ -531,7 +531,7 @@ Label_860D:
     BEQ Label_8673
     STX $16
     TYA
-    JSR Func_A05E
+    JSR GetRuntimeObjectType84To89Filter
     BNE Label_8673
     LDA #$A8
     LDX $16
@@ -981,7 +981,7 @@ Label_8B6D:
     LDX #$00
 
 Label_8B8F:
-    JSR Func_A247
+    JSR FindRuntimeObjectOverlappingSpan
     BCS Label_8BA9
     JSR Func_9A1F
     LDA a:$07AB,Y
@@ -1021,7 +1021,7 @@ Label_8BB4:
     CMP #$A4
     BEQ Label_8BF9
     JSR GetRuntimeObjectX
-    JSR Func_A1A3
+    JSR SampleRoomCollisionAtPixel
     BCS Label_8BEB
     BMI Label_8BEB
     LDX $16
@@ -1029,7 +1029,7 @@ Label_8BB4:
     TAX
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXPlus15
-    JSR Func_A1A3
+    JSR SampleRoomCollisionAtPixel
     BMI Label_8BEB
     BCC Label_8BF9
 
@@ -1300,14 +1300,14 @@ Label_8E7A:
     LDA $2C
     BNE Label_8EB7
     LDA RuntimeObjectRecords,X
-    JSR Func_A091
+    JSR GetRuntimeObjectSolidFlag
     CLC
     BEQ Label_8EA5
     SEC
 
 Label_8EA5:
     LDA RuntimeObjectRecords,X
-    JSR Func_A05E
+    JSR GetRuntimeObjectType84To89Filter
     BNE Label_8EAD
     CLC
 

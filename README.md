@@ -87,6 +87,23 @@ evidence, and tested decoders for game data.
   indexes, update handlers, sprite selectors, collision dimensions, initial
   states, room occurrence sets, and five cell-marker sources. The original
   rooms use 34 encoded values and directly source 32 runtime types.
+- `scripts/player_object_span.py` proves the shared three-call overlap helper,
+  including its 16-pixel Y interval, saturated `objectX-15` left boundary, and
+  exclusive `objectX+width` right boundary across complete room-width domains.
+- `scripts/transient_object_lifecycle.py` proves update handlers 32, 40, and
+  41: the 15-entry replacement table, parity-selected replacement state,
+  complete six-byte clearing, bounded state lifetime, and odd-frame Y drift.
+- `scripts/object_collision_filters.py` proves both animated-cell families and
+  the runtime type/filter tables used by collision samplers, including their
+  intentional two-entry overlap with following instruction bytes.
+- `scripts/collision_point_sample.py` proves room-cell half selection, returned
+  processor flags, animation-phase suppression, and the first matching runtime
+  object across the complete 320x160 room domain.
+- `scripts/room_collision_sample.py` proves the room-only four-call variant
+  across every room pixel, cell half, and animation-counter sign.
+- `scripts/runtime_object_overlap.py` proves the 24-record active-object scan,
+  asymmetric width bounds, vertical dimension test, first-match/resume order,
+  and the carry-clear match versus carry-set exhaustion contract.
 - `scripts/audio_data.py` validates the eight-set music table and all 21
   textual command streams, including their terminators and restart pointers.
 - `scripts/room_screen_data.py` validates four status-screen tile streams,
@@ -150,7 +167,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 268 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 315 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -158,10 +175,10 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 9,804 instructions after seven
-  static code ranges recover pointer-selected entries and 52 evidence-backed data
-  ranges remove 190 false-positive instructions. The
-  source layout owns 20,348 PRG bytes semantically (62.10%).
+  disagreements. Evidence-refined Ghidra exports 9,842 instructions after 14
+  static code ranges recover pointer-selected entries and 55 evidence-backed data
+  ranges remove 192 false-positive instructions. The
+  source layout owns 21,001 PRG bytes semantically (64.09%).
 
 `assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
 identity. `make verify` validates both images against that independent manifest
@@ -272,6 +289,14 @@ make player-hazard-state # inspect protection timers and hazard contact
 make validate-player-hazard # validate all timer/probe/cell input domains
 make object-player-proximity # inspect the object/player carry predicate
 make validate-object-player-proximity # validate every proven distance domain
+make player-object-span # inspect the player/object-span carry predicate
+make validate-player-object-span # validate every proven span boundary
+make transient-object-state # inspect type 32/40/41 lifecycle contracts
+make validate-transient-objects # validate transient-object tables and states
+make object-collision-filters # inspect animated-cell and object type filters
+make validate-object-collision-filters # validate filter domains and overlaps
+make runtime-overlap-state # inspect the active-object overlap scan
+make validate-runtime-overlap # validate type, geometry, and traversal domains
 make pause-input-state # inspect pause edges and paused scrolling
 make validate-pause-input # validate all pause button/mode/scroll domains
 make collision-table-state # inspect room-cell flags and object dimensions
@@ -320,6 +345,12 @@ scripts/room_cell_coordinates.py room-cell coordinate and mutation model
 scripts/room_navigation.py one-based 10x10 castle navigation model
 scripts/player_hazard_state.py protection countdown and hazard-probe model
 scripts/object_player_proximity.py runtime-object/player proximity model
+scripts/player_object_span.py player/object-span overlap model
+scripts/transient_object_lifecycle.py transient-object state-machine model
+scripts/object_collision_filters.py animated-cell and object filter model
+scripts/collision_point_sample.py room-cell/runtime-object point-sample model
+scripts/room_collision_sample.py room-cell-only point-sample model
+scripts/runtime_object_overlap.py runtime-pool overlap scan model
 scripts/pause_input.py     pause toggle and paused-scroll model
 scripts/collision_tables.py room-cell flags and object-dimension validator
 scripts/frame_sprites.py   player/action and object frame-sprite validator
@@ -357,6 +388,12 @@ src/game/rooms/mutable_cell_*.asm actions, lookup, predicates, and restoration
 src/game/rooms/navigation.asm boundary-safe castle room movement
 src/game/player/hazard_state.asm protection decay and hazard-cell contact
 src/game/objects/player_proximity.asm shared object/player interaction predicate
+src/game/objects/player_span_overlap.asm shared player/object-span predicate
+src/game/objects/transient_lifecycle.asm type 32/40/41 lifecycle handlers
+src/game/collision/object_filters.asm animated-cell and runtime-type filters
+src/game/collision/point_sample.asm room-cell/runtime-object point sampler
+src/game/collision/room_sample.asm room-cell-only point sampler
+src/game/collision/runtime_overlap.asm active-object span overlap scan
 src/game/collision/*.asm collision sampling, classification, flags, and dimensions
 src/rendering/room_attributes.asm proven room attribute-table construction
 src/rendering/room_screen.asm nametable, status, attribute, and OAM setup

@@ -80,6 +80,150 @@
       "evidence": "the dispatcher stops after all 144 bytes in the 24-record runtime pool"
     },
     {
+      "instruction": "0x9616",
+      "expected": "#$10",
+      "operand": "#PlayerObjectVerticalSpan",
+      "evidence": "the helper accepts the player's Y only inside the object's 16-pixel vertical span"
+    },
+    {
+      "instruction": "0x961D",
+      "expected": "#$10",
+      "operand": "#PlayerObjectVerticalSpan",
+      "evidence": "the second subtraction rejects a vertical delta of 16 or greater"
+    },
+    {
+      "instruction": "0x9624",
+      "expected": "#$0F",
+      "operand": "#PlayerObjectLeftReach",
+      "evidence": "the player's 16-pixel body reaches 15 pixels left of the object's X origin"
+    },
+    {
+      "instruction": "0x9FFA",
+      "expected": "#$01",
+      "operand": "#RuntimeObjectType32StateParityMask",
+      "evidence": "replacement state is selected solely from global frame parity"
+    },
+    {
+      "instruction": "0xA020",
+      "expected": "#$0F",
+      "operand": "#RuntimeObjectType40StateLimit",
+      "evidence": "type index 40 is cleared when its incremented state reaches 15"
+    },
+    {
+      "instruction": "0xA044",
+      "expected": "#$35",
+      "operand": "#DecrementingAnimatedCellFirst",
+      "evidence": "the first classified animated-cell family begins at $35"
+    },
+    {
+      "instruction": "0xA048",
+      "expected": "#$41",
+      "operand": "#DecrementingAnimatedCellEnd",
+      "evidence": "the first classified animated-cell family ends before $41"
+    },
+    {
+      "instruction": "0xA050",
+      "expected": "#$56",
+      "operand": "#IncrementingAnimatedCellFirst",
+      "evidence": "the second classified animated-cell family begins at $56"
+    },
+    {
+      "instruction": "0xA054",
+      "expected": "#$62",
+      "operand": "#IncrementingAnimatedCellEnd",
+      "evidence": "the second classified animated-cell family ends before $62"
+    },
+    {
+      "instruction": "0xA063",
+      "expected": "a:$9FEB,Y",
+      "operand": "RuntimeObjectType84To89FilterValues - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "negative runtime types index the physical $A06B table through an address biased by $80"
+    },
+    {
+      "instruction": "0xA096",
+      "expected": "a:$A01E,Y",
+      "operand": "RuntimeObjectSolidFlags - RuntimeObjectCollisionTypeFirst,Y",
+      "evidence": "negative runtime types index the physical $A09E table through an address biased by $80"
+    },
+    {
+      "instruction": "0xA0C4",
+      "expected": "#$A0",
+      "operand": "#RuntimeObjectVisibleYLimit",
+      "evidence": "samples at or below the 160-pixel gameplay boundary return empty"
+    },
+    {
+      "instruction": "0xA0C9",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "an out-of-bounds vertical sample returns the empty room-cell value"
+    },
+    {
+      "instruction": "0xA0FB",
+      "expected": "#$04",
+      "operand": "#>RoomCells",
+      "evidence": "the row pointer is based at the decoded room buffer $0400"
+    },
+    {
+      "instruction": "0xA116",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "empty room cells fall through to runtime-object sampling"
+    },
+    {
+      "instruction": "0xA14D",
+      "expected": "#$A8",
+      "operand": "#RuntimeOverlapTypeEnd",
+      "evidence": "transient runtime types $A8 and above do not participate in point collision"
+    },
+    {
+      "instruction": "0xA199",
+      "expected": "#$18",
+      "operand": "#RuntimeObjectRecordCount",
+      "evidence": "the point sampler visits all 24 runtime-object slots"
+    },
+    {
+      "instruction": "0xA19E",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "an exhausted runtime-object scan returns the empty room-cell value"
+    },
+    {
+      "instruction": "0xA1A3",
+      "expected": "#$A0",
+      "operand": "#RuntimeObjectVisibleYLimit",
+      "evidence": "room-only samples at or below the 160-pixel gameplay boundary return empty"
+    },
+    {
+      "instruction": "0xA1A8",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "an out-of-bounds room-only sample returns the empty room-cell value"
+    },
+    {
+      "instruction": "0xA247",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the overlap scan stops at the end of the 24-record runtime pool"
+    },
+    {
+      "instruction": "0xA24F",
+      "expected": "#$A8",
+      "operand": "#RuntimeOverlapTypeEnd",
+      "evidence": "the overlap scan accepts active runtime types $80-$A7"
+    },
+    {
+      "instruction": "0xA2A2",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "a rejected overlap candidate advances by one six-byte record"
+    },
+    {
+      "instruction": "0xA2A5",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the overlap scan bounds the next candidate to the 144-byte pool"
+    },
+    {
       "instruction": "0xA3E1",
       "expected": "#$03",
       "operand": "#RoomCellSlowAnimationDividerMask",

@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 54 semantic and 7 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 63 semantic and 8 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 20,348 PRG bytes (62.10%): `$E45D-$E8DE`
+The promoted ranges currently cover 21,001 PRG bytes (64.09%): `$E45D-$E8DE`
 contains the complete room prefix-code tables and decoder, while
 `$E8DF-$EA35` maps all 400 cells into two 64-byte nametable attribute buffers.
 `$EB8F-$EC62` expands terminated static-object triples into the 24-record
@@ -202,6 +202,57 @@ pointers. A manual indirect call pushes `AdvanceRuntimeObjectUpdate - 1` before
 jumping through zero page, so each handler's `RTS` resumes the six-byte scan.
 The independent model verifies the exact table, both possible high-bit forms,
 the visibility boundary, and every record offset.
+
+The adjacent overlap slice adds `$9613-$965B`. Three object handlers provide a
+16-bit object X, an 8-bit Y, and a width. Carry returns clear only when player Y
+lies from `objectY+1` through `objectY+16`, and player X lies in the half-open
+interval from saturated `objectX-15` through `objectX+width`. The independent
+model checks all byte-wide Y pairs and 921,600 room-width X/width cases.
+
+The transient-object slice adds `$9FF3-$A043`. Type index 32 decrements state
+until one, then replaces its type from a 15-byte table indexed by paired values
+of the modulo-30 counter and chooses zero/negative state from frame parity.
+Type index 40 increments state and clears its whole six-byte record at 15.
+Type index 41 drifts upward on odd room frames and clears its record when byte
+five counts down to zero. The model checks the exact table, all handler-pointer
+entries, and 73,984 state/frame combinations.
+
+The object-filter slice adds `$A044-$A0C3`. One routine recognizes the same
+decrementing `$35-$40` and incrementing `$56-$61` cell families used by room
+animation, returning direction values zero and `$FF`. Two runtime-type lookups
+provide the exact type-84-to-89 zero filter and object-solidity flag. Each
+physical table has 38 bytes for `$80-$A5`; the logical `$80-$A7` lookup also
+consumes two nonzero opcode bytes from the following routine. The independent
+model verifies all 256 cells, the proven `$00-$A7` type domain, seven aligned
+call sites, five additional opcode matches, and both overlapping table views.
+
+The point-sample slice adds `$A0C4-$A1A2`. It converts a 16-bit X and 8-bit Y
+into one of 400 room cells, uses X bit 3 to select the cell's left or right
+eight-pixel collision half, and returns the table byte's bit 0 and bit 7 as C
+and N while restoring the cell type in A. Cell types `$45-$48` suppress their
+flags during the negative half of `RoomCellAnimationCounter` but still return
+as room-cell samples. Empty/passable halves scan all 24 runtime records in
+ascending order, excluding `CurrentObjectOffset`; the first point-contained
+type `$80-$A7` returns its record offset and solidity. The model verifies the
+exact 223-byte routine, all 30 call sites, every cell/half/animation class,
+every runtime type and slot, and 102,864 coordinate and geometry cases.
+
+The room-only sample slice adds `$A1A3-$A1D3`. Its four callers probe paired
+left/right edges while moving runtime objects. It shares the 20x20 addressing,
+eight-pixel half selection, `$45-$48` animation gate, and C/N return contract
+with the combined point sampler, but never scans runtime objects. A sample at
+Y 160 or greater returns `$53` with X zero; valid samples always return the room
+cell in A and doubled half index in X, including passable `$00` flags. The
+independent model verifies the exact 49 bytes, four call sites, all 100 cell
+types, both halves and animation signs, and all 51,200 room pixels.
+
+The runtime-overlap slice adds `$A247-$A2A9`. Starting from any aligned pool
+offset, it skips inactive types and types at/after `$A8`, tests the supplied Y
+point against each candidate's height, and applies asymmetric horizontal bounds
+using the candidate width on the left and supplied span width on the right.
+It returns the first matching record offset with carry clear, while exhaustion
+reaches the shared no-op handler return with carry set. The model verifies both
+call sites, all 24 offsets, exact dimension tables, and 1,052,928 type/X/Y cases.
 
 The new-game slice adds `$A2B1-$A35B`. It selects one-based room `$47`, sets
 three lives and player position `(0,$98)`, resets gameplay, transition,

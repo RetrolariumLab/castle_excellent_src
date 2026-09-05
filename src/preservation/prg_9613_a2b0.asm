@@ -1,33 +1,27 @@
-; Preservation runtime-object handlers
-; CPU range $9613-$A2B0
+; Preservation runtime-object handlers before transient lifecycles
+; CPU range $965C-$9FF2
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-Func_9613:
-    .byte $A5, $46, $18, $69, $10, $38, $E5, $3A, $90, $3D, $E9, $10, $B0, $39, $A5, $44
-    .byte $38, $E9, $0F, $85, $48, $A5, $45, $E9, $00, $85, $49, $A5, $49, $10, $06, $A9
-    .byte $00, $85, $49, $85, $48, $A5, $38, $C5, $48, $A5, $39, $E5, $49, $90, $18, $A5
-    .byte $44, $18, $65, $47, $85, $48, $A5, $45, $69, $00, $85, $49, $A5, $38, $C5, $48
-    .byte $A5, $39, $E5, $49, $B0, $01, $60, $38, $60, $A9, $00, $8D, $73, $07, $20, $74
-    .byte $96, $A6, $43, $AD, $73, $07, $F0, $08, $10, $03, $4C, $C4, $8A, $4C, $F6, $89
-    .byte $60, $86, $41, $A9, $53, $85, $1E, $A9, $00, $85, $1F, $B5, $4B, $85, $21, $B5
-    .byte $4C, $85, $22, $B5, $4D, $18, $69, $11, $85, $16, $A8, $A5, $22, $A6, $21, $20
-    .byte $5D, $95, $90, $09, $85, $1E, $E6, $1F, $20, $44, $A0, $B0, $3E, $A4, $16, $A5
-    .byte $21, $18, $69, $07, $AA, $A5, $22, $69, $00, $20, $5D, $95, $90, $09, $85, $1E
-    .byte $E6, $1F, $20, $44, $A0, $B0, $24, $A4, $16, $A5, $21, $18, $69, $0F, $AA, $A5
-    .byte $22, $69, $00, $20, $5D, $95, $B0, $13, $A5, $1E, $A4, $1F, $D0, $0D, $A6, $43
-    .byte $B5, $4D, $C9, $A0, $B0, $04, $69, $02, $95, $4D, $60, $85, $16, $86, $17, $20
-    .byte $44, $A0, $B0, $03, $4C, $6F, $97, $30, $44, $A9, $02, $18, $65, $21, $85, $21
-    .byte $A5, $22, $69, $00, $85, $22, $A5, $21, $18, $69, $0F, $85, $23, $A5, $22, $69
-    .byte $00, $85, $24, $A6, $43, $B4, $4D, $A6, $23, $A5, $24, $20, $5D, $95, $B0, $5B
-    .byte $30, $59, $A6, $43, $B5, $4D, $18, $69, $0F, $A8, $A6, $23, $A5, $24, $20, $5D
-    .byte $95, $B0, $48, $30, $46, $A9, $7F, $8D, $73, $07, $4C, $64, $97, $A5, $21, $38
-    .byte $E9, $02, $85, $21, $A5, $22, $E9, $00, $85, $22, $A6, $43, $B4, $4D, $A6, $21
-    .byte $A5, $22, $20, $5D, $95, $B0, $24, $30, $22, $A6, $43, $B5, $4D, $18, $69, $0F
-    .byte $A8, $A6, $21, $A5, $22, $20, $5D, $95, $B0, $11, $30, $0F, $A9, $FF, $8D, $73
-    .byte $07, $A6, $43, $A5, $21, $95, $4B, $A5, $22, $95, $4C, $60, $A5, $16, $20, $5E
-    .byte $A0, $F0, $01, $60, $A5, $1E, $C5, $16, $F0, $07, $A5, $1E, $C9, $53, $F0, $01
-    .byte $60, $A6, $42
+    .byte $A9, $00, $8D, $73, $07, $20, $74, $96, $A6, $43, $AD, $73, $07, $F0, $08, $10
+    .byte $03, $4C, $C4, $8A, $4C, $F6, $89, $60, $86, $41, $A9, $53, $85, $1E, $A9, $00
+    .byte $85, $1F, $B5, $4B, $85, $21, $B5, $4C, $85, $22, $B5, $4D, $18, $69, $11, $85
+    .byte $16, $A8, $A5, $22, $A6, $21, $20, $5D, $95, $90, $09, $85, $1E, $E6, $1F, $20
+    .byte $44, $A0, $B0, $3E, $A4, $16, $A5, $21, $18, $69, $07, $AA, $A5, $22, $69, $00
+    .byte $20, $5D, $95, $90, $09, $85, $1E, $E6, $1F, $20, $44, $A0, $B0, $24, $A4, $16
+    .byte $A5, $21, $18, $69, $0F, $AA, $A5, $22, $69, $00, $20, $5D, $95, $B0, $13, $A5
+    .byte $1E, $A4, $1F, $D0, $0D, $A6, $43, $B5, $4D, $C9, $A0, $B0, $04, $69, $02, $95
+    .byte $4D, $60, $85, $16, $86, $17, $20, $44, $A0, $B0, $03, $4C, $6F, $97, $30, $44
+    .byte $A9, $02, $18, $65, $21, $85, $21, $A5, $22, $69, $00, $85, $22, $A5, $21, $18
+    .byte $69, $0F, $85, $23, $A5, $22, $69, $00, $85, $24, $A6, $43, $B4, $4D, $A6, $23
+    .byte $A5, $24, $20, $5D, $95, $B0, $5B, $30, $59, $A6, $43, $B5, $4D, $18, $69, $0F
+    .byte $A8, $A6, $23, $A5, $24, $20, $5D, $95, $B0, $48, $30, $46, $A9, $7F, $8D, $73
+    .byte $07, $4C, $64, $97, $A5, $21, $38, $E9, $02, $85, $21, $A5, $22, $E9, $00, $85
+    .byte $22, $A6, $43, $B4, $4D, $A6, $21, $A5, $22, $20, $5D, $95, $B0, $24, $30, $22
+    .byte $A6, $43, $B5, $4D, $18, $69, $0F, $A8, $A6, $21, $A5, $22, $20, $5D, $95, $B0
+    .byte $11, $30, $0F, $A9, $FF, $8D, $73, $07, $A6, $43, $A5, $21, $95, $4B, $A5, $22
+    .byte $95, $4C, $60, $A5, $16, $20, $5E, $A0, $F0, $01, $60, $A5, $1E, $C5, $16, $F0
+    .byte $07, $A5, $1E, $C9, $53, $F0, $01, $60, $A6, $42
 
 Label_9786:
     LDA #$A8
@@ -142,7 +136,7 @@ Label_980E:
     STA $45
     LDA #$10
     STA $47
-    JSR Func_9613
+    JSR TestPlayerAgainstObjectSpan
     BCC Label_985D
     JMP Label_9862
 
@@ -270,7 +264,7 @@ Label_98EC:
     STA $45
     LDA #$20
     STA $47
-    JSR Func_9613
+    JSR TestPlayerAgainstObjectSpan
     BCC Label_9945
     JMP Label_994A
 
@@ -328,7 +322,7 @@ Label_9974:
     LDX #$00
 
 Label_9996:
-    JSR Func_A247
+    JSR FindRuntimeObjectOverlappingSpan
     BCS Label_99B0
     JSR Func_9A1F
     LDA a:$07AB,Y
@@ -344,7 +338,7 @@ Label_99A8:
     JMP Label_9996
 
 Label_99B0:
-    JSR Func_9613
+    JSR TestPlayerAgainstObjectSpan
     BCS Label_99BA
     LDA #$FF
     STA a:$07C3
@@ -373,7 +367,7 @@ Label_99C5:
     STA RuntimeObjectY,X
     TAY
     JSR GetRuntimeObjectX
-    JSR Func_A1A3
+    JSR SampleRoomCollisionAtPixel
     BCS Label_99FA
     BMI Label_99FA
     LDX $16
@@ -381,7 +375,7 @@ Label_99C5:
     TAX
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXPlus15
-    JSR Func_A1A3
+    JSR SampleRoomCollisionAtPixel
     BMI Label_99FA
     BCC Label_9A08
 
@@ -579,7 +573,7 @@ Label_9B1B:
     ADC #$11
     TAY
     JSR GetRuntimeObjectX
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BPL Label_9B33
     JMP Func_9791
 
@@ -599,7 +593,7 @@ Label_9B33:
     TAX
     LDA $22
     ADC #$00
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BPL Label_9B55
     JMP Func_9791
 
@@ -619,7 +613,7 @@ Label_9B55:
     TAX
     LDA $22
     ADC #$00
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BPL Label_9B77
     JMP Func_9791
 
@@ -668,7 +662,7 @@ Label_9B9D:
     TAX
     LDA $22
     ADC #$00
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCC Label_9BE5
 
 Label_9BC4:
@@ -717,7 +711,7 @@ Label_9BED:
     TAX
     LDA $22
     SBC #$00
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCC Label_9C31
 
 Label_9C14:
@@ -875,7 +869,7 @@ Label_9D07:
     ADC #$10
     TAY
     JSR GetRuntimeObjectXPlus7
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9D18
     JMP Func_9B00
 
@@ -894,7 +888,7 @@ Label_9D1E:
     DEY
     DEY
     JSR GetRuntimeObjectX
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9D64
     BMI Label_9D64
     LDX CurrentRuntimeObjectOffset
@@ -902,7 +896,7 @@ Label_9D1E:
     DEY
     DEY
     JSR GetRuntimeObjectXPlus7
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9D64
     BMI Label_9D64
     LDX CurrentRuntimeObjectOffset
@@ -910,7 +904,7 @@ Label_9D1E:
     DEY
     DEY
     JSR GetRuntimeObjectXPlus15
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9D64
     BMI Label_9D64
     LDX CurrentRuntimeObjectOffset
@@ -1028,21 +1022,21 @@ Func_9DF2:
     CPY #$A0
     BCS Label_9E1E
     JSR GetRuntimeObjectX
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9E1E
     LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
     JSR GetRuntimeObjectXPlus7
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9E1E
     LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
     JSR GetRuntimeObjectXPlus15
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
 
 Label_9E1E:
     RTS
@@ -1056,7 +1050,7 @@ Func_9E1F:
     BCS Label_9E51
     TAY
     JSR GetRuntimeObjectX
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9E51
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
@@ -1064,7 +1058,7 @@ Func_9E1F:
     ADC #$11
     TAY
     JSR GetRuntimeObjectXPlus7
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9E51
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
@@ -1072,7 +1066,7 @@ Func_9E1F:
     ADC #$11
     TAY
     JSR GetRuntimeObjectXPlus15
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
 
 Label_9E51:
     RTS
@@ -1081,7 +1075,7 @@ Func_9E52:
     LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXMinus2
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9E7C
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
@@ -1089,7 +1083,7 @@ Func_9E52:
     ADC #$07
     TAY
     JSR GetRuntimeObjectXMinus2
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9E7C
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
@@ -1097,7 +1091,7 @@ Func_9E52:
     ADC #$0F
     TAY
     JSR GetRuntimeObjectXMinus2
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
 
 Label_9E7C:
     RTS
@@ -1106,7 +1100,7 @@ Func_9E7D:
     LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXPlus17
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9EA7
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
@@ -1114,7 +1108,7 @@ Func_9E7D:
     ADC #$07
     TAY
     JSR GetRuntimeObjectXPlus17
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9EA7
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
@@ -1122,7 +1116,7 @@ Func_9E7D:
     ADC #$0F
     TAY
     JSR GetRuntimeObjectXPlus17
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
 
 Label_9EA7:
     RTS
@@ -1184,7 +1178,7 @@ Label_9EF8:
     STY $16
     LDX $21
     LDA $22
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9F73
     LDY $16
     LDA $21
@@ -1193,7 +1187,7 @@ Label_9EF8:
     TAX
     LDA $22
     ADC #$00
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9F73
     LDA $16
     CLC
@@ -1201,7 +1195,7 @@ Label_9EF8:
     TAY
     LDX $21
     LDA $22
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9F73
     LDA $16
     CLC
@@ -1213,7 +1207,7 @@ Label_9EF8:
     TAX
     LDA $22
     ADC #$00
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9F73
     LDY CurrentRoomNumber
     LDX RoomObjectCounts - 1,Y
@@ -1262,7 +1256,7 @@ Label_9F89:
     STX $21
     STA $22
     STY $16
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9FB5
     BMI Label_9FB5
     LDA $16
@@ -1271,7 +1265,7 @@ Label_9F89:
     TAY
     LDX $21
     LDA $22
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9FB5
     BMI Label_9FB5
     LDX CurrentRuntimeObjectOffset
@@ -1287,7 +1281,7 @@ Label_9FB4:
 
 Label_9FB5:
     LDX CurrentRuntimeObjectOffset
-    JMP Label_A024
+    JMP ClearCurrentRuntimeObject
 
 Label_9FBA:
     LDY RuntimeObjectY,X
@@ -1303,7 +1297,7 @@ Label_9FBA:
     STX $21
     STA $22
     STY $16
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9FB5
     BMI Label_9FB5
     LDA $16
@@ -1312,7 +1306,7 @@ Label_9FBA:
     TAY
     LDX $21
     LDA $22
-    JSR SampleRoomCollisionCell
+    JSR SampleCollisionAtPixel
     BCS Label_9FB5
     BMI Label_9FB5
     LDX CurrentRuntimeObjectOffset
@@ -1320,412 +1314,4 @@ Label_9FBA:
     STA RuntimeObjectXLo,X
     LDA $22
     STA RuntimeObjectXHi,X
-    RTS
-    DEC RuntimeObjectState,X
-    BEQ Label_9FF8
-    RTS
-
-Label_9FF8:
-    LDA FrameCounter
-    AND #$01
-    BEQ Label_A000
-    LDA #$FF
-
-Label_A000:
-    STA RuntimeObjectState,X
-    LDA FrameCounterModulo30
-    LSR A
-    TAY
-    LDA a:$A00D,Y
-    STA RuntimeObjectRecords,X
-    RTS
-    .byte $84, $85, $85, $87, $87, $84, $84, $84, $84, $87, $84, $85, $84, $85, $84
-    INC RuntimeObjectState,X
-    LDA RuntimeObjectState,X
-    CMP #$0F
-    BCC Label_A032
-
-Label_A024:
-    LDA #$00
-    STA RuntimeObjectRecords,X
-    STA RuntimeObjectXLo,X
-    STA RuntimeObjectXHi,X
-    STA RuntimeObjectY,X
-    STA RuntimeObjectState,X
-    STA RuntimeObjectByte5,X
-
-Label_A032:
-    RTS
-    LDA RoomFrameCounter
-    LSR A
-    BCC Label_A03F
-    LDA RuntimeObjectY,X
-    BEQ Label_A03F
-    DEC RuntimeObjectY,X
-
-Label_A03F:
-    DEC RuntimeObjectByte5,X
-    BEQ Label_A024
-    RTS
-
-Func_A044:
-    CMP #$35
-    BCC Label_A050
-    CMP #$41
-    BCS Label_A050
-    LDY #$00
-    SEC
-    RTS
-
-Label_A050:
-    CMP #$56
-    BCC Label_A05C
-    CMP #$62
-    BCS Label_A05C
-    LDY #$FF
-    SEC
-    RTS
-
-Label_A05C:
-    CLC
-    RTS
-
-Func_A05E:
-    TAY
-    PHP
-    BPL Label_A067
-    PLP
-    LDA a:$9FEB,Y
-    RTS
-
-Label_A067:
-    PLP
-    LDA #$FF
-    RTS
-    .byte $FF, $FF, $FF, $FF, $00, $00, $00, $00, $00, $00, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF
-
-Func_A091:
-    TAY
-    PHP
-    BPL Label_A09A
-    PLP
-    LDA a:$A01E,Y
-    RTS
-
-Label_A09A:
-    PLP
-    LDA #$FF
-    RTS
-    .byte $FF, $00, $00, $00, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $00, $00, $00, $00, $00, $00
-    BRK
-    BRK
-    .byte $00, $00, $00, $00, $00, $FF, $FF, $00, $FF, $FF, $FF, $FF, $FF, $FF
-
-SampleRoomCollisionCell:
-    CPY #$A0
-    BCC Label_A0CE
-    CLC
-    LDA #$53
-    LDY #$00
-    RTS
-
-Label_A0CE:
-    STA $28
-    STX $27
-    STA $2A
-    STX $29
-    STY $1B
-    LDA #$00
-    STA $2C
-    TYA
-    LSR A
-    LSR A
-    LSR A
-    STA $2B
-    ASL $2B
-    ROL $2C
-    ASL $2B
-    ROL $2C
-    CLC
-    ADC $2B
-    STA $2B
-    BCC Label_A0F3
-    INC $2C
-
-Label_A0F3:
-    ASL $2B
-    ROL $2C
-    ASL $2B
-    ROL $2C
-    LDA #$04
-    CLC
-    ADC $2C
-    STA $2C
-    LSR $2A
-    ROR $29
-    LSR $2A
-    ROR $29
-    LSR $2A
-    ROR $29
-    LSR $2A
-    ROR $29
-    LDY $29
-    LDA ($2B),Y
-    CMP #$53
-    BEQ Label_A13C
-    TAX
-    LDA $27
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    TXA
-    ROL A
-    TAX
-    LDA ObjectCollisionFlagsByRoomCellHalf,X
-    BEQ Label_A13C
-    JSR ClassifyCollisionCellPairIndex
-    BNE Label_A134
-    LDY $40
-    BPL Label_A134
-    LDA #$00
-
-Label_A134:
-    PHA
-    LSR A
-    PLA
-    PHP
-    TXA
-    LSR A
-    PLP
-    RTS
-
-Label_A13C:
-    LDY #$00
-    STY $1D
-
-Label_A140:
-    LDY $1D
-    LDX RuntimeObjectOffsetByCount,Y
-    CPX CurrentObjectOffset
-    BEQ Label_A195
-    LDA RuntimeObjectRecords,X
-    BEQ Label_A195
-    CMP #$A8
-    BCS Label_A195
-    TAY
-    LDA $1B
-    SEC
-    SBC RuntimeObjectY,X
-    BCC Label_A195
-    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
-    BCS Label_A195
-    LDA $27
-    STA $2B
-    LDA $28
-    STA $2C
-    LDA $2B
-    SEC
-    SBC RuntimeObjectXLo,X
-    STA $2B
-    LDA $2C
-    SBC RuntimeObjectXHi,X
-    STA $2C
-    BCC Label_A195
-    LDA $2B
-    SEC
-    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
-    STA $2B
-    LDA $2C
-    SBC #$00
-    STA $2C
-    BCS Label_A195
-    STX $42
-    LDA RuntimeObjectRecords,X
-    JSR Func_A091
-    CLC
-    BEQ Label_A190
-    SEC
-
-Label_A190:
-    LDA RuntimeObjectRecords,X
-    LDY #$01
-    RTS
-
-Label_A195:
-    INC $1D
-    LDA $1D
-    CMP #$18
-    BCC Label_A140
-    CLC
-    LDA #$53
-    LDY #$00
-    RTS
-
-Func_A1A3:
-    CPY #$A0
-    BCC Label_A1AD
-    CLC
-    LDA #$53
-    LDX #$00
-    RTS
-
-Label_A1AD:
-    JSR PrepareRoomCellSampleAddress
-    LDY $29
-    LDA ($2B),Y
-    TAX
-    LDA $27
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    TXA
-    ROL A
-    TAX
-    LDA ObjectCollisionFlagsByRoomCellHalf,X
-    JSR ClassifyCollisionCellPairIndex
-    BNE Label_A1CC
-    LDA $40
-    BPL Label_A1CC
-    LDA #$00
-
-Label_A1CC:
-    PHA
-    LSR A
-    PLA
-    PHP
-    TXA
-    LSR A
-    PLP
-    RTS
-    .byte $C0, $A0, $90, $06, $18, $A9, $53, $A0, $00, $60, $85, $28, $86, $27, $84, $1B
-    .byte $A0, $00, $84, $1D
-
-Label_A1E8:
-    LDY $1D
-    LDX RuntimeObjectOffsetByCount,Y
-    LDA RuntimeObjectRecords,X
-    BEQ Label_A239
-    CMP #$A8
-    BCS Label_A239
-    TAY
-    LDA $1B
-    SEC
-    SBC RuntimeObjectY,X
-    BCC Label_A239
-    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
-    BCS Label_A239
-    LDA $27
-    STA $2B
-    .byte $A5
-    PLP
-    STA $2C
-    LDA $2B
-    SEC
-    SBC RuntimeObjectXLo,X
-    STA $2B
-    LDA $2C
-    SBC RuntimeObjectXHi,X
-    STA $2C
-    BCC Label_A239
-    LDA $2B
-    SEC
-    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
-    STA $2B
-    LDA $2C
-    SBC #$00
-    STA $2C
-    BCS Label_A239
-    STX $42
-    LDA RuntimeObjectRecords,X
-    JSR Func_A091
-    CLC
-    BEQ Label_A234
-    SEC
-
-Label_A234:
-    LDA RuntimeObjectRecords,X
-    LDY #$01
-    RTS
-
-Label_A239:
-    INC $1D
-    LDA $1D
-    CMP #$18
-    BCC Label_A1E8
-    CLC
-    LDA #$53
-    LDY #$00
-    RTS
-
-Func_A247:
-    CPX #$90
-    BCS ReturnFromRuntimeObjectHandler
-    LDA RuntimeObjectRecords,X
-    BPL Label_A2A0
-    CMP #$A8
-    BCS Label_A2A0
-    TAY
-    LDA $46
-    SEC
-    SBC RuntimeObjectY,X
-    BCC Label_A2A0
-    SBC RuntimeObjectCollisionHeights - RuntimeObjectCollisionTypeFirst,Y
-    BCS Label_A2A0
-    LDA $44
-    SEC
-    SBC RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
-    STA $48
-    LDA $45
-    SBC #$00
-    STA $49
-    INC $48
-    BNE Label_A274
-    INC $49
-
-Label_A274:
-    LDA $49
-    BPL Label_A27E
-    LDA #$00
-    STA $49
-    STA $48
-
-Label_A27E:
-    LDA RuntimeObjectXLo,X
-    CMP $48
-    LDA RuntimeObjectXHi,X
-    SBC $49
-    BCC Label_A2A0
-    LDA $44
-    CLC
-    ADC $47
-    STA $48
-    LDA $45
-    ADC #$00
-    STA $49
-    LDA RuntimeObjectXLo,X
-    CMP $48
-    LDA RuntimeObjectXHi,X
-    SBC $49
-    BCS Label_A2A0
-    RTS
-
-Label_A2A0:
-    TXA
-    CLC
-    ADC #$06
-    TAX
-    CPX #$90
-    BCC Func_A247
-
-ReturnFromRuntimeObjectHandler:
-    RTS
-    .byte $98, $4A
-    LSR A
-    LSR A
-    STA NmiTaskIndex
     RTS

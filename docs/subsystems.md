@@ -307,6 +307,45 @@ room-cell markers create runtime types `$A1-$A5`; the complete room set contains
 176 such markers. Static and cell-derived objects together peak at 22 records,
 within the 24-record pool.
 
+`TestPlayerAgainstObjectSpan` is shared by three runtime-object paths. Its
+scratch inputs describe a candidate span rather than a six-byte record: a
+16-bit X origin, Y origin, and byte-wide width. It returns carry clear only for
+the player's half-open horizontal overlap and its 16-pixel vertical interval.
+
+Runtime types `$A0`, `$A8`, and `$A9` are absent from encoded room objects and
+cell-marker creation. Their update handlers are nevertheless reachable through
+the 42-entry dispatch table because other handlers create them dynamically.
+The three short handlers own delayed type replacement, bounded animation state,
+odd-frame upward drift, countdown expiry, and a shared full-record clear path.
+
+Collision consumers use `ClassifyAnimatedCollisionCell` to recognize the two
+oppositely animated room-cell ranges and two biased runtime-type tables to
+classify type `$84-$89` behavior and solidity. The tables are physically 38
+bytes each, but their logical `$80-$A7` domains intentionally consume two
+nonzero bytes from the next routine, preserving the expected result for the two
+dynamically created types beyond `$A5`.
+
+`SampleCollisionAtPixel` first resolves a 320x160 pixel coordinate to the
+20x20 room buffer and one of the cell's two eight-pixel collision halves. A
+nonzero room flag wins immediately; its bit 0 and bit 7 become carry and
+negative. The `$45-$48` family keeps returning its cell identity while the
+negative animation phase clears those flags. Empty and passable halves then
+scan all 24 runtime records in order, excluding `CurrentObjectOffset`, and
+return the first object containing the sample point. Y distinguishes a runtime
+object (`1`) from a room/empty result, and object carry comes from the shared
+solidity filter.
+
+`SampleRoomCollisionAtPixel` is a smaller four-call variant for paired object
+movement probes. It always returns the addressed cell and its flags, including
+passable zero entries, and never falls through into the runtime pool. Its
+out-of-range path clears X and carry while preserving the input Y.
+
+`FindRuntimeObjectOverlappingSpan` performs a resumable first-match scan over
+all 24 runtime records. Its candidate geometry uses the collision width and
+height tables directly, skips everything outside active types `$80-$A7`, and
+returns carry clear at the matching record offset. Callers advance X by six to
+enumerate additional matches; a complete scan returns carry set at offset `$90`.
+
 `LoadRoomObjectsAndState` at `$EC63` rotates the nine-byte state and 14-byte
 runtime snapshots before selecting the incoming room state. A matching room id
 restores snapshot B; otherwise the persistent stores are loaded. The selected

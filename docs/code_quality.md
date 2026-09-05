@@ -24,6 +24,18 @@ The quality targets follow the same contract as the sibling
   pointer, guard, and boundary checks, all 100 castle-room navigation cases,
   exhaustive player protection/hazard-probe domains, and the shared
   object/player proximity predicate across all proven coordinate domains, plus
+  the shared player/object-span predicate across every Y pair and representative
+  widths over the complete room X domain, plus
+  all state/frame domains for transient runtime-object types 32, 40, and 41,
+  their exact replacement table, and shared six-byte clearing path, plus
+  animated-cell classification and both overlapping runtime-type filter tables
+  across their complete proven byte domains, plus
+  room/object point sampling across all cell halves, animation phases, runtime
+  slots and the complete 320x160 coordinate domain, plus
+  the room-only four-call sampler across every pixel, cell half, and animation
+  sign, plus
+  the resumable runtime-object overlap scan across all pool offsets and more
+  than one million active-type and dimension-boundary cases, plus
   pause edges and paused scrolling across complete button/state byte domains,
   plus both 100x2 collision-flag tables, all 48 runtime-object dimensions, and
   all 18 exact table consumers, plus player/action frame selection and the

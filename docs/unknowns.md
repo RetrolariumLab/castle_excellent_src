@@ -257,6 +257,104 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
   forms for every table index, all record offsets, deterministic regeneration,
   and byte-identical build
 
+### OBJ-004 - shared player/object-span overlap
+
+- Status: resolved
+- Inputs: object X low/high in `$44/$45`, object Y in `$46`, and object width
+  in `$47`; player coordinates come from `$38-$3A`
+- Vertical contract: accepts player Y from `objectY+1` through `objectY+16`,
+  inclusive, with the original byte-width addition semantics
+- Horizontal contract: accepts player X in
+  `[max(0, objectX-15), objectX+width)` using full 16-bit comparisons
+- Result: carry clear means overlap; all vertical, left, and right rejection
+  paths return carry set
+- Evidence: three direct calls, semantic `$9613-$965B`, exact routine bytes,
+  every Y pair, 921,600 room-width X/width cases, deterministic regeneration,
+  and byte-identical build
+
+### OBJ-005 - transient runtime-object lifecycles
+
+- Status: resolved
+- Type index 32: decrements state; when it reaches zero, paired values of the
+  modulo-30 counter select one of 15 replacement entries containing runtime
+  types `$84`, `$85`, and `$87`; global frame parity selects state zero/`$FF`
+- Type index 40: increments state and clears all six record bytes when the new
+  value reaches 15; byte wrap from `$FF` to zero remains active
+- Type index 41: decrements Y on odd room frames when Y is nonzero, then
+  decrements byte five and clears all six bytes when that countdown reaches zero
+- Provenance: none of `$A0,$A8,$A9` comes directly from static room triples or
+  cell markers; other object handlers create these runtime-only records
+- Evidence: semantic `$9FF3-$A043`, exact 15-byte table, three dispatch-table
+  pointers, 73,984 modeled state/frame cases, deterministic regeneration, and
+  byte-identical build
+
+### OBJ-006 - runtime-object collision filters
+
+- Status: resolved
+- Animated cells: `$35-$40` return carry set/Y zero, `$56-$61` return carry
+  set/Y `$FF`, and every other byte returns carry clear
+- Type-84-to-89 filter: returns zero exactly for `$84-$89` in the proven
+  `$00-$A7` consumer domain; all other results are nonzero
+- Solidity: `$81-$83`, `$90-$9C`, and `$9F` return zero; other proven types
+  return nonzero and are treated as solid by the object-overlap samplers
+- Overlap: each physical table stores 38 values for `$80-$A5`; indexes
+  `$A6/$A7` read the first two instruction bytes at `$A091/$A092` or
+  `$A0C4/$A0C5`, yielding nonzero `$A8/$08` and `$C0/$A0`
+- Evidence: semantic `$A044-$A0C3`, 76 physical and 80 logical table bytes,
+  seven aligned calls, five additional opcode matches, complete cell/type
+  domains, deterministic regeneration, and byte-identical build
+
+### OBJ-007 - room/object point collision sample
+
+- Status: resolved
+- Addressing: A:X supplies a 16-bit pixel X and Y supplies pixel Y; valid
+  pixels address `RoomCells[(Y >> 3) * 20 + (X >> 4)]`, with X bit 3 selecting
+  one of two collision-table halves
+- Room result: a nonzero flag returns the cell in A, the doubled half index in
+  X, and flag bits 0/7 in C/N; `$45-$48` retain their identity but clear flags
+  while the room animation counter is negative
+- Object result: empty/passable cells scan 24 records, exclude
+  `CurrentObjectOffset`, accept types `$80-$A7`, and return the first containing
+  record with Y=1, its offset in X and `$42`, and solidity in carry
+- Empty result: Y at/after 160 or scan exhaustion returns A=`$53`, Y=0, carry
+  clear
+- Evidence: semantic `$A0C4-$A1A2`, 30 direct calls, exact 223-byte routine,
+  complete cell-half/type/slot domains, 102,864 coordinate/geometry cases,
+  deterministic regeneration, and byte-identical build
+
+### OBJ-008 - room-only collision sample
+
+- Status: resolved
+- Addressing: shares the 20x20 room-buffer address helper and X-bit-3 half
+  selection with the combined point sampler
+- Result: always returns the addressed cell in A and doubled half index in X;
+  collision-table bit 0 becomes C and bit 7 becomes N, including zero/passable
+  entries without a runtime-object fallback
+- Animation: `$45-$48` return Y zero and suppress their flags while the room
+  animation counter is negative; ordinary cell pairs return Y `$FF`
+- Boundary: Y at/after 160 returns A=`$53`, X=0, carry clear, with input Y
+  preserved
+- Evidence: semantic `$A1A3-$A1D3`, four direct calls, exact 49-byte routine,
+  all 51,200 room pixels and 400 cell-half/animation cases, deterministic
+  regeneration, and byte-identical build
+
+### OBJ-009 - runtime-object span overlap scan
+
+- Status: resolved
+- Traversal: starts at any caller-provided six-byte offset, tests records in
+  ascending order, and stops after offset 138 in the 144-byte pool
+- Type filter: only active types `$80-$A7` participate; positive/inactive types
+  and transient `$A8/$A9` records are skipped
+- Vertical contract: the supplied Y point must be at/after object Y and less
+  than the type-specific height below it
+- Horizontal contract: object X must lie in the half-open interval
+  `[max(0, spanX-objectWidth+1), spanX+spanWidth)`
+- Result: the first match returns its offset in X with carry clear; exhaustion
+  returns X at `$90` with carry set through the shared no-op handler RTS
+- Evidence: semantic `$A247-$A2A9`, two direct calls, exact width/height tables,
+  all 24 offsets, 1,052,928 type/X/Y cases, deterministic regeneration, and
+  byte-identical build
+
 ### GAME-001 - new-game state initialization
 
 - Status: resolved
