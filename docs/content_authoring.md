@@ -139,3 +139,29 @@ the release pipeline would reject.
 model and composes the selected profile without opening a window. This is the
 GUI-independent release-gate target; normal visual editing does not require a
 third-party toolkit beyond Python's Tkinter.
+
+## Graphics and display workspace
+
+The profile-aware graphics codec uses `config/graphics_authoring.json` and the
+same `init`, `export`, `validate`, `build`, and `roundtrip` command pattern:
+
+```console
+make init-graphics REVISION_PROFILE=castlequest-usa
+make validate-graphics REVISION_PROFILE=castlequest-usa
+make build-graphics REVISION_PROFILE=castlequest-usa
+make roundtrip-graphics REVISION_PROFILE=castlequest-usa
+```
+
+The workspace owns 1,024 decoded 8 by 8 tiles from CHR banks 0 and 1, all 100
+room-cell left/right tile mappings and palette classes, the 32-byte gameplay
+palette, the 64-byte overlapping completion/title/castle-map palette storage,
+203 metasprite tile/attribute descriptors, eight fixed sub-command text blocks,
+and five four-byte sound-effect parameter tables. Tiles are represented as
+two-bit pixel grids; the encoder recreates their native NES bitplanes.
+
+CHR banks 2 and 3 are deliberately outside this graphics workspace because
+they contain compressed room streams and fixed nametable pages. The level codec
+is their sole authoring owner. A graphics build copies those banks unchanged,
+preserves all fixed PRG lengths, and rejects non-byte fields, invalid palette
+indices, invalid NES palette values, and changed record counts before writing.
+Both supported profiles pass a complete zero-edit container round trip.

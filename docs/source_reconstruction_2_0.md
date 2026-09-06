@@ -47,7 +47,9 @@ number.
 - [x] Add profile-aware textual music decode, validation, and fixed-arena
   rebuilds.
 - [x] Add a visual music studio over the canonical headless codec.
-- [ ] Add the remaining significant content authoring formats.
+- [x] Add fixed-layout graphics, palettes, cell visuals, metasprites, text, and
+  sound-effect parameter authoring.
+- [ ] Add a visual graphics studio over the canonical headless codec.
 - [ ] Add the Source 2.0 manifest audit and aggregate pre-tag/post-tag gates.
 
 Until every unchecked item passes, the manifest remains `development` and no

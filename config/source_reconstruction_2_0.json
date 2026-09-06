@@ -138,6 +138,17 @@
       ]
     },
     {
+      "id": "graphics-authoring-pipeline",
+      "kind": "authoring",
+      "summary": "Decode and rebuild two graphics-only CHR banks plus fixed PRG display, palette, metasprite, localized-text, and sound-effect parameter records without claiming ownership of the room-data CHR banks.",
+      "evidence": [
+        "config/graphics_authoring.json",
+        "scripts/graphics_editor.py",
+        "tests/test_graphics_editor.py",
+        "docs/content_authoring.md"
+      ]
+    },
+    {
       "id": "fixed-layout-start-room-variant",
       "kind": "experimental-build",
       "summary": "Build a one-byte starting-room variant under an exact changed-byte allowlist and observe the replacement through the normal boot path in pinned FCEUX.",
@@ -217,11 +228,15 @@
           "roundtrip-music",
           "validate-music",
           "build-music",
-          "check-sound-studio"
+          "check-sound-studio",
+          "roundtrip-graphics",
+          "validate-graphics",
+          "build-graphics"
         ],
         "files": [
           "config/level_authoring.json",
           "config/audio_authoring.json",
+          "config/graphics_authoring.json",
           "docs/content_authoring.md",
           "docs/data_formats.md"
         ],

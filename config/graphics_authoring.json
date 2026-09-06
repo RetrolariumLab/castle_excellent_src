@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "format": "castle-excellent-graphics",
+  "editable_chr_banks": [
+    0,
+    1
+  ],
+  "ranges": {
+    "metasprite_descriptors": {
+      "cpu": "0xB4B6",
+      "size": 406
+    },
+    "sound_effect_tables": {
+      "cpu": "0xC429",
+      "size": 20
+    },
+    "screen_palette_storage": {
+      "cpu": "0xC4FD",
+      "size": 64
+    },
+    "room_palette": {
+      "cpu": "0xC53D",
+      "size": 32
+    },
+    "room_cell_attributes": {
+      "cpu": "0xE9D2",
+      "size": 100
+    },
+    "sub_command_text": {
+      "cpu": "0xFB77",
+      "size": 53
+    },
+    "room_cell_tiles": {
+      "cpu": "0xFF30",
+      "size": 200
+    }
+  },
+  "profiles": [
+    {
+      "id": "castle-excellent-japan-hsp-05",
+      "status": "supported",
+      "workspace": "content/workspace/castle-excellent-japan-hsp-05/graphics.json",
+      "output_rom": "build/authoring/castle-excellent-japan-hsp-05/graphics.nes",
+      "report": "build/authoring/castle-excellent-japan-hsp-05/graphics.json"
+    },
+    {
+      "id": "castlequest-usa",
+      "status": "supported",
+      "workspace": "content/workspace/castlequest-usa/graphics.json",
+      "output_rom": "build/authoring/castlequest-usa/graphics.nes",
+      "report": "build/authoring/castlequest-usa/graphics.json"
+    }
+  ]
+}
