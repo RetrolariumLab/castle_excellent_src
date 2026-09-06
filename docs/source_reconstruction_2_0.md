@@ -46,8 +46,8 @@ number.
 - [x] Add direct selected-room playtesting through the normal room loader.
 - [x] Add profile-aware textual music decode, validation, and fixed-arena
   rebuilds.
-- [ ] Add the remaining significant content authoring formats and visual music
-  studio.
+- [x] Add a visual music studio over the canonical headless codec.
+- [ ] Add the remaining significant content authoring formats.
 - [ ] Add the Source 2.0 manifest audit and aggregate pre-tag/post-tag gates.
 
 Until every unchecked item passes, the manifest remains `development` and no

@@ -165,6 +165,7 @@ TIMEOUT_FRAMES ?= 15000
 	smoke-level-playtest \
 	build-fixed-layout verify-fixed-layout check-fixed-layout \
 	init-music export-music validate-music build-music roundtrip-music \
+	sound-studio music-editor check-sound-studio \
 	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
@@ -308,6 +309,14 @@ build-music: verify-profile
 
 roundtrip-music: verify-profile
 	$(PYTHON) scripts/music_editor.py roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+sound-studio: init-music
+	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+music-editor: sound-studio
+
+check-sound-studio: verify-profile
+	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
 
 symbols: $(ROM)
 	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"

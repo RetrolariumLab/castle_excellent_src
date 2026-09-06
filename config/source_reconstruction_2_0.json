@@ -126,11 +126,14 @@
     {
       "id": "music-authoring-pipeline",
       "kind": "authoring",
-      "summary": "Decode and rebuild all eight music track sets and 21 textual MML streams through a profile-aware fixed-capacity workspace with recalculated track and restart pointers.",
+      "summary": "Decode and rebuild all eight music track sets and 21 textual MML streams through a profile-aware fixed-capacity workspace, then expose the same validated codec through a thin visual studio.",
       "evidence": [
         "config/audio_authoring.json",
         "scripts/music_editor.py",
+        "scripts/sound_studio.py",
+        "scripts/sound_studio_model.py",
         "tests/test_music_editor.py",
+        "tests/test_sound_studio_model.py",
         "docs/content_authoring.md"
       ]
     },
@@ -213,7 +216,8 @@
           "smoke-level-playtest",
           "roundtrip-music",
           "validate-music",
-          "build-music"
+          "build-music",
+          "check-sound-studio"
         ],
         "files": [
           "config/level_authoring.json",

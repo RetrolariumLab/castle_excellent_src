@@ -118,5 +118,24 @@ profiles share this format and independently pass full-container zero-edit
 round trips.
 
 The JSON format intentionally preserves the engine's textual command language
-instead of translating it into a lossy note grid. A visual Sound Studio can be
-layered on this codec without creating a second serializer.
+instead of translating it into a lossy note grid.
+
+## Visual Sound Studio
+
+`make sound-studio` (or the `music-editor` alias) opens the dependency-free
+Tkinter editor for the selected profile. Its stream navigator exposes the 21
+MML texts and their restart destinations. Its track-set panel maps the three
+NES music channels to stream IDs and edits both raw channel parameters using
+decimal, `0x`-prefixed, or `$`-prefixed byte notation.
+
+Apply stream and Apply track validate the entire workspace and compose a full
+ROM in memory before accepting an edit. Undo retains the previous 40 accepted
+states. Save and Build ROM use `music_editor.validate_workspace` and
+`music_editor.compose_music`, the same functions as the headless commands.
+Thus the GUI cannot silently accept a grammar, pointer, or arena overflow that
+the release pipeline would reject.
+
+`make check-sound-studio` loads every stream and track through the display
+model and composes the selected profile without opening a window. This is the
+GUI-independent release-gate target; normal visual editing does not require a
+third-party toolkit beyond Python's Tkinter.
