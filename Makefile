@@ -4,6 +4,7 @@ LD65 ?= bin/ld65.exe
 REFERENCE_ROM ?= Castle Excellent (J).nes
 MANIFEST := assets/manifest.json
 SOURCE_1_MANIFEST := config/source_reconstruction_1_0.json
+SOURCE_2_MANIFEST := config/source_reconstruction_2_0.json
 REVISION_MANIFEST := config/revision_profiles.json
 REVISION_PROFILE ?= castlequest-usa
 LEVEL_AUTHORING := config/level_authoring.json
@@ -160,6 +161,8 @@ TIMEOUT_FRAMES ?= 15000
 	release-check check rooms validate-rooms audio validate-audio clean \
 	reconstruction-audit release-audit build-toolchain-status static-release-check trace \
 	source-1-check source-1-pre-tag-check source-1-tag-check \
+	source-2-audit source-2-authoring-check-profile source-2-check \
+	source-2-pre-tag-check source-2-tag-check \
 	split-profile build-profile verify-profile castlequest-check castlequest-runtime \
 	init-levels export-levels validate-levels build-levels roundtrip-levels \
 	level-studio level-editor check-level-studio \
@@ -436,6 +439,35 @@ source-1-pre-tag-check:
 source-1-tag-check:
 	$(MAKE) release-check
 	$(PYTHON) scripts/release_audit.py --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-tag
+
+source-2-audit:
+	$(PYTHON) scripts/source_2_release_audit.py --project-root . --manifest "$(SOURCE_2_MANIFEST)"
+
+source-2-authoring-check-profile: verify-profile
+	$(PYTHON) scripts/level_editor.py roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(PYTHON) scripts/music_editor.py roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(PYTHON) scripts/graphics_editor.py roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+
+source-2-check:
+	$(MAKE) source-1-check
+	$(MAKE) castlequest-runtime
+	$(MAKE) check-fixed-layout
+	$(MAKE) source-2-authoring-check-profile REVISION_PROFILE=castle-excellent-japan-hsp-05
+	$(MAKE) source-2-authoring-check-profile REVISION_PROFILE=castlequest-usa
+	$(MAKE) smoke-baseline-level-playtest REVISION_PROFILE=castle-excellent-japan-hsp-05
+	$(MAKE) smoke-baseline-level-playtest REVISION_PROFILE=castlequest-usa
+	$(MAKE) source-2-audit
+
+source-2-pre-tag-check:
+	$(MAKE) source-2-check
+	$(PYTHON) scripts/source_2_release_audit.py --project-root . --manifest "$(SOURCE_2_MANIFEST)" --pre-tag
+
+source-2-tag-check:
+	$(MAKE) source-2-check
+	$(PYTHON) scripts/source_2_release_audit.py --project-root . --manifest "$(SOURCE_2_MANIFEST)" --require-tag
 
 ghidra-bootstrap:
 	$(PYTHON) scripts/bootstrap_ghidra.py install
