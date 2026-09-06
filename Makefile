@@ -21,7 +21,7 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/player/input_and_movement.asm \
 	src/game/rooms/boundary_transitions.asm src/game/rooms/object_state_save.asm \
 	src/game/player/animated_cell_displacement.asm \
-	src/game/player/object_push.asm src/preservation/prg_89e1_8c11.asm \
+	src/game/player/object_push.asm src/game/objects/linked_lift_control.asm \
 	src/game/objects/inventory_collectible_handlers.asm \
 	src/data/unreferenced_runtime_object_clear_tail.asm \
 	src/game/objects/collectible_collision_handlers.asm \
@@ -41,7 +41,10 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/system/nmi_tasks.asm src/game/objects/update_dispatch.asm \
 	src/game/objects/player_span_overlap.asm src/game/objects/pushable_update.asm \
 	src/game/objects/lift_update.asm src/game/objects/flying_block_update.asm \
-	src/preservation/prg_9b00_9ff2.asm \
+	src/game/objects/walking_enemy_physics.asm src/game/objects/knight_update.asm \
+	src/game/objects/fairy_fighter_update.asm \
+	src/game/objects/flame_and_movement_helpers.asm \
+	src/game/objects/witch_summoning.asm src/game/objects/knight_arrow_update.asm \
 	src/game/objects/transient_lifecycle.asm \
 	src/game/collision/object_filters.asm src/game/collision/point_sample.asm \
 	src/game/collision/room_sample.asm \

@@ -14,7 +14,7 @@ table 9334 9385 PlayerRuntimeCollisionHandlerPointers
 data 94A5 94AB UnreferencedSingleRowIndexShimBytes
 data 94BC 94C2 UnreferencedAdjacentRowIndexShimBytes
 table 95BF 9612 RuntimeObjectHandlerPointers
-table A00D A01B RuntimeObjectType32ReplacementTypes
+table A00D A01B WitchSummonedEnemyTypes
 table A06B A090 RuntimeObjectType84To89FilterValues
 table A09E A0C3 RuntimeObjectSolidFlags
 data A2AA A2B0 UnreferencedNmiTaskIndexFromYBytes

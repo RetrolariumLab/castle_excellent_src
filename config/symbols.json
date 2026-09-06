@@ -1005,21 +1005,201 @@
     },
     {
       "address": "0x89E1",
-      "name": "HandleRuntimeType8EHorizontalCollision",
+      "name": "HandleLiftControlBlockHorizontalCollision",
       "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89EF",
+      "name": "RouteLiftControlBlockPushMotion",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x89F4",
+      "name": "RestoreLiftControlBlockOffsetForLowering",
+      "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x89F6",
       "name": "LowerLinkedLift",
       "kind": "local",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8A15",
+      "name": "FindPrimaryLinkedLiftForLowering",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8A17",
+      "name": "ScanPrimaryLinkedLiftForLowering",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8A27",
+      "name": "RememberPrimaryLinkedLiftForLowering",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8A2B",
+      "name": "ScanSecondaryLinkedLiftForLowering",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8A3B",
+      "name": "ProbeLinkedLiftLoweringClearance",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8A52",
+      "name": "ProbeSecondaryLinkedLiftRightClearance",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8A63",
+      "name": "ProbePrimaryLinkedLiftClearance",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8ABB",
+      "name": "LowerLinkedLiftObjectByStep",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8AC1",
+      "name": "ReturnFromLinkedLiftControl",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8AC2",
+      "name": "RestoreLiftControlBlockOffsetForRaising",
+      "kind": "routine",
+      "confidence": "confirmed"
     },
     {
       "address": "0x8AC4",
       "name": "RaiseLinkedLift",
       "kind": "local",
-      "confidence": "high"
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8ADB",
+      "name": "ScanPrimaryLinkedLiftForRaising",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8AEB",
+      "name": "ProbeLinkedLiftTrackAbove",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8B00",
+      "name": "FindSecondaryLinkedLiftForRaising",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8B02",
+      "name": "ScanSecondaryLinkedLiftForRaising",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8B12",
+      "name": "PrepareLinkedLiftRaising",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8B51",
+      "name": "RestartLinkedLiftOccupantClosure",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8B59",
+      "name": "FindPendingLinkedLiftOccupant",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8B60",
+      "name": "AdvanceLinkedLiftOccupantScan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8B6D",
+      "name": "ExpandLinkedLiftOccupantClosure",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8B8F",
+      "name": "ScanLinkedLiftOccupantOverlaps",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8BA1",
+      "name": "AdvanceLinkedLiftOverlapScan",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8BA9",
+      "name": "FinishLinkedLiftOccupantExpansion",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8BB0",
+      "name": "ApplyRisingLinkedLiftMovement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8BB4",
+      "name": "MoveNextLinkedLiftOccupant",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8BEB",
+      "name": "CrushBlockedLinkedLiftOccupant",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8BF9",
+      "name": "AdvanceLinkedLiftMovement",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C0F",
+      "name": "StoreRaisedLinkedLiftPlayerY",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8C11",
+      "name": "ReturnFromLinkedLiftUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
     },
     {
       "address": "0x8C12",
@@ -2156,26 +2336,476 @@
       "confidence": "high"
     },
     {
+      "address": "0x9B00",
+      "name": "UpdateWalkingEnemyPhysics",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9B1B",
+      "name": "UpdateWalkingEnemySupport",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9B33",
+      "name": "ProbeWalkingEnemyMiddleSupport",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9B55",
+      "name": "ProbeWalkingEnemyRightSupport",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9B77",
+      "name": "FallWalkingEnemy",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9B8A",
+      "name": "ReturnFromWalkingEnemyPhysics",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9B8B",
+      "name": "HandleWalkingEnemySupport",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9B92",
+      "name": "PatrolWalkingEnemy",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9B9D",
+      "name": "PatrolWalkingEnemyRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9BC4",
+      "name": "MoveWalkingEnemyRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9BDF",
+      "name": "ClearWalkingEnemySharedFlag",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9BE5",
+      "name": "ReverseWalkingEnemyLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9BED",
+      "name": "PatrolWalkingEnemyLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C14",
+      "name": "MoveWalkingEnemyLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C20",
+      "name": "CommitWalkingEnemyLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C31",
+      "name": "ReverseWalkingEnemyRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C3B",
+      "name": "UpdateKnight",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C42",
+      "name": "UpdateKnightPatrol",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C51",
+      "name": "CheckKnightFacingPlayer",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C60",
+      "name": "CheckKnightFacingRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C65",
+      "name": "CheckKnightArrowCadence",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C6D",
+      "name": "FindKnightArrowSlot",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C76",
+      "name": "ScanKnightArrowSlot",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9C84",
+      "name": "SpawnKnightArrow",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9CB2",
+      "name": "SpawnKnightArrowLeft",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9CC5",
+      "name": "ReturnFromKnightUpdate",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9CC6",
+      "name": "UpdateFairy",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9CD8",
+      "name": "UpdateFighter",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9CF5",
+      "name": "UpdateFighterJumpState",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D07",
+      "name": "TryStartFighterJump",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D18",
+      "name": "StartFighterJump",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D1E",
+      "name": "ContinueFighterJump",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D64",
+      "name": "ReturnFromFighterUpdate",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D65",
+      "name": "UpdateFlame",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D6C",
+      "name": "UpdateFlameFrame",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D76",
+      "name": "SelectFlameMovementAxis",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D7D",
+      "name": "CheckFlamePlayerX",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9D8F",
+      "name": "MoveFlameHorizontally",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DA5",
+      "name": "ReturnFromFlameHorizontalMove",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DA6",
+      "name": "SwitchFlameToVerticalMovement",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DAD",
+      "name": "MoveFlameLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DBF",
+      "name": "ReturnFromFlameLeftMove",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DC0",
+      "name": "MoveFlameVertically",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DC9",
+      "name": "SelectFlameVerticalDirection",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DD9",
+      "name": "ReverseFlameDirection",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DE6",
+      "name": "MoveFlameDown",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9DF2",
+      "name": "ProbeFlameAbove",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9E1E",
+      "name": "ReturnFromFlameAboveProbe",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9E1F",
+      "name": "ProbeFlameBelow",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9E51",
+      "name": "ReturnFromFlameBelowProbe",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9E52",
+      "name": "ProbeWalkingEnemyLeftEdge",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9E7C",
+      "name": "ReturnFromWalkingEnemyLeftEdgeProbe",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9E7D",
+      "name": "ProbeWalkingEnemyRightEdge",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9EA7",
+      "name": "ReturnFromWalkingEnemyRightEdgeProbe",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9EA8",
+      "name": "MeasureCurrentObjectPlayerXSeparation",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9ECA",
+      "name": "ReturnFromEnemyMovementHelper",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9ECB",
+      "name": "UpdateWitch",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9ED5",
+      "name": "PrepareWitchSummon",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9EEB",
+      "name": "PrepareWitchSummonLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9EF8",
+      "name": "ValidateWitchSummonPosition",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F02",
+      "name": "ProbeWitchSummonTopLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F0F",
+      "name": "ProbeWitchSummonTopRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F20",
+      "name": "ProbeWitchSummonBottomLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F2F",
+      "name": "ProbeWitchSummonBottomRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F44",
+      "name": "FindWitchSummonSlot",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F4D",
+      "name": "ScanWitchSummonSlot",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F5B",
+      "name": "CreateWitchSummon",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9F73",
+      "name": "ReturnFromWitchUpdate",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F74",
+      "name": "UpdateKnightArrow",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F7A",
+      "name": "MoveKnightArrowRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9F89",
+      "name": "ProbeKnightArrowRightEdge",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9FB4",
+      "name": "ReturnFromKnightArrowUpdate",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9FB5",
+      "name": "ClearKnightArrow",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9FBA",
+      "name": "MoveKnightArrowLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9FCA",
+      "name": "ProbeKnightArrowLeftEdge",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
       "address": "0x9FF3",
-      "name": "UpdateRuntimeObjectType32",
+      "name": "UpdateWitchSummonCountdown",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x9FF8",
-      "name": "ReplaceRuntimeObjectType32",
+      "name": "ReplaceWitchSummonWithEnemy",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0xA000",
-      "name": "StoreRuntimeObjectType32State",
+      "name": "StoreWitchSummonedEnemyDirection",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0xA00D",
-      "name": "RuntimeObjectType32ReplacementTypes",
+      "name": "WitchSummonedEnemyTypes",
       "kind": "table",
       "confidence": "confirmed"
     },
@@ -3867,19 +4497,19 @@
     },
     {
       "address": "0xB0AC",
-      "name": "DrawRuntimeObjectType32Sprite",
+      "name": "DrawWitchSummonSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB0B8",
-      "name": "SelectType32Modulo3Frame1Or2",
+      "name": "SelectWitchSummonModulo3Frame1Or2",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0xB0C2",
-      "name": "DrawType32Modulo3Frame2",
+      "name": "DrawWitchSummonModulo3Frame2",
       "kind": "local",
       "confidence": "confirmed"
     },

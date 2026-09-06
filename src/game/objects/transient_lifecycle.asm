@@ -3,27 +3,27 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-UpdateRuntimeObjectType32:
+UpdateWitchSummonCountdown:
     DEC RuntimeObjectState,X
-    BEQ ReplaceRuntimeObjectType32
+    BEQ ReplaceWitchSummonWithEnemy
     RTS
 
-ReplaceRuntimeObjectType32:
+ReplaceWitchSummonWithEnemy:
     LDA FrameCounter
-    AND #RuntimeObjectType32StateParityMask
-    BEQ StoreRuntimeObjectType32State
-    LDA #$FF
+    AND #WitchSummonedEnemyDirectionParityMask
+    BEQ StoreWitchSummonedEnemyDirection
+    LDA #WitchSummonedEnemyDirectionLeft
 
-StoreRuntimeObjectType32State:
+StoreWitchSummonedEnemyDirection:
     STA RuntimeObjectState,X
     LDA FrameCounterModulo30
     LSR A
     TAY
-    LDA RuntimeObjectType32ReplacementTypes,Y
+    LDA WitchSummonedEnemyTypes,Y
     STA RuntimeObjectRecords,X
     RTS
 
-RuntimeObjectType32ReplacementTypes:
+WitchSummonedEnemyTypes:
     .byte $84, $85, $85, $87, $87, $84, $84, $84, $84, $87, $84, $85, $84, $85, $84
 
 UpdateRuntimeObjectType40:

@@ -317,6 +317,14 @@ its entering edge is clear. A matching runtime support in `$84-$89` becomes
 transient type `$A8`. The lift-control wrapper consumes the same horizontal-
 motion latch used by player pushing and routes it to the linked lift pair.
 
+The linked pair is materialized by the unique cell-derived types `$A4/$A5` in
+each of eight rooms. `$89E1-$8C11` accepts either player-driven or conveyor-
+driven motion of the type-`$8E` control block, validates cells `$41-$43`, and
+extends or removes track cell `$52` as both halves move by two pixels. Raising
+uses the same 25-entry occupant bitmap and overlap scanner as the autonomous
+lifts, seeded with both halves, so stacked objects move as a transitive set;
+objects blocked by the ceiling become type `$A8`.
+
 Handler entries 33 and 34 select the small and large lift state machines at
 `$9796/$9869`. They edit one or two shaft cells while moving down or up by
 eight pixels. The rising path seeds a 25-entry occupant set with the current
@@ -331,16 +339,42 @@ leading edge and reject coordinates beyond the 320x160 room. A clear path
 moves two pixels, one blocked side reverses direction, and two blocked sides
 set the byte-five stopped latch.
 
+Handler entry 5 selects the Bishop and enters the shared walking-enemy physics
+at `$9B00`. Fighter, Knight, and Witch call the same routine before their own
+behavior. The common path centralizes support/fall handling and sign-directed
+wall-and-ledge patrol; type-specific handlers remain separate state machines.
+
+Knight type `$87` demonstrates that layering: `$9C3B-$9CC5` calls the common
+physics, gates firing by player alignment/facing and frame cadence, then creates
+arrow type `$A6` in the first free runtime record after the room's static set.
+
+Fairy `$81` is a self-contained frame-derived bob. Fighter `$84` instead layers
+player proximity and a three-point rising collision check over the shared
+walking-enemy physics, keeping type behavior separate from common patrol code.
+
+Flame `$89` is an axis-switching tracker over the same three-point side probes.
+Its vertical probes and the biased 16-bit player-X separation helper are kept
+with the shared enemy movement layer because later type handlers call them.
+
+Witch `$88` adds an allocation layer: after shared patrol, four point samples
+validate a 16x16 area and the first free dynamic record becomes summon type
+`$A0`. Its countdown handler then selects Fighter, Bishop, or Knight from the
+15-entry cadence table and assigns direction from global-frame parity.
+
+Knight arrow `$A6` is the terminal projectile layer. Its sign-valued state
+selects mirrored three-pixel movement, two leading-edge probes reuse the common
+point sampler, and every blocked or out-of-world path clears the runtime record.
+
 Three handlers call `TestPlayerAgainstObjectSpan` with a candidate object's
 16-bit X in `$44/$45`, Y in `$46`, and width in `$47`. The shared predicate
 accepts the 16-pixel vertical interval immediately below that Y origin and the
 horizontal interval `[max(0, objectX-15), objectX+width)`. Carry clear denotes
 overlap; every rejection explicitly returns carry set.
 
-Three unsourced runtime types have short, self-contained lifecycle handlers.
-Type index 32 is a delayed replacement record: after its state countdown, the
-paired modulo-30 phase selects type `$84`, `$85`, or `$87`, while global frame
-parity selects replacement state zero or `$FF`. Type index 40 is cleared when
+Three runtime-only types have short, self-contained lifecycle handlers. Type
+index 32 is the Witch summon: after its state countdown, the paired modulo-30
+phase selects type `$84`, `$85`, or `$87`, while global frame parity selects
+replacement direction zero or `$FF`. Type index 40 is cleared when
 its incremented state reaches 15. Type index 41 moves Y upward every odd room
 frame until byte five expires. Both expiration paths clear all six record bytes.
 

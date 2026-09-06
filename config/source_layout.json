@@ -17,7 +17,7 @@
         "../game/rooms/object_state_save.asm",
         "../game/player/animated_cell_displacement.asm",
         "../game/player/object_push.asm",
-        "../preservation/prg_89e1_8c11.asm",
+        "../game/objects/linked_lift_control.asm",
         "../game/objects/inventory_collectible_handlers.asm",
         "../data/unreferenced_runtime_object_clear_tail.asm",
         "../game/objects/collectible_collision_handlers.asm",
@@ -44,7 +44,12 @@
         "../game/objects/pushable_update.asm",
         "../game/objects/lift_update.asm",
         "../game/objects/flying_block_update.asm",
-        "../preservation/prg_9b00_9ff2.asm",
+        "../game/objects/walking_enemy_physics.asm",
+        "../game/objects/knight_update.asm",
+        "../game/objects/fairy_fighter_update.asm",
+        "../game/objects/flame_and_movement_helpers.asm",
+        "../game/objects/witch_summoning.asm",
+        "../game/objects/knight_arrow_update.asm",
         "../game/objects/transient_lifecycle.asm",
         "../game/collision/object_filters.asm",
         "../game/collision/point_sample.asm",
@@ -183,10 +188,10 @@
       "title": "Player-driven horizontal runtime-object pushing"
     },
     {
-      "path": "src/preservation/prg_89e1_8c11.asm",
+      "path": "src/game/objects/linked_lift_control.asm",
       "start": "0x89E1",
       "end": "0x8C12",
-      "title": "Unresolved type-$8E and linked-object mechanics"
+      "title": "Lift-control block and linked-lift occupant propagation"
     },
     {
       "path": "src/game/objects/inventory_collectible_handlers.asm",
@@ -345,10 +350,40 @@
       "title": "Flying-block horizontal motion and collision reversal"
     },
     {
-      "path": "src/preservation/prg_9b00_9ff2.asm",
+      "path": "src/game/objects/walking_enemy_physics.asm",
       "start": "0x9B00",
+      "end": "0x9C3B",
+      "title": "Walking-enemy gravity, support, hazard, ledge, and patrol physics"
+    },
+    {
+      "path": "src/game/objects/knight_update.asm",
+      "start": "0x9C3B",
+      "end": "0x9CC6",
+      "title": "Knight patrol, facing gate, and arrow creation"
+    },
+    {
+      "path": "src/game/objects/fairy_fighter_update.asm",
+      "start": "0x9CC6",
+      "end": "0x9D65",
+      "title": "Fairy bobbing and Fighter player-triggered jump updates"
+    },
+    {
+      "path": "src/game/objects/flame_and_movement_helpers.asm",
+      "start": "0x9D65",
+      "end": "0x9ECB",
+      "title": "Flame tracking plus shared enemy edge and player-distance helpers"
+    },
+    {
+      "path": "src/game/objects/witch_summoning.asm",
+      "start": "0x9ECB",
+      "end": "0x9F74",
+      "title": "Witch patrol, summon-space probes, and transient enemy creation"
+    },
+    {
+      "path": "src/game/objects/knight_arrow_update.asm",
+      "start": "0x9F74",
       "end": "0x9FF3",
-      "title": "Remaining preservation runtime-object handlers before transient lifecycles"
+      "title": "Knight arrow directional collision probes, movement, and cleanup"
     },
     {
       "path": "src/game/objects/transient_lifecycle.asm",

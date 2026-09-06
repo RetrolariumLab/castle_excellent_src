@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 117 semantic and 2 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 124 semantic modules and no preservation ranges | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 30,940 PRG bytes (94.42%): `$82CE-$8679`
+The promoted ranges now cover all 32,768 PRG bytes (100%): `$82CE-$8679`
 contains the complete player input/movement controller, including jump,
 gravity, horizontal collision dispatch, room-edge transitions, and action-hit
 scanning. `$E45D-$E8DE`
@@ -57,6 +57,16 @@ collision bounds, optionally transforms blocking runtime types `$84-$89`, and
 moves player and object two pixels together. Its model pins all 455 bytes, all
 six table entries, the direct type-`$8E` caller, twelve collision call sites,
 every 16-bit player/object X value, all motion states, and collision ordering.
+
+The linked-lift slice completes `$89E1-$8C11`. Horizontal collision type `$8E`
+and the runtime lift-control wrapper share the same sign-valued motion latch.
+They locate the unique cell-derived `$A4/$A5` pair, require the three-cell
+control-track domain, extend or erase track cell `$52`, and move both lift
+halves by two pixels. Raising seeds both halves into the 24-slot occupant set,
+expands its transitive overlap closure, and converts ceiling-blocked occupants
+to transient type `$A8`. The consolidated object-dispatch validator pins the
+exact 561-byte hash plus player-push, room-update, clearance, overlap, and
+ceiling-call topology.
 
 The pushable-object update slice adds `$965C-$9795`. Runtime types `$8A-$8D`
 and `$8F` share gravity, three support probes, two-pixel conveyor motion, and
@@ -82,6 +92,45 @@ both sides. The shared bounds predicate accepts exactly the 320x160-pixel room
 domain before four normalized room-collision tail calls. The object-dispatch
 validator pins all 201 bytes, handler entry 35, collision topology, movement,
 and boundary behavior.
+
+The shared walking-enemy slice adds `$9B00-$9C3A`. Bishop type `$85` enters
+here directly; Fighter, Knight, and Witch handlers reuse it. Three support
+samples implement gravity, while directional wall and ledge probes keep the
+two-pixel patrol inside world bounds. The existing object-dispatch validator
+pins all 315 bytes, the Bishop handler entry, five collision calls, and five
+destruction exits.
+
+The Knight handler adds `$9C3B-$9CC5`. After the shared patrol update, it
+requires vertical alignment, facing toward the player, and frame phase zero,
+then scans the unused tail of the 24-record pool and creates arrow type `$A6`
+with direction-specific X offsets. The object-dispatch validator pins all 139
+bytes, both Knight/arrow handler entries, and the shared-physics call.
+
+The adjacent Fairy/Fighter module adds `$9CC6-$9D64`. The Fairy derives a
+one-pixel bob from the room frame. Fighter type `$84` measures horizontal
+player distance, reuses walking physics, and runs a twelve-update rise guarded
+by three ceiling probes. The object-dispatch validator pins all 159 bytes, both
+handler entries, four collision calls, and three shared-physics transfers.
+
+The Flame/helper module adds `$9D65-$9ECA`. Flame type `$89` alternates
+horizontal and vertical two-pixel tracking on even frames, switching axes at
+the player coordinate or an obstacle. Shared three-point probes cover both
+vertical directions and walking-enemy side edges; the final helper exports a
+biased player-X separation. The object-dispatch validator pins all 358 bytes,
+the Flame handler, twelve collision calls, and its sound start.
+
+The Witch slice adds `$9ECB-$9F73`. On room-frame phase `$E0`, type `$88`
+chooses a 16-pixel offset in its facing direction, checks all four corners of a
+16x16 summon area, finds a free runtime slot, and creates type `$A0` with a
+sixteen-update countdown. The existing `$9FF3` lifecycle is consequently named
+as the Witch summon replacement into Fighter, Bishop, or Knight. The validator
+pins all 169 bytes, both handlers, four probes, and the shared patrol call.
+
+The Knight-arrow slice adds `$9F74-$9FF2` and removes the final late
+preservation module. Type `$A6` advances three pixels in its state direction,
+samples both ends of the leading vertical edge, enforces the 320-pixel world
+boundary, and clears its six-byte record on collision or exit. The validator
+pins all 127 bytes, four collision calls, and the cleanup jump.
 
 The title/sub-command slice promotes `$F8FC-$FBFD` into six semantic modules.
 The title path uploads its overlapping palette, copies four CHR-ROM pages into
@@ -412,9 +461,10 @@ lies from `objectY+1` through `objectY+16`, and player X lies in the half-open
 interval from saturated `objectX-15` through `objectX+width`. The independent
 model checks all byte-wide Y pairs and 921,600 room-width X/width cases.
 
-The transient-object slice adds `$9FF3-$A043`. Type index 32 decrements state
-until one, then replaces its type from a 15-byte table indexed by paired values
-of the modulo-30 counter and chooses zero/negative state from frame parity.
+The transient-object slice adds `$9FF3-$A043`. Witch summon type `$A0`
+decrements state until one, then replaces its type from a 15-byte Fighter/
+Bishop/Knight table indexed by paired values of the modulo-30 counter and
+chooses zero/negative direction from frame parity.
 Type index 40 increments state and clears its whole six-byte record at 15.
 Type index 41 drifts upward on odd room frames and clears its record when byte
 five counts down to zero. The model checks the exact table, all handler-pointer
@@ -594,9 +644,8 @@ unique tile and sprite positions for the entire 10x10 room domain.
 
 ## Release gates
 
-`make reconstruction-audit` reports semantic PRG ownership and rejects generic
-address labels, raw address operands, and oversized files inside promoted
-modules. Preservation regions remain explicitly outside that semantic claim.
+`make reconstruction-audit` reports complete semantic PRG ownership and rejects
+generic address labels, raw address operands, and oversized promoted modules.
 `make release-check` runs this audit before deterministic regeneration and
 byte-identical verification. Later milestones will extend the audit to
 undocumented RAM fields, missing data round trips, and runtime scenarios absent

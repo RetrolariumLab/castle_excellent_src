@@ -2342,6 +2342,109 @@
       "end": "0x8C12"
     },
     {
+      "address": "0x001C",
+      "name": "SecondaryLinkedLiftClearanceY",
+      "start": "0x8A3B",
+      "end": "0x8ABB"
+    },
+    {
+      "address": "0x001E",
+      "name": "PrimaryLinkedLiftOffset",
+      "start": "0x8A27",
+      "end": "0x8C12"
+    },
+    {
+      "address": "0x001F",
+      "name": "SecondaryLinkedLiftOffset",
+      "start": "0x8A3B",
+      "end": "0x8C12"
+    },
+    {
+      "address": "0x0029",
+      "name": "LinkedLiftControlCellColumn",
+      "start": "0x89F6",
+      "end": "0x8B12"
+    },
+    {
+      "address": "0x002B",
+      "name": "LinkedLiftRoomCellPointerLo",
+      "start": "0x89F6",
+      "end": "0x8B51"
+    },
+    {
+      "address": "0x002C",
+      "name": "LinkedLiftRoomCellPointerHi",
+      "start": "0x89F6",
+      "end": "0x8B51"
+    },
+    {
+      "address": "0x0044",
+      "name": "LinkedLiftRoomCellUpdateAddressLo",
+      "start": "0x8A63",
+      "end": "0x8B51"
+    },
+    {
+      "address": "0x0045",
+      "name": "LinkedLiftRoomCellUpdateAddressHi",
+      "start": "0x8A63",
+      "end": "0x8B51"
+    },
+    {
+      "address": "0x0044",
+      "name": "LinkedLiftOccupantSpanXLo",
+      "start": "0x8B51",
+      "end": "0x8BB0"
+    },
+    {
+      "address": "0x0045",
+      "name": "LinkedLiftOccupantSpanXHi",
+      "start": "0x8B51",
+      "end": "0x8BB0"
+    },
+    {
+      "address": "0x0046",
+      "name": "LinkedLiftOccupantSpanY",
+      "start": "0x8B51",
+      "end": "0x8BB0"
+    },
+    {
+      "address": "0x0047",
+      "name": "LinkedLiftOccupantSpanWidth",
+      "start": "0x8B12",
+      "end": "0x8BB0"
+    },
+    {
+      "address": "0x0016",
+      "name": "LinkedLiftClosureExpansionCount",
+      "start": "0x8B51",
+      "end": "0x8BB0"
+    },
+    {
+      "address": "0x0017",
+      "name": "LinkedLiftClosureScanIndex",
+      "start": "0x8B51",
+      "end": "0x8BB0"
+    },
+    {
+      "address": "0x0016",
+      "name": "LinkedLiftMovementSlotIndex",
+      "start": "0x8BB0",
+      "end": "0x8C12"
+    },
+    {
+      "address": "0x07AB",
+      "name": "LinkedLiftOccupantFlags",
+      "size": 25,
+      "start": "0x8B12",
+      "end": "0x8C12"
+    },
+    {
+      "address": "0x07C3",
+      "name": "LinkedLiftPlayerOccupantFlag",
+      "start": "0x8B12",
+      "end": "0x8C12"
+    },
+    {
       "address": "0x0773",
       "name": "PushableHorizontalMotionLatch",
       "start": "0x965C",
@@ -2533,6 +2636,108 @@
       "name": "FlyingBlockContactXHi",
       "start": "0x9A37",
       "end": "0x9AAD"
+    },
+    {
+      "address": "0x0022",
+      "name": "WalkingEnemyProbeXHi",
+      "start": "0x9B00",
+      "end": "0x9C3B"
+    },
+    {
+      "address": "0x0029",
+      "name": "WalkingEnemyRoomCellColumn",
+      "start": "0x9B00",
+      "end": "0x9B1B"
+    },
+    {
+      "address": "0x002B",
+      "name": "WalkingEnemyRoomCellPointerLo",
+      "start": "0x9B00",
+      "end": "0x9B1B"
+    },
+    {
+      "address": "0x07C6",
+      "name": "WalkingEnemyUpdateSharedFlag",
+      "start": "0x9B00",
+      "end": "0x9C3B"
+    },
+    {
+      "address": "0x0016",
+      "name": "FairyVerticalFrameBit",
+      "start": "0x9CC6",
+      "end": "0x9CD8"
+    },
+    {
+      "address": "0x0021",
+      "name": "FighterPlayerXSeparationLo",
+      "start": "0x9CD8",
+      "end": "0x9CF5"
+    },
+    {
+      "address": "0x0022",
+      "name": "FighterPlayerXSeparationHi",
+      "start": "0x9CD8",
+      "end": "0x9CF5"
+    },
+    {
+      "address": "0x07C6",
+      "name": "FighterUpdateSharedFlag",
+      "start": "0x9CD8",
+      "end": "0x9D65"
+    },
+    {
+      "address": "0x0021",
+      "name": "CurrentObjectPlayerXSeparationLo",
+      "start": "0x9EA8",
+      "end": "0x9ECB"
+    },
+    {
+      "address": "0x0022",
+      "name": "CurrentObjectPlayerXSeparationHi",
+      "start": "0x9EA8",
+      "end": "0x9ECB"
+    },
+    {
+      "address": "0x0024",
+      "name": "CurrentObjectPlayerDeltaXSign",
+      "start": "0x9EA8",
+      "end": "0x9ECB"
+    },
+    {
+      "address": "0x0016",
+      "name": "WitchSummonY",
+      "start": "0x9ECB",
+      "end": "0x9F74"
+    },
+    {
+      "address": "0x0021",
+      "name": "WitchSummonXLo",
+      "start": "0x9ECB",
+      "end": "0x9F74"
+    },
+    {
+      "address": "0x0022",
+      "name": "WitchSummonXHi",
+      "start": "0x9ECB",
+      "end": "0x9F74"
+    },
+    {
+      "address": "0x0016",
+      "name": "KnightArrowProbeY",
+      "start": "0x9F74",
+      "end": "0x9FF3"
+    },
+    {
+      "address": "0x0021",
+      "name": "KnightArrowProbeXLo",
+      "start": "0x9F74",
+      "end": "0x9FF3"
+    },
+    {
+      "address": "0x0022",
+      "name": "KnightArrowProbeXHi",
+      "start": "0x9F74",
+      "end": "0x9FF3"
     }
   ]
 }

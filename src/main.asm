@@ -1,4 +1,4 @@
-; Castle Excellent (Japan) NES preservation entrypoint
+; Castle Excellent (Japan) NES source-reconstruction entrypoint
 
 .setcpu "6502"
 

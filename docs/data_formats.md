@@ -307,9 +307,10 @@ indexes. The update table has 16 distinct targets and 23 indexes use the shared
 no-op `$A2A9`; the nonzero sprite domain has 40 distinct selectors because
 indexes 29 and 30 share `$B089`.
 
-`RuntimeObjectType32ReplacementTypes` at `$A00D-$A01B` contains 15 runtime
-type bytes. `FrameCounterModulo30 >> 1` indexes it, so each entry owns two of
-the counter's 30 phases. Its values are restricted to `$84`, `$85`, and `$87`.
+`WitchSummonedEnemyTypes` at `$A00D-$A01B` contains 15 replacement bytes for
+Witch summon type `$A0`. `FrameCounterModulo30 >> 1` indexes it, so each entry
+owns two of the counter's 30 phases. Its values are restricted to Fighter
+`$84`, Bishop `$85`, and Knight `$87`.
 
 The filter tables at `$A06B-$A090` and `$A09E-$A0C3` each store 38 physical
 bytes for runtime types `$80-$A5`. Their indexed operands subtract `$80` from

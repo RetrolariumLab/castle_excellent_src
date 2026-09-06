@@ -112,8 +112,8 @@ evidence, and tested decoders for game data.
   sprite-order reversal are also reconstructed. The first NMI rendering task
   now documents the status interlock and all three HUD tile uploads. Twenty
   consecutive NMI tasks reconstruct the complete 20x20 room into the two
-  horizontal nametables. Unresolved ranges remain explicitly named preservation
-  sources.
+  horizontal nametables. Every PRG byte now belongs to a semantic or explicitly
+  typed-data module; no preservation range remains.
 - All direct branches, jumps, and calls use labels; the first semantic names
   cover reset/interrupts, CHR switching, rooms, objects, and core data tables.
 - `make build` reconstructs a byte-identical image from the explicit iNES
@@ -231,7 +231,7 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 528 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 544 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
@@ -239,11 +239,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 10,489 instructions after 46
+  disagreements. Evidence-refined Ghidra exports 10,489 instructions after 52
   static code ranges recover pointer-selected entries and 73 evidence-backed data
   ranges remove 199 false-positive instructions. A separate registry clears
   five overextended or misaligned starts embedded in real instruction operands.
-  The source layout owns 30,940 PRG bytes semantically (94.42%). The title and
+  The source layout owns all 32,768 PRG bytes semantically (100%). The title and
   sub-command path now owns title palette/CHR upload, Start/attract timeout,
   controller-2 menu entry, five-entry wrapped selection, typed menu text,
   load/save dispatch, and current/previous-room restoration.
@@ -555,7 +555,7 @@ src/system/nmi_tasks.asm   NMI task-request reset
 src/game/objects/room_loader.asm proven static-object expansion into RAM
 src/game/objects/stream_seek.asm proven terminated-list stream navigation
 src/game/objects/room_data.asm typed object lists and persistent-state offsets
-src/preservation/prg_*.asm unresolved address-bounded PRG regions
+src/game/objects/linked_lift_control.asm type-$8E control and linked lift pair
 src/graphics/chr.asm       private CHR include (graphics plus room streams)
 src/memory/                hardware and RAM symbol registries
 tests/                     tooling and decoder tests

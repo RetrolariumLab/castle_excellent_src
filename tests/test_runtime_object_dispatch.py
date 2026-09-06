@@ -119,6 +119,48 @@ class RuntimeObjectDispatchTests(unittest.TestCase):
             (0x23, 0x9A37),
         )
 
+    def test_bishop_type_uses_shared_walking_enemy_physics(self) -> None:
+        self.assertEqual(
+            runtime_object_dispatch.dispatch_handler(0x85, 0),
+            (0x05, 0x9B00),
+        )
+
+    def test_knight_and_arrow_types_use_their_projectile_handlers(self) -> None:
+        self.assertEqual(
+            runtime_object_dispatch.dispatch_handler(0x87, 0),
+            (0x07, 0x9C3B),
+        )
+        self.assertEqual(
+            runtime_object_dispatch.dispatch_handler(0xA6, 0),
+            (0x26, 0x9F74),
+        )
+
+    def test_fairy_and_fighter_types_use_adjacent_handlers(self) -> None:
+        self.assertEqual(
+            runtime_object_dispatch.dispatch_handler(0x81, 0),
+            (0x01, 0x9CC6),
+        )
+        self.assertEqual(
+            runtime_object_dispatch.dispatch_handler(0x84, 0),
+            (0x04, 0x9CD8),
+        )
+
+    def test_flame_type_uses_axis_tracking_handler(self) -> None:
+        self.assertEqual(
+            runtime_object_dispatch.dispatch_handler(0x89, 0),
+            (0x09, 0x9D65),
+        )
+
+    def test_witch_and_summon_types_use_their_lifecycle_handlers(self) -> None:
+        self.assertEqual(
+            runtime_object_dispatch.dispatch_handler(0x88, 0),
+            (0x08, 0x9ECB),
+        )
+        self.assertEqual(
+            runtime_object_dispatch.dispatch_handler(0xA0, 0),
+            (0x20, 0x9FF3),
+        )
+
     def test_flying_block_motion_and_probe_bounds_match_the_playfield(self) -> None:
         self.assertEqual(runtime_object_dispatch.move_flying_block_x(0x013D, 0), 0x013F)
         self.assertEqual(runtime_object_dispatch.move_flying_block_x(2, 0xFF), 0)

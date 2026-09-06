@@ -26,7 +26,7 @@ tools/disassembly.lock.json
   -> config/memory_symbols.json operand overlay
   -> config/operand_overrides.json checked relocatable expressions
   -> config/source_layout.json contiguous region ownership
-  -> src/preservation/*.asm + src/game/**/*.asm
+  -> semantic src/**/*.asm modules (preservation paths only during promotion)
   -> ca65 + ld65
   -> byte-identical iNES verification
 ```

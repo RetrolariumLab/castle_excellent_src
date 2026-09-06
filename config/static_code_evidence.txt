@@ -26,8 +26,13 @@ code 8785 8819
 code 881A 89E0
 
 # The horizontal runtime-collision table entry for type $8E at $9239 points
-# to $89E1; direct flow rejoins the already decoded handler tail at $89F6.
-code 89E1 89F5
+# to $89E1. Both that player-push path and the runtime type-$8E wrapper at
+# $965C route the shared direction latch into $89F6/$8AC4. Room-cell markers
+# $49/$4A create exactly one type-$A4/$A5 pair in each of eight rooms; the two
+# bounded 24-record scans locate that pair, and direct flow covers clearance,
+# track-cell edits, transitive occupant expansion, movement, and the terminal
+# RTS at $8C11.
+code 89E1 8C11
 
 # Player runtime-collision entries $9354-$935E select all six inventory
 # collectible handlers for types $90-$95; their branches converge on the
@@ -100,6 +105,36 @@ code 9796 9A36
 # flying block at $9A37. All four directional edge probes and their shared
 # world-bound predicate remain inside this closed state-machine range.
 code 9A37 9AFF
+
+# Runtime-object handler pointer entry 5 at $95C9 targets the Bishop/shared
+# walking-enemy update at $9B00. Five direct point-sampler calls cover its
+# hazard, support, and ledge probes; all branches close before $9C3B.
+code 9B00 9C3A
+
+# Runtime-object handler pointer entry 7 at $95CD targets the Knight at $9C3B.
+# The handler closes at $9CC5 after its facing/cadence gates and bounded scan
+# for an empty six-byte slot used to create runtime arrow type $A6.
+code 9C3B 9CC5
+
+# Runtime-object handler entries 1 and 4 at $95C1/$95C7 target the Fairy and
+# Fighter at $9CC6/$9CD8. The Fairy closes at $9CD7; the Fighter's jump probes,
+# shared walking-physics calls, and branches close at $9D64.
+code 9CC6 9D64
+
+# Runtime-object handler entry 9 at $95D1 targets the Flame at $9D65. Its
+# horizontal/vertical paths call the complete three-point probe helpers through
+# $9E51; walking-enemy edge probes and the signed-distance helper close at $9ECA.
+code 9D65 9ECA
+
+# Runtime-object handler entry 8 at $95CF targets the Witch at $9ECB. Its
+# four-corner summon-space probes, bounded free-slot scan, and type-$A0
+# transient creation close at $9F73.
+code 9ECB 9F73
+
+# Runtime-object handler entry 38 at $960B targets the Knight arrow at $9F74.
+# Both directional paths contain their complete two-point leading-edge probes,
+# world-bound checks, three-pixel movement, and cleanup exit through $9FF2.
+code 9F74 9FF2
 
 # Runtime-object handler pointer entry 32 at $95FF targets $9FF3. Its direct
 # branches prove the complete handler through $A00C; the following indexed

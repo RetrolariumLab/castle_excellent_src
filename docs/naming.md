@@ -1,11 +1,11 @@
 # Naming
 
-The preservation listing uses two explicit naming layers:
+The generated source uses two explicit naming layers:
 
 - evidence-backed PascalCase names such as `DecodeRoom` and
   `RoomPointerTable`, maintained in `config/symbols.json`;
-- stable address names `Func_XXXX` and `Label_XXXX` for unresolved routines
-  and local flow targets.
+- stable address names `Func_XXXX` and `Label_XXXX` only as temporary names in
+  ranges that have not yet passed the semantic naming gate.
 
 An overlapping entry uses the same address name but is defined as an offset
 symbol at its containing instruction. Renames belong in `config/symbols.json`;

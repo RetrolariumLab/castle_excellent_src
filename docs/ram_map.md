@@ -130,6 +130,13 @@ The collision sampler supplies the contacted runtime-record offset in `$42`.
 Successful conveyor motion writes `$7F/$FF` to contextual latch `$0773`; lift-
 control type `$8E` consumes the same latch after the shared physics returns.
 
+Within `$89E1-$8C11`, `$1E/$1F` retain the runtime offsets of the cell-derived
+`$A4/$A5` linked-lift pair and `$1C` retains the secondary clearance Y. The
+room-cell phase uses `$29` and `$2B/$2C`; `$44/$45` then carry its row-update
+address. During raising, `$44-$47` become the overlap span, `$16/$17` drive the
+closure scan, and `$16` is reused as the movement slot. `$07AB-$07C3` is the
+same 24-object-plus-player occupant set shared with the autonomous lift code.
+
 Within `$9796-$9A36`, `$2B-$2C` point into the 20x20 room cell buffer and
 `$44-$47` alternate between row-update addresses and lift/occupant collision
 spans. `$16-$17` are closure and scan indexes before `$16` becomes the movement
@@ -141,6 +148,27 @@ Within `$9A37-$9AAC`, `$44-$45` expose the Flying Block contact X after a
 successful two-pixel move. The rightward path stores new X plus five; the
 leftward path preserves the previous origin. This contextual output remains
 scoped because later object handlers reuse both scratch bytes.
+
+Within `$9B00-$9C3A`, `$22` extends the walking enemy's probe X, while `$29`
+and `$2B` consume the room-cell address prepared for the hazard probe. `$07C6`
+is the shared per-object update flag: falling and completed patrol motion clear
+it, while a set value suppresses the ledge probe for the current update.
+
+At `$9CC6-$9D64`, `$16` stores the Fairy's frame-derived low Y bit. Fighter
+consumes the biased player-X separation in `$21-$22` and uses `$07C6` to
+pass near-player and active-jump state into the shared walking-enemy update.
+
+At `$9EA8-$9ECA`, `$21-$22` receive the biased 16-bit player-X separation and
+`$24` preserves the signed high byte before magnitude conversion. Consumers
+can therefore use both distance-like magnitude and original side information.
+
+Within `$9ECB-$9F73`, `$21-$22` hold the Witch's candidate summon X and `$16`
+holds its Y while four collision corners are sampled and the first free runtime
+record is located. Those values are copied unchanged into summon type `$A0`.
+
+Within `$9F74-$9FF2`, `$21-$22` hold the Knight arrow's leading-edge X and
+`$16` holds its Y across the two collision samples. The left-moving path keeps
+the candidate X there until both probes succeed, then commits it to the record.
 
 Within `$8DD3-$8ECA`, `$1B` and `$27-$28` retain the rebased Y and 16-bit X
 sample. `$1D` scans the 24 runtime records; `$29` selects the room-cell column;

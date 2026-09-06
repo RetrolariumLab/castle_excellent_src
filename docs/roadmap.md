@@ -61,6 +61,8 @@
   ten-frame action state, and the complete 24-record action-hit scan;
 - [x] reconstruct player-driven horizontal object pushing, support/clearance
   probes, world bounds, destroyable obstructions, and synchronized movement;
+- [x] reconstruct type-`$8E` linked-lift control, paired `$A4/$A5` discovery,
+  track-cell edits, transitive occupant closure, and two-pixel movement;
 - [x] reconstruct player protection countdown decay, room-audio restoration,
   and bottom-center hazard contact across all coordinates and room cells;
 - [x] reconstruct the shared runtime-object/player proximity predicate, all 15
@@ -107,6 +109,18 @@
   transitive runtime-object/player occupant propagation;
 - [x] reconstruct the cell-derived Flying Block, its paired leading-edge
   probes, two-pixel horizontal motion, reversal, and trapped stop state;
+- [x] reconstruct shared walking-enemy gravity, support, hazard, wall/ledge
+  probes, and the Bishop's two-pixel patrol entry;
+- [x] reconstruct Knight facing/cadence gates, free-slot scan, and directional
+  arrow creation;
+- [x] reconstruct Fairy frame bobbing and Fighter proximity-triggered jump,
+  shared patrol calls, and three-point rising collision checks;
+- [x] reconstruct Flame axis tracking, vertical probes, shared walking-enemy
+  edge probes, and biased player-X separation;
+- [x] reconstruct Witch summon placement, four-corner collision checks, dynamic
+  slot allocation, and the delayed Fighter/Bishop/Knight replacement lifecycle;
+- [x] reconstruct Knight arrow world bounds, mirrored three-pixel movement,
+  two-point leading-edge probes, and collision cleanup;
 - [x] reconstruct transient runtime types 32, 40, and 41, including type
   replacement, state lifetime, odd-frame motion, and full-record clearing;
 - [x] reconstruct animated-cell direction classification and both runtime-type
@@ -125,8 +139,8 @@
   and the room-display finalizer that requests all 23 NMI tasks;
 - expand the first deterministic FCEUX CDL/Ghidra reconciliation into broad
   title, gameplay, transition, death, ending, and save/load scenarios;
-- classify every PRG byte as code, typed data, text, or padding;
-- promote proven system, game, rendering, audio, room, object, and vector
+- [x] classify every PRG byte as code, typed data, text, or padding;
+- [x] promote proven system, game, rendering, audio, room, object, and vector
   ranges into semantic modules while preserving one address-ordered translation
   unit;
 - complete RAM and routine maps;

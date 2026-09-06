@@ -275,15 +275,16 @@ Statuses are `open`, `testing`, `resolved`, `unused`, and `confirmed bug`.
 ### OBJ-005 - transient runtime-object lifecycles
 
 - Status: resolved
-- Type index 32: decrements state; when it reaches zero, paired values of the
-  modulo-30 counter select one of 15 replacement entries containing runtime
-  types `$84`, `$85`, and `$87`; global frame parity selects state zero/`$FF`
+- Type index 32 is Witch summon type `$A0`, created by `UpdateWitch` with state
+  16. When it reaches zero, paired values of the modulo-30 counter select one
+  of 15 replacement entries containing Fighter `$84`, Bishop `$85`, and Knight
+  `$87`; global frame parity selects direction zero/`$FF`
 - Type index 40: increments state and clears all six record bytes when the new
   value reaches 15; byte wrap from `$FF` to zero remains active
 - Type index 41: decrements Y on odd room frames when Y is nonzero, then
   decrements byte five and clears all six bytes when that countdown reaches zero
 - Provenance: none of `$A0,$A8,$A9` comes directly from static room triples or
-  cell markers; other object handlers create these runtime-only records
+  cell markers; the Witch creates `$A0`, while other handlers create `$A8/$A9`
 - Evidence: semantic `$9FF3-$A043`, exact 15-byte table, three dispatch-table
   pointers, 73,984 modeled state/frame cases, deterministic regeneration, and
   byte-identical build

@@ -88,6 +88,37 @@ pixels horizontally while clear. A blocked edge reverses direction if the
 opposite edge is free; blockage on both sides latches byte five and stops the
 platform. Probe bounds match the 320x160-pixel room domain.
 
+The Bishop's handler at `$9B00` is also the common walking-enemy physics path
+used by Fighter, Knight, and Witch. It checks a dedicated room-cell hazard,
+samples support at three X positions, falls two pixels when unsupported, and
+patrols two pixels toward the current state direction. Wall, ledge, and room-
+boundary checks reverse the patrol without leaving the 320-pixel world.
+
+Knight type `$87` calls that patrol path and fires only when horizontally
+facing a player exactly sixteen pixels below its origin on a 64-frame boundary.
+It scans the free tail of the 24-record pool and creates arrow type `$A6` at a
+direction-specific offset, then applies a three-update cooldown.
+
+Fairy type `$81` bobs one pixel from room-frame bit two. Fighter type `$84`
+uses biased player-X separation and player motion to enter a twelve-update jump;
+three probes across its top edge gate each two-pixel ascent before it returns to
+the shared walking-enemy path.
+
+Flame type `$89` starts its noise effect and advances only on even room frames.
+It tracks horizontally until aligned with the player or blocked, then tracks
+vertically toward `PlayerY-16`; alignment or a blocked three-point edge toggles
+direction and returns it to horizontal mode. The same side probes serve all
+walking enemies, followed by the shared biased player-X separation helper.
+
+Witch type `$88` patrols through the same common physics and attempts a summon
+at room-frame phase `$E0`. It probes all four corners of a 16x16 candidate area,
+allocates a free runtime slot, and creates type `$A0`; after sixteen updates the
+transient lifecycle replaces that record with Fighter, Bishop, or Knight.
+
+Knight arrow type `$A6` moves three pixels per update in its state direction.
+Two probes cover the leading vertical edge at Y and Y+8; collision, negative
+object flags, or leaving the 320-pixel world clears the complete runtime record.
+
 `HandlePauseInput` at `$A8E3-$A959` detects new A/B and Start presses against
 the saved controller mask. Start enters pause and disables every APU channel;
 Start or A/B resumes. Paused Left/Right adjust the pending horizontal scroll in
@@ -383,6 +414,13 @@ cell-derived objects begin immediately after each room's static records. Five
 room-cell markers create runtime types `$A1-$A5`; the complete room set contains
 176 such markers. Static and cell-derived objects together peak at 22 records,
 within the 24-record pool.
+
+Types `$A4/$A5` form the paired linked lift controlled by runtime type `$8E`.
+The `$89E1-$8C11` module scans the complete runtime pool for both halves,
+validates the three-cell control track, updates track cell `$52`, and moves the
+pair by two pixels. Its raising path seeds both lift records into the common
+25-entry occupant bitmap and expands overlaps transitively before applying
+movement or the type-`$A8` crushed transition.
 
 `TestPlayerAgainstObjectSpan` is shared by three runtime-object paths. Its
 scratch inputs describe a candidate span rather than a six-byte record: a

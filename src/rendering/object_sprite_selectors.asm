@@ -475,21 +475,21 @@ DrawType31EvenRoomFrame:
     LDY #$0C
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType32Sprite:
+DrawWitchSummonSprite:
     LDX FrameCounterModulo3A
-    BNE SelectType32Modulo3Frame1Or2
+    BNE SelectWitchSummonModulo3Frame1Or2
     LDX #$B5
     LDY #$FC
     JMP DrawTwoObjectSpritesAndAdvance
 
-SelectType32Modulo3Frame1Or2:
+SelectWitchSummonModulo3Frame1Or2:
     DEX
-    BNE DrawType32Modulo3Frame2
+    BNE DrawWitchSummonModulo3Frame2
     LDX #$B6
     LDY #$00
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawType32Modulo3Frame2:
+DrawWitchSummonModulo3Frame2:
     LDX #$B6
     LDY #$04
     JMP DrawTwoObjectSpritesAndAdvance

@@ -1,5 +1,5 @@
-; Evidence-backed RAM aliases from the published Castle Excellent analysis
-; These definitions do not yet rewrite operands in the raw preservation payload
+; Evidence-backed global and address-scoped RAM aliases
+; Generated semantic modules select these through config/memory_symbols.json
 
 HighScoreLo = $0001
 HighScoreHi = $0002
@@ -255,7 +255,8 @@ ObjectSpanBoundaryXLo = $0048
 ObjectSpanBoundaryXHi = $0049
 PlayerObjectVerticalSpan = $10
 PlayerObjectLeftReach = $0F
-RuntimeObjectType32StateParityMask = $01
+WitchSummonedEnemyDirectionParityMask = $01
+WitchSummonedEnemyDirectionLeft = $FF
 RuntimeObjectType40StateLimit = $0F
 RuntimeOverlapSpanXLo = $0044
 RuntimeOverlapSpanXHi = $0045
@@ -523,6 +524,38 @@ PlayerObjectPushRightBoundaryHi = $01
 PushDestroyableRuntimeTypeFirst = $84
 PushDestroyableRuntimeTypeEnd = $8A
 PushDestroyedRuntimeType = $A8
+SecondaryLinkedLiftClearanceY = $001C
+PrimaryLinkedLiftOffset = $001E
+SecondaryLinkedLiftOffset = $001F
+LinkedLiftControlCellColumn = $0029
+LinkedLiftRoomCellPointerLo = $002B
+LinkedLiftRoomCellPointerHi = $002C
+LinkedLiftRoomCellUpdateAddressLo = $0044
+LinkedLiftRoomCellUpdateAddressHi = $0045
+LinkedLiftOccupantSpanXLo = $0044
+LinkedLiftOccupantSpanXHi = $0045
+LinkedLiftOccupantSpanY = $0046
+LinkedLiftOccupantSpanWidth = $0047
+LinkedLiftClosureExpansionCount = $0016
+LinkedLiftClosureScanIndex = $0017
+LinkedLiftMovementSlotIndex = $0016
+LinkedLiftOccupantFlags = $07AB
+LinkedLiftPlayerOccupantFlag = $07C3
+LinkedLiftMotionInactive = $00
+LinkedLiftControlCellFirst = $41
+LinkedLiftControlCellEnd = $44
+LinkedLiftTrackCell = $52
+PrimaryLinkedLiftType = $A4
+SecondaryLinkedLiftType = $A5
+SecondaryLinkedLiftClearanceYOffset = $09
+PrimaryLinkedLiftClearanceYOffset = $0A
+LinkedLiftTrackWriteYOffset = $01
+LinkedLiftTrackEraseYOffset = $06
+LinkedLiftLoweringStep = $02
+LinkedLiftRaisingStep = $02
+LinkedLiftOccupantProbeYOffset = $08
+LinkedLiftOccupantWidth = $10
+LinkedLiftMinimumY = $00
 PushableHorizontalMotionLatch = $0773
 PushablePreviousSupportCollision = $001E
 PushableSupportCollisionCount = $001F
@@ -600,6 +633,102 @@ FlyingBlockWorldYEnd = $A0
 FlyingBlockWorldRightPage = $01
 FlyingBlockWorldBeyondRightPage = $02
 FlyingBlockWorldRightLimitLo = $40
+
+; Contextual walking-enemy physics at $9B00-$9C3A
+WalkingEnemyProbeXHi = $0022
+WalkingEnemyRoomCellColumn = $0029
+WalkingEnemyRoomCellPointerLo = $002B
+WalkingEnemyUpdateSharedFlag = $07C6
+WalkingEnemyHazardProbeYOffset = $0E
+WalkingEnemySupportProbeYOffset = $11
+WalkingEnemyCenterProbeXOffset = $07
+WalkingEnemyRightProbeXOffset = $0F
+WalkingEnemyRightLedgeProbeXOffset = $11
+WalkingEnemyLeftLedgeProbeYOffset = $10
+WalkingEnemyFallStep = $02
+WalkingEnemyPatrolStep = $02
+WalkingEnemyVisibleYLimit = $A0
+WalkingEnemyHazardCell = $16
+HazardousPushableRuntimeType = $8F
+WalkingEnemyRightBoundaryLo = $2F
+WalkingEnemyRightBoundaryHi = $01
+WalkingEnemyLeftBoundaryLo = $02
+WalkingEnemyDirectionRight = $00
+WalkingEnemyDirectionLeft = $FF
+WalkingEnemySharedFlagClear = $00
+WalkingEnemyCoordinateCarry = $00
+WalkingEnemyCoordinateBorrow = $00
+
+; Knight arrow creation at $9C3B-$9CC5
+KnightPlayerYAlignmentOffset = $10
+KnightArrowFrameMask = $3F
+KnightArrowCooldown = $03
+KnightArrowRuntimeType = $A6
+KnightArrowYOffset = $07
+KnightArrowRightXOffset = $12
+KnightArrowLeftXOffset = $06
+KnightArrowCoordinateCarry = $00
+KnightArrowCoordinateBorrow = $00
+KnightArrowDirectionRight = $00
+KnightArrowDirectionLeft = $FF
+
+; Fairy and Fighter updates at $9CC6-$9D64
+FairyVerticalFrameBit = $0016
+FighterPlayerXSeparationLo = $0021
+FighterPlayerXSeparationHi = $0022
+FighterUpdateSharedFlag = $07C6
+FairyVerticalFrameMask = $01
+FairyVerticalAlignmentMask = $FE
+FighterPlayerRange = $50
+FighterPlayerYOffset = $10
+FighterNearPlayerFlag = $7F
+FighterJumpMotionThreshold = $14
+FighterSupportProbeYOffset = $10
+FighterJumpDuration = $0C
+FighterJumpActiveFlag = $FF
+FighterTopBoundary = $02
+
+; Flame movement and shared enemy helpers at $9D65-$9ECA
+CurrentObjectPlayerXSeparationLo = $0021
+CurrentObjectPlayerXSeparationHi = $0022
+CurrentObjectPlayerDeltaXSign = $0024
+FlameUpdateFrameMask = $01
+FlameVerticalMode = $FF
+FlameStep = $02
+FlamePlayerYOffset = $10
+FlameDirectionToggleMask = $FF
+FlameHorizontalMode = $00
+FlameWorldYEnd = $A0
+FlameBottomProbeYOffset = $11
+EnemyMiddleEdgeProbeYOffset = $07
+EnemyBottomEdgeProbeYOffset = $0F
+PlayerDistanceComplementMask = $FF
+PlayerDistanceAbsoluteBias = $01
+PlayerDistanceCoordinateCarry = $00
+
+; Witch summon creation at $9ECB-$9F73
+WitchSummonY = $0016
+WitchSummonXLo = $0021
+WitchSummonXHi = $0022
+WitchSummonFramePhase = $E0
+WitchSummonHorizontalOffset = $10
+WitchSummonCoordinateCarry = $00
+WitchSummonCoordinateBorrow = $00
+WitchSummonRightBoundaryLo = $30
+WitchSummonRightBoundaryHi = $01
+WitchSummonExtent = $0F
+WitchSummonRuntimeType = $A0
+WitchSummonInitialCountdown = $10
+WitchSummonInitialByte5 = $00
+
+; Knight arrow movement at $9F74-$9FF2
+KnightArrowProbeY = $0016
+KnightArrowProbeXLo = $0021
+KnightArrowProbeXHi = $0022
+KnightArrowWorldPageOne = $01
+KnightArrowWorldRightLimitLo = $40
+KnightArrowVerticalExtent = $08
+KnightArrowStep = $03
 MutableCellActionAlignmentMask = $0F
 MutableCellActionAlignedRemainder = $08
 CastleRoomColumns = 10

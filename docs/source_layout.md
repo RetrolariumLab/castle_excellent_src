@@ -15,7 +15,7 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/rooms/object_state_save.asm` | `$8758-$8784` | current-room runtime object-state bitmap save |
 | `src/game/player/animated_cell_displacement.asm` | `$8785-$8819` | forced horizontal movement from animated room cells |
 | `src/game/player/object_push.asm` | `$881A-$89E0` | player-driven horizontal runtime-object pushing |
-| `src/preservation/prg_89e1_8c11.asm` | `$89E1-$8C11` | unresolved type-`$8E` and linked-object mechanics |
+| `src/game/objects/linked_lift_control.asm` | `$89E1-$8C11` | lift-control block, paired lifts, track cells, and occupant closure |
 | `src/game/objects/inventory_collectible_handlers.asm` | `$8C12-$8C7A` | six inventory pickups and shared collected-object transform |
 | `src/data/unreferenced_runtime_object_clear_tail.asm` | `$8C7B-$8C7F` | unreferenced code-shaped runtime-object clear tail bytes |
 | `src/game/objects/collectible_collision_handlers.asm` | `$8C80-$8CF1` | six runtime collectible collision handlers |
@@ -42,7 +42,12 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/game/objects/pushable_update.asm` | `$965C-$9795` | pushable gravity, conveyor motion, crushing, and lift control |
 | `src/game/objects/lift_update.asm` | `$9796-$9A36` | small/large lift movement and transitive occupant propagation |
 | `src/game/objects/flying_block_update.asm` | `$9A37-$9AFF` | horizontal platform motion, collision probes, and reversal |
-| `src/preservation/prg_9b00_9ff2.asm` | `$9B00-$9FF2` | unresolved object handlers before transient lifecycles |
+| `src/game/objects/walking_enemy_physics.asm` | `$9B00-$9C3A` | shared walking-enemy gravity, support, hazard, ledge, and patrol physics |
+| `src/game/objects/knight_update.asm` | `$9C3B-$9CC5` | Knight facing/cadence gates and arrow creation |
+| `src/game/objects/fairy_fighter_update.asm` | `$9CC6-$9D64` | Fairy bobbing and Fighter player-triggered jump updates |
+| `src/game/objects/flame_and_movement_helpers.asm` | `$9D65-$9ECA` | Flame tracking and shared enemy movement probes |
+| `src/game/objects/witch_summoning.asm` | `$9ECB-$9F73` | Witch patrol, four-corner summon probes, and type `$A0` creation |
+| `src/game/objects/knight_arrow_update.asm` | `$9F74-$9FF2` | Knight arrow collision probes, three-pixel movement, and cleanup |
 | `src/game/objects/transient_lifecycle.asm` | `$9FF3-$A043` | transient type 32/40/41 lifecycles and replacement table |
 | `src/game/collision/object_filters.asm` | `$A044-$A0C3` | animated-cell and runtime-object collision filters |
 | `src/game/collision/point_sample.asm` | `$A0C4-$A1A2` | room-cell and runtime-object point collision sample |

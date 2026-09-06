@@ -520,7 +520,7 @@
     {
       "instruction": "0x9FFA",
       "expected": "#$01",
-      "operand": "#RuntimeObjectType32StateParityMask",
+      "operand": "#WitchSummonedEnemyDirectionParityMask",
       "evidence": "replacement state is selected solely from global frame parity"
     },
     {
@@ -4046,6 +4046,330 @@
       "evidence": "a successful left push records the negative direction sentinel"
     },
     {
+      "instruction": "0x89E1",
+      "expected": "#$00",
+      "operand": "#LinkedLiftMotionInactive",
+      "evidence": "the horizontal collision wrapper clears the shared push result before moving the control block"
+    },
+    {
+      "instruction": "0x8A03",
+      "expected": "#$41",
+      "operand": "#LinkedLiftControlCellFirst",
+      "evidence": "only the three control-track cell identities can operate the linked lift"
+    },
+    {
+      "instruction": "0x8A07",
+      "expected": "#$44",
+      "operand": "#LinkedLiftControlCellEnd",
+      "evidence": "the linked-lift control-track interval ends before cell $44"
+    },
+    {
+      "instruction": "0x8A15",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "the primary linked-lift scan starts at runtime record zero"
+    },
+    {
+      "instruction": "0x8A19",
+      "expected": "#$A4",
+      "operand": "#PrimaryLinkedLiftType",
+      "evidence": "room-cell marker $49 creates the primary half of every linked-lift pair"
+    },
+    {
+      "instruction": "0x8A1F",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the linked-lift scan advances by one six-byte runtime record"
+    },
+    {
+      "instruction": "0x8A22",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the linked-lift scan covers all 24 runtime records"
+    },
+    {
+      "instruction": "0x8A29",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "the secondary linked-lift scan restarts at runtime record zero"
+    },
+    {
+      "instruction": "0x8A2D",
+      "expected": "#$A5",
+      "operand": "#SecondaryLinkedLiftType",
+      "evidence": "room-cell marker $4A creates the secondary half of every linked-lift pair"
+    },
+    {
+      "instruction": "0x8A33",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the secondary linked-lift scan advances by one runtime record"
+    },
+    {
+      "instruction": "0x8A36",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the secondary linked-lift scan covers the complete runtime pool"
+    },
+    {
+      "instruction": "0x8A40",
+      "expected": "#$09",
+      "operand": "#SecondaryLinkedLiftClearanceYOffset",
+      "evidence": "lowering probes the row immediately below the eight-pixel secondary lift"
+    },
+    {
+      "instruction": "0x8A4B",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the secondary lift left edge must have empty-cell clearance"
+    },
+    {
+      "instruction": "0x8A5C",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the secondary lift right edge must have empty-cell clearance"
+    },
+    {
+      "instruction": "0x8A68",
+      "expected": "#$0A",
+      "operand": "#PrimaryLinkedLiftClearanceYOffset",
+      "evidence": "the primary lift uses its two-pixel vertical bias when probing below"
+    },
+    {
+      "instruction": "0x8A71",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the primary lift left edge must have empty-cell clearance"
+    },
+    {
+      "instruction": "0x8A7A",
+      "expected": "#$0A",
+      "operand": "#PrimaryLinkedLiftClearanceYOffset",
+      "evidence": "the primary lift right-edge probe shares the two-pixel bias"
+    },
+    {
+      "instruction": "0x8A83",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the primary lift right edge must have empty-cell clearance"
+    },
+    {
+      "instruction": "0x8A91",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the final secondary lift probe confirms the linked pair remains clear"
+    },
+    {
+      "instruction": "0x8AA3",
+      "expected": "#$00",
+      "operand": "#LiftCurrentCellOffset",
+      "evidence": "the linked-lift track update writes the addressed room cell"
+    },
+    {
+      "instruction": "0x8AA5",
+      "expected": "#$52",
+      "operand": "#LinkedLiftTrackCell",
+      "evidence": "lowering extends the primary lift track behind the moving sprite"
+    },
+    {
+      "instruction": "0x8AD1",
+      "expected": "#$41",
+      "operand": "#LinkedLiftControlCellFirst",
+      "evidence": "raising uses the same three-cell control-track interval"
+    },
+    {
+      "instruction": "0x8AD5",
+      "expected": "#$44",
+      "operand": "#LinkedLiftControlCellEnd",
+      "evidence": "raising rejects control cells at or beyond $44"
+    },
+    {
+      "instruction": "0x8AD9",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "the raising path begins its primary lift scan at slot zero"
+    },
+    {
+      "instruction": "0x8ADD",
+      "expected": "#$A4",
+      "operand": "#PrimaryLinkedLiftType",
+      "evidence": "the raising path locates the primary linked-lift half"
+    },
+    {
+      "instruction": "0x8AE3",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the primary raising scan advances by one runtime record"
+    },
+    {
+      "instruction": "0x8AE6",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the primary raising scan covers all runtime records"
+    },
+    {
+      "instruction": "0x8AFB",
+      "expected": "#$52",
+      "operand": "#LinkedLiftTrackCell",
+      "evidence": "raising requires an existing track cell above the primary lift"
+    },
+    {
+      "instruction": "0x8B00",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "the secondary raising scan starts at runtime record zero"
+    },
+    {
+      "instruction": "0x8B04",
+      "expected": "#$A5",
+      "operand": "#SecondaryLinkedLiftType",
+      "evidence": "the raising path locates the secondary linked-lift half"
+    },
+    {
+      "instruction": "0x8B0A",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the secondary raising scan advances by one runtime record"
+    },
+    {
+      "instruction": "0x8B0D",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the secondary raising scan covers the full runtime pool"
+    },
+    {
+      "instruction": "0x8B19",
+      "expected": "#$06",
+      "operand": "#LinkedLiftTrackEraseYOffset",
+      "evidence": "raising erases the track cell exposed below the primary lift"
+    },
+    {
+      "instruction": "0x8B25",
+      "expected": "#$00",
+      "operand": "#LiftCurrentCellOffset",
+      "evidence": "the raising path clears the addressed track cell"
+    },
+    {
+      "instruction": "0x8B27",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the exposed linked-lift track cell becomes empty"
+    },
+    {
+      "instruction": "0x8B3E",
+      "expected": "#$FF",
+      "operand": "#LiftOccupantPending",
+      "evidence": "the primary linked lift seeds the transitive occupant closure"
+    },
+    {
+      "instruction": "0x8B48",
+      "expected": "#$FF",
+      "operand": "#LiftOccupantPending",
+      "evidence": "the secondary linked lift also seeds the occupant closure"
+    },
+    {
+      "instruction": "0x8B4D",
+      "expected": "#$10",
+      "operand": "#LinkedLiftOccupantWidth",
+      "evidence": "each linked-lift half contributes a sixteen-pixel support span"
+    },
+    {
+      "instruction": "0x8B51",
+      "expected": "#$00",
+      "operand": "#LiftOccupantClear",
+      "evidence": "each closure pass starts with no newly expanded object"
+    },
+    {
+      "instruction": "0x8B55",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "the linked-lift closure scans from object slot zero"
+    },
+    {
+      "instruction": "0x8B61",
+      "expected": "#$18",
+      "operand": "#LiftObjectSlotCount",
+      "evidence": "the linked-lift closure visits all 24 runtime-object slots"
+    },
+    {
+      "instruction": "0x8B6D",
+      "expected": "#$7F",
+      "operand": "#LiftOccupantProcessed",
+      "evidence": "a negative pending occupant becomes a positive processed occupant"
+    },
+    {
+      "instruction": "0x8B79",
+      "expected": "#$08",
+      "operand": "#LinkedLiftOccupantProbeYOffset",
+      "evidence": "overlap expansion probes one object height above each occupant"
+    },
+    {
+      "instruction": "0x8B8D",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "each occupant overlap scan starts at runtime record zero"
+    },
+    {
+      "instruction": "0x8B9C",
+      "expected": "#$FF",
+      "operand": "#LiftOccupantPending",
+      "evidence": "newly overlapping objects enter the pending closure set"
+    },
+    {
+      "instruction": "0x8BA3",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the overlap scan advances by one runtime-object record"
+    },
+    {
+      "instruction": "0x8BB0",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "the movement pass starts at linked-lift occupant slot zero"
+    },
+    {
+      "instruction": "0x8BC2",
+      "expected": "#$02",
+      "operand": "#LinkedLiftRaisingStep",
+      "evidence": "the linked lift raises every transitive occupant by two pixels"
+    },
+    {
+      "instruction": "0x8BCB",
+      "expected": "#$A4",
+      "operand": "#PrimaryLinkedLiftType",
+      "evidence": "the primary lift skips ceiling probes after its own movement"
+    },
+    {
+      "instruction": "0x8BF1",
+      "expected": "#$A8",
+      "operand": "#CrushedRuntimeObjectType",
+      "evidence": "an occupant blocked while rising becomes the shared crushed type"
+    },
+    {
+      "instruction": "0x8BF5",
+      "expected": "#$00",
+      "operand": "#DestroyedRuntimeObjectInitialState",
+      "evidence": "a crushed linked-lift occupant starts its transient lifecycle at state zero"
+    },
+    {
+      "instruction": "0x8BFD",
+      "expected": "#$18",
+      "operand": "#LiftObjectSlotCount",
+      "evidence": "the linked-lift movement pass covers all 24 object slots"
+    },
+    {
+      "instruction": "0x8C09",
+      "expected": "#$02",
+      "operand": "#LinkedLiftRaisingStep",
+      "evidence": "a player marked on the linked lift rises by the same two-pixel step"
+    },
+    {
+      "instruction": "0x8C0D",
+      "expected": "#$00",
+      "operand": "#LinkedLiftMinimumY",
+      "evidence": "linked-lift player movement clamps an underflow to the top of the playfield"
+    },
+    {
       "instruction": "0x965C",
       "expected": "#$00",
       "operand": "#PushableMotionInactive",
@@ -4650,6 +4974,594 @@
       "expected": "#$40",
       "operand": "#FlyingBlockWorldRightLimitLo",
       "evidence": "page-one coordinates must remain below world X $0140"
+    },
+    {
+      "instruction": "0x9B07",
+      "expected": "#$0E",
+      "operand": "#WalkingEnemyHazardProbeYOffset",
+      "evidence": "the hazard probe samples fourteen pixels below the enemy origin"
+    },
+    {
+      "instruction": "0x9B14",
+      "expected": "#$16",
+      "operand": "#WalkingEnemyHazardCell",
+      "evidence": "room cell $16 destroys walking enemies"
+    },
+    {
+      "instruction": "0x9B25",
+      "expected": "#$11",
+      "operand": "#WalkingEnemySupportProbeYOffset",
+      "evidence": "the left support probe samples seventeen pixels below the origin"
+    },
+    {
+      "instruction": "0x9B3C",
+      "expected": "#$11",
+      "operand": "#WalkingEnemySupportProbeYOffset",
+      "evidence": "the middle support probe shares the bottom support row"
+    },
+    {
+      "instruction": "0x9B46",
+      "expected": "#$07",
+      "operand": "#WalkingEnemyCenterProbeXOffset",
+      "evidence": "the middle support probe samples seven pixels from the left edge"
+    },
+    {
+      "instruction": "0x9B4B",
+      "expected": "#$00",
+      "operand": "#WalkingEnemyCoordinateCarry",
+      "evidence": "carry from the middle-probe X offset extends into the high byte"
+    },
+    {
+      "instruction": "0x9B5E",
+      "expected": "#$11",
+      "operand": "#WalkingEnemySupportProbeYOffset",
+      "evidence": "the right support probe shares the bottom support row"
+    },
+    {
+      "instruction": "0x9B68",
+      "expected": "#$0F",
+      "operand": "#WalkingEnemyRightProbeXOffset",
+      "evidence": "the right support probe samples the enemy's fifteenth pixel"
+    },
+    {
+      "instruction": "0x9B6D",
+      "expected": "#$00",
+      "operand": "#WalkingEnemyCoordinateCarry",
+      "evidence": "carry from the right-probe X offset extends into the high byte"
+    },
+    {
+      "instruction": "0x9B81",
+      "expected": "#$A0",
+      "operand": "#WalkingEnemyVisibleYLimit",
+      "evidence": "unsupported enemies stop falling at the playfield visibility limit"
+    },
+    {
+      "instruction": "0x9B85",
+      "expected": "#$00",
+      "operand": "#WalkingEnemySharedFlagClear",
+      "evidence": "falling clears the shared per-object update flag"
+    },
+    {
+      "instruction": "0x9B8B",
+      "expected": "#$8F",
+      "operand": "#HazardousPushableRuntimeType",
+      "evidence": "collision with runtime type $8F destroys the walking enemy"
+    },
+    {
+      "instruction": "0x9BAE",
+      "expected": "#$11",
+      "operand": "#WalkingEnemySupportProbeYOffset",
+      "evidence": "rightward ledge detection samples the support row"
+    },
+    {
+      "instruction": "0x9BB8",
+      "expected": "#$11",
+      "operand": "#WalkingEnemyRightLedgeProbeXOffset",
+      "evidence": "rightward ledge detection samples one pixel beyond the enemy width"
+    },
+    {
+      "instruction": "0x9BBD",
+      "expected": "#$00",
+      "operand": "#WalkingEnemyCoordinateCarry",
+      "evidence": "carry from the leading-edge X offset extends into the high byte"
+    },
+    {
+      "instruction": "0x9BCA",
+      "expected": "#$2F",
+      "operand": "#WalkingEnemyRightBoundaryLo",
+      "evidence": "page-one patrol remains below world X $012F"
+    },
+    {
+      "instruction": "0x9BCE",
+      "expected": "#$01",
+      "operand": "#WalkingEnemyRightBoundaryHi",
+      "evidence": "the right patrol boundary lies on world page one"
+    },
+    {
+      "instruction": "0x9BD5",
+      "expected": "#$02",
+      "operand": "#WalkingEnemyPatrolStep",
+      "evidence": "an unobstructed walking enemy moves two pixels right"
+    },
+    {
+      "instruction": "0x9BDB",
+      "expected": "#$00",
+      "operand": "#WalkingEnemyCoordinateCarry",
+      "evidence": "carry from rightward patrol extends into the high X byte"
+    },
+    {
+      "instruction": "0x9BDF",
+      "expected": "#$00",
+      "operand": "#WalkingEnemySharedFlagClear",
+      "evidence": "completed patrol motion clears the shared per-object flag"
+    },
+    {
+      "instruction": "0x9BE7",
+      "expected": "#$FF",
+      "operand": "#WalkingEnemyDirectionLeft",
+      "evidence": "a blocked right patrol reverses the direction state to left"
+    },
+    {
+      "instruction": "0x9BFE",
+      "expected": "#$10",
+      "operand": "#WalkingEnemyLeftLedgeProbeYOffset",
+      "evidence": "leftward ledge detection samples the row just below the enemy"
+    },
+    {
+      "instruction": "0x9C08",
+      "expected": "#$02",
+      "operand": "#WalkingEnemyPatrolStep",
+      "evidence": "leftward ledge detection samples two pixels ahead"
+    },
+    {
+      "instruction": "0x9C0D",
+      "expected": "#$00",
+      "operand": "#WalkingEnemyCoordinateBorrow",
+      "evidence": "borrow from the left ledge offset extends into the high X byte"
+    },
+    {
+      "instruction": "0x9C1C",
+      "expected": "#$02",
+      "operand": "#WalkingEnemyLeftBoundaryLo",
+      "evidence": "leftward patrol remains at or beyond world X $0002"
+    },
+    {
+      "instruction": "0x9C23",
+      "expected": "#$02",
+      "operand": "#WalkingEnemyPatrolStep",
+      "evidence": "an unobstructed walking enemy moves two pixels left"
+    },
+    {
+      "instruction": "0x9C29",
+      "expected": "#$00",
+      "operand": "#WalkingEnemyCoordinateBorrow",
+      "evidence": "borrow from leftward patrol extends into the high X byte"
+    },
+    {
+      "instruction": "0x9C33",
+      "expected": "#$00",
+      "operand": "#WalkingEnemyDirectionRight",
+      "evidence": "a blocked left patrol reverses the direction state to right"
+    },
+    {
+      "instruction": "0x9C4A",
+      "expected": "#$10",
+      "operand": "#KnightPlayerYAlignmentOffset",
+      "evidence": "the Knight fires only when the player's Y equals its origin plus sixteen pixels"
+    },
+    {
+      "instruction": "0x9C68",
+      "expected": "#$3F",
+      "operand": "#KnightArrowFrameMask",
+      "evidence": "arrow creation is attempted only on a 64-frame boundary"
+    },
+    {
+      "instruction": "0x9C7C",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the free-slot scan advances through six-byte runtime records"
+    },
+    {
+      "instruction": "0x9C7F",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the free-slot scan stops after all twenty-four runtime records"
+    },
+    {
+      "instruction": "0x9C86",
+      "expected": "#$03",
+      "operand": "#KnightArrowCooldown",
+      "evidence": "creating an arrow reloads the Knight's byte-five countdown to three"
+    },
+    {
+      "instruction": "0x9C8B",
+      "expected": "#$A6",
+      "operand": "#KnightArrowRuntimeType",
+      "evidence": "the dynamically created projectile uses runtime type $A6"
+    },
+    {
+      "instruction": "0x9C93",
+      "expected": "#$07",
+      "operand": "#KnightArrowYOffset",
+      "evidence": "the arrow origin is seven pixels below the Knight origin"
+    },
+    {
+      "instruction": "0x9CA0",
+      "expected": "#$12",
+      "operand": "#KnightArrowRightXOffset",
+      "evidence": "a right-facing Knight creates the arrow eighteen pixels ahead"
+    },
+    {
+      "instruction": "0x9CA7",
+      "expected": "#$00",
+      "operand": "#KnightArrowCoordinateCarry",
+      "evidence": "carry from the right spawn offset extends into the high X byte"
+    },
+    {
+      "instruction": "0x9CAB",
+      "expected": "#$00",
+      "operand": "#KnightArrowDirectionRight",
+      "evidence": "a right-facing Knight creates a right-moving arrow"
+    },
+    {
+      "instruction": "0x9CB6",
+      "expected": "#$06",
+      "operand": "#KnightArrowLeftXOffset",
+      "evidence": "a left-facing Knight creates the arrow six pixels before its origin"
+    },
+    {
+      "instruction": "0x9CBD",
+      "expected": "#$00",
+      "operand": "#KnightArrowCoordinateBorrow",
+      "evidence": "borrow from the left spawn offset extends into the high X byte"
+    },
+    {
+      "instruction": "0x9CC1",
+      "expected": "#$FF",
+      "operand": "#KnightArrowDirectionLeft",
+      "evidence": "a left-facing Knight creates a left-moving arrow"
+    },
+    {
+      "instruction": "0x9CCB",
+      "expected": "#$01",
+      "operand": "#FairyVerticalFrameMask",
+      "evidence": "room-frame bit two selects the Fairy's alternating vertical pixel"
+    },
+    {
+      "instruction": "0x9CD1",
+      "expected": "#$FE",
+      "operand": "#FairyVerticalAlignmentMask",
+      "evidence": "the Fairy clears its low Y bit before applying the frame-selected bob"
+    },
+    {
+      "instruction": "0x9CE1",
+      "expected": "#$50",
+      "operand": "#FighterPlayerRange",
+      "evidence": "the Fighter's proximity flag requires horizontal distance below eighty pixels"
+    },
+    {
+      "instruction": "0x9CEA",
+      "expected": "#$10",
+      "operand": "#FighterPlayerYOffset",
+      "evidence": "the Fighter compares its Y against the player origin minus sixteen pixels"
+    },
+    {
+      "instruction": "0x9CF0",
+      "expected": "#$7F",
+      "operand": "#FighterNearPlayerFlag",
+      "evidence": "a nearby player below the Fighter sets the shared positive update flag"
+    },
+    {
+      "instruction": "0x9D00",
+      "expected": "#$14",
+      "operand": "#FighterJumpMotionThreshold",
+      "evidence": "player motion states below twenty leave the Fighter in shared patrol physics"
+    },
+    {
+      "instruction": "0x9D0A",
+      "expected": "#$10",
+      "operand": "#FighterSupportProbeYOffset",
+      "evidence": "jump initiation checks collision sixteen pixels below the Fighter origin"
+    },
+    {
+      "instruction": "0x9D1A",
+      "expected": "#$0C",
+      "operand": "#FighterJumpDuration",
+      "evidence": "a supported Fighter starts a twelve-update jump countdown"
+    },
+    {
+      "instruction": "0x9D20",
+      "expected": "#$FF",
+      "operand": "#FighterJumpActiveFlag",
+      "evidence": "an active jump sets the shared flag negative before common physics"
+    },
+    {
+      "instruction": "0x9D5C",
+      "expected": "#$02",
+      "operand": "#FighterTopBoundary",
+      "evidence": "the Fighter cannot rise two pixels above the room's top boundary"
+    },
+    {
+      "instruction": "0x9D71",
+      "expected": "#$01",
+      "operand": "#FlameUpdateFrameMask",
+      "evidence": "the Flame advances only on even room frames"
+    },
+    {
+      "instruction": "0x9D89",
+      "expected": "#$FF",
+      "operand": "#FlameVerticalMode",
+      "evidence": "matching the player's X switches the Flame into vertical movement mode"
+    },
+    {
+      "instruction": "0x9D9D",
+      "expected": "#$02",
+      "operand": "#FlameStep",
+      "evidence": "an unobstructed Flame moves two pixels right"
+    },
+    {
+      "instruction": "0x9DA8",
+      "expected": "#$FF",
+      "operand": "#FlameVerticalMode",
+      "evidence": "a blocked horizontal path switches the Flame into vertical mode"
+    },
+    {
+      "instruction": "0x9DB7",
+      "expected": "#$02",
+      "operand": "#FlameStep",
+      "evidence": "an unobstructed Flame moves two pixels left"
+    },
+    {
+      "instruction": "0x9DC3",
+      "expected": "#$10",
+      "operand": "#FlamePlayerYOffset",
+      "evidence": "vertical tracking targets sixteen pixels above the player origin"
+    },
+    {
+      "instruction": "0x9DDD",
+      "expected": "#$FF",
+      "operand": "#FlameDirectionToggleMask",
+      "evidence": "reaching the player axis or an obstacle reverses the Flame direction"
+    },
+    {
+      "instruction": "0x9DE1",
+      "expected": "#$00",
+      "operand": "#FlameHorizontalMode",
+      "evidence": "a vertical reversal returns the Flame to horizontal movement mode"
+    },
+    {
+      "instruction": "0x9DF8",
+      "expected": "#$A0",
+      "operand": "#FlameWorldYEnd",
+      "evidence": "wrapped or offscreen upward probes are rejected at the playfield limit"
+    },
+    {
+      "instruction": "0x9E24",
+      "expected": "#$11",
+      "operand": "#FlameBottomProbeYOffset",
+      "evidence": "the downward path probes seventeen pixels below the Flame origin"
+    },
+    {
+      "instruction": "0x9E26",
+      "expected": "#$A0",
+      "operand": "#FlameWorldYEnd",
+      "evidence": "downward probes must remain above the playfield limit"
+    },
+    {
+      "instruction": "0x9E38",
+      "expected": "#$11",
+      "operand": "#FlameBottomProbeYOffset",
+      "evidence": "the middle downward probe shares the Flame's bottom edge"
+    },
+    {
+      "instruction": "0x9E48",
+      "expected": "#$11",
+      "operand": "#FlameBottomProbeYOffset",
+      "evidence": "the right downward probe shares the Flame's bottom edge"
+    },
+    {
+      "instruction": "0x9E63",
+      "expected": "#$07",
+      "operand": "#EnemyMiddleEdgeProbeYOffset",
+      "evidence": "the middle left-edge probe samples seven pixels below the origin"
+    },
+    {
+      "instruction": "0x9E73",
+      "expected": "#$0F",
+      "operand": "#EnemyBottomEdgeProbeYOffset",
+      "evidence": "the bottom left-edge probe samples fifteen pixels below the origin"
+    },
+    {
+      "instruction": "0x9E8E",
+      "expected": "#$07",
+      "operand": "#EnemyMiddleEdgeProbeYOffset",
+      "evidence": "the middle right-edge probe samples seven pixels below the origin"
+    },
+    {
+      "instruction": "0x9E9E",
+      "expected": "#$0F",
+      "operand": "#EnemyBottomEdgeProbeYOffset",
+      "evidence": "the bottom right-edge probe samples fifteen pixels below the origin"
+    },
+    {
+      "instruction": "0x9EBB",
+      "expected": "#$FF",
+      "operand": "#PlayerDistanceComplementMask",
+      "evidence": "negative player X deltas are ones-complemented before absolute conversion"
+    },
+    {
+      "instruction": "0x9EBE",
+      "expected": "#$01",
+      "operand": "#PlayerDistanceAbsoluteBias",
+      "evidence": "adding one completes the low byte of the two's-complement absolute value"
+    },
+    {
+      "instruction": "0x9EC4",
+      "expected": "#$FF",
+      "operand": "#PlayerDistanceComplementMask",
+      "evidence": "the high distance byte is complemented with the low byte"
+    },
+    {
+      "instruction": "0x9EC6",
+      "expected": "#$00",
+      "operand": "#PlayerDistanceCoordinateCarry",
+      "evidence": "carry from the low absolute conversion extends into the high byte"
+    },
+    {
+      "instruction": "0x9ED1",
+      "expected": "#$E0",
+      "operand": "#WitchSummonFramePhase",
+      "evidence": "the Witch attempts one summon at room-frame phase $E0"
+    },
+    {
+      "instruction": "0x9EDE",
+      "expected": "#$10",
+      "operand": "#WitchSummonHorizontalOffset",
+      "evidence": "a right-facing Witch chooses a summon origin sixteen pixels ahead"
+    },
+    {
+      "instruction": "0x9EE4",
+      "expected": "#$00",
+      "operand": "#WitchSummonCoordinateCarry",
+      "evidence": "carry from the right summon offset extends into the high X byte"
+    },
+    {
+      "instruction": "0x9EEE",
+      "expected": "#$10",
+      "operand": "#WitchSummonHorizontalOffset",
+      "evidence": "a left-facing Witch chooses a summon origin sixteen pixels behind"
+    },
+    {
+      "instruction": "0x9EF4",
+      "expected": "#$00",
+      "operand": "#WitchSummonCoordinateBorrow",
+      "evidence": "borrow from the left summon offset extends into the high X byte"
+    },
+    {
+      "instruction": "0x9EFA",
+      "expected": "#$30",
+      "operand": "#WitchSummonRightBoundaryLo",
+      "evidence": "the candidate's left edge must remain below world X $0130"
+    },
+    {
+      "instruction": "0x9EFE",
+      "expected": "#$01",
+      "operand": "#WitchSummonRightBoundaryHi",
+      "evidence": "the summon right boundary lies on world page one"
+    },
+    {
+      "instruction": "0x9F14",
+      "expected": "#$0F",
+      "operand": "#WitchSummonExtent",
+      "evidence": "the top-right probe spans the sixteen-pixel summon width"
+    },
+    {
+      "instruction": "0x9F19",
+      "expected": "#$00",
+      "operand": "#WitchSummonCoordinateCarry",
+      "evidence": "carry from the summon width extends into the high X byte"
+    },
+    {
+      "instruction": "0x9F23",
+      "expected": "#$0F",
+      "operand": "#WitchSummonExtent",
+      "evidence": "the bottom-left probe spans the sixteen-pixel summon height"
+    },
+    {
+      "instruction": "0x9F32",
+      "expected": "#$0F",
+      "operand": "#WitchSummonExtent",
+      "evidence": "the bottom-right probe shares the summon height"
+    },
+    {
+      "instruction": "0x9F38",
+      "expected": "#$0F",
+      "operand": "#WitchSummonExtent",
+      "evidence": "the bottom-right probe shares the summon width"
+    },
+    {
+      "instruction": "0x9F3D",
+      "expected": "#$00",
+      "operand": "#WitchSummonCoordinateCarry",
+      "evidence": "carry from the bottom-right X offset extends into the high byte"
+    },
+    {
+      "instruction": "0x9F53",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the Witch's free-slot scan advances through six-byte records"
+    },
+    {
+      "instruction": "0x9F56",
+      "expected": "#$90",
+      "operand": "#RuntimeObjectRecordBytes",
+      "evidence": "the Witch's free-slot scan stops after all twenty-four records"
+    },
+    {
+      "instruction": "0x9F5B",
+      "expected": "#$A0",
+      "operand": "#WitchSummonRuntimeType",
+      "evidence": "the Witch creates transient runtime type $A0"
+    },
+    {
+      "instruction": "0x9F6B",
+      "expected": "#$10",
+      "operand": "#WitchSummonInitialCountdown",
+      "evidence": "the summon starts with a sixteen-update replacement countdown"
+    },
+    {
+      "instruction": "0x9F6F",
+      "expected": "#$00",
+      "operand": "#WitchSummonInitialByte5",
+      "evidence": "the summon initializes its auxiliary state to zero"
+    },
+    {
+      "instruction": "0x9FFE",
+      "expected": "#$FF",
+      "operand": "#WitchSummonedEnemyDirectionLeft",
+      "evidence": "odd global frames replace the Witch summon with a left-facing enemy"
+    },
+    {
+      "instruction": "0x9F81",
+      "expected": "#$01",
+      "operand": "#KnightArrowWorldPageOne",
+      "evidence": "right-moving arrows accept page zero or the bounded portion of page one"
+    },
+    {
+      "instruction": "0x9F85",
+      "expected": "#$40",
+      "operand": "#KnightArrowWorldRightLimitLo",
+      "evidence": "page-one arrow probes must remain below world X $0140"
+    },
+    {
+      "instruction": "0x9F99",
+      "expected": "#$08",
+      "operand": "#KnightArrowVerticalExtent",
+      "evidence": "the second right-edge probe samples eight pixels below the first"
+    },
+    {
+      "instruction": "0x9FAC",
+      "expected": "#$03",
+      "operand": "#KnightArrowStep",
+      "evidence": "a clear right-moving arrow advances three pixels"
+    },
+    {
+      "instruction": "0x9FC2",
+      "expected": "#$03",
+      "operand": "#KnightArrowStep",
+      "evidence": "the left-edge candidate is three pixels before the current arrow X"
+    },
+    {
+      "instruction": "0x9FC6",
+      "expected": "#$00",
+      "operand": "#KnightArrowCoordinateBorrow",
+      "evidence": "borrow from leftward arrow motion extends into the high X byte"
+    },
+    {
+      "instruction": "0x9FDA",
+      "expected": "#$08",
+      "operand": "#KnightArrowVerticalExtent",
+      "evidence": "the second left-edge probe samples eight pixels below the first"
     }
   ]
 }

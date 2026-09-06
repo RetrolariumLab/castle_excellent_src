@@ -21,6 +21,27 @@ RECORD_COUNT = 24
 RECORD_BYTES = RECORD_SIZE * RECORD_COUNT
 TYPE_INDEX_MASK = 0x7F
 VISIBLE_Y_LIMIT = 0xA0
+LINKED_LIFT_CONTROL_ADDRESS = 0x89E1
+LINKED_LIFT_CONTROL_END = 0x8C12
+LINKED_LIFT_CONTROL_SHA256 = (
+    "e3c49c3c792a572649d63cb717b1b5316c95e8310707a8b6b55feec9d1448fcf"
+)
+LINKED_LIFT_PLAYER_PUSH_ADDRESS = 0x881A
+LINKED_LIFT_ROOM_UPDATE_ADDRESS = 0x949C
+LINKED_LIFT_NORMALIZED_COLLISION_ADDRESS = 0x955D
+LINKED_LIFT_RUNTIME_OVERLAP_ADDRESS = 0xA247
+LINKED_LIFT_ROOM_COLLISION_ADDRESS = 0xA1A3
+EXPECTED_LINKED_LIFT_PLAYER_PUSH_CALLS = (0x89E6,)
+EXPECTED_LINKED_LIFT_ROOM_UPDATE_CALLS = (0x8AB1, 0x8B33)
+EXPECTED_LINKED_LIFT_NORMALIZED_COLLISION_CALLS = (
+    0x8A48,
+    0x8A59,
+    0x8A6E,
+    0x8A80,
+    0x8A8E,
+)
+EXPECTED_LINKED_LIFT_OVERLAP_CALLS = (0x8B8F,)
+EXPECTED_LINKED_LIFT_ROOM_COLLISION_CALLS = (0x8BD2, 0x8BE4)
 PUSHABLE_UPDATE_ADDRESS = 0x965C
 PUSHABLE_UPDATE_END = 0x9796
 PUSHABLE_UPDATE_SHA256 = (
@@ -72,6 +93,80 @@ FLYING_BLOCK_WORLD_X_END = 0x0140
 FLYING_BLOCK_WORLD_Y_END = 0xA0
 NORMALIZED_ROOM_COLLISION_ADDRESS = 0x955D
 EXPECTED_FLYING_BLOCK_COLLISION_JUMPS = (0x9AB9, 0x9ACC, 0x9ADB, 0x9AEE)
+WALKING_ENEMY_UPDATE_ADDRESS = 0x9B00
+WALKING_ENEMY_UPDATE_END = 0x9C3B
+WALKING_ENEMY_UPDATE_SHA256 = (
+    "7f4c5e6bb8eb61e02e5c8f0ebd5c036f5ce8826482c3102d86570000f47ec363"
+)
+BISHOP_TYPE = 0x85
+BISHOP_HANDLER = 0x9B00
+COLLISION_POINT_SAMPLE_ADDRESS = 0xA0C4
+DESTROY_OBJECT_WITH_SOUND_ADDRESS = 0x9791
+EXPECTED_WALKING_ENEMY_COLLISION_CALLS = (0x9B2B, 0x9B4D, 0x9B6F, 0x9BBF, 0x9C0F)
+EXPECTED_WALKING_ENEMY_DESTROY_JUMPS = (0x9B18, 0x9B30, 0x9B52, 0x9B74, 0x9B8F)
+KNIGHT_UPDATE_ADDRESS = 0x9C3B
+KNIGHT_UPDATE_END = 0x9CC6
+KNIGHT_UPDATE_SHA256 = (
+    "e837f2585a92a98393cd827c53aa3d552caa6ec723e9c38d1124cb8bcf3831dd"
+)
+KNIGHT_TYPE = 0x87
+KNIGHT_HANDLER = 0x9C3B
+ARROW_TYPE = 0xA6
+ARROW_HANDLER = 0x9F74
+EXPECTED_KNIGHT_WALKING_PHYSICS_CALLS = (0x9C42,)
+FAIRY_FIGHTER_UPDATE_ADDRESS = 0x9CC6
+FAIRY_FIGHTER_UPDATE_END = 0x9D65
+FAIRY_FIGHTER_UPDATE_SHA256 = (
+    "c3736b7c80e0e865c6e5dedbe6980f4bdd1ac356406020101a46096a59c653b3"
+)
+FAIRY_TYPE = 0x81
+FAIRY_HANDLER = 0x9CC6
+FIGHTER_TYPE = 0x84
+FIGHTER_HANDLER = 0x9CD8
+EXPECTED_FIGHTER_COLLISION_CALLS = (0x9D10, 0x9D31, 0x9D41, 0x9D51)
+EXPECTED_FIGHTER_WALKING_PHYSICS_TRANSFERS = (0x9D04, 0x9D15, 0x9D25)
+FLAME_HELPERS_ADDRESS = 0x9D65
+FLAME_HELPERS_END = 0x9ECB
+FLAME_HELPERS_SHA256 = (
+    "a3fa65ca756569c279a904350950c6a841bc568b8a5854568bf630243cf3d399"
+)
+FLAME_TYPE = 0x89
+FLAME_HANDLER = 0x9D65
+START_FLAME_SOUND_ADDRESS = 0xC29A
+EXPECTED_FLAME_COLLISION_CALLS = (
+    0x9DFF,
+    0x9E0D,
+    0x9E1B,
+    0x9E2E,
+    0x9E3E,
+    0x9E4E,
+    0x9E59,
+    0x9E69,
+    0x9E79,
+    0x9E84,
+    0x9E94,
+    0x9EA4,
+)
+EXPECTED_FLAME_SOUND_CALLS = (0x9D69,)
+WITCH_UPDATE_ADDRESS = 0x9ECB
+WITCH_UPDATE_END = 0x9F74
+WITCH_UPDATE_SHA256 = (
+    "5ad993c6c13d5169ee0a463c21089cfeb1d535ff4d3bd9f996b93c0198f9d0fc"
+)
+WITCH_TYPE = 0x88
+WITCH_HANDLER = 0x9ECB
+WITCH_SUMMON_TYPE = 0xA0
+WITCH_SUMMON_HANDLER = 0x9FF3
+EXPECTED_WITCH_COLLISION_CALLS = (0x9F0A, 0x9F1B, 0x9F2A, 0x9F3F)
+EXPECTED_WITCH_WALKING_PHYSICS_CALLS = (0x9ECB,)
+KNIGHT_ARROW_UPDATE_ADDRESS = 0x9F74
+KNIGHT_ARROW_UPDATE_END = 0x9FF3
+KNIGHT_ARROW_UPDATE_SHA256 = (
+    "4b0d307b1a85c91d1ea35708f29cd595a544ac5428f0f91f3236aa4b1e383bf8"
+)
+CLEAR_CURRENT_RUNTIME_OBJECT_ADDRESS = 0xA024
+EXPECTED_KNIGHT_ARROW_COLLISION_CALLS = (0x9F8F, 0x9FA0, 0x9FD0, 0x9FE1)
+EXPECTED_KNIGHT_ARROW_CLEAR_JUMPS = (0x9FB7,)
 DECREMENTING_ANIMATED_CELL_FIRST = 0x35
 DECREMENTING_ANIMATED_CELL_END = 0x41
 INCREMENTING_ANIMATED_CELL_FIRST = 0x56
@@ -330,6 +425,53 @@ def validate_runtime_object_dispatch(image_path: Path) -> dict[str, object]:
     expected_offsets = tuple(range(0, RECORD_BYTES, RECORD_SIZE))
     if tuple(update.record_offset for update in scheduled) != expected_offsets:
         raise RuntimeObjectDispatchError("dispatcher did not walk all six-byte records")
+    linked_lift_start = LINKED_LIFT_CONTROL_ADDRESS - PRG_START
+    linked_lift = prg[
+        linked_lift_start:
+        linked_lift_start + LINKED_LIFT_CONTROL_END - LINKED_LIFT_CONTROL_ADDRESS
+    ]
+    if hashlib.sha256(linked_lift).hexdigest() != LINKED_LIFT_CONTROL_SHA256:
+        raise RuntimeObjectDispatchError("linked-lift control range changed")
+
+    def linked_lift_call_sites(target: int) -> tuple[int, ...]:
+        opcode = bytes((0x20, target & 0xFF, target >> 8))
+        return tuple(
+            LINKED_LIFT_CONTROL_ADDRESS + offset
+            for offset in range(len(linked_lift) - 2)
+            if linked_lift[offset:offset + 3] == opcode
+        )
+
+    linked_lift_player_push_calls = linked_lift_call_sites(
+        LINKED_LIFT_PLAYER_PUSH_ADDRESS
+    )
+    if linked_lift_player_push_calls != EXPECTED_LINKED_LIFT_PLAYER_PUSH_CALLS:
+        raise RuntimeObjectDispatchError("linked-lift player-push call changed")
+    linked_lift_room_update_calls = linked_lift_call_sites(
+        LINKED_LIFT_ROOM_UPDATE_ADDRESS
+    )
+    if linked_lift_room_update_calls != EXPECTED_LINKED_LIFT_ROOM_UPDATE_CALLS:
+        raise RuntimeObjectDispatchError("linked-lift room-update calls changed")
+    linked_lift_collision_calls = linked_lift_call_sites(
+        LINKED_LIFT_NORMALIZED_COLLISION_ADDRESS
+    )
+    if (
+        linked_lift_collision_calls
+        != EXPECTED_LINKED_LIFT_NORMALIZED_COLLISION_CALLS
+    ):
+        raise RuntimeObjectDispatchError("linked-lift clearance calls changed")
+    linked_lift_overlap_calls = linked_lift_call_sites(
+        LINKED_LIFT_RUNTIME_OVERLAP_ADDRESS
+    )
+    if linked_lift_overlap_calls != EXPECTED_LINKED_LIFT_OVERLAP_CALLS:
+        raise RuntimeObjectDispatchError("linked-lift overlap call changed")
+    linked_lift_room_collision_calls = linked_lift_call_sites(
+        LINKED_LIFT_ROOM_COLLISION_ADDRESS
+    )
+    if (
+        linked_lift_room_collision_calls
+        != EXPECTED_LINKED_LIFT_ROOM_COLLISION_CALLS
+    ):
+        raise RuntimeObjectDispatchError("linked-lift ceiling calls changed")
     pushable_start = PUSHABLE_UPDATE_ADDRESS - PRG_START
     pushable = prg[pushable_start:pushable_start + PUSHABLE_UPDATE_END - PUSHABLE_UPDATE_ADDRESS]
     if hashlib.sha256(pushable).hexdigest() != PUSHABLE_UPDATE_SHA256:
@@ -401,6 +543,167 @@ def validate_runtime_object_dispatch(image_path: Path) -> dict[str, object]:
     )
     if collision_jumps != EXPECTED_FLYING_BLOCK_COLLISION_JUMPS:
         raise RuntimeObjectDispatchError("flying-block collision jumps changed")
+    walking_start = WALKING_ENEMY_UPDATE_ADDRESS - PRG_START
+    walking_enemy = prg[
+        walking_start:walking_start + WALKING_ENEMY_UPDATE_END - WALKING_ENEMY_UPDATE_ADDRESS
+    ]
+    if hashlib.sha256(walking_enemy).hexdigest() != WALKING_ENEMY_UPDATE_SHA256:
+        raise RuntimeObjectDispatchError("walking-enemy update range changed")
+    if pointers[BISHOP_TYPE & TYPE_INDEX_MASK] != BISHOP_HANDLER:
+        raise RuntimeObjectDispatchError("Bishop handler pointer changed")
+    collision_call = bytes(
+        (
+            0x20,
+            COLLISION_POINT_SAMPLE_ADDRESS & 0xFF,
+            COLLISION_POINT_SAMPLE_ADDRESS >> 8,
+        )
+    )
+    walking_collision_calls = tuple(
+        WALKING_ENEMY_UPDATE_ADDRESS + offset
+        for offset in range(len(walking_enemy) - 2)
+        if walking_enemy[offset:offset + 3] == collision_call
+    )
+    if walking_collision_calls != EXPECTED_WALKING_ENEMY_COLLISION_CALLS:
+        raise RuntimeObjectDispatchError("walking-enemy collision calls changed")
+    destroy_jump = bytes(
+        (
+            0x4C,
+            DESTROY_OBJECT_WITH_SOUND_ADDRESS & 0xFF,
+            DESTROY_OBJECT_WITH_SOUND_ADDRESS >> 8,
+        )
+    )
+    walking_destroy_jumps = tuple(
+        WALKING_ENEMY_UPDATE_ADDRESS + offset
+        for offset in range(len(walking_enemy) - 2)
+        if walking_enemy[offset:offset + 3] == destroy_jump
+    )
+    if walking_destroy_jumps != EXPECTED_WALKING_ENEMY_DESTROY_JUMPS:
+        raise RuntimeObjectDispatchError("walking-enemy destruction jumps changed")
+    knight_start = KNIGHT_UPDATE_ADDRESS - PRG_START
+    knight = prg[knight_start:knight_start + KNIGHT_UPDATE_END - KNIGHT_UPDATE_ADDRESS]
+    if hashlib.sha256(knight).hexdigest() != KNIGHT_UPDATE_SHA256:
+        raise RuntimeObjectDispatchError("Knight update range changed")
+    if pointers[KNIGHT_TYPE & TYPE_INDEX_MASK] != KNIGHT_HANDLER:
+        raise RuntimeObjectDispatchError("Knight handler pointer changed")
+    if pointers[ARROW_TYPE & TYPE_INDEX_MASK] != ARROW_HANDLER:
+        raise RuntimeObjectDispatchError("arrow handler pointer changed")
+    walking_physics_call = bytes(
+        (
+            0x20,
+            WALKING_ENEMY_UPDATE_ADDRESS & 0xFF,
+            WALKING_ENEMY_UPDATE_ADDRESS >> 8,
+        )
+    )
+    knight_walking_physics_calls = tuple(
+        KNIGHT_UPDATE_ADDRESS + offset
+        for offset in range(len(knight) - 2)
+        if knight[offset:offset + 3] == walking_physics_call
+    )
+    if knight_walking_physics_calls != EXPECTED_KNIGHT_WALKING_PHYSICS_CALLS:
+        raise RuntimeObjectDispatchError("Knight walking-physics calls changed")
+    fairy_fighter_start = FAIRY_FIGHTER_UPDATE_ADDRESS - PRG_START
+    fairy_fighter = prg[
+        fairy_fighter_start:
+        fairy_fighter_start + FAIRY_FIGHTER_UPDATE_END - FAIRY_FIGHTER_UPDATE_ADDRESS
+    ]
+    if hashlib.sha256(fairy_fighter).hexdigest() != FAIRY_FIGHTER_UPDATE_SHA256:
+        raise RuntimeObjectDispatchError("Fairy/Fighter update range changed")
+    if pointers[FAIRY_TYPE & TYPE_INDEX_MASK] != FAIRY_HANDLER:
+        raise RuntimeObjectDispatchError("Fairy handler pointer changed")
+    if pointers[FIGHTER_TYPE & TYPE_INDEX_MASK] != FIGHTER_HANDLER:
+        raise RuntimeObjectDispatchError("Fighter handler pointer changed")
+    fighter_collision_calls = tuple(
+        FAIRY_FIGHTER_UPDATE_ADDRESS + offset
+        for offset in range(len(fairy_fighter) - 2)
+        if fairy_fighter[offset:offset + 3] == collision_call
+    )
+    if fighter_collision_calls != EXPECTED_FIGHTER_COLLISION_CALLS:
+        raise RuntimeObjectDispatchError("Fighter collision calls changed")
+    walking_physics_target = bytes(
+        (WALKING_ENEMY_UPDATE_ADDRESS & 0xFF, WALKING_ENEMY_UPDATE_ADDRESS >> 8)
+    )
+    fighter_walking_physics_transfers = tuple(
+        FAIRY_FIGHTER_UPDATE_ADDRESS + offset
+        for offset in range(len(fairy_fighter) - 2)
+        if fairy_fighter[offset] in (0x20, 0x4C)
+        and fairy_fighter[offset + 1:offset + 3] == walking_physics_target
+    )
+    if fighter_walking_physics_transfers != EXPECTED_FIGHTER_WALKING_PHYSICS_TRANSFERS:
+        raise RuntimeObjectDispatchError("Fighter walking-physics transfers changed")
+    flame_start = FLAME_HELPERS_ADDRESS - PRG_START
+    flame_helpers = prg[
+        flame_start:flame_start + FLAME_HELPERS_END - FLAME_HELPERS_ADDRESS
+    ]
+    if hashlib.sha256(flame_helpers).hexdigest() != FLAME_HELPERS_SHA256:
+        raise RuntimeObjectDispatchError("Flame/helper update range changed")
+    if pointers[FLAME_TYPE & TYPE_INDEX_MASK] != FLAME_HANDLER:
+        raise RuntimeObjectDispatchError("Flame handler pointer changed")
+    flame_collision_calls = tuple(
+        FLAME_HELPERS_ADDRESS + offset
+        for offset in range(len(flame_helpers) - 2)
+        if flame_helpers[offset:offset + 3] == collision_call
+    )
+    if flame_collision_calls != EXPECTED_FLAME_COLLISION_CALLS:
+        raise RuntimeObjectDispatchError("Flame/helper collision calls changed")
+    flame_sound_call = bytes(
+        (0x20, START_FLAME_SOUND_ADDRESS & 0xFF, START_FLAME_SOUND_ADDRESS >> 8)
+    )
+    flame_sound_calls = tuple(
+        FLAME_HELPERS_ADDRESS + offset
+        for offset in range(len(flame_helpers) - 2)
+        if flame_helpers[offset:offset + 3] == flame_sound_call
+    )
+    if flame_sound_calls != EXPECTED_FLAME_SOUND_CALLS:
+        raise RuntimeObjectDispatchError("Flame sound call changed")
+    witch_start = WITCH_UPDATE_ADDRESS - PRG_START
+    witch = prg[witch_start:witch_start + WITCH_UPDATE_END - WITCH_UPDATE_ADDRESS]
+    if hashlib.sha256(witch).hexdigest() != WITCH_UPDATE_SHA256:
+        raise RuntimeObjectDispatchError("Witch update range changed")
+    if pointers[WITCH_TYPE & TYPE_INDEX_MASK] != WITCH_HANDLER:
+        raise RuntimeObjectDispatchError("Witch handler pointer changed")
+    if pointers[WITCH_SUMMON_TYPE & TYPE_INDEX_MASK] != WITCH_SUMMON_HANDLER:
+        raise RuntimeObjectDispatchError("Witch summon handler pointer changed")
+    witch_collision_calls = tuple(
+        WITCH_UPDATE_ADDRESS + offset
+        for offset in range(len(witch) - 2)
+        if witch[offset:offset + 3] == collision_call
+    )
+    if witch_collision_calls != EXPECTED_WITCH_COLLISION_CALLS:
+        raise RuntimeObjectDispatchError("Witch summon collision calls changed")
+    witch_walking_physics_calls = tuple(
+        WITCH_UPDATE_ADDRESS + offset
+        for offset in range(len(witch) - 2)
+        if witch[offset:offset + 3] == walking_physics_call
+    )
+    if witch_walking_physics_calls != EXPECTED_WITCH_WALKING_PHYSICS_CALLS:
+        raise RuntimeObjectDispatchError("Witch walking-physics calls changed")
+    arrow_start = KNIGHT_ARROW_UPDATE_ADDRESS - PRG_START
+    knight_arrow = prg[
+        arrow_start:arrow_start + KNIGHT_ARROW_UPDATE_END - KNIGHT_ARROW_UPDATE_ADDRESS
+    ]
+    if hashlib.sha256(knight_arrow).hexdigest() != KNIGHT_ARROW_UPDATE_SHA256:
+        raise RuntimeObjectDispatchError("Knight-arrow update range changed")
+    knight_arrow_collision_calls = tuple(
+        KNIGHT_ARROW_UPDATE_ADDRESS + offset
+        for offset in range(len(knight_arrow) - 2)
+        if knight_arrow[offset:offset + 3] == collision_call
+    )
+    if knight_arrow_collision_calls != EXPECTED_KNIGHT_ARROW_COLLISION_CALLS:
+        raise RuntimeObjectDispatchError("Knight-arrow collision calls changed")
+    clear_jump = bytes(
+        (
+            0x4C,
+            CLEAR_CURRENT_RUNTIME_OBJECT_ADDRESS & 0xFF,
+            CLEAR_CURRENT_RUNTIME_OBJECT_ADDRESS >> 8,
+        )
+    )
+    knight_arrow_clear_jumps = tuple(
+        KNIGHT_ARROW_UPDATE_ADDRESS + offset
+        for offset in range(len(knight_arrow) - 2)
+        if knight_arrow[offset:offset + 3] == clear_jump
+    )
+    if knight_arrow_clear_jumps != EXPECTED_KNIGHT_ARROW_CLEAR_JUMPS:
+        raise RuntimeObjectDispatchError("Knight-arrow cleanup jump changed")
     return {
         "handler_table_address": HANDLER_TABLE_ADDRESS,
         "handler_count": len(pointers),
@@ -410,6 +713,18 @@ def validate_runtime_object_dispatch(image_path: Path) -> dict[str, object]:
         "record_offsets": list(expected_offsets),
         "dispatch_cases_checked": dispatch_cases,
         "skipped_cases_checked": skipped_cases,
+        "linked_lift_control_range": [
+            LINKED_LIFT_CONTROL_ADDRESS,
+            LINKED_LIFT_CONTROL_END - 1,
+        ],
+        "linked_lift_control_bytes": len(linked_lift),
+        "linked_lift_player_push_calls": list(linked_lift_player_push_calls),
+        "linked_lift_room_update_calls": list(linked_lift_room_update_calls),
+        "linked_lift_collision_calls": list(linked_lift_collision_calls),
+        "linked_lift_overlap_calls": list(linked_lift_overlap_calls),
+        "linked_lift_room_collision_calls": list(
+            linked_lift_room_collision_calls
+        ),
         "pushable_update_range": [PUSHABLE_UPDATE_ADDRESS, PUSHABLE_UPDATE_END - 1],
         "pushable_update_bytes": len(pushable),
         "pushable_types": list(PUSHABLE_UPDATE_TYPES),
@@ -425,6 +740,38 @@ def validate_runtime_object_dispatch(image_path: Path) -> dict[str, object]:
         ],
         "flying_block_update_bytes": len(flying_block),
         "flying_block_collision_jumps": list(collision_jumps),
+        "walking_enemy_update_range": [
+            WALKING_ENEMY_UPDATE_ADDRESS,
+            WALKING_ENEMY_UPDATE_END - 1,
+        ],
+        "walking_enemy_update_bytes": len(walking_enemy),
+        "walking_enemy_collision_calls": list(walking_collision_calls),
+        "walking_enemy_destroy_jumps": list(walking_destroy_jumps),
+        "knight_update_range": [KNIGHT_UPDATE_ADDRESS, KNIGHT_UPDATE_END - 1],
+        "knight_update_bytes": len(knight),
+        "knight_walking_physics_calls": list(knight_walking_physics_calls),
+        "fairy_fighter_update_range": [
+            FAIRY_FIGHTER_UPDATE_ADDRESS,
+            FAIRY_FIGHTER_UPDATE_END - 1,
+        ],
+        "fairy_fighter_update_bytes": len(fairy_fighter),
+        "fighter_collision_calls": list(fighter_collision_calls),
+        "fighter_walking_physics_transfers": list(fighter_walking_physics_transfers),
+        "flame_helpers_range": [FLAME_HELPERS_ADDRESS, FLAME_HELPERS_END - 1],
+        "flame_helpers_bytes": len(flame_helpers),
+        "flame_collision_calls": list(flame_collision_calls),
+        "flame_sound_calls": list(flame_sound_calls),
+        "witch_update_range": [WITCH_UPDATE_ADDRESS, WITCH_UPDATE_END - 1],
+        "witch_update_bytes": len(witch),
+        "witch_collision_calls": list(witch_collision_calls),
+        "witch_walking_physics_calls": list(witch_walking_physics_calls),
+        "knight_arrow_update_range": [
+            KNIGHT_ARROW_UPDATE_ADDRESS,
+            KNIGHT_ARROW_UPDATE_END - 1,
+        ],
+        "knight_arrow_update_bytes": len(knight_arrow),
+        "knight_arrow_collision_calls": list(knight_arrow_collision_calls),
+        "knight_arrow_clear_jumps": list(knight_arrow_clear_jumps),
     }
 
 
@@ -445,9 +792,16 @@ def main() -> int:
         print(
             "[OK] validated 24-record runtime-object dispatch and "
             f"{document['handler_count']} handler pointers, including the "
+            f"{document['linked_lift_control_bytes']}-byte linked-lift and "
             f"{document['pushable_update_bytes']}-byte pushable/lift-control and "
             f"{document['lift_update_bytes']}-byte lift and "
-            f"{document['flying_block_update_bytes']}-byte flying-block slices"
+            f"{document['flying_block_update_bytes']}-byte flying-block and "
+            f"{document['walking_enemy_update_bytes']}-byte walking-enemy and "
+            f"{document['knight_update_bytes']}-byte Knight and "
+            f"{document['fairy_fighter_update_bytes']}-byte Fairy/Fighter and "
+            f"{document['flame_helpers_bytes']}-byte Flame/helper and "
+            f"{document['witch_update_bytes']}-byte Witch and "
+            f"{document['knight_arrow_update_bytes']}-byte Knight-arrow slices"
         )
     return 0
 
