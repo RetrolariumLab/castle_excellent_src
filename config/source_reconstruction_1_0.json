@@ -11,7 +11,7 @@
   },
   "release_kind": "preservation",
   "tag": "source-reconstruction-1.0",
-  "status": "development",
+  "status": "tag-ready",
   "predecessor": {
     "manifest": null,
     "tag": null,
@@ -480,8 +480,10 @@
     ],
     "private_inputs_tracked": false,
     "history_policy": {
-      "current_history_status": "legacy-draft",
-      "reason": "Commits created before adoption of contract revision 3 use subject-only messages; release history compliance requires an owner-approved rewrite plan."
+      "current_history_status": "compliant",
+      "rewritten_from_commit": "a2a8a46bec9740ca87cab7da774b71048a4d9e04",
+      "rewrite_branch": "rewrite/source-reconstruction-1.0",
+      "reason": "The owner-approved rewrite groups the unpublished draft into 26 architectural commits with English subjects, substantive bodies, exact Codex attribution, chronological dates, and tree equality at every mapped boundary."
     }
   },
   "source": {
