@@ -42,7 +42,7 @@ number.
 - [x] Add profile-aware room/object decode and encode workspaces.
 - [x] Prove zero-edit full-container level round trips for both profiles.
 - [x] Move revision-specific binary data into reproducible split assets.
-- [ ] Add the visual level editor on top of the validated headless codec.
+- [x] Add the visual level editor on top of the validated headless codec.
 - [ ] Add music and remaining significant content authoring formats.
 - [ ] Add the Source 2.0 manifest audit and aggregate pre-tag/post-tag gates.
 

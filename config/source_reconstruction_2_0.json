@@ -90,11 +90,14 @@
     {
       "id": "level-authoring-pipeline",
       "kind": "authoring",
-      "summary": "Add a profile-aware JSON workspace and fixed-capacity encoder for all room maps, objects, pointers, counts, and persistent-state offsets.",
+      "summary": "Add a profile-aware JSON workspace, fixed-capacity encoder, and visual Studio for all room maps, objects, pointers, counts, and persistent-state offsets.",
       "evidence": [
         "config/level_authoring.json",
         "scripts/level_editor.py",
+        "scripts/level_studio.py",
+        "scripts/level_studio_model.py",
         "tests/test_level_editor.py",
+        "tests/test_level_studio_model.py",
         "docs/content_authoring.md"
       ]
     }
@@ -148,7 +151,8 @@
         "targets": [
           "roundtrip-levels",
           "validate-levels",
-          "build-levels"
+          "build-levels",
+          "check-level-studio"
         ],
         "files": [
           "config/level_authoring.json",

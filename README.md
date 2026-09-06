@@ -335,6 +335,13 @@ make verify-prg      # compare built and original PRG with CPU-address diagnosti
 make verify          # validate and compare every ROM region and extracted asset
 make rom-info        # print and validate original and built image identities
 make check           # fast static quality, source, identity, and subsystem checks
+make split-profile REVISION_PROFILE=castlequest-usa # extract a revision's private assets
+make verify-profile REVISION_PROFILE=castlequest-usa # build and compare that revision
+make init-levels REVISION_PROFILE=castlequest-usa # create an ignored level workspace
+make level-studio REVISION_PROFILE=castlequest-usa # open the visual room/object editor
+make check-level-studio REVISION_PROFILE=castlequest-usa # validate its display model headlessly
+make build-levels REVISION_PROFILE=castlequest-usa # build an isolated edited ROM
+make roundtrip-levels REVISION_PROFILE=castlequest-usa # prove zero-edit container identity
 make rooms           # decode all 100 rooms as JSON
 make validate-rooms  # decode every room without writing JSON
 make audio           # inspect music track sets and textual streams as JSON

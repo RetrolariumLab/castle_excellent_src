@@ -152,6 +152,7 @@ TIMEOUT_FRAMES ?= 15000
 	source-1-check source-1-pre-tag-check source-1-tag-check \
 	split-profile build-profile verify-profile castlequest-check \
 	init-levels export-levels validate-levels build-levels roundtrip-levels \
+	level-studio level-editor check-level-studio \
 	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
@@ -257,6 +258,14 @@ build-levels: verify-profile
 
 roundtrip-levels: verify-profile
 	$(PYTHON) scripts/level_editor.py roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+level-studio: init-levels
+	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+level-editor: level-studio
+
+check-level-studio: verify-profile
+	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
 
 symbols: $(ROM)
 	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"

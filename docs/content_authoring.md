@@ -51,5 +51,28 @@ markers. Object persistent state has 141 bytes and mutable-cell state has 108
 bytes. Edits that exceed any physical or RAM capacity fail before a ROM is
 written.
 
-The current interface is intentionally headless. A visual editor will use this
-same codec and validation model rather than introducing a second serializer.
+The headless commands remain the canonical serialization and release-gate
+interface. The visual editor uses this same codec and validation model rather
+than introducing a second serializer.
+
+## Visual Level Studio
+
+`make level-studio` (or the `level-editor` alias) opens the dependency-free
+Tkinter editor for the selected `REVISION_PROFILE`. It renders all 100 rooms
+from CHR bank 0, the reconstructed left/right tile tables, and the room palette
+and attribute rules. The cell palette offers exactly the 63 symbols accepted by
+the original prefix codebook.
+
+Left-click or drag to paint cells, right-click to sample a cell, and use the
+Objects tab to place, edit, or delete static object records. Object markers show
+both their stored encoded type and their derived runtime type. Every edit is
+checked against room compression arenas, the 24-record runtime pool, the fixed
+object-stream range, and both persistent-state capacities before it enters the
+undo history.
+
+Save writes only the ignored JSON workspace. Build ROM writes the isolated
+authoring image and capacity report declared by `config/level_authoring.json`;
+it never replaces a reference ROM or the normal profile build. The Studio uses
+the same `validate_workspace` and `compose_levels` functions as the headless
+commands. `make check-level-studio` validates the complete display model without
+opening a window, so it is suitable for release gates and headless CI.
