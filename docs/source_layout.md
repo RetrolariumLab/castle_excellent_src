@@ -39,7 +39,10 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/system/nmi_tasks.asm` | `$9578-$9582` | reset all 23 NMI task requests |
 | `src/game/objects/update_dispatch.asm` | `$9583-$9612` | 24-record update dispatcher and 42 handler pointers |
 | `src/game/objects/player_span_overlap.asm` | `$9613-$965B` | player and object-span overlap test |
-| `src/preservation/prg_9613_a2b0.asm` | `$965C-$9FF2` | unresolved object handlers before transient lifecycles |
+| `src/game/objects/pushable_update.asm` | `$965C-$9795` | pushable gravity, conveyor motion, crushing, and lift control |
+| `src/game/objects/lift_update.asm` | `$9796-$9A36` | small/large lift movement and transitive occupant propagation |
+| `src/game/objects/flying_block_update.asm` | `$9A37-$9AFF` | horizontal platform motion, collision probes, and reversal |
+| `src/preservation/prg_9b00_9ff2.asm` | `$9B00-$9FF2` | unresolved object handlers before transient lifecycles |
 | `src/game/objects/transient_lifecycle.asm` | `$9FF3-$A043` | transient type 32/40/41 lifecycles and replacement table |
 | `src/game/collision/object_filters.asm` | `$A044-$A0C3` | animated-cell and runtime-object collision filters |
 | `src/game/collision/point_sample.asm` | `$A0C4-$A1A2` | room-cell and runtime-object point collision sample |

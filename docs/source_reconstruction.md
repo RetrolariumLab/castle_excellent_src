@@ -12,7 +12,7 @@ formats round-trip, and static and runtime gates protect the claims.
 | --- | --- | --- |
 | Identity | complete byte-identical iNES build | permanent |
 | Executable source | complete ca65 PRG, no PRG `.incbin` | permanent |
-| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 114 semantic and 2 preservation modules | all ranges owned by semantic or typed-data modules |
+| Source layout | platform/startup/NMI/rendering/UI and room/object/state pipeline, 117 semantic and 2 preservation modules | all ranges owned by semantic or typed-data modules |
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
@@ -33,7 +33,7 @@ A preservation range may move into a semantic module only when:
 6. ca65/ld65 reproduces the complete reference image;
 7. relevant format or runtime checks cover the subsystem claim.
 
-The promoted ranges currently cover 29,752 PRG bytes (90.80%): `$82CE-$8679`
+The promoted ranges currently cover 30,940 PRG bytes (94.42%): `$82CE-$8679`
 contains the complete player input/movement controller, including jump,
 gravity, horizontal collision dispatch, room-edge transitions, and action-hit
 scanning. `$E45D-$E8DE`
@@ -57,6 +57,31 @@ collision bounds, optionally transforms blocking runtime types `$84-$89`, and
 moves player and object two pixels together. Its model pins all 455 bytes, all
 six table entries, the direct type-`$8E` caller, twelve collision call sites,
 every 16-bit player/object X value, all motion states, and collision ordering.
+
+The pushable-object update slice adds `$965C-$9795`. Runtime types `$8A-$8D`
+and `$8F` share gravity, three support probes, two-pixel conveyor motion, and
+destruction of supported types `$84-$89`; lift-control type `$8E` wraps the
+same physics and routes horizontal motion to the linked lift. Seven collision
+samples cover support and both entering edges. The object-dispatch model pins
+the exact 314-byte hash, all six handler entries, call topology, fall boundary,
+both animated-cell directions, and the crush-contact rule.
+
+The lift slice adds `$9796-$9A36`. Runtime types `$A1/$A2` implement 16- and
+32-pixel lifts which step on room-frame phase 31, reverse at shaft endpoints,
+and update their one- or two-cell room markers. Rising lifts compute a
+transitive closure across the 24 runtime records plus the player, then snap
+every supported occupant to the preceding eight-pixel boundary; blocked
+objects become transient type `$A8`. The existing object-dispatch validator
+pins all 673 bytes, both handler entries, three player-span calls, the runtime-
+overlap call, record-slot conversion, cadence, widths, and rising alignment.
+
+The cell-derived Flying Block slice adds `$9A37-$9AFF`. Runtime type `$A3`
+moves two pixels horizontally after top/bottom leading-edge probes, reverses
+when the opposite side is clear, and latches a stopped state when trapped on
+both sides. The shared bounds predicate accepts exactly the 320x160-pixel room
+domain before four normalized room-collision tail calls. The object-dispatch
+validator pins all 201 bytes, handler entry 35, collision topology, movement,
+and boundary behavior.
 
 The title/sub-command slice promotes `$F8FC-$FBFD` into six semantic modules.
 The title path uploads its overlapping palette, copies four CHR-ROM pages into

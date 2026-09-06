@@ -239,11 +239,11 @@ evidence, and tested decoders for game data.
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
   bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 10,341 instructions after 43
+  disagreements. Evidence-refined Ghidra exports 10,489 instructions after 46
   static code ranges recover pointer-selected entries and 73 evidence-backed data
   ranges remove 199 false-positive instructions. A separate registry clears
   five overextended or misaligned starts embedded in real instruction operands.
-  The source layout owns 29,752 PRG bytes semantically (90.80%). The title and
+  The source layout owns 30,940 PRG bytes semantically (94.42%). The title and
   sub-command path now owns title palette/CHR upload, Start/attract timeout,
   controller-2 menu entry, five-entry wrapped selection, typed menu text,
   load/save dispatch, and current/previous-room restoration.
@@ -536,6 +536,9 @@ src/game/player/transition_reload.asm countdown and persistent room reload
 src/game/player/hazard_state.asm protection decay and hazard-cell contact
 src/game/objects/player_proximity.asm shared object/player interaction predicate
 src/game/objects/player_span_overlap.asm shared player/object-span predicate
+src/game/objects/pushable_update.asm gravity, conveyors, crushing, and lift control
+src/game/objects/lift_update.asm small/large lift movement and occupant closure
+src/game/objects/flying_block_update.asm horizontal platform motion and reversal
 src/game/objects/transient_lifecycle.asm type 32/40/41 lifecycle handlers
 src/game/collision/object_filters.asm animated-cell and runtime-type filters
 src/game/collision/player_sample.asm player room-cell/object collision sampler

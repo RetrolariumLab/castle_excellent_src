@@ -67,6 +67,27 @@ leading-edge probes enforce world bounds and obstacle clearance. A blocking
 runtime type `$84-$89` is converted to `$A8`; otherwise player and object move
 two pixels together and `$0773` records the direction.
 
+The frame update for the same pushable family is semantic at `$965C-$9795`.
+Types `$8A-$8D/$8F` share three support probes and fall two pixels while clear.
+Animated cells `$35-$40` carry them right and `$56-$61` carry them left after
+both entering-edge probes pass. A consistent collision with runtime type
+`$84-$89` changes that support to transient type `$A8` and requests its sound.
+Type `$8E`, the lift-control block, wraps this path and forwards either player-
+or conveyor-driven horizontal motion to the linked lift mechanism.
+
+Runtime types `$A1/$A2` own the small and large lift state machines at
+`$9796-$9A36`. Both move in eight-pixel cell steps on one phase of a 32-frame
+cadence and reverse when the expected shaft marker or destination is absent.
+On ascent, a 25-byte flag set tracks the lift, transitively stacked runtime
+objects, and the player. Supported occupants move to the preceding cell
+boundary; an object blocked by room collision becomes transient type `$A8`.
+
+Cell marker `$51` creates the Flying Block as runtime type `$A3`. Its handler
+at `$9A37-$9AFF` probes both points on the leading vertical edge and moves two
+pixels horizontally while clear. A blocked edge reverses direction if the
+opposite edge is free; blockage on both sides latches byte five and stops the
+platform. Probe bounds match the 320x160-pixel room domain.
+
 `HandlePauseInput` at `$A8E3-$A959` detects new A/B and Start presses against
 the saved controller mask. Start enters pause and disables every APU channel;
 Start or A/B resumes. Paused Left/Right adjust the pending horizontal scroll in

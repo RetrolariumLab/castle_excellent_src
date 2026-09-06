@@ -101,6 +101,12 @@
   sprite dispatch, collision dimensions, room use, and cell-marker sources;
 - [x] reconstruct the shared player/object-span test, its saturated 16-bit X
   bounds, 16-pixel Y interval, and all three direct callers;
+- [x] reconstruct pushable-object gravity, conveyor displacement, support
+  crushing, and the lift-control type's shared update wrapper;
+- [x] reconstruct small and large lift cell movement, endpoint reversal, and
+  transitive runtime-object/player occupant propagation;
+- [x] reconstruct the cell-derived Flying Block, its paired leading-edge
+  probes, two-pixel horizontal motion, reversal, and trapped stop state;
 - [x] reconstruct transient runtime types 32, 40, and 41, including type
   replacement, state lifetime, odd-frame motion, and full-record clearing;
 - [x] reconstruct animated-cell direction classification and both runtime-type
@@ -132,6 +138,6 @@
 
 - lossless decode/encode for all 100 room streams;
 - typed object definitions and runtime-record contracts;
-- collision, movement, lift, water, door, key, and enemy state machines;
+- collision, movement, water, door, key, and enemy state machines;
 - graphics, palette, metasprite, text, and audio authoring formats;
 - Castlequest USA revision alignment and byte-identical profile.

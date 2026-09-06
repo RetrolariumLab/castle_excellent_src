@@ -123,6 +123,25 @@ pointer and `$07C6` is the shared update flag cleared before each record. The
 pointer aliases remain scoped to the dispatcher; `$0043` is global because the
 selected handlers repeatedly recover the same current six-byte record offset.
 
+Within `$965C-$9795`, `$21-$22` hold the pushable candidate X and `$23-$24`
+hold its right entering edge. `$16` first stores support Y and then the selected
+collision identity; `$1E-$1F` retain the prior support identity and hit count.
+The collision sampler supplies the contacted runtime-record offset in `$42`.
+Successful conveyor motion writes `$7F/$FF` to contextual latch `$0773`; lift-
+control type `$8E` consumes the same latch after the shared physics returns.
+
+Within `$9796-$9A36`, `$2B-$2C` point into the 20x20 room cell buffer and
+`$44-$47` alternate between row-update addresses and lift/occupant collision
+spans. `$16-$17` are closure and scan indexes before `$16` becomes the movement
+slot. `$07AB-$07C3` is a 25-byte occupant flag set: 24 runtime-object slots
+followed by the player flag. The helper at `$9A1F` maps six-byte record offsets
+to these slots, and `$9A2C` clears the complete set.
+
+Within `$9A37-$9AAC`, `$44-$45` expose the Flying Block contact X after a
+successful two-pixel move. The rightward path stores new X plus five; the
+leftward path preserves the previous origin. This contextual output remains
+scoped because later object handlers reuse both scratch bytes.
+
 Within `$8DD3-$8ECA`, `$1B` and `$27-$28` retain the rebased Y and 16-bit X
 sample. `$1D` scans the 24 runtime records; `$29` selects the room-cell column;
 and `$2B-$2C` first address the room row, then hold the object-relative X delta.

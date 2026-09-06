@@ -308,6 +308,29 @@ implements an indirect subroutine call by pushing `$95B2`, one byte before
 `AdvanceRuntimeObjectUpdate`, and jumping through `$31/$32`; the handler's
 `RTS` therefore lands at `$95B3` and continues with the next six-byte record.
 
+Handler entries for runtime types `$8A-$8D/$8F` converge on
+`UpdatePushableObjectPhysics`; type `$8E` enters through `UpdateLiftControlBlock`
+and then calls the same routine. Three samples at Y+17 decide support. With no
+support, the object falls two pixels until Y reaches `$A0`. The two animated
+cell families carry a supported object two pixels in opposite directions after
+its entering edge is clear. A matching runtime support in `$84-$89` becomes
+transient type `$A8`. The lift-control wrapper consumes the same horizontal-
+motion latch used by player pushing and routes it to the linked lift pair.
+
+Handler entries 33 and 34 select the small and large lift state machines at
+`$9796/$9869`. They edit one or two shaft cells while moving down or up by
+eight pixels. The rising path seeds a 25-entry occupant set with the current
+lift, repeatedly expands it through `FindRuntimeObjectOverlappingSpan`, adds
+the player through `TestPlayerAgainstObjectSpan`, and then moves the resulting
+transitive stack. This makes multi-object lift support an explicit closure
+operation rather than an incidental order of the 24-record dispatcher.
+
+Handler entry 35 selects the cell-derived Flying Block. Its sign-valued state
+chooses left or right motion; paired top/bottom probes cover the eight-pixel
+leading edge and reject coordinates beyond the 320x160 room. A clear path
+moves two pixels, one blocked side reverses direction, and two blocked sides
+set the byte-five stopped latch.
+
 Three handlers call `TestPlayerAgainstObjectSpan` with a candidate object's
 16-bit X in `$44/$45`, Y in `$46`, and width in `$47`. The shared predicate
 accepts the 16-pixel vertical interval immediately below that Y origin and the

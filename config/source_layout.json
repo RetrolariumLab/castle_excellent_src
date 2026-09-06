@@ -41,7 +41,10 @@
         "../system/nmi_tasks.asm",
         "../game/objects/update_dispatch.asm",
         "../game/objects/player_span_overlap.asm",
-        "../preservation/prg_9613_a2b0.asm",
+        "../game/objects/pushable_update.asm",
+        "../game/objects/lift_update.asm",
+        "../game/objects/flying_block_update.asm",
+        "../preservation/prg_9b00_9ff2.asm",
         "../game/objects/transient_lifecycle.asm",
         "../game/collision/object_filters.asm",
         "../game/collision/point_sample.asm",
@@ -324,10 +327,28 @@
       "title": "Player and object-span overlap test"
     },
     {
-      "path": "src/preservation/prg_9613_a2b0.asm",
+      "path": "src/game/objects/pushable_update.asm",
       "start": "0x965C",
+      "end": "0x9796",
+      "title": "Pushable-object gravity, conveyor motion, crushing, and lift control"
+    },
+    {
+      "path": "src/game/objects/lift_update.asm",
+      "start": "0x9796",
+      "end": "0x9A37",
+      "title": "Small and large lift state machines and occupant propagation"
+    },
+    {
+      "path": "src/game/objects/flying_block_update.asm",
+      "start": "0x9A37",
+      "end": "0x9B00",
+      "title": "Flying-block horizontal motion and collision reversal"
+    },
+    {
+      "path": "src/preservation/prg_9b00_9ff2.asm",
+      "start": "0x9B00",
       "end": "0x9FF3",
-      "title": "Preservation runtime-object handlers before transient lifecycles"
+      "title": "Remaining preservation runtime-object handlers before transient lifecycles"
     },
     {
       "path": "src/game/objects/transient_lifecycle.asm",

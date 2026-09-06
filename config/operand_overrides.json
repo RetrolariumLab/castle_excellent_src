@@ -4044,6 +4044,612 @@
       "expected": "#$FF",
       "operand": "#PlayerDirectionLeft",
       "evidence": "a successful left push records the negative direction sentinel"
+    },
+    {
+      "instruction": "0x965C",
+      "expected": "#$00",
+      "operand": "#PushableMotionInactive",
+      "evidence": "the lift-control wrapper clears the shared horizontal-motion result before physics"
+    },
+    {
+      "instruction": "0x9676",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "support comparison begins with the normalized empty-cell identity"
+    },
+    {
+      "instruction": "0x967A",
+      "expected": "#$00",
+      "operand": "#PushableSupportCollisionCountInitial",
+      "evidence": "no support probe has collided at the start of the pushable update"
+    },
+    {
+      "instruction": "0x9689",
+      "expected": "#$11",
+      "operand": "#PushableSupportYOffset",
+      "evidence": "the three support probes sample seventeen pixels below the object origin"
+    },
+    {
+      "instruction": "0x96A5",
+      "expected": "#$07",
+      "operand": "#PushableMiddleXOffset",
+      "evidence": "the middle support probe is seven pixels from the object origin"
+    },
+    {
+      "instruction": "0x96BF",
+      "expected": "#$0F",
+      "operand": "#PushableRightXOffset",
+      "evidence": "the right support probe is fifteen pixels from the object origin"
+    },
+    {
+      "instruction": "0x96D5",
+      "expected": "#$A0",
+      "operand": "#RuntimeObjectVisibleYLimit",
+      "evidence": "unsupported objects stop falling once their origin reaches the offscreen limit"
+    },
+    {
+      "instruction": "0x96D9",
+      "expected": "#$02",
+      "operand": "#PushableFallStep",
+      "evidence": "an unsupported pushable advances downward by two pixels per update"
+    },
+    {
+      "instruction": "0x96EC",
+      "expected": "#$02",
+      "operand": "#PushableConveyorStep",
+      "evidence": "a decrementing animated cell carries a supported object two pixels right"
+    },
+    {
+      "instruction": "0x96FC",
+      "expected": "#$0F",
+      "operand": "#PushableRightXOffset",
+      "evidence": "rightward conveyor motion probes the object's fifteen-pixel leading edge"
+    },
+    {
+      "instruction": "0x9728",
+      "expected": "#$7F",
+      "operand": "#PushableMotionRight",
+      "evidence": "successful rightward conveyor motion records the positive direction sentinel"
+    },
+    {
+      "instruction": "0x9733",
+      "expected": "#$02",
+      "operand": "#PushableConveyorStep",
+      "evidence": "an incrementing animated cell carries a supported object two pixels left"
+    },
+    {
+      "instruction": "0x975F",
+      "expected": "#$FF",
+      "operand": "#PushableMotionLeft",
+      "evidence": "successful leftward conveyor motion records the negative direction sentinel"
+    },
+    {
+      "instruction": "0x977F",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "a single colliding probe uses the normalized empty identity as the prior sample"
+    },
+    {
+      "instruction": "0x9786",
+      "expected": "#$A8",
+      "operand": "#CrushedRuntimeObjectType",
+      "evidence": "a crushed runtime object becomes the shared transient destroyed type"
+    },
+    {
+      "instruction": "0x978A",
+      "expected": "#$00",
+      "operand": "#DestroyedRuntimeObjectInitialState",
+      "evidence": "destroying an object clears its runtime state before starting the sound effect"
+    },
+    {
+      "instruction": "0x9799",
+      "expected": "#$1F",
+      "operand": "#LiftUpdateFrameMask",
+      "evidence": "lift state machines run on one phase of the low five room-frame bits"
+    },
+    {
+      "instruction": "0x979B",
+      "expected": "#$1F",
+      "operand": "#LiftUpdateFramePhase",
+      "evidence": "the small lift steps when all five low room-frame bits are set"
+    },
+    {
+      "instruction": "0x97A9",
+      "expected": "#$98",
+      "operand": "#LiftMaximumY",
+      "evidence": "the small lift reverses before moving below the last visible shaft row"
+    },
+    {
+      "instruction": "0x97B7",
+      "expected": "#$14",
+      "operand": "#LiftCellRowStride",
+      "evidence": "the next shaft cell is one 20-cell room row below"
+    },
+    {
+      "instruction": "0x97BB",
+      "expected": "#$4C",
+      "operand": "#SmallLiftShaftCell",
+      "evidence": "small lifts descend only through their one-cell shaft marker"
+    },
+    {
+      "instruction": "0x97BF",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the consumed lower small-lift shaft cell becomes empty"
+    },
+    {
+      "instruction": "0x97C3",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the small lift clears its previous room cell"
+    },
+    {
+      "instruction": "0x97C5",
+      "expected": "#$00",
+      "operand": "#LiftCurrentCellOffset",
+      "evidence": "offset zero selects the lift's current room cell"
+    },
+    {
+      "instruction": "0x97D9",
+      "expected": "#$08",
+      "operand": "#LiftCellStep",
+      "evidence": "small lifts descend by one eight-pixel cell"
+    },
+    {
+      "instruction": "0x97E0",
+      "expected": "#$FF",
+      "operand": "#LiftDirectionUp",
+      "evidence": "the small lift switches to its negative-state rising direction"
+    },
+    {
+      "instruction": "0x97F4",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the small lift clears its current room cell at the upper endpoint"
+    },
+    {
+      "instruction": "0x97F6",
+      "expected": "#$00",
+      "operand": "#LiftCurrentCellOffset",
+      "evidence": "offset zero selects the small lift's current room cell"
+    },
+    {
+      "instruction": "0x9807",
+      "expected": "#$00",
+      "operand": "#LiftDirectionDown",
+      "evidence": "the small lift switches back to its nonnegative descending direction"
+    },
+    {
+      "instruction": "0x9818",
+      "expected": "#$08",
+      "operand": "#LiftCellStep",
+      "evidence": "small lifts rise by one eight-pixel cell"
+    },
+    {
+      "instruction": "0x9824",
+      "expected": "#$00",
+      "operand": "#LiftCurrentCellOffset",
+      "evidence": "offset zero samples the destination cell above the small lift"
+    },
+    {
+      "instruction": "0x9828",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the small lift can rise only into an empty room cell"
+    },
+    {
+      "instruction": "0x982C",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the small lift destination remains represented by the empty cell"
+    },
+    {
+      "instruction": "0x9830",
+      "expected": "#$4C",
+      "operand": "#SmallLiftShaftCell",
+      "evidence": "a rising small lift restores its shaft marker below"
+    },
+    {
+      "instruction": "0x9832",
+      "expected": "#$14",
+      "operand": "#LiftCellRowStride",
+      "evidence": "the restored small-lift shaft marker is one room row below"
+    },
+    {
+      "instruction": "0x9851",
+      "expected": "#$10",
+      "operand": "#SmallLiftWidth",
+      "evidence": "the small lift player-contact span is sixteen pixels wide"
+    },
+    {
+      "instruction": "0x985D",
+      "expected": "#$FF",
+      "operand": "#LiftOccupantPending",
+      "evidence": "player contact marks the extra lift-occupant slot pending"
+    },
+    {
+      "instruction": "0x9862",
+      "expected": "#$10",
+      "operand": "#SmallLiftWidth",
+      "evidence": "small-lift occupant propagation uses a sixteen-pixel support span"
+    },
+    {
+      "instruction": "0x986C",
+      "expected": "#$1F",
+      "operand": "#LiftUpdateFrameMask",
+      "evidence": "large lift state machines use the same 32-frame cadence"
+    },
+    {
+      "instruction": "0x986E",
+      "expected": "#$1F",
+      "operand": "#LiftUpdateFramePhase",
+      "evidence": "the large lift steps on the shared lift frame phase"
+    },
+    {
+      "instruction": "0x987C",
+      "expected": "#$98",
+      "operand": "#LiftMaximumY",
+      "evidence": "the large lift reverses before leaving the visible shaft"
+    },
+    {
+      "instruction": "0x988A",
+      "expected": "#$14",
+      "operand": "#LiftCellRowStride",
+      "evidence": "the large lift samples one room row below"
+    },
+    {
+      "instruction": "0x988E",
+      "expected": "#$4F",
+      "operand": "#LargeLiftLeftShaftCell",
+      "evidence": "large lifts descend through the left half of the paired shaft marker"
+    },
+    {
+      "instruction": "0x9892",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the consumed lower-left large-lift shaft cell becomes empty"
+    },
+    {
+      "instruction": "0x9896",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the consumed lower-right large-lift shaft cell becomes empty"
+    },
+    {
+      "instruction": "0x989B",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the large lift clears its previous left room cell"
+    },
+    {
+      "instruction": "0x989D",
+      "expected": "#$00",
+      "operand": "#LiftCurrentCellOffset",
+      "evidence": "offset zero selects the large lift's current left room cell"
+    },
+    {
+      "instruction": "0x98B4",
+      "expected": "#$08",
+      "operand": "#LiftCellStep",
+      "evidence": "large lifts descend by one eight-pixel cell"
+    },
+    {
+      "instruction": "0x98BB",
+      "expected": "#$FF",
+      "operand": "#LiftDirectionUp",
+      "evidence": "the large lift switches to its negative-state rising direction"
+    },
+    {
+      "instruction": "0x98CF",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the large lift clears its current left cell at the upper endpoint"
+    },
+    {
+      "instruction": "0x98D1",
+      "expected": "#$00",
+      "operand": "#LiftCurrentCellOffset",
+      "evidence": "offset zero selects the large lift's current left room cell"
+    },
+    {
+      "instruction": "0x98E5",
+      "expected": "#$00",
+      "operand": "#LiftDirectionDown",
+      "evidence": "the large lift switches back to descending at the upper endpoint"
+    },
+    {
+      "instruction": "0x98F6",
+      "expected": "#$08",
+      "operand": "#LiftCellStep",
+      "evidence": "large lifts rise by one eight-pixel cell"
+    },
+    {
+      "instruction": "0x9902",
+      "expected": "#$00",
+      "operand": "#LiftCurrentCellOffset",
+      "evidence": "offset zero samples the destination left cell above the large lift"
+    },
+    {
+      "instruction": "0x9906",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the large lift can rise only into empty destination cells"
+    },
+    {
+      "instruction": "0x990A",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the rising large lift keeps its left destination cell empty"
+    },
+    {
+      "instruction": "0x990E",
+      "expected": "#$53",
+      "operand": "#EmptyRoomCell",
+      "evidence": "the rising large lift keeps its right destination cell empty"
+    },
+    {
+      "instruction": "0x9913",
+      "expected": "#$4F",
+      "operand": "#LargeLiftLeftShaftCell",
+      "evidence": "a rising large lift restores the left shaft-marker half"
+    },
+    {
+      "instruction": "0x9915",
+      "expected": "#$14",
+      "operand": "#LiftCellRowStride",
+      "evidence": "the restored large-lift shaft pair is one room row below"
+    },
+    {
+      "instruction": "0x9919",
+      "expected": "#$50",
+      "operand": "#LargeLiftRightShaftCell",
+      "evidence": "a rising large lift restores the right shaft-marker half"
+    },
+    {
+      "instruction": "0x9939",
+      "expected": "#$20",
+      "operand": "#LargeLiftWidth",
+      "evidence": "the large lift player-contact span is thirty-two pixels wide"
+    },
+    {
+      "instruction": "0x9945",
+      "expected": "#$FF",
+      "operand": "#LiftOccupantPending",
+      "evidence": "player contact marks the extra large-lift occupant slot pending"
+    },
+    {
+      "instruction": "0x994A",
+      "expected": "#$20",
+      "operand": "#LargeLiftWidth",
+      "evidence": "large-lift occupant propagation uses a thirty-two-pixel support span"
+    },
+    {
+      "instruction": "0x9953",
+      "expected": "#$FF",
+      "operand": "#LiftOccupantPending",
+      "evidence": "the moving lift itself seeds the transitive occupant closure"
+    },
+    {
+      "instruction": "0x9958",
+      "expected": "#$00",
+      "operand": "#LiftOccupantClear",
+      "evidence": "a closure pass starts with no newly discovered occupants"
+    },
+    {
+      "instruction": "0x995C",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "closure scanning starts at the first runtime-object slot"
+    },
+    {
+      "instruction": "0x9968",
+      "expected": "#$18",
+      "operand": "#LiftObjectSlotCount",
+      "evidence": "closure expansion scans all twenty-four runtime-object slots"
+    },
+    {
+      "instruction": "0x9974",
+      "expected": "#$7F",
+      "operand": "#LiftOccupantProcessed",
+      "evidence": "a pending occupant becomes processed before its supported objects are scanned"
+    },
+    {
+      "instruction": "0x9980",
+      "expected": "#$08",
+      "operand": "#LiftCellStep",
+      "evidence": "the next occupant span is sampled one cell above its origin"
+    },
+    {
+      "instruction": "0x9994",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "each closure expansion scans overlaps from the first runtime record"
+    },
+    {
+      "instruction": "0x99A3",
+      "expected": "#$FF",
+      "operand": "#LiftOccupantPending",
+      "evidence": "overlapping objects are added to the pending closure set"
+    },
+    {
+      "instruction": "0x99AA",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "the overlap scan advances through six-byte runtime records"
+    },
+    {
+      "instruction": "0x99B5",
+      "expected": "#$FF",
+      "operand": "#LiftOccupantPending",
+      "evidence": "a player standing on any occupant joins the rising closure"
+    },
+    {
+      "instruction": "0x99C1",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "rising movement starts at the first runtime-object occupant flag"
+    },
+    {
+      "instruction": "0x99D2",
+      "expected": "#$08",
+      "operand": "#LiftCellStep",
+      "evidence": "objects above the first cell cannot move farther upward"
+    },
+    {
+      "instruction": "0x99D7",
+      "expected": "#$01",
+      "operand": "#LiftRiseAlignmentBias",
+      "evidence": "subtracting one before masking selects the previous cell boundary"
+    },
+    {
+      "instruction": "0x99D9",
+      "expected": "#$F8",
+      "operand": "#LiftRiseAlignmentMask",
+      "evidence": "rising occupants snap to an eight-pixel cell boundary"
+    },
+    {
+      "instruction": "0x9A00",
+      "expected": "#$A8",
+      "operand": "#CrushedRuntimeObjectType",
+      "evidence": "an occupant blocked while rising becomes the shared destroyed type"
+    },
+    {
+      "instruction": "0x9A04",
+      "expected": "#$00",
+      "operand": "#DestroyedRuntimeObjectInitialState",
+      "evidence": "a crushed lift occupant restarts the transient lifecycle at state zero"
+    },
+    {
+      "instruction": "0x9A0C",
+      "expected": "#$18",
+      "operand": "#LiftObjectSlotCount",
+      "evidence": "movement covers all twenty-four runtime-object occupant flags"
+    },
+    {
+      "instruction": "0x9A18",
+      "expected": "#$01",
+      "operand": "#LiftRiseAlignmentBias",
+      "evidence": "the player uses the same previous-cell alignment as object occupants"
+    },
+    {
+      "instruction": "0x9A1A",
+      "expected": "#$F8",
+      "operand": "#LiftRiseAlignmentMask",
+      "evidence": "the player is snapped to the shared eight-pixel lift grid"
+    },
+    {
+      "instruction": "0x9A1F",
+      "expected": "#$00",
+      "operand": "#LiftFirstObjectSlot",
+      "evidence": "record-offset division initializes the quotient slot index to zero"
+    },
+    {
+      "instruction": "0x9A22",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "slot-index conversion divides a byte offset by the six-byte record size"
+    },
+    {
+      "instruction": "0x9A27",
+      "expected": "#$06",
+      "operand": "#RuntimeObjectRecordSize",
+      "evidence": "slot-index conversion subtracts one six-byte record per quotient step"
+    },
+    {
+      "instruction": "0x9A2C",
+      "expected": "#$18",
+      "operand": "#LiftObjectSlotCount",
+      "evidence": "clearing from index twenty-four includes the extra player flag"
+    },
+    {
+      "instruction": "0x9A2E",
+      "expected": "#$00",
+      "operand": "#LiftOccupantClear",
+      "evidence": "the shared zero value clears every lift occupant flag"
+    },
+    {
+      "instruction": "0x9A50",
+      "expected": "#$02",
+      "operand": "#FlyingBlockStep",
+      "evidence": "an unobstructed flying block moves two pixels right"
+    },
+    {
+      "instruction": "0x9A5B",
+      "expected": "#$05",
+      "operand": "#FlyingBlockRightContactXOffset",
+      "evidence": "rightward motion exports a contact coordinate five pixels past the new origin"
+    },
+    {
+      "instruction": "0x9A61",
+      "expected": "#$00",
+      "operand": "#FlyingBlockCoordinateCarry",
+      "evidence": "carry from the contact-offset addition extends into the high X byte"
+    },
+    {
+      "instruction": "0x9A72",
+      "expected": "#$FF",
+      "operand": "#FlyingBlockDirectionLeft",
+      "evidence": "a blocked right edge reverses the flying block toward the left"
+    },
+    {
+      "instruction": "0x9A79",
+      "expected": "#$FF",
+      "operand": "#FlyingBlockStopped",
+      "evidence": "a block trapped on both sides latches its stopped flag"
+    },
+    {
+      "instruction": "0x9A8F",
+      "expected": "#$02",
+      "operand": "#FlyingBlockStep",
+      "evidence": "an unobstructed flying block moves two pixels left"
+    },
+    {
+      "instruction": "0x9A97",
+      "expected": "#$00",
+      "operand": "#FlyingBlockCoordinateBorrow",
+      "evidence": "borrow from leftward motion extends into the high X byte"
+    },
+    {
+      "instruction": "0x9AA8",
+      "expected": "#$00",
+      "operand": "#FlyingBlockDirectionRight",
+      "evidence": "a blocked left edge reverses the flying block toward the right"
+    },
+    {
+      "instruction": "0x9AC1",
+      "expected": "#$07",
+      "operand": "#FlyingBlockBottomProbeYOffset",
+      "evidence": "the lower right probe samples the eight-pixel block's bottom edge"
+    },
+    {
+      "instruction": "0x9AE3",
+      "expected": "#$07",
+      "operand": "#FlyingBlockBottomProbeYOffset",
+      "evidence": "the lower left probe samples the eight-pixel block's bottom edge"
+    },
+    {
+      "instruction": "0x9AF1",
+      "expected": "#$A0",
+      "operand": "#FlyingBlockWorldYEnd",
+      "evidence": "probe coordinates at or below Y $A0 are outside the playfield"
+    },
+    {
+      "instruction": "0x9AF5",
+      "expected": "#$01",
+      "operand": "#FlyingBlockWorldRightPage",
+      "evidence": "page zero is entirely within the horizontal playfield"
+    },
+    {
+      "instruction": "0x9AF9",
+      "expected": "#$02",
+      "operand": "#FlyingBlockWorldBeyondRightPage",
+      "evidence": "coordinates on page two or above are outside the playfield"
+    },
+    {
+      "instruction": "0x9AFD",
+      "expected": "#$40",
+      "operand": "#FlyingBlockWorldRightLimitLo",
+      "evidence": "page-one coordinates must remain below world X $0140"
     }
   ]
 }

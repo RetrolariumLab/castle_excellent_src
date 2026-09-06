@@ -1010,6 +1010,18 @@
       "confidence": "confirmed"
     },
     {
+      "address": "0x89F6",
+      "name": "LowerLinkedLift",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x8AC4",
+      "name": "RaiseLinkedLift",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
       "address": "0x8C12",
       "name": "CollectInventoryRuntimeType90",
       "kind": "routine",
@@ -1746,6 +1758,402 @@
       "name": "ReturnPlayerOutsideObjectSpan",
       "kind": "local",
       "confidence": "confirmed"
+    },
+    {
+      "address": "0x965C",
+      "name": "UpdateLiftControlBlock",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9670",
+      "name": "LowerLiftAfterControlBlockMotion",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9673",
+      "name": "ReturnFromLiftControlBlockUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9674",
+      "name": "UpdatePushableObjectPhysics",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x96A0",
+      "name": "ProbePushableMiddleSupport",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x96BA",
+      "name": "ProbePushableRightSupport",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x96DD",
+      "name": "ReturnFromPushableObjectUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x96DE",
+      "name": "HandlePushableSupportCollision",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x96EA",
+      "name": "TryMovePushableRightOnConveyor",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9730",
+      "name": "TryMovePushableLeftOnConveyor",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9764",
+      "name": "CommitConveyorPushableX",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x976E",
+      "name": "ReturnFromPushableSupportCollision",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x976F",
+      "name": "TryCrushRuntimeObjectBelowPushable",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9777",
+      "name": "ValidatePushableCrushContact",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9784",
+      "name": "SelectCrushedRuntimeObject",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9786",
+      "name": "DestroyRuntimeObjectWithSound",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9791",
+      "name": "DestroyCurrentRuntimeObjectWithSound",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9796",
+      "name": "UpdateSmallLift",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x97A0",
+      "name": "StepSmallLift",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x97A7",
+      "name": "MoveSmallLiftDown",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x97DE",
+      "name": "ReverseSmallLiftUp",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x97E7",
+      "name": "ReverseSmallLiftDown",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x980E",
+      "name": "MoveSmallLiftUp",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x985D",
+      "name": "MarkPlayerOnSmallLift",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9862",
+      "name": "RaiseSmallLiftOccupants",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9869",
+      "name": "UpdateLargeLift",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9873",
+      "name": "StepLargeLift",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x987A",
+      "name": "MoveLargeLiftDown",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x98B9",
+      "name": "ReverseLargeLiftUp",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x98C2",
+      "name": "ReverseLargeLiftDown",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x98EC",
+      "name": "MoveLargeLiftUp",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9945",
+      "name": "MarkPlayerOnLargeLift",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x994A",
+      "name": "RaiseLargeLiftOccupants",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x994E",
+      "name": "RaiseLiftAndOccupants",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9958",
+      "name": "RestartLiftOccupantClosure",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9960",
+      "name": "FindPendingLiftOccupant",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9967",
+      "name": "AdvanceLiftOccupantScan",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9974",
+      "name": "ExpandLiftOccupantClosure",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9996",
+      "name": "ScanLiftOccupantOverlaps",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x99A8",
+      "name": "AdvanceLiftOverlapScan",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x99B0",
+      "name": "IncludePlayerStandingOnOccupant",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x99BA",
+      "name": "FinishLiftOccupantExpansion",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x99C1",
+      "name": "ApplyRisingLiftMovement",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x99C5",
+      "name": "MoveNextLiftOccupant",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x99FA",
+      "name": "CrushBlockedLiftOccupant",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A08",
+      "name": "AdvanceLiftMovement",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A1E",
+      "name": "ReturnFromLiftUpdate",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9A1F",
+      "name": "GetRuntimeObjectSlotIndex",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9A22",
+      "name": "DivideRuntimeObjectOffsetByRecordSize",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9A2B",
+      "name": "ReturnRuntimeObjectSlotIndex",
+      "kind": "local",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9A2C",
+      "name": "ClearLiftOccupantFlags",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A30",
+      "name": "ClearNextLiftOccupantFlag",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A37",
+      "name": "UpdateFlyingBlock",
+      "kind": "routine",
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x9A3D",
+      "name": "MoveFlyingBlockRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A58",
+      "name": "StoreFlyingBlockRightContactX",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A65",
+      "name": "ReturnFromFlyingBlockUpdate",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A66",
+      "name": "TryReverseFlyingBlockLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A77",
+      "name": "StopFlyingBlock",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A7E",
+      "name": "MoveFlyingBlockLeft",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9A9C",
+      "name": "TryReverseFlyingBlockRight",
+      "kind": "local",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9AAD",
+      "name": "ProbeFlyingBlockRightTop",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9ABC",
+      "name": "ProbeFlyingBlockRightBottom",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9ACF",
+      "name": "ProbeFlyingBlockLeftTop",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9ADE",
+      "name": "ProbeFlyingBlockLeftBottom",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9AF1",
+      "name": "ValidateFlyingBlockProbePosition",
+      "kind": "routine",
+      "confidence": "high"
+    },
+    {
+      "address": "0x9AFF",
+      "name": "ReturnFromFlyingBlockProbe",
+      "kind": "local",
+      "confidence": "high"
     },
     {
       "address": "0x9FF3",

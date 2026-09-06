@@ -17,6 +17,8 @@ Label_89EF:
 
 Label_89F4:
     LDX CurrentObjectOffset
+
+LowerLinkedLift:
     LDY RuntimeObjectY,X
     DEY
     JSR GetRuntimeObjectXPlus7
@@ -139,6 +141,8 @@ Label_8AC1:
 
 Func_8AC2:
     LDX CurrentObjectOffset
+
+RaiseLinkedLift:
     LDY RuntimeObjectY,X
     DEY
     JSR GetRuntimeObjectXPlus8
@@ -209,13 +213,13 @@ Label_8B12:
     LDA $2C
     STA $45
     JSR RequestRoomCellRowUpdate
-    JSR Func_9A2C
+    JSR ClearLiftOccupantFlags
     LDX $1E
-    JSR Func_9A1F
+    JSR GetRuntimeObjectSlotIndex
     LDA #$FF
     STA a:$07AB,Y
     LDX $1F
-    JSR Func_9A1F
+    JSR GetRuntimeObjectSlotIndex
     LDA #$FF
     STA a:$07AB,Y
     LDA #$10
@@ -263,7 +267,7 @@ Label_8B6D:
 Label_8B8F:
     JSR FindRuntimeObjectOverlappingSpan
     BCS Label_8BA9
-    JSR Func_9A1F
+    JSR GetRuntimeObjectSlotIndex
     LDA a:$07AB,Y
     BNE Label_8BA1
     LDA #$FF

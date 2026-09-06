@@ -39,8 +39,10 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/rendering/room_cell_updates.asm src/game/x_coordinates.asm \
 	src/game/rooms/finish_transition.asm src/game/collision/cell_samples.asm \
 	src/system/nmi_tasks.asm src/game/objects/update_dispatch.asm \
-	src/game/objects/player_span_overlap.asm \
-	src/preservation/prg_9613_a2b0.asm src/game/objects/transient_lifecycle.asm \
+	src/game/objects/player_span_overlap.asm src/game/objects/pushable_update.asm \
+	src/game/objects/lift_update.asm src/game/objects/flying_block_update.asm \
+	src/preservation/prg_9b00_9ff2.asm \
+	src/game/objects/transient_lifecycle.asm \
 	src/game/collision/object_filters.asm src/game/collision/point_sample.asm \
 	src/game/collision/room_sample.asm \
 	src/game/collision/unreferenced_runtime_only_sample.asm \

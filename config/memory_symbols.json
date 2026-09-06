@@ -2340,6 +2340,199 @@
       "name": "PlayerObjectPushDirectionLatch",
       "start": "0x881A",
       "end": "0x8C12"
+    },
+    {
+      "address": "0x0773",
+      "name": "PushableHorizontalMotionLatch",
+      "start": "0x965C",
+      "end": "0x9796"
+    },
+    {
+      "address": "0x001E",
+      "name": "PushablePreviousSupportCollision",
+      "start": "0x9674",
+      "end": "0x9786"
+    },
+    {
+      "address": "0x001F",
+      "name": "PushableSupportCollisionCount",
+      "start": "0x9674",
+      "end": "0x96DE"
+    },
+    {
+      "address": "0x0021",
+      "name": "PushableCandidateXLo",
+      "start": "0x9674",
+      "end": "0x976F"
+    },
+    {
+      "address": "0x0022",
+      "name": "PushableCandidateXHi",
+      "start": "0x9674",
+      "end": "0x976F"
+    },
+    {
+      "address": "0x0016",
+      "name": "PushableSupportProbeY",
+      "start": "0x9674",
+      "end": "0x96DE"
+    },
+    {
+      "address": "0x0016",
+      "name": "PushableSupportCollision",
+      "start": "0x96DE",
+      "end": "0x9786"
+    },
+    {
+      "address": "0x0017",
+      "name": "PushableSupportProbeXLo",
+      "start": "0x96DE",
+      "end": "0x9786"
+    },
+    {
+      "address": "0x0023",
+      "name": "PushableLeadingEdgeXLo",
+      "start": "0x96EA",
+      "end": "0x9730"
+    },
+    {
+      "address": "0x0024",
+      "name": "PushableLeadingEdgeXHi",
+      "start": "0x96EA",
+      "end": "0x9730"
+    },
+    {
+      "address": "0x0042",
+      "name": "PushableCollisionObjectOffset",
+      "start": "0x96DE",
+      "end": "0x9786"
+    },
+    {
+      "address": "0x002B",
+      "name": "LiftRoomCellPointerLo",
+      "start": "0x9796",
+      "end": "0x994E"
+    },
+    {
+      "address": "0x002C",
+      "name": "LiftRoomCellPointerHi",
+      "start": "0x9796",
+      "end": "0x994E"
+    },
+    {
+      "address": "0x0044",
+      "name": "LiftRoomCellUpdateAddressLo",
+      "start": "0x9796",
+      "end": "0x9847"
+    },
+    {
+      "address": "0x0045",
+      "name": "LiftRoomCellUpdateAddressHi",
+      "start": "0x9796",
+      "end": "0x9847"
+    },
+    {
+      "address": "0x0044",
+      "name": "SmallLiftOccupantSpanXLo",
+      "start": "0x9847",
+      "end": "0x9869"
+    },
+    {
+      "address": "0x0045",
+      "name": "SmallLiftOccupantSpanXHi",
+      "start": "0x9847",
+      "end": "0x9869"
+    },
+    {
+      "address": "0x0046",
+      "name": "SmallLiftOccupantSpanY",
+      "start": "0x9847",
+      "end": "0x9869"
+    },
+    {
+      "address": "0x0047",
+      "name": "SmallLiftOccupantSpanWidth",
+      "start": "0x9847",
+      "end": "0x9869"
+    },
+    {
+      "address": "0x0044",
+      "name": "LargeLiftRoomCellUpdateAddressLo",
+      "start": "0x9869",
+      "end": "0x992F"
+    },
+    {
+      "address": "0x0045",
+      "name": "LargeLiftRoomCellUpdateAddressHi",
+      "start": "0x9869",
+      "end": "0x992F"
+    },
+    {
+      "address": "0x0044",
+      "name": "LiftOccupantSpanXLo",
+      "start": "0x992F",
+      "end": "0x9A1F"
+    },
+    {
+      "address": "0x0045",
+      "name": "LiftOccupantSpanXHi",
+      "start": "0x992F",
+      "end": "0x9A1F"
+    },
+    {
+      "address": "0x0046",
+      "name": "LiftOccupantSpanY",
+      "start": "0x992F",
+      "end": "0x9A1F"
+    },
+    {
+      "address": "0x0047",
+      "name": "LiftOccupantSpanWidth",
+      "start": "0x992F",
+      "end": "0x9A1F"
+    },
+    {
+      "address": "0x0016",
+      "name": "LiftClosureExpansionCount",
+      "start": "0x9958",
+      "end": "0x99C1"
+    },
+    {
+      "address": "0x0017",
+      "name": "LiftClosureScanIndex",
+      "start": "0x9958",
+      "end": "0x99C1"
+    },
+    {
+      "address": "0x0016",
+      "name": "LiftMovementSlotIndex",
+      "start": "0x99C1",
+      "end": "0x9A1F"
+    },
+    {
+      "address": "0x07AB",
+      "name": "LiftOccupantFlags",
+      "size": 25,
+      "start": "0x994E",
+      "end": "0x9A37"
+    },
+    {
+      "address": "0x07C3",
+      "name": "LiftPlayerOccupantFlag",
+      "start": "0x9796",
+      "end": "0x9A37"
+    },
+    {
+      "address": "0x0044",
+      "name": "FlyingBlockContactXLo",
+      "start": "0x9A37",
+      "end": "0x9AAD"
+    },
+    {
+      "address": "0x0045",
+      "name": "FlyingBlockContactXHi",
+      "start": "0x9A37",
+      "end": "0x9AAD"
     }
   ]
 }

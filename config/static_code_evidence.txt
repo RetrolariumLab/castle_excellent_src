@@ -84,6 +84,23 @@ code 9477 949B
 # remain within the contiguous routine and both paths terminate with RTS.
 code 9613 965B
 
+# Runtime-object handler entries $95D3-$95E1 map types $8A-$8D/$8F to $9674
+# and the lift-control type $8E to $965C. The wrapper rejoins its collision
+# handler at $89F6/$8AC4; the shared fall/support flow is contiguous through
+# its final return at $9785.
+code 965C 9785
+
+# Runtime-object handler entries 33 and 34 at $9601/$9603 target the small and
+# large lift state machines at $9796/$9869. Their branches converge on the
+# rising-lift occupant closure through $9A36; three direct calls reuse the
+# player-span predicate and one reuses the runtime-overlap scan.
+code 9796 9A36
+
+# Runtime-object handler pointer entry 35 at $9605 targets the cell-derived
+# flying block at $9A37. All four directional edge probes and their shared
+# world-bound predicate remain inside this closed state-machine range.
+code 9A37 9AFF
+
 # Runtime-object handler pointer entry 32 at $95FF targets $9FF3. Its direct
 # branches prove the complete handler through $A00C; the following indexed
 # replacement-type table is classified separately as typed data.
