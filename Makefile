@@ -3,6 +3,7 @@ CA65 ?= bin/ca65.exe
 LD65 ?= bin/ld65.exe
 REFERENCE_ROM ?= Castle Excellent (J).nes
 MANIFEST := assets/manifest.json
+SOURCE_1_MANIFEST := config/source_reconstruction_1_0.json
 VERIFY_ROM := scripts/verify_rom.py
 
 BUILD_DIR := build/native
@@ -15,6 +16,8 @@ ROM := $(BUILD_DIR)/castle_excellent.nes
 LABELS := $(BUILD_DIR)/castle_excellent.lbl
 MAP := $(BUILD_DIR)/castle_excellent.map
 DEBUG := $(BUILD_DIR)/castle_excellent.dbg
+DEBUG_SUMMARY := $(BUILD_DIR)/debug_symbols.json
+DEBUG_RUNTIME_RESULT := $(BUILD_DIR)/debug_symbols_runtime.txt
 SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.asm \
 	src/input/controllers.asm src/system/ppu.asm \
 	src/input/famicom_data_io.asm src/system/startup.asm \
@@ -113,8 +116,22 @@ TITLE_REPORT := $(RUNTIME_DIR)/title-demo.json
 TIMEOUT_CDL := $(RUNTIME_DIR)/idle-timeout.cdl
 TIMEOUT_METADATA := $(RUNTIME_DIR)/idle-timeout.txt
 TIMEOUT_REPORT := $(RUNTIME_DIR)/idle-timeout.json
+TRANSITION_CDL := $(RUNTIME_DIR)/room-transition.cdl
+TRANSITION_METADATA := $(RUNTIME_DIR)/room-transition.txt
+TRANSITION_REPORT := $(RUNTIME_DIR)/room-transition.json
+DEATH_CDL := $(RUNTIME_DIR)/death-game-over.cdl
+DEATH_METADATA := $(RUNTIME_DIR)/death-game-over.txt
+DEATH_REPORT := $(RUNTIME_DIR)/death-game-over.json
+ENDING_CDL := $(RUNTIME_DIR)/completion-ending.cdl
+ENDING_METADATA := $(RUNTIME_DIR)/completion-ending.txt
+ENDING_REPORT := $(RUNTIME_DIR)/completion-ending.json
+SAVE_LOAD_CDL := $(RUNTIME_DIR)/save-load-entry.cdl
+SAVE_LOAD_METADATA := $(RUNTIME_DIR)/save-load-entry.txt
+SAVE_LOAD_REPORT := $(RUNTIME_DIR)/save-load-entry.json
 RUNTIME_CDL := $(RUNTIME_DIR)/suite.cdl
 RUNTIME_REPORT := $(RUNTIME_DIR)/suite.json
+SOURCE_1_RUNTIME_CDL := $(RUNTIME_DIR)/source-1-suite.cdl
+SOURCE_1_RUNTIME_REPORT := $(RUNTIME_DIR)/source-1-suite.json
 STATIC_CODE_EVIDENCE := config/static_code_evidence.txt
 RUNTIME_EVIDENCE := config/runtime_evidence.txt
 PRG_DATA_RANGES := config/prg_data_ranges.txt
@@ -128,10 +145,12 @@ TIMEOUT_FRAMES ?= 15000
 	rom-info rom-info-reference rom-info-built inspect format format-check lint \
 	lint-asm lint-source lint-project test quality-check scaffold-check \
 	release-check check rooms validate-rooms audio validate-audio clean \
-	reconstruction-audit \
+	reconstruction-audit release-audit source-1-check source-1-tag-check \
+	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
-	trace-timeout trace-suite runtime-merge runtime-check runtime-promote \
+	trace-timeout trace-suite trace-release-paths trace-source-1 \
+	runtime-merge runtime-check runtime-promote \
 	reconstruction-check screen-data validate-screen-data validate-input \
 	startup-state validate-startup nmi-state validate-nmi oam-state validate-oam \
 	status-state validate-status room-row-state validate-room-rows \
@@ -205,6 +224,12 @@ $(ROM): $(OBJECT) config/linker/cnrom.cfg
 
 build: $(ROM)
 
+symbols: $(ROM)
+	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"
+
+validate-symbols: fceux-bootstrap symbols
+	$(PYTHON) scripts/validate_debug_runtime.py --fceux "$(FCEUX)" --rom "$(ROM)" --lua scripts/validate_debug_symbols.lua --result "$(DEBUG_RUNTIME_RESULT)"
+
 verify-reference:
 	$(PYTHON) scripts/project.py verify --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)"
 
@@ -274,6 +299,19 @@ scaffold-check: quality-check
 reconstruction-audit:
 	$(PYTHON) scripts/source_reconstruction.py --layout "$(SOURCE_LAYOUT)"
 
+release-audit:
+	$(PYTHON) scripts/release_audit.py --project-root . --manifest "$(SOURCE_1_MANIFEST)"
+
+source-1-check:
+	$(MAKE) check
+	$(MAKE) validate-symbols
+	$(MAKE) trace-source-1
+	$(MAKE) release-audit
+
+source-1-tag-check:
+	$(MAKE) source-1-check
+	$(PYTHON) scripts/release_audit.py --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-tag
+
 ghidra-bootstrap:
 	$(PYTHON) scripts/bootstrap_ghidra.py install
 
@@ -307,12 +345,22 @@ trace-title: fceux-bootstrap ghidra-analyze
 trace-timeout: fceux-bootstrap ghidra-analyze
 	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(REFERENCE_ROM)" --lua scripts/capture_timeout_cdl.lua --frames "$(TIMEOUT_FRAMES)" --scenario idle-timeout --cdl "$(TIMEOUT_CDL)" --metadata "$(TIMEOUT_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(TIMEOUT_REPORT)"
 
+trace-release-paths: fceux-bootstrap ghidra-analyze symbols
+	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_release_paths_cdl.lua --frames 1200 --scenario room-transition --runtime-scenario room-transition --required-hook TransitionToRoomAbove --required-hook LoadRoom --required-hook FinishRoomTransition --cdl "$(TRANSITION_CDL)" --metadata "$(TRANSITION_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(TRANSITION_REPORT)"
+	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_release_paths_cdl.lua --frames 1800 --scenario death-game-over --runtime-scenario death-game-over --required-hook StartPlayerDeathTransition --required-hook CompletePlayerTransition --required-hook RunGameOverSequence --cdl "$(DEATH_CDL)" --metadata "$(DEATH_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(DEATH_REPORT)"
+	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_release_paths_cdl.lua --frames 1400 --scenario completion-ending --runtime-scenario completion-ending --required-hook HandleRuntimeType82PlayerCollision --required-hook RunType82CompletionSequence --cdl "$(ENDING_CDL)" --metadata "$(ENDING_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(ENDING_REPORT)"
+	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_release_paths_cdl.lua --frames 1600 --scenario save-load-entry --runtime-scenario save-load-entry --required-hook OpenSubCommandMenu --required-hook SaveGameState --required-hook SendSaveDataSignature --required-hook LoadGameState --required-hook HandleLoadFailure --cdl "$(SAVE_LOAD_CDL)" --metadata "$(SAVE_LOAD_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(SAVE_LOAD_REPORT)"
+
 runtime-merge:
 	$(PYTHON) scripts/runtime_coverage.py merge --cdl "$(BOOT_CDL)" --cdl "$(TITLE_CDL)" --cdl "$(TIMEOUT_CDL)" --output "$(RUNTIME_CDL)"
 	$(PYTHON) scripts/runtime_coverage.py analyze --scenario suite --cdl "$(RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(RUNTIME_REPORT)"
 
 trace-suite: trace-boot trace-title trace-timeout
 	$(MAKE) runtime-merge
+
+trace-source-1: trace-suite trace-release-paths
+	$(PYTHON) scripts/runtime_coverage.py merge --cdl "$(BOOT_CDL)" --cdl "$(TITLE_CDL)" --cdl "$(TIMEOUT_CDL)" --cdl "$(TRANSITION_CDL)" --cdl "$(DEATH_CDL)" --cdl "$(ENDING_CDL)" --cdl "$(SAVE_LOAD_CDL)" --output "$(SOURCE_1_RUNTIME_CDL)"
+	$(PYTHON) scripts/runtime_coverage.py analyze --scenario source-1-suite --cdl "$(SOURCE_1_RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(SOURCE_1_RUNTIME_REPORT)"
 
 runtime-check:
 	$(PYTHON) scripts/runtime_coverage.py analyze --scenario suite --cdl "$(RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(RUNTIME_REPORT)"
@@ -713,7 +761,7 @@ object-catalog: $(ROM)
 validate-object-catalog: $(ROM)
 	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
 
-release-check: quality-check reconstruction-audit disassembly-check verify validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-input-movement validate-player-object-push validate-room-boundary-transitions validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-object-clear-tail validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-scroll-math-palette validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
+release-check: quality-check reconstruction-audit disassembly-check verify symbols validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-input-movement validate-player-object-push validate-room-boundary-transitions validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-object-clear-tail validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-scroll-math-palette validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
 check: release-check
 

@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "release": "Source Reconstruction 1.0",
+  "local_tag": "source-reconstruction-1.0",
+  "scope": {
+    "baseline": "Castle Excellent (Japan), HSP-05",
+    "deferred": [
+      "Castlequest (USA) and all regional ROM profiles",
+      "relocation and expanded-ROM profiles",
+      "general-purpose room and object editors"
+    ]
+  },
+  "reference": {
+    "rom_sha1": "42f7975da9a68a74e141353eb6e2bdc676fc1f77",
+    "prg_sha1": "099b3b7e1b3f335abcd29cd3aa013894d745beb2",
+    "chr_sha1": "e6c57329c079eff1fd7fa66eb1a65dc02f4b5a7a",
+    "mapper": 3,
+    "mirroring": "vertical"
+  },
+  "toolchain": {
+    "ca65": "V2.19 - Git 0fca835",
+    "ld65": "V2.19 - Git 0fca835"
+  },
+  "source": {
+    "semantic_prg_bytes": 32768,
+    "minimum_semantic_modules": 124,
+    "maximum_open_unknowns": 2
+  },
+  "debugger": {
+    "minimum_symbols": 2176,
+    "minimum_source_line_mappings": 13274,
+    "minimum_rom_labels": 1231,
+    "minimum_ram_labels": 255
+  },
+  "runtime": {
+    "suite_report": "build/runtime/source-1-suite.json",
+    "minimum_code_bytes": 16488,
+    "minimum_instruction_starts": 6876,
+    "scenarios": [
+      {
+        "name": "boot-gameplay",
+        "metadata": "build/runtime/boot-gameplay.txt",
+        "report": "build/runtime/boot-gameplay.json"
+      },
+      {
+        "name": "title-demo",
+        "metadata": "build/runtime/title-demo.txt",
+        "report": "build/runtime/title-demo.json"
+      },
+      {
+        "name": "idle-timeout",
+        "metadata": "build/runtime/idle-timeout.txt",
+        "report": "build/runtime/idle-timeout.json"
+      },
+      {
+        "name": "room-transition",
+        "metadata": "build/runtime/room-transition.txt",
+        "report": "build/runtime/room-transition.json",
+        "required_hooks": [
+          "TransitionToRoomAbove",
+          "LoadRoom",
+          "FinishRoomTransition"
+        ]
+      },
+      {
+        "name": "death-game-over",
+        "metadata": "build/runtime/death-game-over.txt",
+        "report": "build/runtime/death-game-over.json",
+        "required_hooks": [
+          "StartPlayerDeathTransition",
+          "CompletePlayerTransition",
+          "RunGameOverSequence"
+        ]
+      },
+      {
+        "name": "completion-ending",
+        "metadata": "build/runtime/completion-ending.txt",
+        "report": "build/runtime/completion-ending.json",
+        "required_hooks": [
+          "HandleRuntimeType82PlayerCollision",
+          "RunType82CompletionSequence"
+        ]
+      },
+      {
+        "name": "save-load-entry",
+        "metadata": "build/runtime/save-load-entry.txt",
+        "report": "build/runtime/save-load-entry.json",
+        "required_hooks": [
+          "OpenSubCommandMenu",
+          "SaveGameState",
+          "SendSaveDataSignature",
+          "LoadGameState",
+          "HandleLoadFailure"
+        ]
+      }
+    ]
+  },
+  "required_documents": [
+    "README.md",
+    "CONTRIBUTING.md",
+    "docs/architecture.md",
+    "docs/data_formats.md",
+    "docs/debugger_workflow.md",
+    "docs/naming.md",
+    "docs/provenance.md",
+    "docs/ram_map.md",
+    "docs/roadmap.md",
+    "docs/runtime_verification.md",
+    "docs/source_layout.md",
+    "docs/source_reconstruction.md",
+    "docs/subsystems.md",
+    "docs/unknowns.md",
+    "docs/resolved_unknowns.md",
+    "docs/verification.md"
+  ],
+  "release_commands": [
+    "format",
+    "lint",
+    "test",
+    "check",
+    "symbols",
+    "validate-symbols",
+    "trace-source-1",
+    "release-audit",
+    "source-1-check",
+    "source-1-tag-check"
+  ],
+  "prohibited_tracked_extensions": [
+    ".nes",
+    ".chr",
+    ".hdr",
+    ".prg",
+    ".o",
+    ".cdl"
+  ]
+}

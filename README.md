@@ -116,6 +116,9 @@ evidence, and tested decoders for game data.
   typed-data module; no preservation range remains.
 - All direct branches, jumps, and calls use labels; the first semantic names
   cover reset/interrupts, CHR switching, rooms, objects, and core data tables.
+- `make symbols` validates ld65 source mappings, resolves every configured
+  watch/breakpoint, and emits Mesen/FCEUX artifacts; `make validate-symbols`
+  proves seven live lookups and a named NMI execution hook in pinned FCEUX.
 - `make build` reconstructs a byte-identical image from the explicit iNES
   header, PRG ASM, and one ignored private CHR input; PRG is no longer included
   as a binary payload.
@@ -231,10 +234,15 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 544 unit tests, reproducible disassembly checks,
+- `make format`, `make lint`, 549 unit tests, reproducible disassembly checks,
   byte identity, and decoding all rooms form the `make check` gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
+- `make trace-source-1` freshly captures seven deterministic paths on the
+  byte-identical build: boot/gameplay, title/demo, idle timeout, room
+  transition, death/game over, type-`$82` completion, and Japanese sub-command
+  save plus expected no-device load failure. Rare paths use documented RAM
+  state injection and must hit named debugger symbols before their CDL counts.
   A separate static registry feeds pointer-table and direct-control-flow proof
   into the same deterministic Ghidra pass without presenting it as execution.
   The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
@@ -292,7 +300,11 @@ make fceux-bootstrap # install the hash-pinned local runtime emulator
 make trace-boot     # capture CDL and reconcile execution with Ghidra facts
 make trace-title    # capture an independent title/attract-mode CDL
 make trace-timeout  # capture an idle game through timeout/death paths
-make trace-suite    # run and merge every deterministic runtime scenario
+make trace-suite    # run and merge the baseline boot/title/timeout suite
+make trace-source-1 # run the seven-scenario Source 1.0 runtime matrix
+make release-audit  # reconcile the declarative Source 1.0 manifest
+make source-1-check # run the complete fresh Source 1.0 candidate gate
+make source-1-tag-check # require a clean tagged main after the candidate gate
 make reconstruction-check # static checks plus a fresh emulator trace
 make reconstruction-audit # enforce semantic-module ownership and naming
 make player-input-movement # inspect player motion and action contracts
@@ -446,7 +458,7 @@ config/source_layout.json  contiguous generated PRG source-region contract
 config/static_code_evidence.txt pointer/control-flow-proven code ranges
 config/runtime_evidence.txt tracked code/data ranges observed by FCEUX
 config/prg_data_ranges.txt typed data ranges removed from Ghidra code output
-config/debugger_*.json     initial Mesen breakpoints and RAM watches
+config/debugger_*.json     symbol-resolved Mesen/FCEUX breakpoints and watches
 docs/                      architecture, formats, evidence, and roadmap
 scripts/bootstrap_ghidra.py pinned local toolchain installer
 scripts/bootstrap_fceux.py pinned runtime-emulator installer

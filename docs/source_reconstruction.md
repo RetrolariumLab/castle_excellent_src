@@ -16,7 +16,8 @@ formats round-trip, and static and runtime gates protect the claims.
 | Control flow | all direct branches, jumps, and calls symbolic | semantic routine and local labels throughout |
 | RAM/I/O | first global and scoped operand registry | complete evidence-backed RAM map and constants |
 | Data formats | room decode and audio validation | lossless decode/encode and authoring contracts |
-| Runtime evidence | boot, attract, gameplay, timeout CDL suite | title, transitions, death, ending, save/load, object and physics scenarios |
+| Runtime evidence | seven-scenario Source 1.0 CDL suite | state-injected paths are explicitly marked in metadata |
+| Debugger evidence | generated ld65/FCEUX symbols plus live frame-loop hook | permanent Source 1.0 gate |
 | Revisions | Japanese HSP-05 baseline | Japanese HSP-05 complete; Castlequest deferred to Source Reconstruction 2.0 |
 | Relocation | not yet established | source-reference relocation probes after semantic modularization |
 
@@ -650,3 +651,15 @@ generic address labels, raw address operands, and oversized promoted modules.
 byte-identical verification. Later milestones will extend the audit to
 undocumented RAM fields, missing data round trips, and runtime scenarios absent
 from the active reconstruction manifest.
+
+`docs/unknowns.md` is the active release-facing registry and contains only two
+testing items: room-bitstream physical capacity and the remaining contextual
+meanings of runtime-record fields `+4/+5`. Closed investigations live in
+`docs/resolved_unknowns.md`; regional identities and friendly naming for every
+object type remain explicitly deferred to Source Reconstruction 2.0.
+
+`make symbols` now resolves every configured debugger breakpoint and watch
+against the current ld65 output, validates representative source-file/line
+mappings, and writes FCEUX ROM/RAM label files. `make validate-symbols` loads
+those artifacts in the pinned emulator, resolves seven semantic symbols through
+the debugger API, and reaches `MainFrameLoop` through a named execution hook.

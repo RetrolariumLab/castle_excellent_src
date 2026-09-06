@@ -1,34 +1,45 @@
 # Debugger workflow
 
-Mesen 2 is the primary interactive debugger. Load the exact Japanese image and
-import the entries from `config/debugger_breakpoints.json` and
-`config/debugger_watches.json`.
+The native ca65/ld65 build emits source mappings and semantic symbols from the
+same source that reproduces the Japanese HSP-05 ROM. Generate and validate the
+complete debugger artifact set with:
 
-Initial high-value probes are:
+```bash
+make symbols
+```
 
-- execute `$80FF`, `$8111`, and `$813B` to distinguish NMI-safe controller
-  wrappers from direct serial polling;
-- write `$0020` to observe the assembled controller byte before later input
-  state copies it elsewhere;
-- execute `$8175` to observe CHR-bank selection;
-- execute `$A35C`, `$EC63`, and `$EC8A` to distinguish full room load,
-  snapshot rotation, and saved-game state selection;
-- execute `$B64C`, `$B6C9`, and `$B7BD` to separate nametable/OAM clearing,
-  status writes, and generated attribute upload;
-- execute `$E7EC` and log PPU address plus returned bit;
-- write `$0400-$058F` to capture room decoder output;
-- write `$004A-$00D9` to recover runtime object-record fields;
-- write `$0712-$0761` to observe active state, load mirrors, and both snapshot
-  pairs across room transitions;
-- write `$0785-$079B` to identify producers and consumers of NMI task requests;
-- execute `$AD93`-derived indirect targets to classify object behavior;
-- write `$0300-$03FF` and `$0200-$02FF` to separate composition from OAM
-  reordering.
+The ignored outputs in `build/native/` are:
 
-The published addresses are Japanese-profile working addresses. They must not
-be reused for Castlequest USA without a revision alignment pass.
+- `castle_excellent.nes`, the byte-identical complete iNES image;
+- `castle_excellent.dbg`, ld65 symbols, files, lines, and spans for Mesen;
+- `castle_excellent.map` and `castle_excellent.lbl`, linker map and VICE labels;
+- `castle_excellent.nes.0.nl` and `.ram.nl`, automatically loaded FCEUX labels;
+- `debug_symbols.json`, the resolved breakpoint/watch manifest.
 
-The first Code/Data Log should cover reset, title, normal play, room changes,
-death, sub-command mode, ending, and the Japanese save/load paths. A normal
-completion route visits only a fraction of the 100 rooms, so targeted room
-entry and object-type scenarios are required for coverage.
+`scripts/debug_symbols.py` checks that the debug file maps HEADER, PRG, and CHR
+to file offsets 0, 16, and 32784, follows representative semantic labels back
+to their exact source files and current label lines, and resolves every entry
+in `config/debugger_breakpoints.json` and `config/debugger_watches.json`.
+Each configured fixed address must equal the current linker symbol, so a stale
+manual breakpoint fails `make symbols` instead of drifting silently.
+
+## Live validation
+
+```bash
+make validate-symbols
+```
+
+The pinned FCEUX automation build opens the rebuilt ROM beside its generated
+`.nl` files. Lua resolves seven representative ROM/RAM symbols through the live
+debugger API and installs an execution hook on `MainFrameLoop`; success requires
+the
+named breakpoint within 900 frames. This proves artifact generation, emulator
+loading, symbol lookup, and execution hooks as one end-to-end contract.
+
+Mesen 2 remains the preferred interactive source debugger: keep the `.dbg` and
+`.nes` files together and open the rebuilt ROM. Source View then follows the
+paths embedded by ca65. Regenerate symbols after moving the checkout or
+changing source lines.
+
+The current debugger configuration targets only Castle Excellent HSP-05.
+Castlequest addresses belong to Source Reconstruction 2.0.

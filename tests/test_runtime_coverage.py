@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 
@@ -59,6 +60,37 @@ class RuntimeCoverageTests(unittest.TestCase):
     def test_rejects_different_cdl_sizes(self) -> None:
         with self.assertRaisesRegex(runtime_coverage.CoverageError, "different sizes"):
             runtime_coverage.merge_cdls([b"\x01", b"\x01\x02"])
+
+    def test_validates_runtime_metadata_and_required_hooks(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "scenario.txt"
+            path.write_text(
+                "scenario=room-transition\n"
+                "status=ok\n"
+                "hit=TransitionToRoomAbove@800\n"
+                "hit=FinishRoomTransition@801\n",
+                encoding="utf-8",
+            )
+            metadata = runtime_coverage.validate_runtime_metadata(
+                path,
+                "room-transition",
+                ["TransitionToRoomAbove", "FinishRoomTransition"],
+            )
+            self.assertEqual(metadata["status"], ["ok"])
+
+    def test_rejects_incomplete_runtime_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "scenario.txt"
+            path.write_text(
+                "scenario=death-game-over\n"
+                "status=incomplete\n"
+                "miss=RunGameOverSequence\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(runtime_coverage.CoverageError, "incomplete"):
+                runtime_coverage.validate_runtime_metadata(
+                    path, "death-game-over", ["RunGameOverSequence"]
+                )
 
 
 if __name__ == "__main__":

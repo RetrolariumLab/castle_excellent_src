@@ -63,6 +63,10 @@
   probes, world bounds, destroyable obstructions, and synchronized movement;
 - [x] reconstruct type-`$8E` linked-lift control, paired `$A4/$A5` discovery,
   track-cell edits, transitive occupant closure, and two-pixel movement;
+- [x] separate the active unknown registry from resolved evidence and reduce it
+  to the two Source 1.0 questions that can still change public contracts;
+- [x] generate Mesen/FCEUX symbols, resolve every configured watch/breakpoint
+  against ld65 output, and prove live lookup plus a named NMI execution hook;
 - [x] reconstruct player protection countdown decay, room-audio restoration,
   and bottom-center hazard contact across all coordinates and room cells;
 - [x] reconstruct the shared runtime-object/player proximity predicate, all 15
@@ -137,16 +141,16 @@
   28-to-52-byte right-edge expansion, and timing compensation;
 - [x] reconstruct castle-map input, all 100 visited/current marker positions,
   and the room-display finalizer that requests all 23 NMI tasks;
-- expand the first deterministic FCEUX CDL/Ghidra reconciliation into broad
+- [x] expand the first deterministic FCEUX CDL/Ghidra reconciliation into broad
   title, gameplay, transition, death, ending, and save/load scenarios;
+- [x] add a declarative Source Reconstruction 1.0 manifest and one candidate
+  gate covering static checks, live symbols, fresh runtime, and release policy;
 - [x] classify every PRG byte as code, typed data, text, or padding;
 - [x] promote proven system, game, rendering, audio, room, object, and vector
   ranges into semantic modules while preserving one address-ordered translation
   unit;
 - complete RAM and routine maps;
 - maintain an original-to-current label provenance ledger;
-- add focused runtime scenarios for title, gameplay, death, room transitions,
-  sub-command, ending, and save/load.
 
 ## Semantic reconstruction 2.0
 

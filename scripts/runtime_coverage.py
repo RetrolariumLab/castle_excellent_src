@@ -171,6 +171,36 @@ def validate_reference(image: Path, manifest: dict[str, object]) -> None:
         raise CoverageError(f"ROM SHA-1 is {actual}, expected {expected}")
 
 
+def read_metadata(path: Path) -> dict[str, list[str]]:
+    result: dict[str, list[str]] = {}
+    for line_number, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        if not raw_line:
+            continue
+        key, separator, value = raw_line.partition("=")
+        if not separator or not key or not value:
+            raise CoverageError(f"invalid metadata line {path}:{line_number}")
+        result.setdefault(key, []).append(value)
+    return result
+
+
+def validate_runtime_metadata(
+    path: Path, scenario: str, required_hooks: list[str]
+) -> dict[str, list[str]]:
+    metadata = read_metadata(path)
+    if metadata.get("scenario") != [scenario]:
+        raise CoverageError(f"runtime metadata scenario does not match {scenario}")
+    if metadata.get("status") != ["ok"]:
+        misses = ", ".join(metadata.get("miss", [])) or "unknown"
+        raise CoverageError(f"runtime scenario {scenario} incomplete; missed {misses}")
+    hit_names = {entry.partition("@")[0] for entry in metadata.get("hit", [])}
+    missing = [name for name in required_hooks if name not in hit_names]
+    if missing:
+        raise CoverageError(
+            f"runtime scenario {scenario} omitted required hooks: {', '.join(missing)}"
+        )
+    return metadata
+
+
 def write_report(args: argparse.Namespace) -> dict[str, object]:
     manifest = load_json(args.manifest)
     reference = manifest["reference_rom"]
@@ -224,6 +254,8 @@ def command_run(args: argparse.Namespace) -> None:
         CASTLE_CDL_METADATA=str(args.metadata.resolve()).replace("\\", "/"),
         CASTLE_CDL_MAX_FRAMES=str(args.frames),
     )
+    if args.runtime_scenario:
+        environment["CASTLE_RUNTIME_SCENARIO"] = args.runtime_scenario
     command = [
         str(args.fceux.resolve()),
         "-lua",
@@ -243,6 +275,10 @@ def command_run(args: argparse.Namespace) -> None:
     for path in (args.cdl, args.metadata):
         if not path.is_file() or path.stat().st_size == 0:
             raise CoverageError(f"FCEUX did not create {path}")
+    if args.runtime_scenario:
+        validate_runtime_metadata(
+            args.metadata, args.runtime_scenario, args.required_hook
+        )
     write_report(args)
 
 
@@ -290,6 +326,8 @@ def main() -> int:
     run.add_argument("--lua", required=True, type=Path)
     run.add_argument("--metadata", required=True, type=Path)
     run.add_argument("--frames", type=int, default=900)
+    run.add_argument("--runtime-scenario")
+    run.add_argument("--required-hook", action="append", default=[])
     run.set_defaults(handler=command_run)
     promote = subparsers.add_parser("promote-evidence")
     promote.add_argument("--cdl", required=True, type=Path)

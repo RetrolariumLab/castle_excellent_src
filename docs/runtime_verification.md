@@ -26,6 +26,14 @@ trace-suite` runs all scenarios, bitwise-unions their native CDL files, and
 analyzes the combined evidence. More scenarios can be added without changing
 the tracked evidence format.
 
+`make trace-source-1` extends that baseline with four state-injected paths on
+the byte-identical built ROM: a real room-boundary reload, final-life death and
+game over, type-`$82` completion, and Japanese sub-command save followed by the
+expected no-device load error. Each rare path must reach its declared live
+debugger symbols; setup-time calls cannot satisfy a later path. The seven CDL
+files are merged into `build/runtime/source-1-suite.cdl` and reconciled once
+more with the static instruction facts.
+
 Each capture performs these steps:
 
 1. verify and install the pinned FCEUX artifacts;
@@ -58,9 +66,11 @@ classification. The reverse is not treated as failure: an instruction not hit
 by one short scenario may be valid code on another room, ending, save/load, or
 error path.
 
-`make runtime-check` repeats analysis of the existing merged CDL without
-launching the emulator. `make reconstruction-check` runs the complete static
-gate followed by the full fresh scenario suite.
+`make runtime-check` repeats analysis of the existing baseline CDL without
+launching the emulator. `make source-1-check` runs the complete static gate,
+live debugger-symbol validation, the fresh seven-scenario suite, and the
+declarative release audit. `make source-1-tag-check` additionally requires a
+clean `main` with an annotated `source-reconstruction-1.0` tag at `HEAD`.
 
 ## Evidence limits
 
