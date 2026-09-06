@@ -7,15 +7,18 @@ entrypoint, Japanese HSP-05 hashes, and complete 1.0 gate remain unchanged.
 The development manifest is `config/source_reconstruction_2_0.json`.
 
 The 2.0 release turns the exact source into a safely editable, profile-aware
-base. Its intended acceptance boundary contains four additions:
+base. Its intended acceptance boundary contains five additions:
 
 1. A shared-source, byte-identical Castlequest USA profile with direct runtime
    coverage and isolated private CHR extraction.
 2. A fixed-layout demonstrator with its own output, manifest, changed-byte
    allowlist, and focused runtime observation.
 3. Headless, profile-aware room and object codecs with fixed capacities and an
-   exact zero-edit container round trip.
-4. A `source-2-check` gate that first runs the complete 1.0 contract and then
+   exact zero-edit container round trip, followed by equivalent authoring for
+   music and the remaining significant binary formats.
+4. Thin visual editors built on the same validated codecs, with levels taking
+   priority over the other content studios.
+5. A `source-2-check` gate that first runs the complete 1.0 contract and then
    validates every accepted profile, experimental build, codec, and document.
 
 The initial USA survey found only 26 changed PRG bytes, all inside four existing
@@ -36,8 +39,11 @@ number.
 - [x] Build Castlequest from the shared source and a private profile asset.
 - [ ] Add direct Castlequest startup and menu runtime evidence.
 - [ ] Add an isolated fixed-layout variant and exact allowlist.
-- [ ] Add profile-aware room/object decode and encode workspaces.
-- [ ] Prove zero-edit full-container round trips for accepted authoring formats.
+- [x] Add profile-aware room/object decode and encode workspaces.
+- [x] Prove zero-edit full-container level round trips for both profiles.
+- [ ] Move revision-specific binary data into reproducible split assets.
+- [ ] Add the visual level editor on top of the validated headless codec.
+- [ ] Add music and remaining significant content authoring formats.
 - [ ] Add the Source 2.0 manifest audit and aggregate pre-tag/post-tag gates.
 
 Until every unchecked item passes, the manifest remains `development` and no

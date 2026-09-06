@@ -5,6 +5,7 @@
 - [Source Reconstruction 2.0 development boundary](source_reconstruction_2_0.md)
 - [Source Reconstruction 1.0 boundary](source_reconstruction_1_0.md)
 - [Revision profiles](revision_profiles.md)
+- [Content authoring](content_authoring.md)
 - [Verification](verification.md)
 - [Runtime verification](runtime_verification.md)
 - [Debugger workflow](debugger_workflow.md)

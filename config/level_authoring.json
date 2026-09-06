@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "format": "castle-excellent-levels",
+  "room_count": 100,
+  "room_width": 20,
+  "room_height": 20,
+  "room_streams": {
+    "codebook_cpu": "0xE45D",
+    "pointer_table_cpu": "0xE71C",
+    "bank_split_index": 67,
+    "banks": [
+      {
+        "bank": 2,
+        "first_room": 1,
+        "last_room": 67,
+        "arena_start": "0x0000",
+        "arena_end": "0x2000"
+      },
+      {
+        "bank": 3,
+        "first_room": 68,
+        "last_room": 100,
+        "arena_start": "0x0000",
+        "arena_end": "0x1400"
+      }
+    ]
+  },
+  "objects": {
+    "stream_cpu": "0xEF6B",
+    "stream_end_cpu": "0xF8FC",
+    "stream_capacity": 2449,
+    "maximum_static_per_room": 24,
+    "maximum_runtime_per_room": 24,
+    "count_table_cpu": "0xAB4A",
+    "state_offsets_cpu": "0xEF06",
+    "state_capacity": 141
+  },
+  "mutable_cells": {
+    "state_offsets_cpu": "0xABAE",
+    "state_capacity": 108,
+    "final_room_minimum_bytes": 3
+  },
+  "profiles": [
+    {
+      "id": "castle-excellent-japan-hsp-05",
+      "status": "supported",
+      "workspace": "content/workspace/castle-excellent-japan-hsp-05/levels.json",
+      "output_rom": "build/authoring/castle-excellent-japan-hsp-05/levels.nes",
+      "report": "build/authoring/castle-excellent-japan-hsp-05/levels.json"
+    },
+    {
+      "id": "castlequest-usa",
+      "status": "supported",
+      "workspace": "content/workspace/castlequest-usa/levels.json",
+      "output_rom": "build/authoring/castlequest-usa/levels.nes",
+      "report": "build/authoring/castlequest-usa/levels.json"
+    }
+  ]
+}

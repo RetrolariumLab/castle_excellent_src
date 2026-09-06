@@ -9,6 +9,9 @@ build/
 # Assets extracted from a legally obtained reference image
 assets/generated/
 
+# Local content-authoring workspaces
+content/workspace/
+
 # Local research repositories
 references/
 

@@ -22,6 +22,7 @@
     "castlequest-usa-byte-identical-profile",
     "isolated-fixed-layout-demonstrator",
     "profile-aware-room-and-object-authoring",
+    "profile-aware-audio-and-game-data-authoring",
     "source-2-aggregate-gate"
   ],
   "excluded_scope": [
@@ -73,6 +74,17 @@
         "scripts/revision_profiles.py",
         "tests/test_revision_profiles.py"
       ]
+    },
+    {
+      "id": "level-authoring-pipeline",
+      "kind": "authoring",
+      "summary": "Add a profile-aware JSON workspace and fixed-capacity encoder for all room maps, objects, pointers, counts, and persistent-state offsets.",
+      "evidence": [
+        "config/level_authoring.json",
+        "scripts/level_editor.py",
+        "tests/test_level_editor.py",
+        "docs/content_authoring.md"
+      ]
     }
   ],
   "requirements": {
@@ -119,14 +131,23 @@
       }
     },
     "authoring_round_trips": {
-      "status": "planned",
+      "status": "partial",
       "evidence": {
-        "targets": [],
+        "targets": [
+          "roundtrip-levels",
+          "validate-levels",
+          "build-levels"
+        ],
         "files": [
+          "config/level_authoring.json",
+          "docs/content_authoring.md",
           "docs/data_formats.md"
         ],
         "scenarios": [],
-        "artifacts": []
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom",
+          "castlequest-usa-rom"
+        ]
       }
     },
     "aggregate_source_2_gate": {
@@ -184,6 +205,7 @@
     "docs/source_reconstruction_1_0.md",
     "docs/source_reconstruction_2_0.md",
     "docs/revision_profiles.md",
+    "docs/content_authoring.md",
     "docs/data_formats.md",
     "docs/verification.md"
   ],
