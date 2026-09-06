@@ -44,7 +44,10 @@ number.
 - [x] Move revision-specific binary data into reproducible split assets.
 - [x] Add the visual level editor on top of the validated headless codec.
 - [x] Add direct selected-room playtesting through the normal room loader.
-- [ ] Add music and remaining significant content authoring formats.
+- [x] Add profile-aware textual music decode, validation, and fixed-arena
+  rebuilds.
+- [ ] Add the remaining significant content authoring formats and visual music
+  studio.
 - [ ] Add the Source 2.0 manifest audit and aggregate pre-tag/post-tag gates.
 
 Until every unchecked item passes, the manifest remains `development` and no

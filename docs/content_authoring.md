@@ -4,7 +4,8 @@ Source Reconstruction 2.0 introduces profile-aware, fixed-layout content
 authoring. The first supported studio is the level pipeline because rooms are
 the central editable game resource. It owns all 100 compressed 20 by 20 cell
 maps, their static object lists, room pointers, object counts, and persistent
-state offsets.
+state offsets. The second headless pipeline owns the eight music track records
+and 21 textual MML streams.
 
 The machine-readable layout and capacity contract is
 `config/level_authoring.json`. Local JSON workspaces live below the ignored
@@ -30,6 +31,22 @@ make roundtrip-levels REVISION_PROFILE=castle-excellent-japan-hsp-05
 current workspace changes. `build-levels` writes an isolated playable iNES
 image. `roundtrip-levels` performs an in-memory decode and encode and requires
 the complete output container to match the selected revision byte for byte.
+
+Music uses an equivalent profile-aware command set:
+
+```console
+make init-music REVISION_PROFILE=castle-excellent-japan-hsp-05
+make validate-music REVISION_PROFILE=castle-excellent-japan-hsp-05
+make build-music REVISION_PROFILE=castle-excellent-japan-hsp-05
+make roundtrip-music REVISION_PROFILE=castle-excellent-japan-hsp-05
+```
+
+`init-music` preserves an existing ignored workspace and `export-music`
+replaces it from the selected baseline. `validate-music` checks the MML grammar,
+all stream references, track records, and fixed arena capacity. `build-music`
+writes an isolated playable ROM and a JSON report below `build/authoring/`.
+`roundtrip-music` requires a zero-edit decode and encode to reproduce the
+complete selected ROM byte for byte.
 
 ## Workspace model
 
@@ -85,3 +102,21 @@ commands. `make check-level-studio` validates the complete display model without
 opening a window, so it is suitable for release gates and headless CI.
 `make smoke-level-playtest REVISION_PROFILE=castlequest-usa` additionally runs
 FCEUX to prove the selected room and player coordinates are observed live.
+
+## Music workspace
+
+The machine-readable music layout is `config/audio_authoring.json`. Each JSON
+workspace exposes eight track sets. A track set selects up to three stream IDs
+and retains its two channel parameters. The 21 streams contain ASCII MML text
+and an optional restart stream ID; no raw pointer is editable.
+
+The encoder repacks every text stream into the original `$BBE7-$C20D` PRG
+arena, recalculates all track and restart pointers, and rejects content larger
+than the fixed 1,574-byte capacity. It then writes the original eight-record
+table at `$B8C6`. Header and CHR data are copied unchanged. Both supported
+profiles share this format and independently pass full-container zero-edit
+round trips.
+
+The JSON format intentionally preserves the engine's textual command language
+instead of translating it into a lossy note grid. A visual Sound Studio can be
+layered on this codec without creating a second serializer.

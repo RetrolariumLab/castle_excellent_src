@@ -124,6 +124,17 @@
       ]
     },
     {
+      "id": "music-authoring-pipeline",
+      "kind": "authoring",
+      "summary": "Decode and rebuild all eight music track sets and 21 textual MML streams through a profile-aware fixed-capacity workspace with recalculated track and restart pointers.",
+      "evidence": [
+        "config/audio_authoring.json",
+        "scripts/music_editor.py",
+        "tests/test_music_editor.py",
+        "docs/content_authoring.md"
+      ]
+    },
+    {
       "id": "fixed-layout-start-room-variant",
       "kind": "experimental-build",
       "summary": "Build a one-byte starting-room variant under an exact changed-byte allowlist and observe the replacement through the normal boot path in pinned FCEUX.",
@@ -199,10 +210,14 @@
           "validate-levels",
           "build-levels",
           "check-level-studio",
-          "smoke-level-playtest"
+          "smoke-level-playtest",
+          "roundtrip-music",
+          "validate-music",
+          "build-music"
         ],
         "files": [
           "config/level_authoring.json",
+          "config/audio_authoring.json",
           "docs/content_authoring.md",
           "docs/data_formats.md"
         ],

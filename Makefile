@@ -7,6 +7,7 @@ SOURCE_1_MANIFEST := config/source_reconstruction_1_0.json
 REVISION_MANIFEST := config/revision_profiles.json
 REVISION_PROFILE ?= castlequest-usa
 LEVEL_AUTHORING := config/level_authoring.json
+AUDIO_AUTHORING := config/audio_authoring.json
 LEVEL_PLAYTEST_ROOM ?= 71
 LEVEL_PLAYTEST_X ?= 16
 LEVEL_PLAYTEST_Y ?= 152
@@ -163,6 +164,7 @@ TIMEOUT_FRAMES ?= 15000
 	level-studio level-editor check-level-studio \
 	smoke-level-playtest \
 	build-fixed-layout verify-fixed-layout check-fixed-layout \
+	init-music export-music validate-music build-music roundtrip-music \
 	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
@@ -291,6 +293,21 @@ verify-fixed-layout: build
 
 check-fixed-layout: fceux-bootstrap build
 	$(PYTHON) scripts/fixed_layout_variant.py runtime --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)" --fceux "$(FCEUX)" --lua scripts/validate_fixed_layout.lua --result "$(FIXED_LAYOUT_RESULT)"
+
+init-music: verify-profile
+	$(PYTHON) scripts/music_editor.py init --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+export-music: verify-profile
+	$(PYTHON) scripts/music_editor.py export --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+validate-music: verify-profile
+	$(PYTHON) scripts/music_editor.py validate --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+build-music: verify-profile
+	$(PYTHON) scripts/music_editor.py build --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+roundtrip-music: verify-profile
+	$(PYTHON) scripts/music_editor.py roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 symbols: $(ROM)
 	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"
