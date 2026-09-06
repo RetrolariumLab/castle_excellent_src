@@ -14,6 +14,7 @@ LEVEL_PLAYTEST_RESULT := build/authoring/$(REVISION_PROFILE)/level_playtest.txt
 FIXED_LAYOUT_MANIFEST := config/fixed_layout_variants.json
 FIXED_LAYOUT_VARIANT ?= start-room-1
 FIXED_LAYOUT_RESULT := build/variants/$(FIXED_LAYOUT_VARIANT)/runtime.txt
+CASTLEQUEST_RUNTIME_RESULT := build/revisions/castlequest-usa/runtime.txt
 VERIFY_ROM := scripts/verify_rom.py
 
 BUILD_DIR := build/native
@@ -157,7 +158,7 @@ TIMEOUT_FRAMES ?= 15000
 	release-check check rooms validate-rooms audio validate-audio clean \
 	reconstruction-audit release-audit build-toolchain-status static-release-check trace \
 	source-1-check source-1-pre-tag-check source-1-tag-check \
-	split-profile build-profile verify-profile castlequest-check \
+	split-profile build-profile verify-profile castlequest-check castlequest-runtime \
 	init-levels export-levels validate-levels build-levels roundtrip-levels \
 	level-studio level-editor check-level-studio \
 	smoke-level-playtest \
@@ -252,6 +253,9 @@ verify-profile: build-profile
 castlequest-check:
 	$(MAKE) split-profile REVISION_PROFILE=castlequest-usa
 	$(MAKE) verify-profile REVISION_PROFILE=castlequest-usa
+
+castlequest-runtime: fceux-bootstrap castlequest-check
+	$(PYTHON) scripts/revision_runtime.py --revisions "$(REVISION_MANIFEST)" --profile castlequest-usa --fceux "$(FCEUX)" --lua scripts/capture_castlequest_runtime.lua --result "$(CASTLEQUEST_RUNTIME_RESULT)"
 
 init-levels: verify-profile
 	$(PYTHON) scripts/level_editor.py init --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"

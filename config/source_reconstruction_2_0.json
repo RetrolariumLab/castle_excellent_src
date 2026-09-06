@@ -76,6 +76,17 @@
       ]
     },
     {
+      "id": "castlequest-direct-runtime",
+      "kind": "runtime-evidence",
+      "summary": "Observe Castlequest's 50-life startup and three-entry localized sub-command menu directly in pinned FCEUX while excluding the Japanese load/save handlers.",
+      "evidence": [
+        "scenarios/source_2_castlequest.json",
+        "scripts/capture_castlequest_runtime.lua",
+        "scripts/revision_runtime.py",
+        "tests/test_revision_runtime.py"
+      ]
+    },
+    {
       "id": "revision-binary-data-split",
       "kind": "source-and-provenance",
       "summary": "Extract each profile's CHR, title palette, and sub-command text from its private ROM under explicit size and hash contracts while forbidding undeclared PRG binary includes.",
@@ -144,16 +155,19 @@
       }
     },
     "revision_profiles": {
-      "status": "partial",
+      "status": "satisfied",
       "evidence": {
         "targets": [
-          "castlequest-check"
+          "castlequest-check",
+          "castlequest-runtime"
         ],
         "files": [
           "config/revision_profiles.json",
           "docs/revision_profiles.md"
         ],
-        "scenarios": [],
+        "scenarios": [
+          "scenarios/source_2_castlequest.json"
+        ],
         "artifacts": [
           "castlequest-usa-rom"
         ]
@@ -219,7 +233,7 @@
     },
     {
       "id": "castlequest-usa",
-      "status": "partial",
+      "status": "supported",
       "artifact": "castlequest-usa-rom",
       "identity": "byte-identical",
       "profile_manifest": "config/revision_profiles.json"
@@ -238,6 +252,14 @@
         "death-game-over",
         "completion-ending",
         "save-load-entry"
+      ]
+    },
+    {
+      "profile_id": "castlequest-usa",
+      "mode": "direct",
+      "manifest": "scenarios/source_2_castlequest.json",
+      "scenarios": [
+        "castlequest-startup-menu"
       ]
     }
   ],

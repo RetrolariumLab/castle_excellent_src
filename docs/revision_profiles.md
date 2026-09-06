@@ -10,7 +10,7 @@ Castlequest localization. No other regional or platform profile is implied.
 | Profile | Status | ROM SHA-1 | PRG SHA-1 | CHR SHA-1 |
 | --- | --- | --- | --- | --- |
 | `castle-excellent-japan-hsp-05` | supported by 1.0 | `42f7975d...` | `099b3b7e...` | `e6c57329...` |
-| `castlequest-usa` | byte-identical build; runtime pending | `600b0d2a...` | `9acc75ff...` | `7640fc1b...` |
+| `castlequest-usa` | supported | `600b0d2a...` | `9acc75ff...` | `7640fc1b...` |
 
 Both images are 65,552-byte iNES mapper-3 containers with vertical mirroring,
 32 KiB of fixed PRG, and four switchable 8 KiB CHR banks. The complete hashes
@@ -56,5 +56,9 @@ builds the shared entrypoint with `CASTLEQUEST_USA=1`, and compares the complete
 output with the reference byte for byte. The Japanese default remains unchanged
 and continues to pass `make verify`.
 
-The USA profile remains `partial` until its direct runtime scenario gate is
-recorded. No runtime equivalence is inferred from static similarity.
+`make castlequest-runtime` adds direct behavioral evidence. Pinned FCEUX boots
+the source-built USA image, observes 50 lives and room 71 at the first main
+loop, opens the localized sub-command menu through a controller-2 edge, and
+drives its cursor through `0,1,2,0`. Reaching the Japanese Load or Save handlers
+fails the scenario. Runtime support is therefore measured directly rather than
+inferred from static similarity.

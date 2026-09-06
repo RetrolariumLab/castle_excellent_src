@@ -37,7 +37,7 @@ number.
 - [x] Record complete Japanese and USA reference identities.
 - [x] Map every USA PRG difference to current semantic ownership.
 - [x] Build Castlequest from the shared source and a private profile asset.
-- [ ] Add direct Castlequest startup and menu runtime evidence.
+- [x] Add direct Castlequest startup and menu runtime evidence.
 - [x] Add an isolated fixed-layout variant and exact allowlist.
 - [x] Add profile-aware room/object decode and encode workspaces.
 - [x] Prove zero-edit full-container level round trips for both profiles.

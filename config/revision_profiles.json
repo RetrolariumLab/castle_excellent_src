@@ -55,7 +55,7 @@
     {
       "id": "castlequest-usa",
       "name": "Castlequest (USA)",
-      "status": "partial",
+      "status": "supported",
       "reference_rom": "Castlequest (U) [!].nes",
       "defines": [
         "CASTLEQUEST_USA=1"
@@ -102,7 +102,7 @@
       "runtime": {
         "mode": "direct",
         "manifest": "scenarios/source_2_castlequest.json",
-        "status": "planned"
+        "status": "validated"
       },
       "difference_from_default": {
         "prg_changed_bytes": 26,

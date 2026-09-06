@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "profile_id": "castlequest-usa",
+  "runner": "tools/fceux/fceux64.exe",
+  "source_built_image": "build/revisions/castlequest-usa/castlequest.nes",
+  "scenarios": [
+    {
+      "id": "castlequest-startup-menu",
+      "capture": "scripts/capture_castlequest_runtime.lua",
+      "maximum_frames": 900,
+      "start_condition": "emulator reset",
+      "expected_result": "new game starts with 50 lives and the localized sub-command selection wraps after three entries without entering Japanese load/save handlers",
+      "required_hooks": [
+        "MainFrameLoop",
+        "HandleSubCommandInput",
+        "OpenSubCommandMenu",
+        "UpdateSubCommandMenu"
+      ],
+      "controlled_patches": [
+        {
+          "address": "0x0776,0x0778",
+          "value": "controller-2 A edge",
+          "trigger": "HandleSubCommandInput",
+          "reason": "open the sub-command menu after normal NMI polling"
+        }
+      ],
+      "forbidden_hooks": [
+        "ExecuteSubCommandLoad",
+        "ExecuteSubCommandSave"
+      ]
+    }
+  ]
+}

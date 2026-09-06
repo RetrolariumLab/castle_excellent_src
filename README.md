@@ -337,6 +337,7 @@ make rom-info        # print and validate original and built image identities
 make check           # fast static quality, source, identity, and subsystem checks
 make split-profile REVISION_PROFILE=castlequest-usa # extract a revision's private assets
 make verify-profile REVISION_PROFILE=castlequest-usa # build and compare that revision
+make castlequest-runtime # verify USA startup and menu behavior in pinned FCEUX
 make init-levels REVISION_PROFILE=castlequest-usa # create an ignored level workspace
 make level-studio REVISION_PROFILE=castlequest-usa # open the visual room/object editor
 make check-level-studio REVISION_PROFILE=castlequest-usa # validate its display model headlessly
