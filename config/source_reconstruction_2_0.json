@@ -140,11 +140,14 @@
     {
       "id": "graphics-authoring-pipeline",
       "kind": "authoring",
-      "summary": "Decode and rebuild two graphics-only CHR banks plus fixed PRG display, palette, metasprite, localized-text, and sound-effect parameter records without claiming ownership of the room-data CHR banks.",
+      "summary": "Decode and rebuild two graphics-only CHR banks plus fixed PRG display, palette, metasprite, localized-text, and sound-effect parameter records, then expose them through a visual pixel and record editor without claiming ownership of the room-data CHR banks.",
       "evidence": [
         "config/graphics_authoring.json",
         "scripts/graphics_editor.py",
+        "scripts/graphics_studio.py",
+        "scripts/graphics_studio_model.py",
         "tests/test_graphics_editor.py",
+        "tests/test_graphics_studio_model.py",
         "docs/content_authoring.md"
       ]
     },
@@ -231,7 +234,8 @@
           "check-sound-studio",
           "roundtrip-graphics",
           "validate-graphics",
-          "build-graphics"
+          "build-graphics",
+          "check-graphics-studio"
         ],
         "files": [
           "config/level_authoring.json",

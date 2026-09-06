@@ -279,7 +279,9 @@ def validate_workspace(document: dict[str, Any], profile_id: str) -> dict[str, b
             raise GraphicsEditorError(f"CHR bank position {position} must be bank {bank_index}")
         tiles = bank["tiles"]
         if not isinstance(tiles, list) or len(tiles) != TILE_COUNT:
-            raise GraphicsEditorError(f"CHR bank {bank_index} must contain 256 tiles")
+            raise GraphicsEditorError(
+                f"CHR bank {bank_index} must contain {TILE_COUNT} tiles"
+            )
         for tile_index, tile in enumerate(tiles):
             chr_payload.extend(encode_tile(tile, f"bank {bank_index} tile {tile_index}"))
     raw_cells = document.get("room_cells")

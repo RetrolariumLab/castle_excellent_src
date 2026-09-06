@@ -165,3 +165,18 @@ is their sole authoring owner. A graphics build copies those banks unchanged,
 preserves all fixed PRG lengths, and rejects non-byte fields, invalid palette
 indices, invalid NES palette values, and changed record counts before writing.
 Both supported profiles pass a complete zero-edit container round trip.
+
+## Visual Graphics Studio
+
+`make graphics-studio` opens the dependency-free Tkinter frontend over the
+graphics codec. The CHR tab edits every two-bit pixel in both 512-tile banks and
+previews it through a selected gameplay palette. The room-cell tab composes its
+two tile halves with the selected attribute class. Further tabs edit individual
+NES palette bytes, the 203 metasprite tile/attribute pairs, all fixed localized
+text blocks, and the five sound-effect parameter tables.
+
+Pixel strokes and every Apply action validate and compose the entire workspace
+before entering the 40-state undo history. Save and Build ROM delegate to the
+same canonical codec as the command line. `make check-graphics-studio` renders
+all 1,024 tiles through the model and validates the complete record set without
+opening a window, for both local release work and headless CI.

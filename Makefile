@@ -168,6 +168,7 @@ TIMEOUT_FRAMES ?= 15000
 	init-music export-music validate-music build-music roundtrip-music \
 	sound-studio music-editor check-sound-studio \
 	init-graphics export-graphics validate-graphics build-graphics roundtrip-graphics \
+	graphics-studio check-graphics-studio \
 	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
@@ -334,6 +335,12 @@ build-graphics: verify-profile
 
 roundtrip-graphics: verify-profile
 	$(PYTHON) scripts/graphics_editor.py roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+graphics-studio: init-graphics
+	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+
+check-graphics-studio: verify-profile
+	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
 
 symbols: $(ROM)
 	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"
