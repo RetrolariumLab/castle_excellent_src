@@ -284,3 +284,12 @@ def pixel_colors(
 
 def compression_symbols(prg: bytes) -> tuple[int, ...]:
     return tuple(symbol for symbol, _code in room_data.parse_codebook(prg))
+
+
+def validate_playtest_position(room_number: int, player_x: int, player_y: int) -> None:
+    if not 1 <= room_number <= room_data.ROOM_COUNT:
+        raise LevelStudioModelError("playtest room must be between 1 and 100")
+    if not 0 <= player_x < room_data.ROOM_WIDTH * 16:
+        raise LevelStudioModelError("playtest X must be between 0 and 319")
+    if not 0 <= player_y < room_data.ROOM_HEIGHT * 8:
+        raise LevelStudioModelError("playtest Y must be between 0 and 159")

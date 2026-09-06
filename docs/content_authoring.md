@@ -70,9 +70,18 @@ checked against room compression arenas, the 24-record runtime pool, the fixed
 object-stream range, and both persistent-state capacities before it enters the
 undo history.
 
+Place player selects a room-local point, and Play builds the current workspace
+before launching the pinned FCEUX runtime. A short Lua bootstrap presses Start,
+selects the current room immediately after the game's own new-game store, lets
+the normal room loader run, and places the player at the selected 320 by 160
+pixel coordinate. The bootstrap then ends so physical controller input returns
+to the user. It does not patch the authored ROM or bypass its room loader.
+
 Save writes only the ignored JSON workspace. Build ROM writes the isolated
 authoring image and capacity report declared by `config/level_authoring.json`;
 it never replaces a reference ROM or the normal profile build. The Studio uses
 the same `validate_workspace` and `compose_levels` functions as the headless
 commands. `make check-level-studio` validates the complete display model without
 opening a window, so it is suitable for release gates and headless CI.
+`make smoke-level-playtest REVISION_PROFILE=castlequest-usa` additionally runs
+FCEUX to prove the selected room and player coordinates are observed live.

@@ -12,6 +12,7 @@ from tkinter import messagebox, ttk
 from typing import Any, Callable
 
 import level_editor
+import level_playtest
 import level_studio_model as studio_model
 from project import ProjectError
 import room_data
@@ -53,8 +54,11 @@ class LevelStudio(tk.Tk):
         self.object_type = tk.StringVar(value="0x0E")
         self.object_x = tk.StringVar(value="0")
         self.object_y = tk.StringVar(value="0")
+        self.player_x = tk.IntVar(value=16)
+        self.player_y = tk.IntVar(value=152)
         self.status = tk.StringVar()
         self.object_placement = False
+        self.player_placement = False
         self.selected_object: int | None = None
         self.undo_stack: list[dict[str, Any]] = []
         self.dirty = False
@@ -101,6 +105,16 @@ class LevelStudio(tk.Tk):
         ttk.Button(toolbar, text="Save", command=self.save).pack(side="left", padx=3)
         ttk.Button(toolbar, text="Build ROM", command=self.build_rom).pack(side="left")
         ttk.Button(toolbar, text="Validate", command=self.validate).pack(side="left", padx=3)
+        ttk.Button(toolbar, text="Place player", command=self.arm_player).pack(side="left")
+        ttk.Button(toolbar, text="Play", command=self.play).pack(side="left", padx=3)
+        ttk.Label(toolbar, text="X").pack(side="left", padx=(8, 2))
+        ttk.Spinbox(toolbar, from_=0, to=319, textvariable=self.player_x, width=4).pack(
+            side="left"
+        )
+        ttk.Label(toolbar, text="Y").pack(side="left", padx=(5, 2))
+        ttk.Spinbox(toolbar, from_=0, to=159, textvariable=self.player_y, width=4).pack(
+            side="left"
+        )
 
         body = ttk.Panedwindow(self, orient="horizontal")
         body.pack(fill="both", expand=True, padx=7, pady=(0, 7))
@@ -243,6 +257,7 @@ class LevelStudio(tk.Tk):
             raise level_editor.LevelEditorError("room number must be between 1 and 100")
         self.selected_object = None
         self.object_placement = False
+        self.player_placement = False
         self.refresh()
 
     def change_room(self, delta: int) -> None:
@@ -259,6 +274,13 @@ class LevelStudio(tk.Tk):
     def room_click(self, event: tk.Event) -> None:
         point = self.cell_at(event)
         if point is None:
+            return
+        if self.player_placement:
+            column, row = point
+            self.player_x.set(column * 16)
+            self.player_y.set(row * 8)
+            self.player_placement = False
+            self.refresh()
             return
         if self.object_placement:
             self.guarded(lambda: self.place_object(*point))
@@ -305,7 +327,13 @@ class LevelStudio(tk.Tk):
 
     def arm_object(self) -> None:
         self.object_placement = True
+        self.player_placement = False
         self.status.set("Click a room cell to place the new object")
+
+    def arm_player(self) -> None:
+        self.player_placement = True
+        self.object_placement = False
+        self.status.set("Click a room cell to choose the playtest player position")
 
     def place_object(self, column: int, row: int) -> None:
         encoded_type = self.parse_number(self.object_type.get(), "encoded type")
@@ -397,6 +425,31 @@ class LevelStudio(tk.Tk):
             f"built {output_path.name}: {report['changed_bytes']} changed ROM bytes"
         )
 
+    def play(self) -> None:
+        self.guarded(self._play)
+
+    def _play(self) -> None:
+        studio_model.validate_playtest_position(
+            self.room_index + 1, self.player_x.get(), self.player_y.get()
+        )
+        self._build_rom()
+        output_path = level_editor.project_path(self.profile["output_rom"])
+        fceux = level_editor.ROOT / "tools" / "fceux" / "fceux64.exe"
+        lua = level_editor.ROOT / "scripts" / "level_playtest.lua"
+        if not fceux.is_file():
+            raise level_editor.LevelEditorError(
+                "pinned FCEUX is not installed; run make fceux-bootstrap"
+            )
+        level_playtest.launch_interactive(
+            fceux,
+            output_path,
+            lua,
+            self.room_index + 1,
+            self.player_x.get(),
+            self.player_y.get(),
+        )
+        self.update_status(f"launched room {self.room_index + 1} in FCEUX")
+
     def make_cell_image(self, visual: studio_model.CellVisual) -> tk.PhotoImage:
         key = (visual.left_tile, visual.right_tile, visual.palette_index)
         cached = self.image_cache.get(key)
@@ -480,6 +533,23 @@ class LevelStudio(tk.Tk):
                 anchor="nw",
                 image=self.make_sprite_image(sprite),
             )
+        player_x = self.player_x.get() * CELL_SCALE
+        player_y = self.player_y.get() * CELL_SCALE
+        self.room_canvas.create_rectangle(
+            player_x,
+            player_y,
+            player_x + 16 * CELL_SCALE,
+            player_y + 16 * CELL_SCALE,
+            outline="#56f39a",
+            width=2,
+        )
+        self.room_canvas.create_text(
+            player_x + 8 * CELL_SCALE,
+            player_y + 8 * CELL_SCALE,
+            text="P",
+            fill="#56f39a",
+            font=("TkFixedFont", 10, "bold"),
+        )
         self.room_canvas.configure(
             scrollregion=(
                 0,

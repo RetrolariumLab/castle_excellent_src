@@ -100,6 +100,17 @@
         "tests/test_level_studio_model.py",
         "docs/content_authoring.md"
       ]
+    },
+    {
+      "id": "level-point-playtest",
+      "kind": "authoring-runtime",
+      "summary": "Launch an authored profile in pinned FCEUX, select any of the 100 rooms through the normal new-game and room-load path, and place the player at a validated room coordinate.",
+      "evidence": [
+        "scripts/level_playtest.py",
+        "scripts/level_playtest.lua",
+        "tests/test_level_playtest.py",
+        "docs/content_authoring.md"
+      ]
     }
   ],
   "requirements": {
@@ -152,7 +163,8 @@
           "roundtrip-levels",
           "validate-levels",
           "build-levels",
-          "check-level-studio"
+          "check-level-studio",
+          "smoke-level-playtest"
         ],
         "files": [
           "config/level_authoring.json",

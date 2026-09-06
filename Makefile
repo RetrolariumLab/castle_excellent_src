@@ -7,6 +7,10 @@ SOURCE_1_MANIFEST := config/source_reconstruction_1_0.json
 REVISION_MANIFEST := config/revision_profiles.json
 REVISION_PROFILE ?= castlequest-usa
 LEVEL_AUTHORING := config/level_authoring.json
+LEVEL_PLAYTEST_ROOM ?= 71
+LEVEL_PLAYTEST_X ?= 16
+LEVEL_PLAYTEST_Y ?= 152
+LEVEL_PLAYTEST_RESULT := build/authoring/$(REVISION_PROFILE)/level_playtest.txt
 VERIFY_ROM := scripts/verify_rom.py
 
 BUILD_DIR := build/native
@@ -153,6 +157,7 @@ TIMEOUT_FRAMES ?= 15000
 	split-profile build-profile verify-profile castlequest-check \
 	init-levels export-levels validate-levels build-levels roundtrip-levels \
 	level-studio level-editor check-level-studio \
+	smoke-level-playtest \
 	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
@@ -266,6 +271,9 @@ level-editor: level-studio
 
 check-level-studio: verify-profile
 	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+
+smoke-level-playtest: fceux-bootstrap build-levels
+	$(PYTHON) scripts/level_playtest.py --fceux "$(FCEUX)" --rom "build/authoring/$(REVISION_PROFILE)/levels.nes" --lua scripts/level_playtest.lua --room "$(LEVEL_PLAYTEST_ROOM)" --player-x "$(LEVEL_PLAYTEST_X)" --player-y "$(LEVEL_PLAYTEST_Y)" --result "$(LEVEL_PLAYTEST_RESULT)" --check
 
 symbols: $(ROM)
 	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"

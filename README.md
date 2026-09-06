@@ -342,6 +342,7 @@ make level-studio REVISION_PROFILE=castlequest-usa # open the visual room/object
 make check-level-studio REVISION_PROFILE=castlequest-usa # validate its display model headlessly
 make build-levels REVISION_PROFILE=castlequest-usa # build an isolated edited ROM
 make roundtrip-levels REVISION_PROFILE=castlequest-usa # prove zero-edit container identity
+make smoke-level-playtest REVISION_PROFILE=castlequest-usa # enter an authored room in FCEUX
 make rooms           # decode all 100 rooms as JSON
 make validate-rooms  # decode every room without writing JSON
 make audio           # inspect music track sets and textual streams as JSON
