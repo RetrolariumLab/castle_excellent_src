@@ -88,6 +88,51 @@ class RevisionProfileTests(unittest.TestCase):
             self.assertEqual((workspace / "sample.chr").read_bytes(), image[-32_768:])
             self.assertFalse((workspace / "sample.prg").exists())
 
+    def test_split_extracts_declared_hashed_binary_asset(self) -> None:
+        image = sample_ines()
+        profile = sample_profile(image)
+        payload = revision_profiles.profile_regions(image)["prg"][4:7]
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            workspace = Path(directory)
+            relative_workspace = workspace.relative_to(ROOT)
+            profile["reference_rom"] = str(relative_workspace / "sample.nes")
+            profile["chr_asset"] = str(relative_workspace / "sample.chr")
+            profile["binary_assets"] = [
+                {
+                    "id": "sample-data",
+                    "region": "prg",
+                    "offset": "0x4",
+                    "size": len(payload),
+                    "path": str(relative_workspace / "sample-data.bin"),
+                    "sha1": hashlib.sha1(payload).hexdigest(),
+                    "sha256": hashlib.sha256(payload).hexdigest(),
+                }
+            ]
+            manifest_path = workspace / "profiles.json"
+            (workspace / "sample.nes").write_bytes(image)
+            manifest_path.write_text(
+                json.dumps({"schema_version": 1, "profiles": [profile]}),
+                encoding="utf-8",
+            )
+            args = type(
+                "Args",
+                (),
+                {"manifest": str(manifest_path), "profile": "sample"},
+            )()
+            revision_profiles.command_split(args)
+            self.assertEqual((workspace / "sample-data.bin").read_bytes(), payload)
+
+    def test_binary_asset_validation_rejects_changed_bytes(self) -> None:
+        payload = b"abc"
+        entry = {
+            "id": "sample-data",
+            "size": len(payload),
+            "sha1": hashlib.sha1(payload).hexdigest(),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+        }
+        with self.assertRaisesRegex(project.ProjectError, "sha1 mismatch"):
+            revision_profiles.validate_asset_bytes(entry, b"abd")
+
     def test_first_difference_handles_content_and_length(self) -> None:
         self.assertIsNone(revision_profiles.first_difference(b"abc", b"abc"))
         self.assertEqual(revision_profiles.first_difference(b"abc", b"axc"), 1)

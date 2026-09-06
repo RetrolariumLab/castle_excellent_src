@@ -42,11 +42,19 @@ bank 3 differs in 903 bytes from `$180A` onward. The compressed room arenas are
 therefore identical: all bank-2 room data and the bank-3 room stream below
 `$1161` are shared between revisions.
 
-`make castlequest-check` validates the private reference, extracts only its CHR
-payload into the ignored profile cache, builds the shared entrypoint with
-`CASTLEQUEST_USA=1`, and compares the complete output with the reference byte
-for byte. The Japanese default remains unchanged and continues to pass
-`make verify`.
+`make split-profile` validates the selected private reference and extracts only
+declared, hashed binary assets into the ignored profile cache. Each profile owns
+its complete CHR payload, the 16-byte title palette at PRG `$450D`, and the
+53-byte sub-command text asset at PRG `$7B77`. Those typed data ranges are
+included from the split files; they are not duplicated as regional byte arrays
+inside the assembly source.
+
+The remaining conditional PRG differences are executable or semantic constants:
+initial lives, menu bounds, and the Castlequest NOP replacement that disables
+the Japanese load/save dispatch. `make castlequest-check` splits the USA assets,
+builds the shared entrypoint with `CASTLEQUEST_USA=1`, and compares the complete
+output with the reference byte for byte. The Japanese default remains unchanged
+and continues to pass `make verify`.
 
 The USA profile remains `partial` until its direct runtime scenario gate is
 recorded. No runtime equivalence is inferred from static similarity.

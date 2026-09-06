@@ -103,6 +103,61 @@ def require_reference(profile: dict[str, object]) -> tuple[Path, bytes]:
     return path, data
 
 
+def binary_assets(profile: dict[str, object]) -> list[dict[str, object]]:
+    entries = profile.get("binary_assets", [])
+    if not isinstance(entries, list) or not all(isinstance(item, dict) for item in entries):
+        raise ProjectError(f"profile {profile['id']} has invalid binary_assets")
+    identifiers = [entry.get("id") for entry in entries]
+    if len(set(identifiers)) != len(identifiers):
+        raise ProjectError(f"profile {profile['id']} has duplicate binary asset IDs")
+    return entries
+
+
+def asset_payload(
+    entry: dict[str, object], regions: dict[str, bytes]
+) -> tuple[Path, bytes]:
+    asset_id = str(entry.get("id", "binary asset"))
+    region_name = str(entry.get("region", ""))
+    if region_name not in regions:
+        raise ProjectError(f"{asset_id} has unsupported region {region_name!r}")
+    offset = entry.get("offset")
+    if isinstance(offset, str):
+        try:
+            offset = int(offset, 0)
+        except ValueError as exc:
+            raise ProjectError(f"{asset_id} has invalid offset") from exc
+    size = entry.get("size")
+    if not isinstance(offset, int) or not isinstance(size, int) or offset < 0 or size < 1:
+        raise ProjectError(f"{asset_id} has invalid offset or size")
+    region = regions[region_name]
+    if offset + size > len(region):
+        raise ProjectError(f"{asset_id} exceeds its {region_name} region")
+    payload = region[offset:offset + size]
+    validate_asset_bytes(entry, payload)
+    path_value = entry.get("path")
+    if not isinstance(path_value, str) or not path_value:
+        raise ProjectError(f"{asset_id} has no output path")
+    return resolve_project_path(path_value), payload
+
+
+def validate_asset_bytes(entry: dict[str, object], payload: bytes) -> None:
+    asset_id = str(entry.get("id", "binary asset"))
+    size = entry.get("size")
+    if len(payload) != size:
+        raise ProjectError(
+            f"{asset_id} size mismatch: got {len(payload)}, expected {size!r}"
+        )
+    for algorithm in ("sha1", "sha256"):
+        expected = entry.get(algorithm)
+        if not isinstance(expected, str):
+            raise ProjectError(f"{asset_id} has no {algorithm}")
+        actual = hashlib.new(algorithm, payload).hexdigest()
+        if actual != expected.lower():
+            raise ProjectError(
+                f"{asset_id} {algorithm} mismatch: got {actual}, expected {expected}"
+            )
+
+
 def command_split(args: argparse.Namespace) -> None:
     profile = select_profile(load_profiles(Path(args.manifest)), args.profile)
     reference_path, data = require_reference(profile)
@@ -110,6 +165,11 @@ def command_split(args: argparse.Namespace) -> None:
     destination = resolve_project_path(str(profile["chr_asset"]))
     action = write_if_changed(destination, chr_data)
     print(f"[{action}] {destination} ({len(chr_data)} bytes from {reference_path})")
+    regions = profile_regions(data)
+    for entry in binary_assets(profile):
+        destination, payload = asset_payload(entry, regions)
+        action = write_if_changed(destination, payload)
+        print(f"[{action}] {destination} ({len(payload)} bytes from {reference_path})")
 
 
 def command_build(args: argparse.Namespace) -> None:
@@ -119,6 +179,16 @@ def command_build(args: argparse.Namespace) -> None:
         raise ProjectError(
             f"profile CHR asset not found: {chr_asset}; run split-profile first"
         )
+    for entry in binary_assets(profile):
+        path_value = entry.get("path")
+        if not isinstance(path_value, str):
+            raise ProjectError(f"profile {profile['id']} has an invalid binary asset path")
+        asset_path = resolve_project_path(path_value)
+        if not asset_path.is_file():
+            raise ProjectError(
+                f"profile binary asset not found: {asset_path}; run split-profile first"
+            )
+        validate_asset_bytes(entry, asset_path.read_bytes())
     output = resolve_project_path(str(profile["output_rom"]))
     output.parent.mkdir(parents=True, exist_ok=True)
     object_path = output.with_suffix(".o")

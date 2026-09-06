@@ -1346,12 +1346,38 @@ def command_lint(_args: argparse.Namespace) -> None:
         for marker in markers:
             if marker not in source:
                 raise ProjectError(f"{relative} is missing required marker: {marker}")
-    disassembly = "\n".join(
-        (ROOT / region.path).read_text(encoding="utf-8")
+    source_text = {
+        region.path.as_posix(): (ROOT / region.path).read_text(encoding="utf-8")
         for region in source_regions
-    )
-    if ".incbin" in disassembly.lower():
-        raise ProjectError("PRG disassembly must not contain .incbin")
+    }
+    allowed_prg_incbins = {
+        "src/rendering/screen_palette_data.asm": {
+            ".incbin RevisionTitlePaletteAsset",
+        },
+        "src/data/sub_command_text.asm": {
+            ".incbin RevisionSubCommandTextAsset, 0, 12",
+            ".incbin RevisionSubCommandTextAsset, 12, 5",
+            ".incbin RevisionSubCommandTextAsset, 17, 5",
+            ".incbin RevisionSubCommandTextAsset, 22, 6",
+            ".incbin RevisionSubCommandTextAsset, 28, 5",
+            ".incbin RevisionSubCommandTextAsset, 33, 5",
+            ".incbin RevisionSubCommandTextAsset, 38, 8",
+            ".incbin RevisionSubCommandTextAsset, 46, 7",
+        },
+    }
+    for relative, source in source_text.items():
+        actual = {
+            line.strip()
+            for line in source.splitlines()
+            if line.lstrip().lower().startswith(".incbin")
+        }
+        expected = allowed_prg_incbins.get(relative, set())
+        if actual != expected:
+            raise ProjectError(
+                f"undeclared or missing typed PRG binary include in {relative}: "
+                f"got {sorted(actual)}, expected {sorted(expected)}"
+            )
+    disassembly = "\n".join(source_text.values())
     numeric_control = re.search(
         r"^\s*(?:bcc|bcs|beq|bmi|bne|bpl|bvc|bvs|jmp|jsr)\s+(?:\$|0x)[0-9a-f]",
         disassembly,

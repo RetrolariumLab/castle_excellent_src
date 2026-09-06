@@ -12,6 +12,26 @@
       "linker_config": "config/linker/cnrom.cfg",
       "output_rom": "build/native/castle_excellent.nes",
       "chr_asset": "assets/generated/chr/castle_excellent.chr",
+      "binary_assets": [
+        {
+          "id": "title-palette",
+          "region": "prg",
+          "offset": "0x450D",
+          "size": 16,
+          "path": "assets/generated/revisions/castle-excellent-japan-hsp-05/prg/title_palette.bin",
+          "sha1": "c78f4b91b997e1320640855d3d51938cb6116e42",
+          "sha256": "1c87cb1a14d5d32e78c30af9e3a2be5abe7d98dc8dad614e60c4f3b9557060b5"
+        },
+        {
+          "id": "sub-command-text",
+          "region": "prg",
+          "offset": "0x7B77",
+          "size": 53,
+          "path": "assets/generated/revisions/castle-excellent-japan-hsp-05/prg/sub_command_text.bin",
+          "sha1": "9e099ec3ba0f1523748d6b1580c850612c2f3400",
+          "sha256": "faed03825de474eefdd0f4716873243c303a7eab59b1829daeb614c1210ff284"
+        }
+      ],
       "load_address": "0x8000",
       "container": "iNES mapper 3 (CNROM), vertical mirroring",
       "rom_size": 65552,
@@ -44,6 +64,26 @@
       "linker_config": "config/linker/cnrom.cfg",
       "output_rom": "build/revisions/castlequest-usa/castlequest.nes",
       "chr_asset": "assets/generated/revisions/castlequest-usa/chr/castlequest.chr",
+      "binary_assets": [
+        {
+          "id": "title-palette",
+          "region": "prg",
+          "offset": "0x450D",
+          "size": 16,
+          "path": "assets/generated/revisions/castlequest-usa/prg/title_palette.bin",
+          "sha1": "00f39cdeb8b044a0b1a50c239b78ca0fc2cac644",
+          "sha256": "fc71daea7cf0917f525738bd99ebbbce54425052c4f79d7914849268ecbf6284"
+        },
+        {
+          "id": "sub-command-text",
+          "region": "prg",
+          "offset": "0x7B77",
+          "size": 53,
+          "path": "assets/generated/revisions/castlequest-usa/prg/sub_command_text.bin",
+          "sha1": "aef800ee974b0549bfd885850a2e57c2c8612468",
+          "sha256": "c22c8b339ec77b699bdac903262095b13065cdc2a4430e1ba9290ba613481726"
+        }
+      ],
       "load_address": "0x8000",
       "container": "iNES mapper 3 (CNROM), vertical mirroring",
       "rom_size": 65552,

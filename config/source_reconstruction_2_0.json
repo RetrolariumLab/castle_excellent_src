@@ -68,11 +68,23 @@
     {
       "id": "castlequest-shared-source-build",
       "kind": "source-and-build",
-      "summary": "Build the USA localization byte-identically from the common entrypoint, a revision define, and an isolated private CHR asset.",
+      "summary": "Build the USA localization byte-identically from the common entrypoint, semantic revision conditionals, and isolated private binary assets.",
       "evidence": [
         "src/revisions/profile.inc",
         "scripts/revision_profiles.py",
         "tests/test_revision_profiles.py"
+      ]
+    },
+    {
+      "id": "revision-binary-data-split",
+      "kind": "source-and-provenance",
+      "summary": "Extract each profile's CHR, title palette, and sub-command text from its private ROM under explicit size and hash contracts while forbidding undeclared PRG binary includes.",
+      "evidence": [
+        "config/revision_profiles.json",
+        "config/source_layout.json",
+        "scripts/revision_profiles.py",
+        "scripts/generate_disassembly.py",
+        "docs/revision_profiles.md"
       ]
     },
     {

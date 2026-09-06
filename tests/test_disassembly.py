@@ -46,6 +46,20 @@ class FormattingTests(unittest.TestCase):
         rendered = disasm.apply_revision_overlays(source, (earlier, later))
         self.assertEqual(rendered.count(".if PROFILE"), 2)
 
+    def test_source_replacement_externalizes_generated_data(self) -> None:
+        replacement = disasm.SourceReplacement(
+            0x9000,
+            0x9002,
+            ("Data:", "    .byte $01, $02"),
+            ("Data:", "    .incbin RevisionDataAsset"),
+        )
+        self.assertEqual(
+            disasm.apply_source_replacements(
+                "Data:\n    .byte $01, $02\n", (replacement,)
+            ),
+            "Data:\n    .incbin RevisionDataAsset\n",
+        )
+
     def test_normalizes_line_endings_and_trailing_space(self) -> None:
         self.assertEqual(format_project.normalize_text("one  \r\ntwo\t \r\n"), "one\ntwo\n")
 

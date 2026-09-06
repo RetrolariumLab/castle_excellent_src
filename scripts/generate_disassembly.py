@@ -56,11 +56,20 @@ class SourceRegion:
     segment: str | None
     includes_after: tuple[str, ...]
     revision_overlays: tuple["RevisionOverlay", ...]
+    source_replacements: tuple["SourceReplacement", ...]
 
 
 @dataclass(frozen=True)
 class RevisionOverlay:
     condition: str
+    start: int
+    end: int
+    baseline: tuple[str, ...]
+    replacement: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class SourceReplacement:
     start: int
     end: int
     baseline: tuple[str, ...]
@@ -242,6 +251,43 @@ def load_source_layout(path: Path) -> list[SourceRegion]:
                 )
             )
             previous_overlay_end = overlay_end
+        replacements: list[SourceReplacement] = []
+        previous_replacement_end = start
+        for replacement_item in item.get("source_replacements", []):
+            if not isinstance(replacement_item, dict):
+                raise DisassemblyError(f"invalid source replacement: {relative}")
+            replacement_start = int(str(replacement_item.get("start")), 0)
+            replacement_end = int(str(replacement_item.get("end")), 0)
+            baseline = replacement_item.get("baseline")
+            replacement = replacement_item.get("replacement")
+            if not start <= replacement_start < replacement_end <= end:
+                raise DisassemblyError(f"source replacement is outside {relative}")
+            if replacement_start < previous_replacement_end:
+                raise DisassemblyError(f"source replacements overlap in {relative}")
+            if any(
+                max(replacement_start, overlay.start) < min(replacement_end, overlay.end)
+                for overlay in overlays
+            ):
+                raise DisassemblyError(
+                    f"source replacement overlaps a revision overlay in {relative}"
+                )
+            if not isinstance(baseline, list) or not baseline or not all(
+                isinstance(value, str) and value for value in baseline
+            ):
+                raise DisassemblyError(f"invalid source baseline in {relative}")
+            if not isinstance(replacement, list) or not replacement or not all(
+                isinstance(value, str) and value for value in replacement
+            ):
+                raise DisassemblyError(f"invalid source replacement body in {relative}")
+            replacements.append(
+                SourceReplacement(
+                    replacement_start,
+                    replacement_end,
+                    tuple(baseline),
+                    tuple(replacement),
+                )
+            )
+            previous_replacement_end = replacement_end
         result.append(
             SourceRegion(
                 relative,
@@ -251,6 +297,7 @@ def load_source_layout(path: Path) -> list[SourceRegion]:
                 segment,
                 tuple(includes),
                 tuple(overlays),
+                tuple(replacements),
             )
         )
         expected_start = end
@@ -442,6 +489,20 @@ def apply_revision_overlays(text: str, overlays: tuple[RevisionOverlay, ...]) ->
     return text
 
 
+def apply_source_replacements(
+    text: str, replacements: tuple[SourceReplacement, ...]
+) -> str:
+    for replacement in reversed(replacements):
+        baseline = "\n".join(replacement.baseline)
+        if text.count(baseline) != 1:
+            raise DisassemblyError(
+                f"source baseline ${replacement.start:04X}-${replacement.end - 1:04X} "
+                "does not occur exactly once"
+            )
+        text = text.replace(baseline, "\n".join(replacement.replacement), 1)
+    return text
+
+
 def generate(
     prg: bytes,
     facts: dict[int, InstructionFact],
@@ -455,6 +516,7 @@ def generate(
     segment: str | None = "PRG",
     includes_after: tuple[str, ...] = (),
     revision_overlays: tuple[RevisionOverlay, ...] = (),
+    source_replacements: tuple[SourceReplacement, ...] = (),
 ) -> str:
     lines = [
         f"; {title}",
@@ -536,7 +598,8 @@ def generate(
             continue
         if f"{label}:" not in text and f"{label} = " not in text:
             raise DisassemblyError(f"label {label} was not emitted")
-    return apply_revision_overlays(text, revision_overlays)
+    text = apply_revision_overlays(text, revision_overlays)
+    return apply_source_replacements(text, source_replacements)
 
 
 def build_sources(args: argparse.Namespace) -> dict[Path, str]:
@@ -569,6 +632,7 @@ def build_sources(args: argparse.Namespace) -> dict[Path, str]:
                 segment=region.segment,
                 includes_after=region.includes_after,
                 revision_overlays=region.revision_overlays,
+                source_replacements=region.source_replacements,
             )
         return sources
     if not args.output:

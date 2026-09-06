@@ -678,16 +678,17 @@
       "start": "0xC4FD",
       "end": "0xC53D",
       "title": "Overlapping completion, title, and castle-map palettes",
-      "revision_overlays": [
+      "source_replacements": [
         {
-          "condition": "CASTLEQUEST_USA",
           "start": "0xC50D",
           "end": "0xC51D",
           "baseline": [
+            "TitlePaletteData:",
             "    .byte $0F, $18, $28, $38, $0F, $00, $16, $30, $0F, $00, $2A, $30, $0F, $12, $22, $2A"
           ],
           "replacement": [
-            "    .byte $0F, $17, $27, $37, $0F, $00, $10, $20, $0F, $0C, $27, $06, $0F, $11, $19, $24"
+            "TitlePaletteData:",
+            "    .incbin RevisionTitlePaletteAsset"
           ]
         }
       ]
@@ -862,38 +863,101 @@
       "start": "0xFB77",
       "end": "0xFBAC",
       "title": "Sub-command menu and transfer-status tile text",
-      "revision_overlays": [
+      "source_replacements": [
         {
-          "condition": "CASTLEQUEST_USA",
+          "start": "0xFB77",
+          "end": "0xFB83",
+          "baseline": [
+            "SubCommandTitleText:",
+            "    .byte $83, $85, $72, $FF, $73, $7F, $7D, $7D, $71, $7E, $74, $00"
+          ],
+          "replacement": [
+            "SubCommandTitleText:",
+            "    .incbin RevisionSubCommandTextAsset, 0, 12"
+          ]
+        },
+        {
           "start": "0xFB83",
           "end": "0xFB88",
           "baseline": [
+            "SubCommandLoadText:",
             "    .byte $7C, $7F, $71, $74, $00"
           ],
           "replacement": [
-            "    .byte $77, $71, $7D, $75, $00"
+            "SubCommandLoadText:",
+            "    .incbin RevisionSubCommandTextAsset, 12, 5"
           ]
         },
         {
-          "condition": "CASTLEQUEST_USA",
           "start": "0xFB88",
           "end": "0xFB8D",
           "baseline": [
+            "SubCommandSaveText:",
             "    .byte $83, $71, $86, $75, $00"
           ],
           "replacement": [
-            "    .byte $00, $71, $86, $75, $00"
+            "SubCommandSaveText:",
+            "    .incbin RevisionSubCommandTextAsset, 17, 5"
           ]
         },
         {
-          "condition": "CASTLEQUEST_USA",
+          "start": "0xFB8D",
+          "end": "0xFB93",
+          "baseline": [
+            "SubCommandResetText:",
+            "    .byte $82, $75, $83, $75, $84, $00"
+          ],
+          "replacement": [
+            "SubCommandResetText:",
+            "    .incbin RevisionSubCommandTextAsset, 22, 6"
+          ]
+        },
+        {
+          "start": "0xFB93",
+          "end": "0xFB98",
+          "baseline": [
+            "SubCommandBackText:",
+            "    .byte $72, $71, $73, $7B, $00"
+          ],
+          "replacement": [
+            "SubCommandBackText:",
+            "    .incbin RevisionSubCommandTextAsset, 28, 5"
+          ]
+        },
+        {
           "start": "0xFB98",
           "end": "0xFB9D",
           "baseline": [
+            "SubCommandGameText:",
             "    .byte $77, $71, $7D, $75, $00"
           ],
           "replacement": [
-            "    .byte $00, $71, $7D, $75, $00"
+            "SubCommandGameText:",
+            "    .incbin RevisionSubCommandTextAsset, 33, 5"
+          ]
+        },
+        {
+          "start": "0xFB9D",
+          "end": "0xFBA5",
+          "baseline": [
+            "LoadTransferMessage:",
+            "    .byte $7C, $7F, $71, $74, $79, $7E, $77, $00"
+          ],
+          "replacement": [
+            "LoadTransferMessage:",
+            "    .incbin RevisionSubCommandTextAsset, 38, 8"
+          ]
+        },
+        {
+          "start": "0xFBA5",
+          "end": "0xFBAC",
+          "baseline": [
+            "SaveTransferMessage:",
+            "    .byte $83, $71, $86, $79, $7E, $77, $00"
+          ],
+          "replacement": [
+            "SaveTransferMessage:",
+            "    .incbin RevisionSubCommandTextAsset, 46, 7"
           ]
         }
       ]
