@@ -55,6 +55,16 @@ class SourceRegion:
     title: str
     segment: str | None
     includes_after: tuple[str, ...]
+    revision_overlays: tuple["RevisionOverlay", ...]
+
+
+@dataclass(frozen=True)
+class RevisionOverlay:
+    condition: str
+    start: int
+    end: int
+    baseline: tuple[str, ...]
+    replacement: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -198,6 +208,40 @@ def load_source_layout(path: Path) -> list[SourceRegion]:
         includes = item.get("includes_after", [])
         if not isinstance(includes, list) or not all(isinstance(value, str) for value in includes):
             raise DisassemblyError(f"invalid includes_after list: {relative}")
+        overlays: list[RevisionOverlay] = []
+        previous_overlay_end = start
+        for overlay_item in item.get("revision_overlays", []):
+            if not isinstance(overlay_item, dict):
+                raise DisassemblyError(f"invalid revision overlay: {relative}")
+            condition = str(overlay_item.get("condition", ""))
+            overlay_start = int(str(overlay_item.get("start")), 0)
+            overlay_end = int(str(overlay_item.get("end")), 0)
+            baseline = overlay_item.get("baseline")
+            replacement = overlay_item.get("replacement")
+            if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", condition):
+                raise DisassemblyError(f"invalid revision condition: {condition!r}")
+            if not start <= overlay_start < overlay_end <= end:
+                raise DisassemblyError(f"revision overlay is outside {relative}")
+            if overlay_start < previous_overlay_end:
+                raise DisassemblyError(f"revision overlays overlap in {relative}")
+            if not isinstance(baseline, list) or not baseline or not all(
+                isinstance(value, str) and value for value in baseline
+            ):
+                raise DisassemblyError(f"invalid revision baseline in {relative}")
+            if not isinstance(replacement, list) or not replacement or not all(
+                isinstance(value, str) and value for value in replacement
+            ):
+                raise DisassemblyError(f"invalid revision replacement in {relative}")
+            overlays.append(
+                RevisionOverlay(
+                    condition,
+                    overlay_start,
+                    overlay_end,
+                    tuple(baseline),
+                    tuple(replacement),
+                )
+            )
+            previous_overlay_end = overlay_end
         result.append(
             SourceRegion(
                 relative,
@@ -206,6 +250,7 @@ def load_source_layout(path: Path) -> list[SourceRegion]:
                 str(item["title"]),
                 segment,
                 tuple(includes),
+                tuple(overlays),
             )
         )
         expected_start = end
@@ -378,6 +423,25 @@ def data_line(address: int, payload: bytes) -> str:
     return f"    .byte {values}"
 
 
+def apply_revision_overlays(text: str, overlays: tuple[RevisionOverlay, ...]) -> str:
+    for overlay in reversed(overlays):
+        baseline = "\n".join(overlay.baseline)
+        if text.count(baseline) != 1:
+            raise DisassemblyError(
+                f"revision baseline ${overlay.start:04X}-${overlay.end - 1:04X} "
+                "does not occur exactly once"
+            )
+        conditional = "\n".join((
+            f".if {overlay.condition}",
+            *overlay.replacement,
+            ".else",
+            *overlay.baseline,
+            ".endif",
+        ))
+        text = text.replace(baseline, conditional, 1)
+    return text
+
+
 def generate(
     prg: bytes,
     facts: dict[int, InstructionFact],
@@ -390,6 +454,7 @@ def generate(
     title: str = "Address-ordered 32 KiB Castle Excellent PRG preservation listing",
     segment: str | None = "PRG",
     includes_after: tuple[str, ...] = (),
+    revision_overlays: tuple[RevisionOverlay, ...] = (),
 ) -> str:
     lines = [
         f"; {title}",
@@ -471,7 +536,7 @@ def generate(
             continue
         if f"{label}:" not in text and f"{label} = " not in text:
             raise DisassemblyError(f"label {label} was not emitted")
-    return text
+    return apply_revision_overlays(text, revision_overlays)
 
 
 def build_sources(args: argparse.Namespace) -> dict[Path, str]:
@@ -503,6 +568,7 @@ def build_sources(args: argparse.Namespace) -> dict[Path, str]:
                 title=region.title,
                 segment=region.segment,
                 includes_after=region.includes_after,
+                revision_overlays=region.revision_overlays,
             )
         return sources
     if not args.output:

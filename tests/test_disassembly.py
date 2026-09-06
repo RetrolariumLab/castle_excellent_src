@@ -13,6 +13,39 @@ import generate_disassembly as disasm
 
 
 class FormattingTests(unittest.TestCase):
+    def test_revision_overlay_preserves_baseline_and_exposes_replacement(self) -> None:
+        overlay = disasm.RevisionOverlay(
+            "CASTLEQUEST_USA",
+            0x9000,
+            0x9001,
+            ("    LDA #$03",),
+            ("    LDA #$32",),
+        )
+        self.assertEqual(
+            disasm.apply_revision_overlays("Label:\n    LDA #$03\n", (overlay,)),
+            "Label:\n.if CASTLEQUEST_USA\n    LDA #$32\n.else\n"
+            "    LDA #$03\n.endif\n",
+        )
+
+    def test_revision_overlays_do_not_match_an_earlier_replacement(self) -> None:
+        earlier = disasm.RevisionOverlay(
+            "PROFILE",
+            0x9000,
+            0x9001,
+            ("    .byte $01",),
+            ("    .byte $02",),
+        )
+        later = disasm.RevisionOverlay(
+            "PROFILE",
+            0x9001,
+            0x9002,
+            ("    .byte $02",),
+            ("    .byte $03",),
+        )
+        source = "    .byte $01\n    .byte $02\n"
+        rendered = disasm.apply_revision_overlays(source, (earlier, later))
+        self.assertEqual(rendered.count(".if PROFILE"), 2)
+
     def test_normalizes_line_endings_and_trailing_space(self) -> None:
         self.assertEqual(format_project.normalize_text("one  \r\ntwo\t \r\n"), "one\ntwo\n")
 

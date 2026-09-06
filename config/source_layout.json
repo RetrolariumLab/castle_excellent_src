@@ -677,7 +677,20 @@
       "path": "src/rendering/screen_palette_data.asm",
       "start": "0xC4FD",
       "end": "0xC53D",
-      "title": "Overlapping completion, title, and castle-map palettes"
+      "title": "Overlapping completion, title, and castle-map palettes",
+      "revision_overlays": [
+        {
+          "condition": "CASTLEQUEST_USA",
+          "start": "0xC50D",
+          "end": "0xC51D",
+          "baseline": [
+            "    .byte $0F, $18, $28, $38, $0F, $00, $16, $30, $0F, $00, $2A, $30, $0F, $12, $22, $2A"
+          ],
+          "replacement": [
+            "    .byte $0F, $17, $27, $37, $0F, $00, $10, $20, $0F, $0C, $27, $06, $0F, $11, $19, $24"
+          ]
+        }
+      ]
     },
     {
       "path": "src/rendering/room_palette_data.asm",
@@ -821,13 +834,69 @@
       "path": "src/ui/sub_command_menu.asm",
       "start": "0xF9CC",
       "end": "0xFB77",
-      "title": "Sub-command menu rendering, selection, and dispatch"
+      "title": "Sub-command menu rendering, selection, and dispatch",
+      "revision_overlays": [
+        {
+          "condition": "CASTLEQUEST_USA",
+          "start": "0xFB69",
+          "end": "0xFB6F",
+          "baseline": [
+            "    DEX",
+            "    BEQ ExecuteSubCommandLoad",
+            "    DEX",
+            "    BEQ ExecuteSubCommandSave"
+          ],
+          "replacement": [
+            "    NOP",
+            "    NOP",
+            "    NOP",
+            "    NOP",
+            "    NOP",
+            "    NOP"
+          ]
+        }
+      ]
     },
     {
       "path": "src/data/sub_command_text.asm",
       "start": "0xFB77",
       "end": "0xFBAC",
-      "title": "Sub-command menu and transfer-status tile text"
+      "title": "Sub-command menu and transfer-status tile text",
+      "revision_overlays": [
+        {
+          "condition": "CASTLEQUEST_USA",
+          "start": "0xFB83",
+          "end": "0xFB88",
+          "baseline": [
+            "    .byte $7C, $7F, $71, $74, $00"
+          ],
+          "replacement": [
+            "    .byte $77, $71, $7D, $75, $00"
+          ]
+        },
+        {
+          "condition": "CASTLEQUEST_USA",
+          "start": "0xFB88",
+          "end": "0xFB8D",
+          "baseline": [
+            "    .byte $83, $71, $86, $75, $00"
+          ],
+          "replacement": [
+            "    .byte $00, $71, $86, $75, $00"
+          ]
+        },
+        {
+          "condition": "CASTLEQUEST_USA",
+          "start": "0xFB98",
+          "end": "0xFB9D",
+          "baseline": [
+            "    .byte $77, $71, $7D, $75, $00"
+          ],
+          "replacement": [
+            "    .byte $00, $71, $7D, $75, $00"
+          ]
+        }
+      ]
     },
     {
       "path": "src/ui/sub_command_room_actions.asm",

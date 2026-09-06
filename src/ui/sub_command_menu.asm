@@ -205,10 +205,19 @@ ExecuteSubCommandSelection:
     BEQ ResetCurrentRoomFromSubCommand
     DEX
     BEQ ReturnToPreviousRoomFromSubCommand
+.if CASTLEQUEST_USA
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+.else
     DEX
     BEQ ExecuteSubCommandLoad
     DEX
     BEQ ExecuteSubCommandSave
+.endif
     BNE ExitSubCommandMenu
 
 ExecuteSubCommandLoad:

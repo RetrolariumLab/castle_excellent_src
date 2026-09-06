@@ -4,6 +4,8 @@ LD65 ?= bin/ld65.exe
 REFERENCE_ROM ?= Castle Excellent (J).nes
 MANIFEST := assets/manifest.json
 SOURCE_1_MANIFEST := config/source_reconstruction_1_0.json
+REVISION_MANIFEST := config/revision_profiles.json
+REVISION_PROFILE ?= castlequest-usa
 VERIFY_ROM := scripts/verify_rom.py
 
 BUILD_DIR := build/native
@@ -98,7 +100,7 @@ SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.a
 	src/game/rooms/persistent_state_save.asm src/game/end_sequences.asm \
 	src/data/prg_tail_padding.asm src/rendering/room_cell_tile_tables.asm \
 	src/system/interrupt_vectors.asm \
-	src/memory/hardware.inc src/memory/ram.inc
+	src/memory/hardware.inc src/revisions/profile.inc src/memory/ram.inc
 
 GHIDRA_FACTS := build/ghidra/instructions.tsv
 SYMBOLS := config/symbols.json
@@ -147,6 +149,7 @@ TIMEOUT_FRAMES ?= 15000
 	release-check check rooms validate-rooms audio validate-audio clean \
 	reconstruction-audit release-audit build-toolchain-status static-release-check trace \
 	source-1-check source-1-pre-tag-check source-1-tag-check \
+	split-profile build-profile verify-profile castlequest-check \
 	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
@@ -224,6 +227,19 @@ $(ROM): $(OBJECT) config/linker/cnrom.cfg
 	$(LD65) -C config/linker/cnrom.cfg -o "$@" "$<" -Ln "$(LABELS)" -m "$(MAP)" --dbgfile "$(DEBUG)"
 
 build: $(ROM)
+
+split-profile:
+	$(PYTHON) scripts/revision_profiles.py --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" split
+
+build-profile: build-toolchain-status
+	$(PYTHON) scripts/revision_profiles.py --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" build --ca65 "$(CA65)" --ld65 "$(LD65)"
+
+verify-profile: build-profile
+	$(PYTHON) scripts/revision_profiles.py --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" verify
+
+castlequest-check:
+	$(MAKE) split-profile REVISION_PROFILE=castlequest-usa
+	$(MAKE) verify-profile REVISION_PROFILE=castlequest-usa
 
 symbols: $(ROM)
 	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"

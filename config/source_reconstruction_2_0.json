@@ -63,6 +63,16 @@
         "config/revision_profiles.json",
         "docs/revision_profiles.md"
       ]
+    },
+    {
+      "id": "castlequest-shared-source-build",
+      "kind": "source-and-build",
+      "summary": "Build the USA localization byte-identically from the common entrypoint, a revision define, and an isolated private CHR asset.",
+      "evidence": [
+        "src/revisions/profile.inc",
+        "scripts/revision_profiles.py",
+        "tests/test_revision_profiles.py"
+      ]
     }
   ],
   "requirements": {
@@ -86,13 +96,17 @@
     "revision_profiles": {
       "status": "partial",
       "evidence": {
-        "targets": [],
+        "targets": [
+          "castlequest-check"
+        ],
         "files": [
           "config/revision_profiles.json",
           "docs/revision_profiles.md"
         ],
         "scenarios": [],
-        "artifacts": []
+        "artifacts": [
+          "castlequest-usa-rom"
+        ]
       }
     },
     "isolated_experimental_build": {
@@ -135,9 +149,9 @@
     },
     {
       "id": "castlequest-usa",
-      "status": "planned",
-      "artifact": null,
-      "identity": "reference-identified",
+      "status": "partial",
+      "artifact": "castlequest-usa-rom",
+      "identity": "byte-identical",
       "profile_manifest": "config/revision_profiles.json"
     }
   ],
@@ -180,5 +194,35 @@
       "assets/manifest.json"
     ],
     "private_inputs_tracked": false
-  }
+  },
+  "artifacts": [
+    {
+      "id": "castle-excellent-japan-hsp-05-rom",
+      "profile": "castle-excellent-japan-hsp-05",
+      "build_target": "build",
+      "path": "build/native/castle_excellent.nes",
+      "size": 65552,
+      "sha1": "42f7975da9a68a74e141353eb6e2bdc676fc1f77",
+      "sha256": "fd6214cdc441070b9edab74b9c31ad16007bd0873e32c0c883de4544ca69f261",
+      "regions": {
+        "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+        "prg_sha256": "f59865b238497a552834c8d57adac7d670962f24bbc222488351bee9cb2c1d27",
+        "chr_sha256": "1c0fcb20ed0af3bdeceea2aed83967f43734627b3b6890a300b7808d3c30f1e5"
+      }
+    },
+    {
+      "id": "castlequest-usa-rom",
+      "profile": "castlequest-usa",
+      "build_target": "castlequest-check",
+      "path": "build/revisions/castlequest-usa/castlequest.nes",
+      "size": 65552,
+      "sha1": "600b0d2ae76722a62b42be02c0b0becd7ff0a178",
+      "sha256": "35815cd107289a8273fb46dd7c49247a8217ca4e2a7f235fef3aa54566d0ba8c",
+      "regions": {
+        "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+        "prg_sha256": "8d8ed56dc5f8fde68bb1aba20e3835e1399ddd4dbeef9125d595e001d5beef4a",
+        "chr_sha256": "8fd1d35cdd5b0d5364e744e56c54e8013adf5e2841edd2cedcf4e96a163e0ab6"
+      }
+    }
+  ]
 }

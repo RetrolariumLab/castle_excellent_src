@@ -33,7 +33,7 @@ number.
 - [x] Pin the predecessor tag and commit.
 - [x] Record complete Japanese and USA reference identities.
 - [x] Map every USA PRG difference to current semantic ownership.
-- [ ] Build Castlequest from the shared source and a private profile asset.
+- [x] Build Castlequest from the shared source and a private profile asset.
 - [ ] Add direct Castlequest startup and menu runtime evidence.
 - [ ] Add an isolated fixed-layout variant and exact allowlist.
 - [ ] Add profile-aware room/object decode and encode workspaces.

@@ -14,6 +14,7 @@
     .byte $00, $00, $00, $00, $00, $00
 
 .include "memory/hardware.inc"
+.include "revisions/profile.inc"
 .include "memory/ram.inc"
 
 .include "input/famicom_data_pulse.asm"

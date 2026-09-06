@@ -185,8 +185,6 @@ SubCommandNextButtonMask = $24
 SubCommandStartButtonMask = $08
 SubCommandAButtonMask = $01
 SubCommandUpButtonMask = $10
-SubCommandSelectionCount = $05
-SubCommandLastSelection = $04
 SubCommandCursorTile = $6B
 ScoreLifeThresholdLo = $E8
 ScoreLifeThresholdHi = $03
@@ -423,7 +421,6 @@ SaveDataSignatureSize = 8
 NewGameRuntimeStateSize = 14
 NewGameRoomStateClearSize = 27
 InitialRoomNumber = $47
-InitialPlayerLives = 3
 InitialPlayerY = $98
 
 ; Contextual room-cell coordinate and mutable restoration scratch
