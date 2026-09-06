@@ -1,0 +1,184 @@
+{
+  "contract": {
+    "schema": "retrolarium.source_reconstruction_release_contract",
+    "version": 3,
+    "release_line": "2.0",
+    "source_document_sha256": "d07f16f12e09c6ea2691e736088f09da5eace82c6a014c774c8a33e52804086d"
+  },
+  "release": {
+    "name": "Source Reconstruction 2.0",
+    "version": "2.0"
+  },
+  "release_kind": "baseline",
+  "tag": "source-reconstruction-2.0",
+  "status": "development",
+  "predecessor": {
+    "manifest": "config/source_reconstruction_1_0.json",
+    "tag": "source-reconstruction-1.0",
+    "commit": "6ae3cc3505c30cc77941703e025c46aab88e7d2a"
+  },
+  "included_scope": [
+    "unchanged-source-reconstruction-1.0-contract",
+    "castlequest-usa-byte-identical-profile",
+    "isolated-fixed-layout-demonstrator",
+    "profile-aware-room-and-object-authoring",
+    "source-2-aggregate-gate"
+  ],
+  "excluded_scope": [
+    {
+      "id": "additional-regional-or-platform-profiles",
+      "status": "unsupported",
+      "reason": "No additional verified Castle Excellent profiles are currently declared."
+    },
+    {
+      "id": "expanded-rom-and-general-relocation",
+      "status": "planned",
+      "reason": "Source 2.0 will prove isolated fixed-layout edits; systematic relocation remains outside its release boundary."
+    },
+    {
+      "id": "graphical-content-studio",
+      "status": "planned",
+      "reason": "Headless codecs and models are required before an optional GUI is accepted."
+    },
+    {
+      "id": "sibling-engine-reconstruction",
+      "status": "unsupported",
+      "reason": "The Castle and non-NES engines require a separate major architectural decision."
+    }
+  ],
+  "delta": [
+    {
+      "id": "source-2-release-boundary",
+      "kind": "documentation",
+      "summary": "Define the Source 2.0 inheritance, profile, experimental-build, authoring, and aggregate-gate contracts.",
+      "evidence": [
+        "docs/source_reconstruction_2_0.md"
+      ]
+    },
+    {
+      "id": "castlequest-reference-survey",
+      "kind": "evidence",
+      "summary": "Pin the USA reference identity and map its 26 changed PRG bytes to four existing semantic modules.",
+      "evidence": [
+        "config/revision_profiles.json",
+        "docs/revision_profiles.md"
+      ]
+    }
+  ],
+  "requirements": {
+    "source_1_inheritance": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "source-1-tag-check"
+        ],
+        "files": [
+          "config/source_reconstruction_1_0.json"
+        ],
+        "scenarios": [
+          "scenarios/source_1.json"
+        ],
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom"
+        ]
+      }
+    },
+    "revision_profiles": {
+      "status": "partial",
+      "evidence": {
+        "targets": [],
+        "files": [
+          "config/revision_profiles.json",
+          "docs/revision_profiles.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "isolated_experimental_build": {
+      "status": "planned",
+      "evidence": {
+        "targets": [],
+        "files": [],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "authoring_round_trips": {
+      "status": "planned",
+      "evidence": {
+        "targets": [],
+        "files": [
+          "docs/data_formats.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "aggregate_source_2_gate": {
+      "status": "planned",
+      "evidence": {
+        "targets": [],
+        "files": [],
+        "scenarios": [],
+        "artifacts": []
+      }
+    }
+  },
+  "profiles": [
+    {
+      "id": "castle-excellent-japan-hsp-05",
+      "status": "supported",
+      "artifact": "castle-excellent-japan-hsp-05-rom",
+      "identity": "byte-identical",
+      "profile_manifest": "config/revision_profiles.json"
+    },
+    {
+      "id": "castlequest-usa",
+      "status": "planned",
+      "artifact": null,
+      "identity": "reference-identified",
+      "profile_manifest": "config/revision_profiles.json"
+    }
+  ],
+  "runtime_coverage": [
+    {
+      "profile_id": "castle-excellent-japan-hsp-05",
+      "mode": "direct",
+      "manifest": "scenarios/source_1.json",
+      "scenarios": [
+        "boot-gameplay",
+        "title-demo",
+        "idle-timeout",
+        "room-transition",
+        "death-game-over",
+        "completion-ending",
+        "save-load-entry"
+      ]
+    }
+  ],
+  "profile_manifest": "config/revision_profiles.json",
+  "planned_aggregate_gates": {
+    "pre_tag": [
+      "make source-2-pre-tag-check"
+    ],
+    "post_tag": [
+      "make source-2-tag-check"
+    ]
+  },
+  "required_documents": [
+    "docs/source_reconstruction_1_0.md",
+    "docs/source_reconstruction_2_0.md",
+    "docs/revision_profiles.md",
+    "docs/data_formats.md",
+    "docs/verification.md"
+  ],
+  "provenance": {
+    "references": [
+      "docs/provenance.md",
+      "config/revision_profiles.json",
+      "assets/manifest.json"
+    ],
+    "private_inputs_tracked": false
+  }
+}

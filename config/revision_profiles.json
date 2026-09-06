@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "default_profile": "castle-excellent-japan-hsp-05",
+  "profiles": [
+    {
+      "id": "castle-excellent-japan-hsp-05",
+      "name": "Castle Excellent (Japan), HSP-05",
+      "status": "supported",
+      "reference_rom": "Castle Excellent (J).nes",
+      "defines": [],
+      "entrypoint": "src/main.asm",
+      "load_address": "0x8000",
+      "container": "iNES mapper 3 (CNROM), vertical mirroring",
+      "rom_size": 65552,
+      "rom_sha1": "42f7975da9a68a74e141353eb6e2bdc676fc1f77",
+      "rom_sha256": "fd6214cdc441070b9edab74b9c31ad16007bd0873e32c0c883de4544ca69f261",
+      "header_size": 16,
+      "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+      "prg_size": 32768,
+      "prg_sha1": "099b3b7e1b3f335abcd29cd3aa013894d745beb2",
+      "prg_sha256": "f59865b238497a552834c8d57adac7d670962f24bbc222488351bee9cb2c1d27",
+      "chr_size": 32768,
+      "chr_sha1": "e6c57329c079eff1fd7fa66eb1a65dc02f4b5a7a",
+      "chr_sha256": "1c0fcb20ed0af3bdeceea2aed83967f43734627b3b6890a300b7808d3c30f1e5",
+      "asset_policy": "private-user-supplied",
+      "runtime": {
+        "mode": "direct",
+        "manifest": "scenarios/source_1.json"
+      }
+    },
+    {
+      "id": "castlequest-usa",
+      "name": "Castlequest (USA)",
+      "status": "planned",
+      "reference_rom": "Castlequest (U) [!].nes",
+      "defines": [
+        "CASTLEQUEST_USA=1"
+      ],
+      "entrypoint": "src/main.asm",
+      "load_address": "0x8000",
+      "container": "iNES mapper 3 (CNROM), vertical mirroring",
+      "rom_size": 65552,
+      "rom_sha1": "600b0d2ae76722a62b42be02c0b0becd7ff0a178",
+      "rom_sha256": "35815cd107289a8273fb46dd7c49247a8217ca4e2a7f235fef3aa54566d0ba8c",
+      "header_size": 16,
+      "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+      "prg_size": 32768,
+      "prg_sha1": "9acc75fff0142085b451179883def8c304e540f0",
+      "prg_sha256": "8d8ed56dc5f8fde68bb1aba20e3835e1399ddd4dbeef9125d595e001d5beef4a",
+      "chr_size": 32768,
+      "chr_sha1": "7640fc1b2a5eccfe3d2467923cdb083567eea8ee",
+      "chr_sha256": "8fd1d35cdd5b0d5364e744e56c54e8013adf5e2841edd2cedcf4e96a163e0ab6",
+      "asset_policy": "private-user-supplied",
+      "runtime": {
+        "mode": "direct",
+        "manifest": "scenarios/source_2_castlequest.json",
+        "status": "planned"
+      },
+      "difference_from_default": {
+        "prg_changed_bytes": 26,
+        "prg_changed_runs": 11,
+        "chr_changed_bytes": 3567,
+        "chr_changed_runs": 323,
+        "shared_chr_banks": [
+          0,
+          2
+        ]
+      }
+    }
+  ]
+}
