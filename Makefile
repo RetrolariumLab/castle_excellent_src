@@ -11,6 +11,9 @@ LEVEL_PLAYTEST_ROOM ?= 71
 LEVEL_PLAYTEST_X ?= 16
 LEVEL_PLAYTEST_Y ?= 152
 LEVEL_PLAYTEST_RESULT := build/authoring/$(REVISION_PROFILE)/level_playtest.txt
+FIXED_LAYOUT_MANIFEST := config/fixed_layout_variants.json
+FIXED_LAYOUT_VARIANT ?= start-room-1
+FIXED_LAYOUT_RESULT := build/variants/$(FIXED_LAYOUT_VARIANT)/runtime.txt
 VERIFY_ROM := scripts/verify_rom.py
 
 BUILD_DIR := build/native
@@ -158,6 +161,7 @@ TIMEOUT_FRAMES ?= 15000
 	init-levels export-levels validate-levels build-levels roundtrip-levels \
 	level-studio level-editor check-level-studio \
 	smoke-level-playtest \
+	build-fixed-layout verify-fixed-layout check-fixed-layout \
 	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
@@ -274,6 +278,15 @@ check-level-studio: verify-profile
 
 smoke-level-playtest: fceux-bootstrap build-levels
 	$(PYTHON) scripts/level_playtest.py --fceux "$(FCEUX)" --rom "build/authoring/$(REVISION_PROFILE)/levels.nes" --lua scripts/level_playtest.lua --room "$(LEVEL_PLAYTEST_ROOM)" --player-x "$(LEVEL_PLAYTEST_X)" --player-y "$(LEVEL_PLAYTEST_Y)" --result "$(LEVEL_PLAYTEST_RESULT)" --check
+
+build-fixed-layout: build
+	$(PYTHON) scripts/fixed_layout_variant.py build --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
+
+verify-fixed-layout: build
+	$(PYTHON) scripts/fixed_layout_variant.py verify --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
+
+check-fixed-layout: fceux-bootstrap build
+	$(PYTHON) scripts/fixed_layout_variant.py runtime --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)" --fceux "$(FCEUX)" --lua scripts/validate_fixed_layout.lua --result "$(FIXED_LAYOUT_RESULT)"
 
 symbols: $(ROM)
 	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"

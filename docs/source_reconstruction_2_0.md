@@ -38,7 +38,7 @@ number.
 - [x] Map every USA PRG difference to current semantic ownership.
 - [x] Build Castlequest from the shared source and a private profile asset.
 - [ ] Add direct Castlequest startup and menu runtime evidence.
-- [ ] Add an isolated fixed-layout variant and exact allowlist.
+- [x] Add an isolated fixed-layout variant and exact allowlist.
 - [x] Add profile-aware room/object decode and encode workspaces.
 - [x] Prove zero-edit full-container level round trips for both profiles.
 - [x] Move revision-specific binary data into reproducible split assets.
