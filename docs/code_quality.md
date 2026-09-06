@@ -12,9 +12,10 @@ The quality targets follow the same contract as the sibling
   tracked-binary policy
 - `make lint-project` is a compatibility alias for `make lint-source`
 - `make lint` runs every linter
-- `make test` runs the Python unit-test suite
+- `make test` regenerates pinned Ghidra instruction facts, then runs the Python
+  unit-test suite; tests never consume a stale `build/` fact table
 - `make quality-check` runs lint and tests without requiring a reference ROM
-- `make release-check` adds deterministic disassembly, byte-identical ROM,
+- `make check` adds deterministic disassembly, byte-identical ROM,
   room-data, room-screen-data, controller-input, audio-data, and Famicom
   data-I/O, save-payload, mutable-room-cell, and exhaustive coordinate-helper
   verification, plus transition-state, collision-cell/index flag, and runtime-object
@@ -50,7 +51,8 @@ The quality targets follow the same contract as the sibling
   and 107 statically recognizable descriptor selections, plus the complete
   encoded/runtime/update/sprite/collision object-type correlation across all
   783 static and 176 cell-derived room objects
-- `make check` is the full release check
+- `make release-check` performs a clean build, then adds live debugger symbols,
+  fresh Source 1.0 runtime evidence, and the revision 3 release audit
 
 The address-ordered PRG translation unit is split only at boundaries recorded
 in `config/source_layout.json`. Proven ranges move into named modules while

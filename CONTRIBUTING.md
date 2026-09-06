@@ -5,10 +5,23 @@ The permanent target is a byte-identical reconstruction of the Japanese
 
 ```bash
 make format
-make check REFERENCE_ROM="Castle Excellent (J).nes"
+make release-check REFERENCE_ROM="Castle Excellent (J).nes"
 ```
 
 Until private assets have been initialized, use `make scaffold-check`.
+
+Commit subjects and bodies are written in English. A subject names the completed
+result and has no trailing period; after a blank line, two or three paragraphs
+describe the affected boundary, the reason and evidence, and the checks that
+passed. A Codex-assisted commit ends, after another blank line, with exactly:
+
+```text
+Co-Authored-By: Codex <noreply@openai.com>
+```
+
+Do not rewrite `main`. Any draft-history rewrite is prepared on `rewrite/*`
+only after the owner approves an explicit old-to-new commit map, and promotion
+or tag publication requires a second explicit approval.
 
 Do not commit ROM images, extracted header/PRG/CHR regions, build products,
 emulator states, or third-party research clones. Keep address order until a

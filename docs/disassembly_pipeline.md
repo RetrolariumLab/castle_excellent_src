@@ -53,7 +53,8 @@ make disassembly-check # reproduce in memory and require an exact source match
 make trace-boot        # capture CDL and require static/runtime code agreement
 make format            # normalize repository text and JSON
 make lint              # reject stale formatting or source-contract violations
-make check             # full analysis, tests, build, identity, and room gate
+make check             # fast static analysis, tests, identity, and subsystem gate
+make release-check     # clean build plus live symbols, runtime, and release audit
 ```
 
 ## Output rules

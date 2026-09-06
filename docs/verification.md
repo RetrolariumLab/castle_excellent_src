@@ -37,10 +37,11 @@ payload, full image, and extracted CHR.
 | `validate-player-input-movement` | exact 940-byte range and main-loop caller, three synthetic collision calls, exhaustive action/button state, both directions over 16-bit X, action bounds, and all runtime types |
 | `validate-player-object-push` | exact 455-byte range, six handler entries and direct caller, twelve collision calls, exhaustive 16-bit movement/bounds, motion states, collision ordering, and obstruction types |
 | `validate-object-dispatch` | 42 exact update pointers, all 24 six-byte records, exact pushable/lift/Flying Block/walking-enemy/Knight/Fairy/Fighter/Flame/Witch/arrow hashes, relevant handler entries, collision and call topology, cadence, widths, slot conversion, movement boundaries, projectile/summon creation, axis tracking, and cleanup rules |
-| `release-check` | lint, tests, source regeneration, ROM, room, screen, input, audio data/selection/stream/sound-effect engines, camera/divider/palette-upload behavior, data-I/O, save-payload, title/sub-command behavior, mutable-cell action/coordinate, castle navigation and boundary transitions, shared room-cell sample addressing, outgoing object-state save, animated-cell displacement, collectible score/life and six-counter inventory-pickup effects, type `$9F` and `$81/$82` collision effects, typed unreferenced NMI-task and object-clear-tail bytes, unreferenced runtime-only collision sampling, game-over/completion routes, screen/room palettes, PRG-tail tile tables and vectors, player collision sampling/dispatch and hazard/protection, object proximity/span, transient-object lifecycles, object collision filters, combined and room-only point sampling, overlap scan, pause input, collision flags/dimensions, directional collision-handler matrices, frame sprites, metasprite composition/data, unified object catalog, transition, collision-cell/index, object-dispatch, new-game, room-runtime, room-cell-animation, and HUD-format checks |
-| `check` | alias for `release-check` |
-| `source-1-check` | `check`, live debugger symbols, fresh seven-scenario runtime evidence, and the Source 1.0 manifest audit |
-| `source-1-tag-check` | the full candidate gate plus clean `main` and an annotated `source-reconstruction-1.0` tag at `HEAD` |
+| `check` | fast aggregate of lint, tests, deterministic source regeneration, byte identity, symbols, and all static subsystem/format validators |
+| `release-check` | remove `build/`, verify private inputs and build tools before use, run `check`, validate live debugger symbols, freshly capture the seven declared runtime scenarios from the source-built image, and audit revision 3 release metadata on a clean tree |
+| `source-1-check` | compatibility alias for `release-check` |
+| `source-1-pre-tag-check` | full gate plus `tag-ready` status, clean tree, absent local/remote future tag, and release-history policy |
+| `source-1-tag-check` | full gate plus clean tree and an annotated `source-reconstruction-1.0` tag peeled to `HEAD` |
 
 Focused region targets compare only their named output region. For example,
 `verify-prg` can prove that the source-only PRG reconstruction is correct while

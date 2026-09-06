@@ -67,10 +67,11 @@ by one short scenario may be valid code on another room, ending, save/load, or
 error path.
 
 `make runtime-check` repeats analysis of the existing baseline CDL without
-launching the emulator. `make source-1-check` runs the complete static gate,
-live debugger-symbol validation, the fresh seven-scenario suite, and the
-declarative release audit. `make source-1-tag-check` additionally requires a
-clean `main` with an annotated `source-reconstruction-1.0` tag at `HEAD`.
+launching the emulator. `make trace` captures the complete suite. `make
+release-check` starts by deleting `build/`, then runs the static gate, live
+debugger-symbol validation, the fresh seven-scenario suite, and the declarative
+release audit. `make source-1-pre-tag-check` adds manifest, history, and future
+tag checks; `make source-1-tag-check` validates an annotated tag at `HEAD`.
 
 ## Evidence limits
 

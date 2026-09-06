@@ -240,8 +240,9 @@ evidence, and tested decoders for game data.
 - `scripts/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
-- `make format`, `make lint`, 549 unit tests, reproducible disassembly checks,
-  byte identity, and decoding all rooms form the `make check` gate.
+- `make format`, `make lint`, 558 unit tests, reproducible disassembly checks,
+  byte identity, and all static subsystem validators form the fast `make check`
+  gate.
 - A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
   rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
 - `make trace-source-1` freshly captures seven deterministic paths on the
@@ -290,7 +291,7 @@ Place a legally obtained matching ROM in the project root, then run:
 make inspect REFERENCE_ROM="Castle Excellent (J).nes"
 make split REFERENCE_ROM="Castle Excellent (J).nes"
 make disassemble REFERENCE_ROM="Castle Excellent (J).nes"
-make check REFERENCE_ROM="Castle Excellent (J).nes"
+make release-check REFERENCE_ROM="Castle Excellent (J).nes"
 ```
 
 `make inspect` prints the complete hashes for checking another dump.
@@ -308,9 +309,12 @@ make trace-title    # capture an independent title/attract-mode CDL
 make trace-timeout  # capture an idle game through timeout/death paths
 make trace-suite    # run and merge the baseline boot/title/timeout suite
 make trace-source-1 # run the seven-scenario Source 1.0 runtime matrix
+make trace          # stable alias for the Source 1.0 runtime matrix
 make release-audit  # reconcile the declarative Source 1.0 manifest
-make source-1-check # run the complete fresh Source 1.0 candidate gate
-make source-1-tag-check # require a clean tagged main after the candidate gate
+make release-check  # clean build, static checks, live symbols, runtime, and audit
+make source-1-check # compatibility alias for the complete Source 1.0 gate
+make source-1-pre-tag-check # require tag-ready metadata and compliant history
+make source-1-tag-check # verify the complete gate and annotated tag at HEAD
 make reconstruction-check # static checks plus a fresh emulator trace
 make reconstruction-audit # enforce semantic-module ownership and naming
 make player-input-movement # inspect player motion and action contracts
@@ -323,14 +327,14 @@ make format-check   # check ca65 style without changing source files
 make lint-asm       # check the shared ca65 source-style contract
 make lint-source    # check structure, manifests, and binary policy
 make lint           # run every formatting and project linter
-make test           # run the complete Python unit-test suite
+make test           # regenerate Ghidra facts, then run every Python unit test
 make quality-check  # lint and tests without requiring a reference ROM
 make split           # validate and extract private header/PRG/CHR regions
 make build           # assemble the complete iNES image from PRG source + CHR
 make verify-prg      # compare built and original PRG with CPU-address diagnostics
 make verify          # validate and compare every ROM region and extracted asset
 make rom-info        # print and validate original and built image identities
-make release-check   # quality, source regeneration, ROM, room, screen, input, and audio checks
+make check           # fast static quality, source, identity, and subsystem checks
 make rooms           # decode all 100 rooms as JSON
 make validate-rooms  # decode every room without writing JSON
 make audio           # inspect music track sets and textual streams as JSON

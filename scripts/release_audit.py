@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -25,6 +26,15 @@ else:
 
 ROOT = Path(__file__).resolve().parent.parent
 UNKNOWN_ID_RE = re.compile(r"^### ([A-Z]+-[0-9]+) - ", re.MULTILINE)
+CONTRACT_SCHEMA = "retrolarium.source_reconstruction_release_contract"
+RELEASE_STATUSES = {"development", "tag-ready", "tagged"}
+REQUIREMENT_STATUSES = {
+    "satisfied",
+    "not_applicable",
+    "partial",
+    "unsupported",
+    "planned",
+}
 
 
 class ReleaseAuditError(ValueError):
@@ -62,14 +72,33 @@ def tool_version(path: Path) -> str:
     return (result.stdout + result.stderr).strip()
 
 
+def digest(path: Path, algorithm: str = "sha256") -> str:
+    checksum = hashlib.new(algorithm)
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            checksum.update(block)
+    return checksum.hexdigest()
+
+
+def make_targets(makefile: str) -> set[str]:
+    return {
+        match.group(1)
+        for match in re.finditer(r"^([A-Za-z0-9][A-Za-z0-9_.-]*)\s*:", makefile, re.MULTILINE)
+    }
+
+
 def validate_reference_contract(
     release: dict[str, Any], assets: dict[str, Any]
 ) -> list[str]:
     expected = release["reference"]
     actual = assets["reference_rom"]
     comparisons = {
+        "ROM SHA-256": (expected["rom_sha256"], actual["file_sha256"]),
         "ROM SHA-1": (expected["rom_sha1"], actual["file_sha1"]),
+        "header SHA-256": (expected["header_sha256"], actual["header_sha256"]),
+        "PRG SHA-256": (expected["prg_sha256"], actual["prg_sha256"]),
         "PRG SHA-1": (expected["prg_sha1"], actual["prg_sha1"]),
+        "CHR SHA-256": (expected["chr_sha256"], actual["chr_sha256"]),
         "CHR SHA-1": (expected["chr_sha1"], actual["chr_sha1"]),
         "mapper": (expected["mapper"], actual["mapper"]),
         "mirroring": (expected["mirroring"], actual["mirroring"]),
@@ -79,6 +108,309 @@ def validate_reference_contract(
         for name, (left, right) in comparisons.items()
         if left != right
     ]
+
+
+def validate_manifest_contract(
+    project_root: Path, release: dict[str, Any], makefile: str
+) -> list[str]:
+    errors: list[str] = []
+    contract = release.get("contract", {})
+    expected_contract = {
+        "schema": CONTRACT_SCHEMA,
+        "version": 3,
+        "release_line": "1.0",
+    }
+    for key, expected in expected_contract.items():
+        if contract.get(key) != expected:
+            errors.append(f"contract {key} must be {expected!r}")
+
+    release_identity = release.get("release", {})
+    if release_identity != {"name": "Source Reconstruction 1.0", "version": "1.0"}:
+        errors.append("release identity must name Source Reconstruction 1.0 version 1.0")
+    if release.get("release_kind") != "preservation":
+        errors.append("release_kind must be preservation")
+    if release.get("tag") != "source-reconstruction-1.0":
+        errors.append("release tag must be source-reconstruction-1.0")
+    if release.get("status") not in RELEASE_STATUSES:
+        errors.append("release status is invalid")
+
+    predecessor = release.get("predecessor", {})
+    if any(predecessor.get(key) is not None for key in ("manifest", "tag", "commit")):
+        errors.append("the first Source 1.0 release must not claim a predecessor")
+    if not predecessor.get("reason"):
+        errors.append("the absent predecessor requires a reason")
+
+    if not release.get("included_scope"):
+        errors.append("included_scope is empty")
+    excluded = release.get("excluded_scope", [])
+    excluded_ids = {item.get("id") for item in excluded if isinstance(item, dict)}
+    if "castlequest-and-regional-profiles" not in excluded_ids:
+        errors.append("regional profiles are not explicitly excluded")
+    if not release.get("delta"):
+        errors.append("first-release delta is empty")
+
+    targets = make_targets(makefile)
+    artifact_ids = {
+        item.get("id") for item in release.get("artifacts", []) if isinstance(item, dict)
+    }
+    coverage = release.get("runtime_coverage", [])
+    scenario_ids = {
+        scenario
+        for item in coverage
+        if isinstance(item, dict)
+        for scenario in item.get("scenarios", [])
+    }
+    requirements = release.get("requirements", {})
+    if not requirements:
+        errors.append("requirements registry is empty")
+    for requirement_id, requirement in requirements.items():
+        status = requirement.get("status")
+        if status not in REQUIREMENT_STATUSES:
+            errors.append(f"requirement {requirement_id} has invalid status {status!r}")
+        evidence = requirement.get("evidence", {})
+        if status == "satisfied" and not any(evidence.get(kind) for kind in ("targets", "files", "scenarios", "artifacts")):
+            errors.append(f"requirement {requirement_id} has no evidence")
+        for target in evidence.get("targets", []):
+            if target not in targets:
+                errors.append(f"requirement {requirement_id} names missing target: {target}")
+        for relative in evidence.get("files", []):
+            if not (project_root / relative).is_file():
+                errors.append(f"requirement {requirement_id} names missing file: {relative}")
+        for scenario in evidence.get("scenarios", []):
+            if scenario not in scenario_ids:
+                errors.append(f"requirement {requirement_id} names unknown scenario: {scenario}")
+        for artifact in evidence.get("artifacts", []):
+            if artifact not in artifact_ids:
+                errors.append(f"requirement {requirement_id} names unknown artifact: {artifact}")
+
+    supported = {
+        item.get("id")
+        for item in release.get("profiles", [])
+        if isinstance(item, dict) and item.get("status") == "supported"
+    }
+    covered = {
+        item.get("profile_id")
+        for item in coverage
+        if isinstance(item, dict) and item.get("mode") in {"direct", "runtime_equivalent_to"}
+    }
+    if not supported:
+        errors.append("no supported release profile is declared")
+    if supported - covered:
+        errors.append(f"supported profiles lack runtime coverage: {sorted(supported - covered)}")
+    for item in coverage:
+        if item.get("mode") != "direct":
+            errors.append(f"Source 1.0 profile {item.get('profile_id')} must use direct runtime coverage")
+
+    gates = release.get("aggregate_gates", {})
+    for phase in ("pre_tag", "post_tag"):
+        commands = gates.get(phase, [])
+        if not commands:
+            errors.append(f"aggregate_gates.{phase} is empty")
+        for command in commands:
+            parts = command.split()
+            if len(parts) != 2 or parts[0] != "make" or parts[1] not in targets:
+                errors.append(f"aggregate_gates.{phase} has invalid command: {command}")
+
+    for deviation in release.get("layout_deviations", []):
+        for field in ("rule_id", "actual_path", "reason", "equivalent_control"):
+            if not deviation.get(field):
+                errors.append(f"layout deviation is missing {field}")
+    categories = {
+        item.get("category")
+        for item in release.get("licensing", [])
+        if isinstance(item, dict)
+    }
+    required_categories = {
+        "project_authored_material",
+        "reconstructed_game_source",
+        "bundled_external_tools",
+        "external_tools",
+        "private_user_supplied_inputs",
+    }
+    if categories != required_categories:
+        errors.append("licensing does not classify every required component category")
+    if release.get("provenance", {}).get("private_inputs_tracked") is not False:
+        errors.append("provenance must declare private_inputs_tracked false")
+    return errors
+
+
+def validate_scenario_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    path = project_root / release["runtime"]["scenarios_manifest"]
+    document = load_json(path)
+    scenarios = document.get("scenarios", [])
+    declared = release["runtime_coverage"][0]
+    if document.get("profile_id") != declared["profile_id"]:
+        errors.append("scenario manifest profile does not match runtime coverage")
+    ids = [item.get("id") for item in scenarios if isinstance(item, dict)]
+    if len(ids) != len(set(ids)):
+        errors.append("scenario manifest contains duplicate IDs")
+    if ids != declared["scenarios"]:
+        errors.append("scenario manifest IDs/order do not match runtime coverage")
+    for scenario in scenarios:
+        scenario_id = scenario.get("id", "<missing>")
+        for field in ("capture", "maximum_frames", "start_condition", "expected_result", "required_hooks", "controlled_patches"):
+            if field not in scenario:
+                errors.append(f"scenario {scenario_id} is missing {field}")
+        capture = scenario.get("capture")
+        if capture and not (project_root / capture).is_file():
+            errors.append(f"scenario {scenario_id} capture is missing: {capture}")
+        if int(scenario.get("maximum_frames", 0)) <= 0:
+            errors.append(f"scenario {scenario_id} has no positive frame budget")
+    return errors
+
+
+def validate_artifacts(project_root: Path, release: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    for artifact in release.get("artifacts", []):
+        path = project_root / artifact["path"]
+        if not path.is_file():
+            errors.append(f"release artifact is missing: {artifact['path']}")
+            continue
+        if path.stat().st_size != artifact["size"]:
+            errors.append(f"release artifact size mismatch: {artifact['id']}")
+        for algorithm in ("sha1", "sha256"):
+            if digest(path, algorithm) != artifact[algorithm]:
+                errors.append(f"release artifact {algorithm} mismatch: {artifact['id']}")
+    return errors
+
+
+def validate_build_toolchain(project_root: Path, release: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    components = release["toolchain"].get("components", [])
+    by_id = {item["id"]: item for item in components}
+    for component_id in ("ca65", "ld65"):
+        component = by_id.get(component_id)
+        if component is None:
+            errors.append(f"build toolchain component is missing: {component_id}")
+            continue
+        path = project_root / component["binary"]
+        if not path.is_file():
+            errors.append(f"toolchain binary is missing: {component['binary']}")
+            continue
+        if path.stat().st_size != component["binary_size"]:
+            errors.append(f"toolchain binary size mismatch: {component_id}")
+        if digest(path) != component["binary_sha256"]:
+            errors.append(f"toolchain binary SHA-256 mismatch: {component_id}")
+        actual = tool_version(path)
+        if component["version"] not in actual:
+            errors.append(f"unexpected {component_id} version: {actual!r}")
+    return errors
+
+
+def validate_toolchain(project_root: Path, release: dict[str, Any]) -> list[str]:
+    errors = validate_build_toolchain(project_root, release)
+    components = release["toolchain"].get("components", [])
+    ids = [item.get("id") for item in components]
+    if set(ids) != {"ca65", "ld65", "ghidra", "ghidranes", "fceux"}:
+        errors.append("toolchain component set is incomplete")
+    for component in components:
+        component_id = component["id"]
+        if not component.get("version") or not component.get("source"):
+            errors.append(f"toolchain component {component_id} lacks version/source")
+        binary = component.get("binary")
+        if binary and component_id not in {"ca65", "ld65"}:
+            path = project_root / binary
+            if not path.is_file():
+                errors.append(f"toolchain binary is missing: {binary}")
+                continue
+            if path.stat().st_size != component["binary_size"]:
+                errors.append(f"toolchain binary size mismatch: {component_id}")
+            if digest(path) != component["binary_sha256"]:
+                errors.append(f"toolchain binary SHA-256 mismatch: {component_id}")
+    hosts = release["toolchain"].get("hosts", [])
+    if not hosts or not any(host.get("supported_status") == "supported" for host in hosts):
+        errors.append("toolchain has no supported host contract")
+
+    by_id = {item["id"]: item for item in components}
+    disassembly_lock = load_json(project_root / "tools" / "disassembly.lock.json")
+    lock_pairs = (("ghidra", "ghidra"), ("ghidranes", "nes_loader"))
+    for component_id, lock_id in lock_pairs:
+        component = by_id.get(component_id, {})
+        locked = disassembly_lock.get(lock_id, {})
+        if component.get("version") != locked.get("version"):
+            errors.append(f"{component_id} version differs from disassembly lock")
+        if component.get("archive_sha256") != locked.get("sha256"):
+            errors.append(f"{component_id} archive SHA-256 differs from disassembly lock")
+        if component.get("source_commit") != locked.get("commit"):
+            errors.append(f"{component_id} source commit differs from disassembly lock")
+
+    runtime_lock = load_json(project_root / "tools" / "runtime.lock.json")["fceux"]
+    fceux = by_id.get("fceux", {})
+    executable = next(
+        (item for item in runtime_lock["files"] if item["install"] == "fceux64.exe"),
+        {},
+    )
+    if fceux.get("source_commit") != runtime_lock.get("commit"):
+        errors.append("FCEUX source commit differs from runtime lock")
+    if fceux.get("binary_size") != executable.get("size"):
+        errors.append("FCEUX binary size differs from runtime lock")
+    if fceux.get("binary_sha256") != executable.get("sha256"):
+        errors.append("FCEUX binary SHA-256 differs from runtime lock")
+    return errors
+
+
+def validate_commit_history(project_root: Path, release: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    predecessor = release["predecessor"].get("commit")
+    revision_range = f"{predecessor}..HEAD" if predecessor else "HEAD"
+    result = subprocess.run(
+        ["git", "log", "--reverse", "--format=%H%x1f%B%x1e", revision_range],
+        cwd=project_root,
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    expected_trailer = "Co-Authored-By: Codex <noreply@openai.com>"
+    for record in result.stdout.split("\x1e"):
+        record = record.strip()
+        if not record:
+            continue
+        commit, separator, message = record.partition("\x1f")
+        if not separator:
+            errors.append("cannot parse commit history record")
+            continue
+        lines = message.strip().splitlines()
+        subject = lines[0] if lines else ""
+        short = commit[:12]
+        if not subject or subject.endswith(".") or not subject.isascii():
+            errors.append(f"commit {short} has an invalid English subject")
+        if lines[-1:] != [expected_trailer]:
+            errors.append(f"commit {short} lacks the exact Codex co-author trailer")
+            body_lines = lines[2:]
+        else:
+            body_lines = lines[2:-2] if len(lines) >= 3 and lines[-2] == "" else lines[2:-1]
+        paragraphs = [part for part in "\n".join(body_lines).split("\n\n") if part.strip()]
+        if len(paragraphs) not in {2, 3}:
+            errors.append(f"commit {short} must have two or three body paragraphs")
+    return errors
+
+
+def validate_pre_tag(project_root: Path, release: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if release.get("status") != "tag-ready":
+        errors.append("pre-tag audit requires manifest status tag-ready")
+    if git_lines(project_root, "status", "--porcelain"):
+        errors.append("pre-tag audit requires a clean worktree")
+    tag = release["tag"]
+    local = subprocess.run(
+        ["git", "show-ref", "--verify", "--quiet", f"refs/tags/{tag}"],
+        cwd=project_root,
+        check=False,
+    )
+    if local.returncode == 0:
+        errors.append(f"future release tag already exists locally: {tag}")
+    remotes = git_lines(project_root, "remote")
+    if remotes:
+        remote = remotes[0]
+        remote_tags = git_lines(
+            project_root, "ls-remote", "--tags", remote, f"refs/tags/{tag}"
+        )
+        if remote_tags:
+            errors.append(f"future release tag already exists on {remote}: {tag}")
+    errors.extend(validate_commit_history(project_root, release))
+    return errors
 
 
 def validate_runtime_contract(
@@ -130,11 +462,20 @@ def validate_runtime_contract(
 
 
 def validate_release(
-    project_root: Path, manifest_path: Path, require_tag: bool = False
+    project_root: Path,
+    manifest_path: Path,
+    require_tag: bool = False,
+    pre_tag: bool = False,
+    require_clean: bool = False,
 ) -> list[str]:
     release = load_json(manifest_path)
     assets = load_json(project_root / "assets" / "manifest.json")
-    errors = validate_reference_contract(release, assets)
+    makefile = (project_root / "Makefile").read_text(encoding="utf-8")
+    errors = validate_manifest_contract(project_root, release, makefile)
+    errors.extend(validate_reference_contract(release, assets))
+    errors.extend(validate_scenario_manifest(project_root, release))
+    errors.extend(validate_artifacts(project_root, release))
+    errors.extend(validate_toolchain(project_root, release))
 
     try:
         module_count, semantic_bytes, total_bytes = audit_layout(
@@ -229,23 +570,20 @@ def validate_release(
         if normalized.startswith("src/preservation/"):
             errors.append(f"preservation source remains tracked: {relative}")
 
-    makefile = (project_root / "Makefile").read_text(encoding="utf-8")
     for target in release["release_commands"]:
         if re.search(rf"^{re.escape(target)}\s*:", makefile, re.MULTILINE) is None:
             errors.append(f"release command has no Make target: {target}")
 
-    for tool in ("ca65", "ld65"):
-        actual = tool_version(project_root / "bin" / f"{tool}.exe")
-        if release["toolchain"][tool] not in actual:
-            errors.append(f"unexpected {tool} version: {actual!r}")
+    if require_clean and git_lines(project_root, "status", "--porcelain"):
+        errors.append("release audit requires a clean worktree")
+
+    if pre_tag:
+        errors.extend(validate_pre_tag(project_root, release))
 
     if require_tag:
         if git_lines(project_root, "status", "--porcelain"):
             errors.append("release-tag audit requires a clean worktree")
-        branch = git_lines(project_root, "branch", "--show-current")
-        if branch != ["main"]:
-            errors.append("release-tag audit must run on main")
-        tag = release["local_tag"]
+        tag = release["tag"]
         try:
             tag_type = git_lines(project_root, "cat-file", "-t", f"refs/tags/{tag}")
             tag_commit = git_lines(project_root, "rev-parse", f"{tag}^{{commit}}")
@@ -269,11 +607,22 @@ def main() -> int:
         default=ROOT / "config" / "source_reconstruction_1_0.json",
     )
     parser.add_argument("--require-tag", action="store_true")
+    parser.add_argument("--pre-tag", action="store_true")
+    parser.add_argument("--require-clean", action="store_true")
+    parser.add_argument("--build-tools-only", action="store_true")
     args = parser.parse_args()
     try:
-        errors = validate_release(
-            args.project_root.resolve(), args.manifest.resolve(), args.require_tag
-        )
+        if args.build_tools_only:
+            release = load_json(args.manifest.resolve())
+            errors = validate_build_toolchain(args.project_root.resolve(), release)
+        else:
+            errors = validate_release(
+                args.project_root.resolve(),
+                args.manifest.resolve(),
+                args.require_tag,
+                args.pre_tag,
+                args.require_clean,
+            )
     except (OSError, KeyError, TypeError, ValueError, subprocess.CalledProcessError) as exc:
         print(f"[ERROR] {exc}", file=sys.stderr)
         return 1
@@ -282,6 +631,9 @@ def main() -> int:
             print(f"[ERROR] {error}")
         print(f"[FAIL] Source Reconstruction 1.0 audit found {len(errors)} error(s)")
         return 1
+    if args.build_tools_only:
+        print("[OK] pinned ca65 and ld65 binaries match the release manifest")
+        return 0
     print(
         "[OK] Source Reconstruction 1.0 source, ROM, tools, debugger, "
         "runtime, docs, and repository policy agree"

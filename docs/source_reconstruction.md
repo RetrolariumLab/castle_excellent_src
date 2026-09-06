@@ -647,9 +647,10 @@ unique tile and sprite positions for the entire 10x10 room domain.
 
 `make reconstruction-audit` reports complete semantic PRG ownership and rejects
 generic address labels, raw address operands, and oversized promoted modules.
-`make release-check` runs this audit before deterministic regeneration and
-byte-identical verification. `make source-1-check` adds live debugger symbols,
-fresh seven-scenario runtime evidence, and the active reconstruction manifest.
+`make check` runs this audit with deterministic regeneration, byte-identical
+verification, and all static subsystem contracts. `make release-check` first
+cleans `build/`, then adds live debugger symbols, fresh seven-scenario runtime
+evidence from the source-built image, and the revision 3 release audit.
 
 `docs/unknowns.md` is the active release-facing registry and now contains no
 open Source 1.0 contract questions. The six-byte runtime-object ABI and exact

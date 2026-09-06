@@ -1,7 +1,304 @@
 {
-  "schema_version": 1,
-  "release": "Source Reconstruction 1.0",
-  "local_tag": "source-reconstruction-1.0",
+  "contract": {
+    "schema": "retrolarium.source_reconstruction_release_contract",
+    "version": 3,
+    "release_line": "1.0",
+    "source_document_sha256": "d07f16f12e09c6ea2691e736088f09da5eace82c6a014c774c8a33e52804086d"
+  },
+  "release": {
+    "name": "Source Reconstruction 1.0",
+    "version": "1.0"
+  },
+  "release_kind": "preservation",
+  "tag": "source-reconstruction-1.0",
+  "status": "development",
+  "predecessor": {
+    "manifest": null,
+    "tag": null,
+    "commit": null,
+    "reason": "This is the first accepted source-reconstruction release."
+  },
+  "included_scope": [
+    "canonical-japanese-hsp-05-identity",
+    "complete-prg-source-ownership",
+    "documented-memory-and-subsystem-contracts",
+    "deterministic-disassembly-regeneration",
+    "live-debugger-symbols",
+    "seven-scenario-runtime-baseline",
+    "validated-game-data-formats"
+  ],
+  "excluded_scope": [
+    {
+      "id": "castlequest-and-regional-profiles",
+      "status": "unsupported",
+      "reason": "Regional ROM analysis is intentionally deferred until after Source 1.0."
+    },
+    {
+      "id": "relocation-and-expanded-roms",
+      "status": "planned",
+      "reason": "Relocation is not required for the Preservation Source baseline."
+    },
+    {
+      "id": "general-purpose-authoring-tools",
+      "status": "planned",
+      "reason": "The release validates known formats but does not claim a supported editor."
+    },
+    {
+      "id": "friendly-identity-for-every-runtime-object",
+      "status": "partial",
+      "reason": "The complete six-byte ABI and typed handlers are accepted; speculative identities are not."
+    }
+  ],
+  "delta": [
+    {
+      "id": "source-reconstruction",
+      "kind": "source",
+      "summary": "Reconstruct every byte of the 32 KiB PRG as address-ordered ca65 source with semantic or typed-data ownership.",
+      "evidence": [
+        "config/source_layout.json",
+        "src/main.asm"
+      ]
+    },
+    {
+      "id": "identity-build",
+      "kind": "tooling",
+      "summary": "Build the canonical CNROM image with pinned ca65/ld65 and compare every container region byte-for-byte.",
+      "evidence": [
+        "assets/manifest.json",
+        "config/linker/cnrom.cfg",
+        "verify"
+      ]
+    },
+    {
+      "id": "architecture-and-formats",
+      "kind": "documentation",
+      "summary": "Document source layout, RAM, major subsystems, data formats, naming, provenance, and resolved uncertainty.",
+      "evidence": [
+        "docs/index.md",
+        "docs/source_reconstruction.md"
+      ]
+    },
+    {
+      "id": "debugger-and-runtime-evidence",
+      "kind": "evidence",
+      "summary": "Generate live debugger symbols and capture seven deterministic FCEUX scenarios on the source-built image.",
+      "evidence": [
+        "scenarios/source_1.json",
+        "validate-symbols",
+        "trace"
+      ]
+    },
+    {
+      "id": "release-contract-revision-3",
+      "kind": "tooling",
+      "summary": "Adopt revision 3 machine-readable release metadata and aggregate pre-tag/post-tag audits.",
+      "evidence": [
+        "config/source_reconstruction_1_0.json",
+        "docs/source_reconstruction_1_0.md",
+        "release-check"
+      ]
+    }
+  ],
+  "requirements": {
+    "canonical_entrypoint": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "build"
+        ],
+        "files": [
+          "src/main.asm",
+          "docs/source_layout.md"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom"
+        ]
+      }
+    },
+    "container_layout": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "verify"
+        ],
+        "files": [
+          "config/linker/cnrom.cfg",
+          "docs/architecture.md"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom"
+        ]
+      }
+    },
+    "reproducible_toolchain": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "build-toolchain-status",
+          "ghidra-status",
+          "fceux-status"
+        ],
+        "files": [
+          "tools/disassembly.lock.json",
+          "tools/runtime.lock.json"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "canonical_identity": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "verify"
+        ],
+        "files": [
+          "assets/manifest.json"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom"
+        ]
+      }
+    },
+    "source_navigation_and_memory": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "reconstruction-audit"
+        ],
+        "files": [
+          "docs/index.md",
+          "docs/source_layout.md",
+          "docs/ram_map.md",
+          "docs/subsystems.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "naming_style_debugger": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "lint",
+          "validate-symbols"
+        ],
+        "files": [
+          "docs/naming.md",
+          "docs/debugger_workflow.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "provenance_and_unknowns": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "release-audit"
+        ],
+        "files": [
+          "docs/provenance.md",
+          "docs/unknowns.md",
+          "docs/resolved_unknowns.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "unit_and_format_contracts": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "lint",
+          "test"
+        ],
+        "files": [
+          "CONTRIBUTING.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "deterministic_runtime": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "trace"
+        ],
+        "files": [
+          "docs/runtime_verification.md",
+          "scenarios/source_1.json"
+        ],
+        "scenarios": [
+          "boot-gameplay",
+          "title-demo",
+          "idle-timeout",
+          "room-transition",
+          "death-game-over",
+          "completion-ending",
+          "save-load-entry"
+        ],
+        "artifacts": []
+      }
+    },
+    "aggregate_release_gate": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "release-check"
+        ],
+        "files": [
+          "docs/source_reconstruction_1_0.md"
+        ],
+        "scenarios": [
+          "boot-gameplay",
+          "room-transition",
+          "death-game-over",
+          "completion-ending",
+          "save-load-entry"
+        ],
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom"
+        ]
+      }
+    }
+  },
+  "profiles": [
+    {
+      "id": "castle-excellent-japan-hsp-05",
+      "status": "supported",
+      "artifact": "castle-excellent-japan-hsp-05-rom",
+      "identity": "byte-identical",
+      "container": "iNES mapper 3 (CNROM), vertical mirroring"
+    },
+    {
+      "id": "castlequest-usa",
+      "status": "unsupported",
+      "artifact": null,
+      "identity": "not-evaluated",
+      "reason": "Regional profiles are excluded from Source 1.0."
+    }
+  ],
+  "runtime_coverage": [
+    {
+      "profile_id": "castle-excellent-japan-hsp-05",
+      "mode": "direct",
+      "manifest": "scenarios/source_1.json",
+      "scenarios": [
+        "boot-gameplay",
+        "title-demo",
+        "idle-timeout",
+        "room-transition",
+        "death-game-over",
+        "completion-ending",
+        "save-load-entry"
+      ]
+    }
+  ],
   "scope": {
     "baseline": "Castle Excellent (Japan), HSP-05",
     "deferred": [
@@ -11,15 +308,181 @@
     ]
   },
   "reference": {
+    "rom_sha256": "fd6214cdc441070b9edab74b9c31ad16007bd0873e32c0c883de4544ca69f261",
     "rom_sha1": "42f7975da9a68a74e141353eb6e2bdc676fc1f77",
+    "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+    "prg_sha256": "f59865b238497a552834c8d57adac7d670962f24bbc222488351bee9cb2c1d27",
     "prg_sha1": "099b3b7e1b3f335abcd29cd3aa013894d745beb2",
+    "chr_sha256": "1c0fcb20ed0af3bdeceea2aed83967f43734627b3b6890a300b7808d3c30f1e5",
     "chr_sha1": "e6c57329c079eff1fd7fa66eb1a65dc02f4b5a7a",
     "mapper": 3,
     "mirroring": "vertical"
   },
   "toolchain": {
-    "ca65": "V2.19 - Git 0fca835",
-    "ld65": "V2.19 - Git 0fca835"
+    "components": [
+      {
+        "id": "ca65",
+        "version": "V2.19 - Git 0fca835",
+        "source": "https://github.com/cc65/cc65",
+        "source_commit": "0fca835",
+        "binary": "bin/ca65.exe",
+        "binary_size": 721629,
+        "binary_sha256": "9109d7118ff070e78f031bee4eb776061e56b74e7c8f9f40c70fd6707ea0ac5a",
+        "provenance": "bundled",
+        "verification": "release-audit"
+      },
+      {
+        "id": "ld65",
+        "version": "V2.19 - Git 0fca835",
+        "source": "https://github.com/cc65/cc65",
+        "source_commit": "0fca835",
+        "binary": "bin/ld65.exe",
+        "binary_size": 575874,
+        "binary_sha256": "5f68367a135c578c88744e27ba0b1234604d87ef1ff6294b46fcb031ff984db4",
+        "provenance": "bundled",
+        "verification": "release-audit"
+      },
+      {
+        "id": "ghidra",
+        "version": "12.1.3",
+        "source": "https://github.com/NationalSecurityAgency/ghidra",
+        "source_commit": null,
+        "archive_sha256": "93a5d11a9ad510622acaaf908c556a7b9b764d338e78a7567f3689bf5081fd54",
+        "provenance": "external_unbundled",
+        "verification": "ghidra-status"
+      },
+      {
+        "id": "ghidranes",
+        "version": "v20260531",
+        "source": "https://github.com/kylewlacy/GhidraNes",
+        "source_commit": "4c41964",
+        "archive_sha256": "d73b5671ed12904fc8daeda65ca6910d7e441cca3e2d9d0a19389e7f08b9caf3",
+        "provenance": "external_unbundled",
+        "verification": "ghidra-status"
+      },
+      {
+        "id": "fceux",
+        "version": "oranguthang/fceux_automation",
+        "source": "https://github.com/oranguthang/fceux_automation",
+        "source_commit": "ec507d86c57acd8979547bc35e9627fb199fac9a",
+        "binary": "tools/fceux/fceux64.exe",
+        "binary_size": 5499904,
+        "binary_sha256": "97aadff4970e98a413377810a296c045fab717661dd8270f84d58190f43a232e",
+        "provenance": "external_unbundled",
+        "verification": "fceux-status"
+      }
+    ],
+    "hosts": [
+      {
+        "os": "Microsoft Windows 10.0.26200",
+        "architecture": "x64",
+        "shell": "Windows PowerShell 5.1.26100.9168",
+        "language_versions": {
+          "python": "3.14.6",
+          "java": "Temurin OpenJDK 21.0.11+10 LTS"
+        },
+        "supported_status": "supported"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "id": "castle-excellent-japan-hsp-05-rom",
+      "profile": "castle-excellent-japan-hsp-05",
+      "build_target": "build",
+      "path": "build/native/castle_excellent.nes",
+      "size": 65552,
+      "sha1": "42f7975da9a68a74e141353eb6e2bdc676fc1f77",
+      "sha256": "fd6214cdc441070b9edab74b9c31ad16007bd0873e32c0c883de4544ca69f261",
+      "regions": {
+        "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+        "prg_sha256": "f59865b238497a552834c8d57adac7d670962f24bbc222488351bee9cb2c1d27",
+        "chr_sha256": "1c0fcb20ed0af3bdeceea2aed83967f43734627b3b6890a300b7808d3c30f1e5"
+      }
+    }
+  ],
+  "aggregate_gates": {
+    "pre_tag": [
+      "make source-1-pre-tag-check"
+    ],
+    "post_tag": [
+      "make source-1-tag-check"
+    ]
+  },
+  "layout_deviations": [
+    {
+      "rule_id": "scripts-run-launcher",
+      "actual_path": "scripts/*.py",
+      "reason": "The existing small-project command surface is stable and directly named by action.",
+      "equivalent_control": "Makefile owns all public invocations and the release audit proves every declared target exists."
+    },
+    {
+      "rule_id": "scripts-responsibility-subdirectories",
+      "actual_path": "scripts/",
+      "reason": "Moving the mature flat tooling tree would add path churn without changing responsibility or evidence.",
+      "equivalent_control": "Action-based filenames, top-level tests, and manifest evidence identify build, validation, runtime, and workflow roles."
+    },
+    {
+      "rule_id": "provenance-subdirectory",
+      "actual_path": "docs/provenance.md",
+      "reason": "A single provenance ledger is sufficient for the one supported profile.",
+      "equivalent_control": "The document and machine-readable licensing/provenance records are mandatory release evidence."
+    }
+  ],
+  "licensing": [
+    {
+      "component": "project_tools_and_documentation",
+      "category": "project_authored_material",
+      "origin": "this repository",
+      "license_id_or_status": "license_not_granted",
+      "redistribution": "No project-wide license has been granted.",
+      "notes": "This status is independent from the reconstructed game source and bundled dependencies."
+    },
+    {
+      "component": "reconstructed_game_source",
+      "category": "reconstructed_game_source",
+      "origin": "Castle Excellent (Japan), HSP-05",
+      "license_id_or_status": "license_not_granted",
+      "redistribution": "No license to the original game code or data is claimed.",
+      "notes": "Reconstruction and documentation do not grant rights in the original work."
+    },
+    {
+      "component": "bundled_cc65_binaries",
+      "category": "bundled_external_tools",
+      "origin": "cc65 revision 0fca835",
+      "license_id_or_status": "licensed",
+      "redistribution": "Permitted under the bundled zlib license.",
+      "notes": "See bin/cc65-LICENSE.txt."
+    },
+    {
+      "component": "ghidra_ghidranes_fceux",
+      "category": "external_tools",
+      "origin": "upstream projects named in toolchain.components",
+      "license_id_or_status": "external_unbundled",
+      "redistribution": "Not redistributed by this repository.",
+      "notes": "Installers verify pinned archives or local binaries before use."
+    },
+    {
+      "component": "reference_rom_and_extracted_chr",
+      "category": "private_user_supplied_inputs",
+      "origin": "legally obtained local Castle Excellent image",
+      "license_id_or_status": "private_user_supplied",
+      "redistribution": "Never tracked or published by this project.",
+      "notes": "Only hashes, sizes, and extraction recipes are committed."
+    }
+  ],
+  "provenance": {
+    "references": [
+      "docs/provenance.md",
+      "tools/disassembly.lock.json",
+      "tools/runtime.lock.json",
+      "assets/manifest.json"
+    ],
+    "private_inputs_tracked": false,
+    "history_policy": {
+      "current_history_status": "legacy-draft",
+      "reason": "Commits created before adoption of contract revision 3 use subject-only messages; release history compliance requires an owner-approved rewrite plan."
+    }
   },
   "source": {
     "semantic_prg_bytes": 32768,
@@ -42,6 +505,7 @@
     "suite_report": "build/runtime/source-1-suite.json",
     "minimum_code_bytes": 16488,
     "minimum_instruction_starts": 6876,
+    "scenarios_manifest": "scenarios/source_1.json",
     "scenarios": [
       {
         "name": "boot-gameplay",
@@ -104,6 +568,7 @@
   "required_documents": [
     "README.md",
     "CONTRIBUTING.md",
+    "docs/index.md",
     "docs/architecture.md",
     "docs/data_formats.md",
     "docs/debugger_workflow.md",
@@ -114,6 +579,7 @@
     "docs/runtime_verification.md",
     "docs/source_layout.md",
     "docs/source_reconstruction.md",
+    "docs/source_reconstruction_1_0.md",
     "docs/symbol_map.md",
     "docs/subsystems.md",
     "docs/unknowns.md",
@@ -124,13 +590,16 @@
     "format",
     "lint",
     "test",
-    "check",
+    "verify",
+    "trace",
+    "release-check",
+    "source-1-pre-tag-check",
+    "source-1-tag-check",
     "symbols",
     "validate-symbols",
-    "trace-source-1",
-    "release-audit",
-    "source-1-check",
-    "source-1-tag-check"
+    "reconstruction-audit",
+    "build-toolchain-status",
+    "release-audit"
   ],
   "prohibited_tracked_extensions": [
     ".nes",
