@@ -50,8 +50,10 @@ number.
 - [x] Add fixed-layout graphics, palettes, cell visuals, metasprites, text, and
   sound-effect parameter authoring.
 - [x] Add a visual graphics studio over the canonical headless codec.
-- [ ] Record why a separate world-routing studio is not applicable to this
+- [x] Record why a separate world-routing studio is not applicable to this
   fixed 10 by 10 castle topology.
+- [x] Make Studio checks and point-playtest evidence independent of ignored
+  user workspaces.
 - [ ] Add the Source 2.0 manifest audit and aggregate pre-tag/post-tag gates.
 
 Until every unchecked item passes, the manifest remains `development` and no

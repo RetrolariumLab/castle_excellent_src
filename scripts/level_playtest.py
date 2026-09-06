@@ -10,6 +10,11 @@ import subprocess
 import sys
 
 import level_studio_model
+from project import ProjectError, safe_asset_path
+import revision_profiles
+
+
+ROOT = Path(__file__).resolve().parent.parent
 
 
 class LevelPlaytestError(ValueError):
@@ -118,10 +123,27 @@ def run_check(args: argparse.Namespace) -> None:
     )
 
 
+def resolve_rom(args: argparse.Namespace) -> Path:
+    if args.rom is not None:
+        return args.rom
+    if args.profile is None:
+        raise LevelPlaytestError("provide --rom or --profile")
+    manifest = revision_profiles.load_profiles(args.revisions)
+    profile = revision_profiles.select_profile(manifest, args.profile)
+    try:
+        return safe_asset_path(ROOT, str(profile["output_rom"]))
+    except ProjectError as exc:
+        raise LevelPlaytestError(str(exc)) from exc
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fceux", required=True, type=Path)
-    parser.add_argument("--rom", required=True, type=Path)
+    parser.add_argument("--rom", type=Path)
+    parser.add_argument(
+        "--revisions", type=Path, default=Path("config/revision_profiles.json")
+    )
+    parser.add_argument("--profile")
     parser.add_argument("--lua", required=True, type=Path)
     parser.add_argument("--room", required=True, type=int)
     parser.add_argument("--player-x", type=int, default=16)
@@ -134,6 +156,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     try:
+        args.rom = resolve_rom(args)
         if args.check:
             if args.result is None:
                 raise LevelPlaytestError("--check requires --result")
@@ -147,7 +170,12 @@ def main() -> int:
                 args.player_x,
                 args.player_y,
             )
-    except (OSError, LevelPlaytestError, level_studio_model.LevelStudioModelError) as exc:
+    except (
+        OSError,
+        ProjectError,
+        LevelPlaytestError,
+        level_studio_model.LevelStudioModelError,
+    ) as exc:
         print(f"[ERROR] {exc}", file=sys.stderr)
         return 1
     return 0

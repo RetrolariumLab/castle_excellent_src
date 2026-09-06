@@ -102,6 +102,9 @@ commands. `make check-level-studio` validates the complete display model without
 opening a window, so it is suitable for release gates and headless CI.
 `make smoke-level-playtest REVISION_PROFILE=castlequest-usa` additionally runs
 FCEUX to prove the selected room and player coordinates are observed live.
+`make smoke-baseline-level-playtest` resolves the selected profile's normal
+build directly from `config/revision_profiles.json`; it is the deterministic
+release-gate form and never reads or rewrites a local workspace.
 
 ## Music workspace
 
@@ -180,3 +183,21 @@ before entering the 40-state undo history. Save and Build ROM delegate to the
 same canonical codec as the command line. `make check-graphics-studio` renders
 all 1,024 tiles through the model and validates the complete record set without
 opening a window, for both local release work and headless CI.
+
+All three `check-*-studio` targets decode a fresh workspace from the selected
+manifest build. They deliberately ignore ignored user workspaces, so a local
+experiment cannot weaken or accidentally break the release gate.
+
+## Why there is no World Studio
+
+The four-Studio split in `smb1_src` includes a World Studio because SMB stores
+world-to-area routes and selectable player-physics profiles as editable data.
+Castle Excellent has neither format. Its one-based room number maps directly to
+a fixed 10 by 10 grid; vertical neighbors are plus or minus ten and horizontal
+neighbors are plus or minus one unless the two ten-byte edge tables identify a
+castle boundary. `scripts/room_navigation.py` validates this for all 100 rooms.
+
+Room contents and object placement therefore belong to Level Studio, while
+visual and audio assets belong to Graphics and Sound Studio. Adding an empty
+World Studio or inventing a second routing format would misrepresent the game,
+so the 2.0 manifest records that capability as not applicable.

@@ -30,6 +30,21 @@ class LevelPlaytestTests(unittest.TestCase):
             with self.assertRaisesRegex(level_playtest.LevelPlaytestError, "room"):
                 level_playtest.validate_result(path, 72, 16, 152)
 
+    def test_manifest_profile_resolves_built_rom(self) -> None:
+        args = type(
+            "Arguments",
+            (),
+            {
+                "rom": None,
+                "profile": "castle-excellent-japan-hsp-05",
+                "revisions": ROOT / "config" / "revision_profiles.json",
+            },
+        )()
+        self.assertEqual(
+            level_playtest.resolve_rom(args),
+            ROOT / "build" / "native" / "castle_excellent.nes",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

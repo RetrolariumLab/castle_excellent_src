@@ -344,6 +344,7 @@ make check-level-studio REVISION_PROFILE=castlequest-usa # validate its display 
 make build-levels REVISION_PROFILE=castlequest-usa # build an isolated edited ROM
 make roundtrip-levels REVISION_PROFILE=castlequest-usa # prove zero-edit container identity
 make smoke-level-playtest REVISION_PROFILE=castlequest-usa # enter an authored room in FCEUX
+make smoke-baseline-level-playtest REVISION_PROFILE=castlequest-usa # test the manifest ROM without a workspace
 make init-music REVISION_PROFILE=castlequest-usa # create an ignored textual-music workspace
 make validate-music REVISION_PROFILE=castlequest-usa # validate MML, references, and capacity
 make build-music REVISION_PROFILE=castlequest-usa # build an isolated edited-music ROM

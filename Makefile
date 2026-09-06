@@ -163,7 +163,7 @@ TIMEOUT_FRAMES ?= 15000
 	split-profile build-profile verify-profile castlequest-check castlequest-runtime \
 	init-levels export-levels validate-levels build-levels roundtrip-levels \
 	level-studio level-editor check-level-studio \
-	smoke-level-playtest \
+	smoke-level-playtest smoke-baseline-level-playtest \
 	build-fixed-layout verify-fixed-layout check-fixed-layout \
 	init-music export-music validate-music build-music roundtrip-music \
 	sound-studio music-editor check-sound-studio \
@@ -288,6 +288,9 @@ check-level-studio: verify-profile
 
 smoke-level-playtest: fceux-bootstrap build-levels
 	$(PYTHON) scripts/level_playtest.py --fceux "$(FCEUX)" --rom "build/authoring/$(REVISION_PROFILE)/levels.nes" --lua scripts/level_playtest.lua --room "$(LEVEL_PLAYTEST_ROOM)" --player-x "$(LEVEL_PLAYTEST_X)" --player-y "$(LEVEL_PLAYTEST_Y)" --result "$(LEVEL_PLAYTEST_RESULT)" --check
+
+smoke-baseline-level-playtest: fceux-bootstrap verify-profile
+	$(PYTHON) scripts/level_playtest.py --fceux "$(FCEUX)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --lua scripts/level_playtest.lua --room "$(LEVEL_PLAYTEST_ROOM)" --player-x "$(LEVEL_PLAYTEST_X)" --player-y "$(LEVEL_PLAYTEST_Y)" --result "$(LEVEL_PLAYTEST_RESULT)" --check
 
 build-fixed-layout: build
 	$(PYTHON) scripts/fixed_layout_variant.py build --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"

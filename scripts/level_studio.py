@@ -665,7 +665,11 @@ def load_studio(args: argparse.Namespace) -> tuple[
 
 
 def check_studio(args: argparse.Namespace) -> None:
-    config, _profile, _revision, image, prg, chr_data, _path, document = load_studio(args)
+    config, _profile = level_editor.load_authoring(Path(args.authoring), args.profile)
+    _revision, image, prg, chr_data = level_editor.load_base_image(
+        Path(args.revisions), args.profile
+    )
+    document = level_editor.decode_workspace(args.profile, prg, chr_data)
     rooms = level_editor.validate_workspace(document, args.profile, prg)
     level_editor.compose_levels(image, prg, chr_data, rooms, config)
     tiles = studio_model.decode_chr_bank(chr_data)

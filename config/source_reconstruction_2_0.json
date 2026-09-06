@@ -45,6 +45,11 @@
       "id": "sibling-engine-reconstruction",
       "status": "unsupported",
       "reason": "The Castle and non-NES engines require a separate major architectural decision."
+    },
+    {
+      "id": "world-routing-studio",
+      "status": "not_applicable",
+      "reason": "Castle Excellent maps one-based room numbers directly onto a fixed 10 by 10 grid and has no world-to-level route format or selectable physics profiles."
     }
   ],
   "delta": [
@@ -152,6 +157,19 @@
       ]
     },
     {
+      "id": "deterministic-authoring-checks",
+      "kind": "authoring-runtime",
+      "summary": "Run every Studio check from a freshly decoded manifest baseline and resolve point-playtest ROMs from the revision profile instead of depending on ignored local workspaces.",
+      "evidence": [
+        "scripts/level_studio.py",
+        "scripts/sound_studio.py",
+        "scripts/graphics_studio.py",
+        "scripts/level_playtest.py",
+        "tests/test_level_playtest.py",
+        "docs/content_authoring.md"
+      ]
+    },
+    {
       "id": "fixed-layout-start-room-variant",
       "kind": "experimental-build",
       "summary": "Build a one-byte starting-room variant under an exact changed-byte allowlist and observe the replacement through the normal boot path in pinned FCEUX.",
@@ -227,7 +245,7 @@
           "validate-levels",
           "build-levels",
           "check-level-studio",
-          "smoke-level-playtest",
+          "smoke-baseline-level-playtest",
           "roundtrip-music",
           "validate-music",
           "build-music",
@@ -249,6 +267,22 @@
           "castle-excellent-japan-hsp-05-rom",
           "castlequest-usa-rom"
         ]
+      }
+    },
+    "world_route_authoring": {
+      "status": "not_applicable",
+      "reason": "The fixed 10 by 10 room topology has no independently stored world-route or physics-profile content to author.",
+      "excluded_scope": "world-routing-studio",
+      "evidence": {
+        "targets": [
+          "validate-room-navigation"
+        ],
+        "files": [
+          "docs/content_authoring.md",
+          "scripts/room_navigation.py"
+        ],
+        "scenarios": [],
+        "artifacts": []
       }
     },
     "aggregate_source_2_gate": {

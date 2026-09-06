@@ -744,7 +744,11 @@ def load_studio(args: argparse.Namespace) -> tuple[
 
 
 def check_studio(args: argparse.Namespace) -> None:
-    _profile, image, prg, chr_data, _path, document = load_studio(args)
+    graphics_editor.load_authoring(Path(args.authoring), args.profile)
+    _revision, image, prg, chr_data = graphics_editor.load_base_image(
+        Path(args.revisions), args.profile
+    )
+    document = graphics_editor.decode_workspace(args.profile, prg, chr_data)
     summary = studio_model.summarize(document, args.profile)
     validated = graphics_editor.validate_workspace(document, args.profile)
     graphics_editor.compose_graphics(image, prg, chr_data, validated)

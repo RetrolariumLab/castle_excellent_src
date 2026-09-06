@@ -370,7 +370,11 @@ def load_studio(args: argparse.Namespace) -> tuple[
 
 
 def check_studio(args: argparse.Namespace) -> None:
-    _profile, image, prg, chr_data, _path, document = load_studio(args)
+    music_editor.load_authoring(Path(args.authoring), args.profile)
+    _revision, image, prg, chr_data = music_editor.load_base_image(
+        Path(args.revisions), args.profile
+    )
+    document = music_editor.decode_workspace(args.profile, prg)
     summary = studio_model.summarize(document, args.profile)
     validated = music_editor.validate_workspace(document, args.profile)
     music_editor.compose_music(image, prg, chr_data, validated)
