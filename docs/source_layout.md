@@ -133,9 +133,9 @@ The source is one canonical address-ordered PRG translation unit:
 | `src/memory/hardware.inc` | no bytes | NES register aliases |
 | `src/memory/ram.inc` | no bytes | evidence-backed RAM aliases |
 
-The 115 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
+The 124 PRG sources contain no CHR data and no `.incbin`. Their boundaries are
 machine-checked from `config/source_layout.json`; the first file includes the
-following 114 in CPU-address order. Ghidra-defined instructions are emitted
+following 123 in CPU-address order. Ghidra-defined instructions are emitted
 mnemonically and all other ranges use `.byte`. Static direct branch, jump, and
 call operands are labels. Because Ghidra cannot represent overlapping
 instructions, 38 entry points inside an existing instruction are preserved as

@@ -39,7 +39,7 @@ ClearCurrentRuntimeObject:
     STA RuntimeObjectXHi,X
     STA RuntimeObjectY,X
     STA RuntimeObjectState,X
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectAux,X
 
 ReturnFromTransientObjectUpdate:
     RTS
@@ -53,6 +53,6 @@ UpdateRuntimeObjectType41:
     DEC RuntimeObjectY,X
 
 TickRuntimeObjectType41Lifetime:
-    DEC RuntimeObjectByte5,X
+    DEC RuntimeObjectCollectedLifetime,X
     BEQ ClearCurrentRuntimeObject
     RTS

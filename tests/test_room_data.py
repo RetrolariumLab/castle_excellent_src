@@ -37,6 +37,14 @@ class CodebookTests(unittest.TestCase):
         with self.assertRaisesRegex(room_data.RoomDataError, "prefix-free"):
             room_data.validate_codebook([(1, "0"), (2, "01")])
 
+    def test_encoder_uses_one_bits_for_partial_byte_padding(self) -> None:
+        encoded, padding = room_data.encode_prefix_stream(
+            bytes((0x11, 0x22, 0x33, 0x11)),
+            [(0x11, "0"), (0x22, "10"), (0x33, "11")],
+        )
+        self.assertEqual(encoded, bytes((0b01011011,)))
+        self.assertEqual(padding, 2)
+
 
 class RoomTests(unittest.TestCase):
     def test_room_bank_split(self) -> None:
@@ -49,6 +57,29 @@ class RoomTests(unittest.TestCase):
         self.assertEqual((bank, offset), (2, 0x123))
         _stream, bank, offset = room_data.room_stream(bytes(prg), chr_data, 67)
         self.assertEqual((bank, offset), (3, 0x456))
+
+    def test_stream_layout_requires_gapless_bank_local_intervals(self) -> None:
+        prg = bytearray(32_768)
+        put_cpu(prg, room_data.CODEBOOK_CPU, b"\x11" b"0\0" b"\xff")
+        table = room_data.cpu_offset(room_data.ROOM_POINTERS_CPU)
+        chr_data = bytearray(b"\xff" * (4 * room_data.CHR_BANK_SIZE))
+        offsets = {2: 0, 3: 0}
+        for room_index in range(room_data.ROOM_COUNT):
+            bank = 2 if room_index < room_data.ROOM_BANK_SPLIT else 3
+            offset = offsets[bank]
+            prg[table + room_index * 2:table + room_index * 2 + 2] = (
+                offset.to_bytes(2, "little")
+            )
+            start = bank * room_data.CHR_BANK_SIZE + offset
+            chr_data[start:start + 50] = bytes(50)
+            offsets[bank] += 50
+        result = room_data.validate_room_stream_layout(bytes(prg), bytes(chr_data))
+        self.assertEqual(result["banks"][0]["used_bytes"], 67 * 50)
+        self.assertEqual(result["banks"][1]["used_bytes"], 33 * 50)
+
+        prg[table + 2:table + 4] = (51).to_bytes(2, "little")
+        with self.assertRaisesRegex(room_data.RoomDataError, "expected"):
+            room_data.validate_room_stream_layout(bytes(prg), bytes(chr_data))
 
     def test_decodes_raw_object_record(self) -> None:
         prg = bytearray(32_768)

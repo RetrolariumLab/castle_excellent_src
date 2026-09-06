@@ -13,10 +13,14 @@ from typing import Any
 
 if __package__:
     from .runtime_coverage import CoverageError, read_metadata, validate_runtime_metadata
-    from .source_reconstruction import ReconstructionError, audit_layout
+    from .source_reconstruction import (
+        ReconstructionError,
+        audit_layout,
+        audit_symbol_maps,
+    )
 else:
     from runtime_coverage import CoverageError, read_metadata, validate_runtime_metadata
-    from source_reconstruction import ReconstructionError, audit_layout
+    from source_reconstruction import ReconstructionError, audit_layout, audit_symbol_maps
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -150,6 +154,32 @@ def validate_release(
                 f"semantic module count is {module_count}, "
                 f"expected at least {source['minimum_semantic_modules']}"
             )
+
+    try:
+        symbol_counts = audit_symbol_maps(
+            project_root / "config" / "symbols.json",
+            project_root / "config" / "memory_symbols.json",
+            project_root / "config" / "source_layout.json",
+        )
+    except (OSError, ReconstructionError) as exc:
+        errors.append(f"symbol map audit: {exc}")
+    else:
+        observed = dict(
+            zip(
+                (
+                    "prg_symbols",
+                    "routines",
+                    "memory_symbols",
+                    "scoped_memory_symbols",
+                ),
+                symbol_counts,
+            )
+        )
+        for key, expected in release["source"]["symbol_map"].items():
+            if observed[key] != expected:
+                errors.append(
+                    f"symbol map {key} is {observed[key]}, expected {expected}"
+                )
 
     unknown_text = (project_root / "docs" / "unknowns.md").read_text(encoding="utf-8")
     unknowns = UNKNOWN_ID_RE.findall(unknown_text)

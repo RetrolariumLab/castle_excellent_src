@@ -4,9 +4,9 @@
 ; Keep byte-identical through make verify
 
 UpdateKnight:
-    LDA RuntimeObjectByte5,X
+    LDA RuntimeObjectKnightArrowCooldown,X
     BEQ UpdateKnightPatrol
-    DEC RuntimeObjectByte5,X
+    DEC RuntimeObjectKnightArrowCooldown,X
     RTS
 
 UpdateKnightPatrol:
@@ -60,7 +60,7 @@ ScanKnightArrowSlot:
 SpawnKnightArrow:
     LDY CurrentRuntimeObjectOffset
     LDA #KnightArrowCooldown
-    STA a:RuntimeObjectByte5,Y
+    STA a:RuntimeObjectAux,Y
     LDA #KnightArrowRuntimeType
     STA RuntimeObjectRecords,X
     LDA a:RuntimeObjectY,Y

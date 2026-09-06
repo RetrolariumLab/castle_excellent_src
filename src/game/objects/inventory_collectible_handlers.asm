@@ -60,7 +60,7 @@ TransformCollectedRuntimeObject:
     LDA #CollectedObjectRuntimeType
     STA RuntimeObjectRecords,X
     LDA #CollectedObjectLifetime
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectCollectedLifetime,X
 
 ReturnFromInventoryCollectible:
     RTS

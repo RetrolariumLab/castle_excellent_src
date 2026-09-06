@@ -24,7 +24,13 @@
   "source": {
     "semantic_prg_bytes": 32768,
     "minimum_semantic_modules": 124,
-    "maximum_open_unknowns": 2
+    "maximum_open_unknowns": 0,
+    "symbol_map": {
+      "prg_symbols": 1232,
+      "routines": 295,
+      "memory_symbols": 495,
+      "scoped_memory_symbols": 368
+    }
   },
   "debugger": {
     "minimum_symbols": 2176,
@@ -108,6 +114,7 @@
     "docs/runtime_verification.md",
     "docs/source_layout.md",
     "docs/source_reconstruction.md",
+    "docs/symbol_map.md",
     "docs/subsystems.md",
     "docs/unknowns.md",
     "docs/resolved_unknowns.md",

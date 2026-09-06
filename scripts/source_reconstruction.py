@@ -4,14 +4,27 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 import re
 import sys
 
 if __package__:
-    from .generate_disassembly import DisassemblyError, SourceRegion, load_source_layout
+    from .generate_disassembly import (
+        DisassemblyError,
+        SourceRegion,
+        load_known_symbols,
+        load_memory_symbols,
+        load_source_layout,
+    )
 else:
-    from generate_disassembly import DisassemblyError, SourceRegion, load_source_layout
+    from generate_disassembly import (
+        DisassemblyError,
+        SourceRegion,
+        load_known_symbols,
+        load_memory_symbols,
+        load_source_layout,
+    )
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -19,6 +32,8 @@ INSTRUCTION_RE = re.compile(r"^\s+[A-Z]{3}(?:\s+(?P<operand>[^;]+?))?\s*$")
 GENERIC_LABEL_RE = re.compile(r"^(?:Func|Label)_[0-9A-F]{4}(?::|\s*=)")
 RAW_ADDRESS_RE = re.compile(r"(?<![#<>])(?:a:)?\$[0-9A-F]{2,4}")
 MAX_SEMANTIC_LINES = 700
+SYMBOL_KINDS = {"routine", "local", "data", "label", "table"}
+SYMBOL_CONFIDENCE = {"confirmed", "high"}
 
 
 class ReconstructionError(ValueError):
@@ -81,13 +96,73 @@ def audit_layout(layout_path: Path, root: Path = ROOT) -> tuple[int, int, int]:
     return len(semantic), semantic_bytes, total_bytes
 
 
+def audit_symbol_maps(
+    symbols_path: Path,
+    memory_symbols_path: Path,
+    layout_path: Path,
+) -> tuple[int, int, int, int]:
+    """Validate the machine-readable PRG routine/label and RAM symbol ledgers."""
+    try:
+        prg_symbols = load_known_symbols(symbols_path)
+        memory_symbols = load_memory_symbols(memory_symbols_path)
+        symbol_document = json.loads(symbols_path.read_text(encoding="utf-8"))
+        regions = load_source_layout(layout_path)
+    except (DisassemblyError, json.JSONDecodeError, OSError) as exc:
+        raise ReconstructionError(str(exc)) from exc
+
+    issues: list[str] = []
+    records = symbol_document.get("symbols", [])
+    record_addresses: set[int] = set()
+    routine_count = 0
+    for item in records:
+        if not isinstance(item, dict):
+            issues.append("invalid PRG symbol record")
+            continue
+        address = int(str(item.get("address", "-1")), 0)
+        kind = item.get("kind")
+        confidence = item.get("confidence")
+        if kind not in SYMBOL_KINDS:
+            issues.append(f"PRG symbol ${address:04X} has invalid kind {kind!r}")
+        if confidence not in SYMBOL_CONFIDENCE:
+            issues.append(
+                f"PRG symbol ${address:04X} has invalid confidence {confidence!r}"
+            )
+        if kind == "routine":
+            routine_count += 1
+        owners = [region for region in regions if region.start <= address < region.end]
+        if len(owners) != 1:
+            issues.append(
+                f"PRG symbol ${address:04X} belongs to {len(owners)} source regions"
+            )
+        record_addresses.add(address)
+
+    if record_addresses != set(prg_symbols):
+        issues.append("PRG symbol metadata and address/name map disagree")
+    scoped_memory_count = sum(
+        symbol.start != 0x8000 or symbol.end != 0x10000
+        for symbol in memory_symbols
+    )
+    if issues:
+        raise ReconstructionError("\n".join(issues))
+    return len(prg_symbols), routine_count, len(memory_symbols), scoped_memory_count
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--layout", default="config/source_layout.json")
+    parser.add_argument("--symbols", default="config/symbols.json")
+    parser.add_argument("--memory-symbols", default="config/memory_symbols.json")
     args = parser.parse_args()
     try:
         module_count, semantic_bytes, total_bytes = audit_layout(
             ROOT / args.layout, ROOT
+        )
+        prg_count, routine_count, memory_count, scoped_memory_count = (
+            audit_symbol_maps(
+                ROOT / args.symbols,
+                ROOT / args.memory_symbols,
+                ROOT / args.layout,
+            )
         )
     except (OSError, ReconstructionError) as exc:
         print(f"[ERROR] {exc}", file=sys.stderr)
@@ -96,6 +171,10 @@ def main() -> int:
     print(
         f"[OK] semantic source ownership: {module_count} module(s), "
         f"{semantic_bytes}/{total_bytes} PRG bytes ({percentage:.2f}%)"
+    )
+    print(
+        f"[OK] symbol maps: {prg_count} PRG labels ({routine_count} routines), "
+        f"{memory_count} RAM/I/O aliases ({scoped_memory_count} scoped)"
     )
     return 0
 

@@ -16,7 +16,7 @@ UpdateFlameFrame:
     RTS
 
 SelectFlameMovementAxis:
-    LDA RuntimeObjectByte5,X
+    LDA RuntimeObjectFlameMovementMode,X
     BPL CheckFlamePlayerX
     JMP MoveFlameVertically
 
@@ -28,7 +28,7 @@ CheckFlamePlayerX:
     CMP RuntimeObjectXHi,X
     BNE MoveFlameHorizontally
     LDA #FlameVerticalMode
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectFlameMovementMode,X
     BNE SelectFlameVerticalDirection
 
 MoveFlameHorizontally:
@@ -50,7 +50,7 @@ ReturnFromFlameHorizontalMove:
 SwitchFlameToVerticalMovement:
     LDX CurrentRuntimeObjectOffset
     LDA #FlameVerticalMode
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectFlameMovementMode,X
     RTS
 
 MoveFlameLeft:
@@ -90,7 +90,7 @@ ReverseFlameDirection:
     EOR #FlameDirectionToggleMask
     STA RuntimeObjectState,X
     LDA #FlameHorizontalMode
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectFlameMovementMode,X
     RTS
 
 MoveFlameDown:

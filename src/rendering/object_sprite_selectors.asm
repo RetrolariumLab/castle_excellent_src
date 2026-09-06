@@ -40,7 +40,7 @@ DrawRuntimeObjectType03Sprite:
 DrawRuntimeObjectType04Sprite:
     LDA RuntimeObjectState,X
     BMI SelectType04NegativeStateSprite
-    LDA RuntimeObjectByte5,X
+    LDA RuntimeObjectFighterJumpCountdown,X
     BEQ SelectType04PositiveStateAnimation
     LDX #$B5
     LDY #$0E
@@ -69,7 +69,7 @@ DrawType04PositiveMiddleFrame:
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType04NegativeStateSprite:
-    LDA RuntimeObjectByte5,X
+    LDA RuntimeObjectFighterJumpCountdown,X
     BEQ SelectType04NegativeStateAnimation
     LDX #$B5
     LDY #$12
@@ -212,7 +212,7 @@ DrawRuntimeObjectType07Sprite:
     BMI SelectType07NegativeStateAnimation
     LDA FrameCounter
     CLC
-    ADC RuntimeObjectByte5,X
+    ADC RuntimeObjectKnightArrowCooldown,X
     LSR A
     LSR A
     AND #$03
@@ -236,7 +236,7 @@ DrawType07PositiveMiddleFrame:
 SelectType07NegativeStateAnimation:
     LDA FrameCounter
     CLC
-    ADC RuntimeObjectByte5,X
+    ADC RuntimeObjectKnightArrowCooldown,X
     LSR A
     LSR A
     AND #$03

@@ -648,15 +648,15 @@ unique tile and sprite positions for the entire 10x10 room domain.
 `make reconstruction-audit` reports complete semantic PRG ownership and rejects
 generic address labels, raw address operands, and oversized promoted modules.
 `make release-check` runs this audit before deterministic regeneration and
-byte-identical verification. Later milestones will extend the audit to
-undocumented RAM fields, missing data round trips, and runtime scenarios absent
-from the active reconstruction manifest.
+byte-identical verification. `make source-1-check` adds live debugger symbols,
+fresh seven-scenario runtime evidence, and the active reconstruction manifest.
 
-`docs/unknowns.md` is the active release-facing registry and contains only two
-testing items: room-bitstream physical capacity and the remaining contextual
-meanings of runtime-record fields `+4/+5`. Closed investigations live in
-`docs/resolved_unknowns.md`; regional identities and friendly naming for every
-object type remain explicitly deferred to Source Reconstruction 2.0.
+`docs/unknowns.md` is the active release-facing registry and now contains no
+open Source 1.0 contract questions. The six-byte runtime-object ABI and exact
+per-consumer meanings of fields `+4/+5` are recorded in
+`docs/resolved_unknowns.md` and `docs/data_formats.md`. Regional identities and
+friendly naming for every object type remain explicitly deferred to Source
+Reconstruction 2.0.
 
 `make symbols` now resolves every configured debugger breakpoint and watch
 against the current ld65 output, validates representative source-file/line

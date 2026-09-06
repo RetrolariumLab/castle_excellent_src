@@ -64,7 +64,9 @@
 - [x] reconstruct type-`$8E` linked-lift control, paired `$A4/$A5` discovery,
   track-cell edits, transitive occupant closure, and two-pixel movement;
 - [x] separate the active unknown registry from resolved evidence and reduce it
-  to the two Source 1.0 questions that can still change public contracts;
+  to the questions that can still change public contracts;
+- [x] prove all 100 compressed-room physical boundaries, byte-exact encoding,
+  one-filled final-byte padding, and fixed CHR-bank arena capacity;
 - [x] generate Mesen/FCEUX symbols, resolve every configured watch/breakpoint
   against ld65 output, and prove live lookup plus a named NMI execution hook;
 - [x] reconstruct player protection countdown decay, room-audio restoration,
@@ -145,17 +147,21 @@
   title, gameplay, transition, death, ending, and save/load scenarios;
 - [x] add a declarative Source Reconstruction 1.0 manifest and one candidate
   gate covering static checks, live symbols, fresh runtime, and release policy;
+- [x] close the six-byte runtime-object ABI, including polymorphic primary
+  state and all five proven auxiliary-state interpretations;
 - [x] classify every PRG byte as code, typed data, text, or padding;
 - [x] promote proven system, game, rendering, audio, room, object, and vector
   ranges into semantic modules while preserving one address-ordered translation
   unit;
-- complete RAM and routine maps;
-- maintain an original-to-current label provenance ledger;
+- [x] complete machine-readable PRG routine/label and RAM/I/O maps, with every
+  PRG symbol owned by exactly one source region;
+- [x] maintain the original-Ghidra-to-current label provenance join by fixed
+  CPU address and enforce its exact Source 1.0 counts in the release audit;
 
 ## Semantic reconstruction 2.0
 
-- lossless decode/encode for all 100 room streams;
-- typed object definitions and runtime-record contracts;
+- relocatable room-stream authoring and repacking beyond the fixed 1.0 arenas;
+- friendly object identities and higher-level typed object authoring;
 - collision, movement, water, door, key, and enemy state machines;
 - graphics, palette, metasprite, text, and audio authoring formats;
 - Castlequest USA revision alignment and byte-identical profile.

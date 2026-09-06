@@ -5,6 +5,43 @@ active registry in `docs/unknowns.md`.
 
 ## Resolved registry
 
+### OBJ-001 - six-byte runtime record ABI
+
+- Status: resolved
+- Layout: type at `+0`, little-endian pixel X at `+1/+2`, pixel Y at `+3`,
+  polymorphic primary state at `+4`, and polymorphic auxiliary state at `+5`
+- Primary state: direction/orientation for movement and rendering, Witch-summon
+  countdown before replacement, type-`$A8` animation state, or type-`$A9`
+  collected-appearance state, according to the active runtime type
+- Auxiliary state: Fighter jump countdown, Knight arrow cooldown/render phase,
+  Flame movement mode, Flying Block stopped latch, or type-`$A9` lifetime;
+  all generic initialization and clear paths keep it zero otherwise
+- Capacity and persistence: 24 records occupy `$004A-$00D9`; 100 static lists
+  and five cell-marker sources never require more than 22 slots; static object
+  persistence stores one bit per encoded record rather than serializing this
+  runtime ABI
+- Evidence: byte-exact loader and object stream, all 42 update/render dispatch
+  indexes, explicit contextual operand aliases, behavior-specific exhaustive
+  models, deterministic regeneration, and byte-identical build
+- Deferred: friendly identities for every encoded/runtime type remain Source
+  Reconstruction 2.0 work and do not affect the record ABI
+
+### DATA-002 - room bitstream boundaries
+
+- Status: resolved
+- Known: rooms 1-67 occupy bank 2 offsets `$0000-$1F66`; rooms 68-100
+  occupy bank 3 offsets `$0000-$1160`; every next pointer is the exact
+  byte-rounded end of its predecessor
+- Padding: unused low bits of every partial final byte are ones; all 100
+  streams encode back to their original bytes
+- Capacity: bank 2 has 153 `$FF` bytes through `$1FFF`; bank 3 has 671 `$FF`
+  bytes through `$13FF`, while bank-3 pages `$14-$17` belong to the completion
+  nametable and are not room capacity
+- Evidence: the existing room validator checks all physical intervals,
+  one-filled padding, byte-exact encoding, arena bounds, and free-region fill
+- Deferred: relocation beyond these arenas and a general room editor remain
+  Source Reconstruction 2.0 work
+
 ### ROM-001 - exact iNES identity
 
 - Status: resolved

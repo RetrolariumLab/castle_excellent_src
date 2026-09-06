@@ -15,6 +15,7 @@ ROOM_HEIGHT = 20
 ROOM_SIZE = ROOM_WIDTH * ROOM_HEIGHT
 CHR_BANK_SIZE = 8_192
 ROOM_BANK_SPLIT = 0x43  # zero-based rooms 0..66 use bank 2
+ROOM_BANK_ARENA_ENDS = {2: CHR_BANK_SIZE, 3: 0x1400}
 
 CODEBOOK_CPU = 0xE45D
 ROOM_POINTERS_CPU = 0xE71C
@@ -163,6 +164,87 @@ def decode_prefix_stream(
                     f"compressed room has no code matching bit {bit_count} ({code!r})"
                 )
     raise RoomDataError(f"truncated room stream after {len(output)} of {output_size} cells")
+
+
+def encode_prefix_stream(
+    cells: bytes, entries: list[tuple[int, str]]
+) -> tuple[bytes, int]:
+    """Encode one room and fill its final partial byte with one bits."""
+    encoding = {symbol: code for symbol, code in entries}
+    if len(encoding) != len(entries):
+        raise RoomDataError("room codebook contains duplicate output symbols")
+    try:
+        bits = "".join(encoding[cell] for cell in cells)
+    except KeyError as exc:
+        raise RoomDataError(f"room cell ${exc.args[0]:02X} has no prefix code") from exc
+    padding_bits = (-len(bits)) % 8
+    bits += "1" * padding_bits
+    encoded = bytes(int(bits[index:index + 8], 2) for index in range(0, len(bits), 8))
+    return encoded, padding_bits
+
+
+def validate_room_stream_layout(prg: bytes, chr_data: bytes) -> dict[str, object]:
+    """Prove physical stream boundaries, byte-exact encoding, and bank capacity."""
+    entries = parse_codebook(prg)
+    rooms: list[dict[str, int]] = []
+    previous_end: dict[int, int] = {}
+    for room_index in range(ROOM_COUNT):
+        stream, bank, offset = room_stream(prg, chr_data, room_index)
+        cells, consumed_bits = decode_prefix_stream(stream, entries)
+        encoded, padding_bits = encode_prefix_stream(cells, entries)
+        end = offset + len(encoded)
+        arena_end = ROOM_BANK_ARENA_ENDS[bank]
+        if offset == 0:
+            if bank in previous_end:
+                raise RoomDataError(f"room {room_index + 1} restarts CHR bank {bank}")
+        elif previous_end.get(bank) != offset:
+            raise RoomDataError(
+                f"room {room_index + 1} starts at bank {bank}:${offset:04X}, "
+                f"expected ${previous_end.get(bank, 0):04X}"
+            )
+        if end > arena_end:
+            raise RoomDataError(
+                f"room {room_index + 1} ends at bank {bank}:${end:04X}, "
+                f"past arena ${arena_end:04X}"
+            )
+        physical = stream[:len(encoded)]
+        if encoded != physical:
+            raise RoomDataError(
+                f"room {room_index + 1} does not round-trip its physical bytes"
+            )
+        previous_end[bank] = end
+        rooms.append(
+            {
+                "room": room_index + 1,
+                "bank": bank,
+                "start": offset,
+                "end": end,
+                "encoded_bytes": len(encoded),
+                "consumed_bits": consumed_bits,
+                "padding_bits": padding_bits,
+            }
+        )
+
+    banks: list[dict[str, int]] = []
+    for bank, arena_end in ROOM_BANK_ARENA_ENDS.items():
+        used_end = previous_end.get(bank, 0)
+        bank_start = bank * CHR_BANK_SIZE
+        free_region = chr_data[bank_start + used_end:bank_start + arena_end]
+        if any(value != 0xFF for value in free_region):
+            raise RoomDataError(
+                f"room arena free region bank {bank}:${used_end:04X}-${arena_end:04X} "
+                "is not $FF-filled"
+            )
+        banks.append(
+            {
+                "bank": bank,
+                "arena_start": 0,
+                "arena_end": arena_end,
+                "used_bytes": used_end,
+                "free_bytes": arena_end - used_end,
+            }
+        )
+    return {"rooms": rooms, "banks": banks}
 
 
 def room_attribute_position(column: int, row: int) -> tuple[int, int]:
@@ -502,6 +584,7 @@ def main() -> int:
     try:
         prg, chr_data = extract_rom(Path(args.image).read_bytes())
         if args.validate:
+            stream_layout = validate_room_stream_layout(prg, chr_data)
             object_rooms = parse_object_stream(prg)
             object_counts = parse_room_object_counts(prg, object_rooms)
             parse_runtime_object_offsets(prg)
@@ -528,7 +611,10 @@ def main() -> int:
                 f"{len(encoded_objects)} round-tripped object bytes, "
                 f"{state_offsets[-1]} object-state + "
                 f"{mutable_offsets[-1]} mutable-cell-state bytes, "
-                f"and {cell_objects} cell-derived objects"
+                f"and {cell_objects} cell-derived objects; "
+                f"room-stream arenas leave "
+                f"{stream_layout['banks'][0]['free_bytes']} + "
+                f"{stream_layout['banks'][1]['free_bytes']} bytes free"
             )
             return 0
         if args.room is None:

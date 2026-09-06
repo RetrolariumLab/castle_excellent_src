@@ -5562,6 +5562,108 @@
       "expected": "#$08",
       "operand": "#KnightArrowVerticalExtent",
       "evidence": "the second left-edge probe samples eight pixels below the first"
+    },
+    {
+      "instruction": "0x8C78",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectCollectedLifetime,X",
+      "evidence": "collected runtime type $A9 stores its bounded display lifetime in record field +5"
+    },
+    {
+      "instruction": "0x9A39",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFlyingBlockStopFlag,X",
+      "evidence": "flying-block update treats record field +5 as its permanent stopped latch"
+    },
+    {
+      "instruction": "0x9A7B",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFlyingBlockStopFlag,X",
+      "evidence": "a trapped flying block sets its record field +5 stopped latch"
+    },
+    {
+      "instruction": "0x9C3B",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectKnightArrowCooldown,X",
+      "evidence": "Knight update gates patrol and firing while record field +5 is nonzero"
+    },
+    {
+      "instruction": "0x9C3F",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectKnightArrowCooldown,X",
+      "evidence": "Knight record field +5 counts down to the next patrol and arrow opportunity"
+    },
+    {
+      "instruction": "0x9CF9",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFighterJumpCountdown,X",
+      "evidence": "Fighter update dispatches between walking and jumping through record field +5"
+    },
+    {
+      "instruction": "0x9D1C",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFighterJumpCountdown,X",
+      "evidence": "Fighter stores its fixed jump duration in record field +5"
+    },
+    {
+      "instruction": "0x9D1E",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFighterJumpCountdown,X",
+      "evidence": "Fighter decrements its record field +5 jump countdown every active update"
+    },
+    {
+      "instruction": "0x9D76",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFlameMovementMode,X",
+      "evidence": "Flame selects horizontal or vertical tracking from the sign of record field +5"
+    },
+    {
+      "instruction": "0x9D8B",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFlameMovementMode,X",
+      "evidence": "matching the player's X switches Flame record field +5 to vertical mode"
+    },
+    {
+      "instruction": "0x9DAA",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFlameMovementMode,X",
+      "evidence": "a horizontal obstacle switches Flame record field +5 to vertical mode"
+    },
+    {
+      "instruction": "0x9DE3",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFlameMovementMode,X",
+      "evidence": "a vertical reversal switches Flame record field +5 back to horizontal mode"
+    },
+    {
+      "instruction": "0xA03F",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectCollectedLifetime,X",
+      "evidence": "runtime type $A9 decrements record field +5 until the record is cleared"
+    },
+    {
+      "instruction": "0xAE1D",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFighterJumpCountdown,X",
+      "evidence": "type-$84 rendering selects the Fighter jump pose while record field +5 is active"
+    },
+    {
+      "instruction": "0xAE49",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectFighterJumpCountdown,X",
+      "evidence": "negative-facing type-$84 rendering uses the same Fighter jump countdown"
+    },
+    {
+      "instruction": "0xAF25",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectKnightArrowCooldown,X",
+      "evidence": "positive-facing Knight rendering offsets animation phase by its arrow cooldown"
+    },
+    {
+      "instruction": "0xAF49",
+      "expected": "$4F,X",
+      "operand": "RuntimeObjectKnightArrowCooldown,X",
+      "evidence": "negative-facing Knight rendering offsets animation phase by its arrow cooldown"
     }
   ]
 }

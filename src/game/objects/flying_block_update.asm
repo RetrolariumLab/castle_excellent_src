@@ -5,7 +5,7 @@
 
 UpdateFlyingBlock:
     STX CurrentObjectOffset
-    LDA RuntimeObjectByte5,X
+    LDA RuntimeObjectFlyingBlockStopFlag,X
     BNE ReturnFromFlyingBlockUpdate
 
 MoveFlyingBlockRight:
@@ -48,7 +48,7 @@ TryReverseFlyingBlockLeft:
 StopFlyingBlock:
     LDX CurrentRuntimeObjectOffset
     LDA #FlyingBlockStopped
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectFlyingBlockStopFlag,X
     RTS
 
 MoveFlyingBlockLeft:

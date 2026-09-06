@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
+import tempfile
 import unittest
 
-from scripts.source_reconstruction import audit_module_text
+from scripts.source_reconstruction import (
+    ReconstructionError,
+    audit_module_text,
+    audit_symbol_maps,
+)
 
 
 class SemanticModuleAuditTests(unittest.TestCase):
@@ -25,6 +31,66 @@ class SemanticModuleAuditTests(unittest.TestCase):
     def test_named_array_offset_is_allowed(self) -> None:
         source = "CopyOam:\n    LDA OamStagingBuffer + $21,Y\n"
         self.assertEqual(audit_module_text(Path("src/rendering/oam.asm"), source), [])
+
+    def test_symbol_maps_require_metadata_and_source_ownership(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            symbols = root / "symbols.json"
+            memory = root / "memory.json"
+            layout = root / "layout.json"
+            symbols.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "symbols": [
+                            {
+                                "address": "0x8000",
+                                "name": "Reset",
+                                "kind": "routine",
+                                "confidence": "confirmed",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            memory.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "symbols": [
+                            {"address": "0x0000", "name": "FrameCounter"}
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            layout.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "files": [
+                            {
+                                "path": "src/main.asm",
+                                "start": "0x8000",
+                                "end": "0x10000",
+                                "title": "test",
+                                "segment": "PRG",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                audit_symbol_maps(symbols, memory, layout),
+                (1, 1, 1, 0),
+            )
+            document = json.loads(symbols.read_text(encoding="utf-8"))
+            document["symbols"][0]["kind"] = "unknown"
+            symbols.write_text(json.dumps(document), encoding="utf-8")
+            with self.assertRaises(ReconstructionError):
+                audit_symbol_maps(symbols, memory, layout)
 
 
 if __name__ == "__main__":

@@ -110,7 +110,7 @@ CreateWitchSummon:
     LDA #WitchSummonInitialCountdown
     STA RuntimeObjectState,X
     LDA #WitchSummonInitialByte5
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectAux,X
 
 ReturnFromWitchUpdate:
     RTS

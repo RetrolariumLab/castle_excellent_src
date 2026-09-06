@@ -17,7 +17,7 @@ ApplyNextObjectStateBit:
     STA RuntimeObjectXHi,X
     STA RuntimeObjectY,X
     STA RuntimeObjectState,X
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectAux,X
 
 AdvanceObjectStateBit:
     TXA

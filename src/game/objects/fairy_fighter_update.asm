@@ -34,7 +34,7 @@ UpdateFighter:
 UpdateFighterJumpState:
     LDX CurrentRuntimeObjectOffset
     STX CurrentObjectOffset
-    LDA RuntimeObjectByte5,X
+    LDA RuntimeObjectFighterJumpCountdown,X
     BNE ContinueFighterJump
     JSR GetActivePlayerMotionState
     CMP #FighterJumpMotionThreshold
@@ -54,10 +54,10 @@ TryStartFighterJump:
 StartFighterJump:
     LDX CurrentRuntimeObjectOffset
     LDA #FighterJumpDuration
-    STA RuntimeObjectByte5,X
+    STA RuntimeObjectFighterJumpCountdown,X
 
 ContinueFighterJump:
-    DEC RuntimeObjectByte5,X
+    DEC RuntimeObjectFighterJumpCountdown,X
     LDA #FighterJumpActiveFlag
     STA FighterUpdateSharedFlag
     JSR UpdateWalkingEnemyPhysics

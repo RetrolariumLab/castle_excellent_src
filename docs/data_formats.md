@@ -77,8 +77,23 @@ An `$FF` entry marker terminates the candidate table. The original routine
 compares candidates in table order. `scripts/room_data.py` first proves that
 the recovered table is prefix-free, then uses an equivalent direct lookup.
 
-The independent decoder reaches exactly 400 output cells for all 100 rooms
-without exhausting a CHR bank.
+The independent decoder reaches exactly 400 output cells for all 100 rooms.
+Its encoder reproduces every physical stream byte-for-byte: the next pointer
+always equals the preceding start plus `ceil(consumed_bits / 8)`, and unused
+low bits in a final partial byte are one-filled.
+
+The room-stream arenas and their current capacity are exact:
+
+| CHR bank | Rooms | Arena | Used | Free `$FF` bytes |
+| ---: | ---: | --- | ---: | ---: |
+| 2 | 1-67 | `$0000-$1FFF` | 8,039 (`$0000-$1F66`) | 153 |
+| 3 | 68-100 | `$0000-$13FF` | 4,449 (`$0000-$1160`) | 671 |
+
+Bank 3 cannot extend past `$1400` without relocation: the four-page
+CHR-to-nametable copier selects bank 3 and consumes pages `$14-$17` for the
+completion screen. `make validate-rooms` therefore permits repacking only
+within the two stated arenas; using other CHR space is a Source 2.0 relocation
+problem, not implicit free capacity.
 
 ## Logical cell rendering
 
@@ -319,13 +334,35 @@ entries are the first two opcode bytes of the following routine: `$A8,$08` for
 the type-84-to-89 filter and `$C0,$A0` for solidity. All four values are
 nonzero; the overlap is therefore behaviorally meaningful and tested.
 
-Loading writes runtime type at record `+0`, scales X by 16 into the 16-bit
-field at `+1/+2`, and scales Y by 8 into `+3`. Runtime types `$90-$95` receive
-an additional four-pixel X offset. Record `+4` is initialized to zero except
-for encoded types `$12-$29`, where the overlapping state table supplies its
-initial value. The global meaning of record `+5` and most later state
-transitions of `+4` remain open; type index 41 specifically uses `+5` as a
-lifetime countdown, while types 32 and 40 have now-confirmed `+4` lifecycles.
+The 24-entry runtime pool at `$004A-$00D9` has this six-byte ABI:
+
+| Offset | Global field | Proven contract |
+| ---: | --- | --- |
+| `+0` | `RuntimeObjectRecords` | zero for an inactive slot; otherwise runtime type `$80-$A9` |
+| `+1` | `RuntimeObjectXLo` | low byte of world X in pixels |
+| `+2` | `RuntimeObjectXHi` | high byte of world X in pixels |
+| `+3` | `RuntimeObjectY` | world Y in pixels |
+| `+4` | `RuntimeObjectState` | type-specific primary state, direction, phase, or countdown |
+| `+5` | `RuntimeObjectAux` | type-specific auxiliary state; zero when unused |
+
+Loading scales static X by 16 into `+1/+2` and Y by 8 into `+3`; runtime types
+`$90-$95` receive an additional four-pixel X offset. The loader clears the
+entire pool first. It initializes `+4` to zero except for encoded types
+`$12-$29`, where the overlapping state table supplies the value, and leaves
+`+5` zero.
+
+The `+4` consumers use it as signed direction/orientation for walking enemies,
+Flame, lifts, Flying Block, and Knight Arrow; as the Witch-summon countdown
+before that slot becomes a walking enemy; as the incrementing type-`$A8`
+animation state; and as type-`$A9`'s collected-appearance selector. The same
+byte intentionally changes interpretation when type `$A0` is replaced.
+
+Only five behaviors consume `+5`: Fighter uses a jump countdown, Knight an
+arrow cooldown and render-phase offset, Flame a horizontal/vertical mode,
+Flying Block a stopped latch, and collected type `$A9` a lifetime countdown.
+Those accesses use explicit contextual aliases in source. Generic creation,
+replacement, persistence, and clear paths use `RuntimeObjectAux` and preserve
+the contract that an otherwise unused auxiliary byte is zero.
 
 Collision callers read record `+1/+2` through shared helpers returning
 A=high/X=low. The fixed probe offsets are 0, +7, +8, +15, +17, and -2; all use

@@ -125,7 +125,9 @@ evidence, and tested decoders for game data.
 - `scripts/room_data.py` independently implements the published prefix-code
   room decoder; the exact local reference validates as 100 rooms, 40,000 cells,
   200 nametable attribute tables, and the exactly bounded 783-record static
-  object stream. The object stream round-trips all 2,449 bytes and its 101
+  object stream. All 100 compressed rooms also re-encode byte-for-byte with
+  gapless pointers and fixed 8,192/5,120-byte CHR arenas, leaving 153/671 bytes
+  of proven `$FF` capacity. The object stream round-trips all 2,449 bytes and its 101
   cumulative offsets prove 141 bytes of packed object state. A second table
   proves 108 bytes of mutable-cell state across all rooms. Five cell markers
   create 176 additional runtime objects without overflowing the 24-slot pool.
@@ -133,6 +135,10 @@ evidence, and tested decoders for game data.
   indexes, update handlers, sprite selectors, collision dimensions, initial
   states, room occurrence sets, and five cell-marker sources. The original
   rooms use 34 encoded values and directly source 32 runtime types.
+- The 24-entry, six-byte runtime-object ABI is closed for Source 1.0: all six
+  fields are named, and the five type-specific uses of auxiliary field `+5`
+  have contextual source aliases. Friendly identities for every object remain
+  explicitly deferred to Source 2.0.
 - `scripts/player_object_span.py` proves the shared three-call overlap helper,
   including its 16-pixel Y interval, saturated `objectX-15` left boundary, and
   exclusive `objectX+width` right boundary across complete room-width domains.

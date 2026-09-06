@@ -27,7 +27,7 @@
 | `$0037` | 1 | current one-based room number | confirmed | loader indexing, visited flags, transition helpers, and all 100 navigation cases |
 | `$0041` | 1 | current object-record offset | high | sprite dispatch trace |
 | `$0043` | 1 | current runtime-object update offset | confirmed | `$9583` initializes it and advances by six through all 24 records; handlers reuse it |
-| `$004A-$00D9` | `$90` | 24 six-byte object records | confirmed | clear/load loops |
+| `$004A-$00D9` | `$90` | 24 six-byte runtime object records | confirmed | loader, all update/render consumers, and full-record clear paths |
 | `$00DA` | 1 | shared audio tempo-table offset | confirmed | `t` command and all three streamed-note duration lookups |
 | `$00DB-$00E6` | 12 | three four-byte audio stream states | confirmed | pointer, countdown, and octave fields indexed by X=`0,4,8` |
 | `$00E7-$00E8` | 2 | pulse 1/2 streamed-note parameters | confirmed | track records and pulse channel setup |
@@ -278,16 +278,19 @@ room-cell update pointer. The helper shifts it twice before deriving the row;
 callers must treat the pair as consumed. `NmiTaskRequests` is sized to all 23
 bytes, so generated indexed operands use relocatable `+1` and `+2` expressions.
 
-The object loader and state-application path prove the first five bytes of each
-six-byte record: `+0` runtime type, `+1/+2` little-endian X in pixels, `+3` Y in
-pixels, and `+4` runtime state. They use contextual aliases for `$1A` as the X
-high-byte scratch and `$21-$22` as the static-object stream pointer within
-`$EBE9-$EC62`. Record `+5` is named only as `RuntimeObjectByte5`; its semantic
-meaning remains intentionally open.
+The object loader and all update/render consumers prove the complete six-byte
+record contract: `+0` runtime type, `+1/+2` little-endian X in pixels, `+3` Y
+in pixels, `+4` polymorphic primary state, and `+5` polymorphic auxiliary
+state. Field `+5` has contextual source aliases for Fighter jump countdown,
+Knight arrow cooldown, Flame movement mode, Flying Block stop state, and
+collected-object lifetime; generic lifecycle code names it `RuntimeObjectAux`.
+The complete per-consumer interpretation is recorded in `docs/data_formats.md`.
+The loader uses contextual aliases for `$1A` as the X high-byte scratch and
+`$21-$22` as the static-object stream pointer within `$EBE9-$EC62`.
 
 The type `$81` collision handler uses `$D4-$D7`, the first four bytes of the
 24th and final runtime record (`RuntimeObjectRecords + $8A`), as a clone slot
-in room `$59`. It deliberately leaves that record's state and byte `+5`
+in room `$59`. It deliberately leaves that record's state and auxiliary byte
 untouched; the scoped names claim only the four fields actually written.
 
 Ending code contextually names `$21-$22` as the game-over message pointer at
