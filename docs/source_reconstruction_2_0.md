@@ -26,10 +26,10 @@ semantic modules. CHR banks 0 and 2 are identical, while localized graphics
 occupy bounded suffixes of banks 1 and 3. This supports a revision define over
 the common entrypoint; it does not justify a copied USA source tree.
 
-Expanded ROMs, systematic relocation, GUI-only authoring, additional regional
-profiles, and sibling engines are outside the planned 2.0 boundary. These
-capabilities remain explicit rather than being inferred from the version
-number.
+Expanded ROMs, systematic relocation, GUI-only serialization paths,
+additional regional profiles, and sibling engines are outside the planned 2.0
+boundary. The visual studios included in 2.0 are deliberately thin front ends
+to the same validated headless codecs used by the release gate.
 
 ## Development sequence
 
@@ -54,7 +54,9 @@ number.
   fixed 10 by 10 castle topology.
 - [x] Make Studio checks and point-playtest evidence independent of ignored
   user workspaces.
-- [ ] Add the Source 2.0 manifest audit and aggregate pre-tag/post-tag gates.
+- [x] Add the Source 2.0 manifest audit and aggregate pre-tag/post-tag gates.
 
-Until every unchecked item passes, the manifest remains `development` and no
-`source-reconstruction-2.0` tag is created.
+Every implementation item passes through `make source-2-check`. The manifest
+is `tag-ready` after the complete development gate and release-contract review;
+the annotated `source-reconstruction-2.0` tag is created only after the clean
+pre-tag gate and final release commit.

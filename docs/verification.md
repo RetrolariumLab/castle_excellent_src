@@ -42,6 +42,11 @@ payload, full image, and extracted CHR.
 | `source-1-check` | compatibility alias for `release-check` |
 | `source-1-pre-tag-check` | full gate plus `tag-ready` status, clean tree, absent local/remote future tag, and release-history policy |
 | `source-1-tag-check` | full gate plus clean tree and an annotated `source-reconstruction-1.0` tag peeled to `HEAD` |
+| `source-2-audit` | reconcile the 2.0 manifest with its pinned predecessor, revision profiles, requirement evidence, artifacts, runtime declarations, and repository policy |
+| `source-2-authoring-check-profile` | verify one revision and run deterministic level, music, and graphics round trips plus all three Studio model checks |
+| `source-2-check` | run the complete 1.0 gate, Castlequest runtime, fixed-layout proof, authoring checks and baseline room playtests for both revisions, then audit the 2.0 manifest |
+| `source-2-pre-tag-check` | full 2.0 gate plus `tag-ready` metadata, clean tree, absent local/remote future tag, and commit-history policy |
+| `source-2-tag-check` | full 2.0 gate plus clean tree and an annotated `source-reconstruction-2.0` tag peeled to `HEAD` |
 
 Focused region targets compare only their named output region. For example,
 `verify-prg` can prove that the source-only PRG reconstruction is correct while
@@ -62,6 +67,7 @@ make split
 make verify-prg
 make verify
 make release-check
+make source-2-check
 ```
 
 `make clean` removes only `build/`; it preserves the ignored extracted assets,

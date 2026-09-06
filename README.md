@@ -8,6 +8,13 @@ evidence, and tested decoders for game data.
 
 ## Current status
 
+- Source Reconstruction 2.0 is tag-ready on its development branch. It adds a
+  byte-identical Castlequest profile, direct runtime coverage, isolated private
+  revision assets, a fixed-layout variant proof, and profile-aware level,
+  music, and graphics authoring with thin visual studios.
+- `make source-2-check` first revalidates the immutable 1.0 contract, then
+  proves both revisions, the experimental variant, all authoring round trips,
+  direct runtime checks, room playtests, and the 2.0 release manifest.
 - The repository scaffold, CNROM linker layout, manifest, tests, and research
   documentation are in place.
 - The local Japanese reference is identified by complete file and region
@@ -315,6 +322,10 @@ make release-check  # clean build, static checks, live symbols, runtime, and aud
 make source-1-check # compatibility alias for the complete Source 1.0 gate
 make source-1-pre-tag-check # require tag-ready metadata and compliant history
 make source-1-tag-check # verify the complete gate and annotated tag at HEAD
+make source-2-audit # reconcile the declarative Source 2.0 manifest
+make source-2-check # prove both revisions, authoring, variants, and runtime
+make source-2-pre-tag-check # require tag-ready 2.0 metadata and clean history
+make source-2-tag-check # verify the complete 2.0 gate and annotated tag at HEAD
 make reconstruction-check # static checks plus a fresh emulator trace
 make reconstruction-audit # enforce semantic-module ownership and naming
 make player-input-movement # inspect player motion and action contracts

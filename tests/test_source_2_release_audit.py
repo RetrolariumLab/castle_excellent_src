@@ -73,6 +73,22 @@ class Source2ReleaseAuditTests(unittest.TestCase):
                 ["release artifact sha256 mismatch: image"],
             )
 
+    def test_release_metadata_requires_complete_licensing(self) -> None:
+        release = audit.load_json(ROOT / "config" / "source_reconstruction_2_0.json")
+        licensing = release["licensing"]
+        release["licensing"] = [
+            item
+            for item in licensing
+            if item["category"] != "private_user_supplied_inputs"
+        ]
+        errors = audit.validate_release_metadata(ROOT, release)
+        self.assertIn(
+            "licensing does not classify every required component category",
+            errors,
+        )
+        release["licensing"] = licensing
+        self.assertEqual(audit.validate_release_metadata(ROOT, release), [])
+
 
 if __name__ == "__main__":
     unittest.main()

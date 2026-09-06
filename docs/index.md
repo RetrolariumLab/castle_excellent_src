@@ -2,7 +2,7 @@
 
 ## Release and verification
 
-- [Source Reconstruction 2.0 development boundary](source_reconstruction_2_0.md)
+- [Source Reconstruction 2.0 tag-ready boundary](source_reconstruction_2_0.md)
 - [Source Reconstruction 1.0 boundary](source_reconstruction_1_0.md)
 - [Revision profiles](revision_profiles.md)
 - [Content authoring](content_authoring.md)
@@ -30,5 +30,5 @@
 - [Roadmap](roadmap.md)
 
 The accepted 1.0 boundary is owned by
-`config/source_reconstruction_1_0.json`. The current 2.0 development scope is
-owned separately by `config/source_reconstruction_2_0.json`.
+`config/source_reconstruction_1_0.json`. The tag-ready 2.0 scope is owned
+separately by `config/source_reconstruction_2_0.json`.

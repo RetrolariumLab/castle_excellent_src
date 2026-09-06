@@ -161,6 +161,20 @@ def validate_profiles(project_root: Path, release: dict[str, Any]) -> list[str]:
         for field, expected in comparisons.items():
             if artifact.get(field) != expected:
                 errors.append(f"profile {identifier} artifact {field} disagrees")
+        required_fields = {
+            "reference_rom",
+            "defines",
+            "entrypoint",
+            "linker_config",
+            "output_rom",
+            "load_address",
+            "container",
+            "asset_policy",
+            "runtime",
+        }
+        missing = sorted(required_fields - set(actual_profile))
+        if missing:
+            errors.append(f"profile {identifier} lacks owned fields: {missing}")
     covered = {
         item.get("profile_id")
         for item in release.get("runtime_coverage", [])
@@ -173,6 +187,91 @@ def validate_profiles(project_root: Path, release: dict[str, Any]) -> list[str]:
         manifest = coverage.get("manifest")
         if not manifest or not (project_root / manifest).is_file():
             errors.append(f"runtime manifest is missing for {coverage.get('profile_id')}")
+            continue
+        scenario_document = load_json(project_root / manifest)
+        scenario_ids = [
+            item.get("id")
+            for item in scenario_document.get("scenarios", [])
+            if isinstance(item, dict)
+        ]
+        if scenario_document.get("profile_id") != coverage.get("profile_id"):
+            errors.append(
+                f"runtime manifest profile disagrees for {coverage.get('profile_id')}"
+            )
+        if scenario_ids != coverage.get("scenarios"):
+            errors.append(
+                f"runtime scenarios disagree for {coverage.get('profile_id')}"
+            )
+        actual_profile = actual.get(coverage.get("profile_id"), {})
+        if actual_profile.get("runtime", {}).get("manifest") != manifest:
+            errors.append(
+                f"profile runtime manifest disagrees for {coverage.get('profile_id')}"
+            )
+    return errors
+
+
+def validate_release_metadata(project_root: Path, release: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    predecessor_path = project_root / release.get("predecessor", {}).get("manifest", "")
+    predecessor = load_json(predecessor_path)
+    if release.get("toolchain") != predecessor.get("toolchain"):
+        errors.append("Source 2.0 toolchain must exactly inherit the accepted Source 1.0 contract")
+    deviations = release.get("layout_deviations", [])
+    predecessor_deviation_ids = {
+        item.get("rule_id")
+        for item in predecessor.get("layout_deviations", [])
+        if isinstance(item, dict)
+    }
+    deviation_ids = {
+        item.get("rule_id") for item in deviations if isinstance(item, dict)
+    }
+    if deviation_ids != predecessor_deviation_ids:
+        errors.append("Source 2.0 must account for every inherited layout deviation")
+    for deviation in deviations:
+        for field in ("rule_id", "actual_path", "reason", "equivalent_control"):
+            if not deviation.get(field):
+                errors.append(f"layout deviation is missing {field}")
+    required_categories = {
+        "project_authored_material",
+        "reconstructed_game_source",
+        "bundled_external_tools",
+        "external_tools",
+        "private_user_supplied_inputs",
+    }
+    licensing = release.get("licensing", [])
+    categories = {
+        item.get("category") for item in licensing if isinstance(item, dict)
+    }
+    if categories != required_categories:
+        errors.append("licensing does not classify every required component category")
+    for item in licensing:
+        if not isinstance(item, dict):
+            errors.append("licensing entry is not an object")
+            continue
+        for field in (
+            "component",
+            "category",
+            "origin",
+            "license_id_or_status",
+            "redistribution",
+            "notes",
+        ):
+            if not item.get(field):
+                errors.append(f"licensing entry {item.get('component')} is missing {field}")
+    provenance = release.get("provenance", {})
+    required_references = {
+        "docs/provenance.md",
+        "tools/disassembly.lock.json",
+        "tools/runtime.lock.json",
+        "assets/manifest.json",
+        "config/revision_profiles.json",
+    }
+    references = set(provenance.get("references", []))
+    if not required_references.issubset(references):
+        errors.append("provenance does not reference every Source 2.0 identity/tool input")
+    for relative in references:
+        if not (project_root / relative).is_file():
+            errors.append(f"provenance reference is missing: {relative}")
     return errors
 
 
@@ -247,6 +346,26 @@ def validate_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
     for relative in release.get("required_documents", []):
         if not (project_root / relative).is_file():
             errors.append(f"required release document is missing: {relative}")
+    predecessor_documents = set(load_json(project_root / predecessor["manifest"]).get("required_documents", []))
+    release_documents = set(release.get("required_documents", []))
+    if not predecessor_documents.issubset(release_documents):
+        errors.append("Source 2.0 required documents do not include the Source 1.0 set")
+    for target in release.get("release_commands", []):
+        if target not in targets:
+            errors.append(f"release command names missing target: {target}")
+    required_commands = {
+        "format",
+        "lint",
+        "test",
+        "verify",
+        "trace",
+        "release-check",
+        "source-2-check",
+        "source-2-pre-tag-check",
+        "source-2-tag-check",
+    }
+    if not required_commands.issubset(set(release.get("release_commands", []))):
+        errors.append("release_commands does not cover the stable Source 2.0 interface")
     gates = release.get("aggregate_gates", release.get("planned_aggregate_gates", {}))
     for phase in ("pre_tag", "post_tag"):
         commands = gates.get(phase, [])
@@ -260,6 +379,7 @@ def validate_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
         errors.append("provenance must declare private_inputs_tracked false")
     errors.extend(validate_requirements(project_root, release, targets))
     errors.extend(validate_profiles(project_root, release))
+    errors.extend(validate_release_metadata(project_root, release))
     return errors
 
 
@@ -328,6 +448,7 @@ def validate_release(
 ) -> list[str]:
     release = load_json(manifest_path)
     errors = validate_manifest(project_root, release)
+    errors.extend(release_audit.validate_toolchain(project_root, release))
     errors.extend(validate_artifacts(project_root, release))
     errors.extend(validate_repository_policy(project_root))
     if require_clean and git_lines(project_root, "status", "--porcelain"):
