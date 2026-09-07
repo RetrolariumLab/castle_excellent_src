@@ -22,6 +22,8 @@ CELL_SCALE = 2
 CELL_WIDTH = 16 * CELL_SCALE
 CELL_HEIGHT = 8 * CELL_SCALE
 PALETTE_COLUMNS = 10
+OVERVIEW_GAP = 6
+OVERVIEW_ZOOM_DIVISORS = {"25%": 4, "50%": 2, "100%": 1}
 
 
 class LevelStudio(tk.Tk):
@@ -56,6 +58,7 @@ class LevelStudio(tk.Tk):
         self.object_y = tk.StringVar(value="0")
         self.player_x = tk.IntVar(value=16)
         self.player_y = tk.IntVar(value=152)
+        self.overview_zoom = tk.StringVar(value="25%")
         self.status = tk.StringVar()
         self.object_placement = False
         self.player_placement = False
@@ -65,6 +68,9 @@ class LevelStudio(tk.Tk):
         self.last_painted: tuple[int, int, int] | None = None
         self.image_cache: dict[tuple[int, int, int], tk.PhotoImage] = {}
         self.sprite_image_cache: dict[tuple[int, int], tk.PhotoImage] = {}
+        self.overview_image_cache: dict[tuple[int, int], tk.PhotoImage] = {}
+        self.overview_drag_origin: tuple[int, int] | None = None
+        self.overview_is_panning = False
         self.title(f"Castle Excellent Level Studio [{profile_id}]")
         self.geometry("1180x760")
         self.minsize(920, 620)
@@ -118,9 +124,14 @@ class LevelStudio(tk.Tk):
 
         body = ttk.Panedwindow(self, orient="horizontal")
         body.pack(fill="both", expand=True, padx=7, pady=(0, 7))
-        room_frame = ttk.LabelFrame(body, text="Room map", padding=6)
+        self.map_notebook = ttk.Notebook(body)
+        room_frame = ttk.Frame(self.map_notebook, padding=6)
+        self.overview_frame = ttk.Frame(self.map_notebook, padding=6)
+        self.map_notebook.add(room_frame, text="Room editor")
+        self.map_notebook.add(self.overview_frame, text="Castle overview")
+        self.map_notebook.bind("<<NotebookTabChanged>>", self.map_view_changed)
         side = ttk.Frame(body, padding=(7, 0, 0, 0))
-        body.add(room_frame, weight=5)
+        body.add(self.map_notebook, weight=5)
         body.add(side, weight=2)
 
         self.room_canvas = tk.Canvas(
@@ -135,6 +146,57 @@ class LevelStudio(tk.Tk):
         self.room_canvas.bind("<B1-Motion>", self.room_drag)
         self.room_canvas.bind("<ButtonRelease-1>", self.room_release)
         self.room_canvas.bind("<Button-3>", self.sample_cell)
+
+        overview_toolbar = ttk.Frame(self.overview_frame)
+        overview_toolbar.pack(fill="x", pady=(0, 5))
+        ttk.Label(overview_toolbar, text="Scale").pack(side="left")
+        zoom = ttk.Combobox(
+            overview_toolbar,
+            textvariable=self.overview_zoom,
+            values=tuple(OVERVIEW_ZOOM_DIVISORS),
+            width=6,
+            state="readonly",
+        )
+        zoom.pack(side="left", padx=(4, 8))
+        zoom.bind("<<ComboboxSelected>>", self.overview_zoom_changed)
+        ttk.Button(
+            overview_toolbar, text="Center selected", command=self.center_selected_room
+        ).pack(side="left")
+        ttk.Button(
+            overview_toolbar, text="Open room", command=self.open_selected_room
+        ).pack(side="left", padx=4)
+        ttk.Label(
+            overview_toolbar,
+            text="Drag to pan; click selects; double-click opens",
+        ).pack(side="right")
+
+        overview_body = ttk.Frame(self.overview_frame)
+        overview_body.pack(fill="both", expand=True)
+        overview_body.rowconfigure(0, weight=1)
+        overview_body.columnconfigure(0, weight=1)
+        self.overview_canvas = tk.Canvas(
+            overview_body,
+            background="#101820",
+            highlightthickness=0,
+        )
+        overview_x_scroll = ttk.Scrollbar(
+            overview_body, orient="horizontal", command=self.overview_canvas.xview
+        )
+        overview_y_scroll = ttk.Scrollbar(
+            overview_body, orient="vertical", command=self.overview_canvas.yview
+        )
+        self.overview_canvas.configure(
+            xscrollcommand=overview_x_scroll.set,
+            yscrollcommand=overview_y_scroll.set,
+        )
+        self.overview_canvas.grid(row=0, column=0, sticky="nsew")
+        overview_y_scroll.grid(row=0, column=1, sticky="ns")
+        overview_x_scroll.grid(row=1, column=0, sticky="ew")
+        self.overview_canvas.bind("<ButtonPress-1>", self.overview_press)
+        self.overview_canvas.bind("<B1-Motion>", self.overview_drag)
+        self.overview_canvas.bind("<ButtonRelease-1>", self.overview_release)
+        self.overview_canvas.bind("<Double-Button-1>", self.overview_open_at)
+        self.overview_canvas.bind("<MouseWheel>", self.overview_mousewheel)
 
         notebook = ttk.Notebook(side)
         notebook.pack(fill="both", expand=True)
@@ -232,6 +294,7 @@ class LevelStudio(tk.Tk):
 
     def validated_change(self, action: Callable[[], None]) -> None:
         before = deepcopy(self.document)
+        changed_room = self.room_index
         try:
             action()
             rooms = level_editor.validate_workspace(
@@ -245,6 +308,7 @@ class LevelStudio(tk.Tk):
             raise
         self.undo_stack.append(before)
         del self.undo_stack[:-40]
+        self.invalidate_overview_room(changed_room)
         self.dirty = True
         self.refresh()
 
@@ -263,6 +327,110 @@ class LevelStudio(tk.Tk):
     def change_room(self, delta: int) -> None:
         self.room_number.set((self.room_index + delta) % room_data.ROOM_COUNT + 1)
         self._select_room()
+
+    def map_view_changed(self, _event: tk.Event) -> None:
+        if self.overview_visible():
+            self.draw_castle_overview()
+
+    def overview_visible(self) -> bool:
+        return self.map_notebook.select() == str(self.overview_frame)
+
+    def overview_divisor(self) -> int:
+        return OVERVIEW_ZOOM_DIVISORS[self.overview_zoom.get()]
+
+    def overview_zoom_changed(self, _event: tk.Event | None = None) -> None:
+        self.draw_castle_overview()
+        self.center_selected_room()
+
+    def overview_geometry(self) -> tuple[int, int, int, int]:
+        divisor = self.overview_divisor()
+        room_width = room_data.ROOM_WIDTH * 16 // divisor
+        room_height = room_data.ROOM_HEIGHT * 8 // divisor
+        return room_width, room_height, room_width + OVERVIEW_GAP, room_height + OVERVIEW_GAP
+
+    def overview_room_at(self, event: tk.Event) -> int | None:
+        room_width, room_height, pitch_x, pitch_y = self.overview_geometry()
+        x = int(self.overview_canvas.canvasx(event.x)) - OVERVIEW_GAP
+        y = int(self.overview_canvas.canvasy(event.y)) - OVERVIEW_GAP
+        if x < 0 or y < 0:
+            return None
+        column, local_x = divmod(x, pitch_x)
+        row, local_y = divmod(y, pitch_y)
+        if (
+            column >= studio_model.CASTLE_COLUMNS
+            or row >= studio_model.CASTLE_ROWS
+            or local_x >= room_width
+            or local_y >= room_height
+        ):
+            return None
+        return row * studio_model.CASTLE_COLUMNS + column + 1
+
+    def overview_press(self, event: tk.Event) -> None:
+        self.overview_drag_origin = (event.x, event.y)
+        self.overview_is_panning = False
+        self.overview_canvas.scan_mark(event.x, event.y)
+
+    def overview_drag(self, event: tk.Event) -> None:
+        if self.overview_drag_origin is None:
+            return
+        delta_x = event.x - self.overview_drag_origin[0]
+        delta_y = event.y - self.overview_drag_origin[1]
+        if abs(delta_x) + abs(delta_y) >= 4:
+            self.overview_is_panning = True
+        if self.overview_is_panning:
+            self.overview_canvas.scan_dragto(event.x, event.y, gain=1)
+
+    def overview_release(self, event: tk.Event) -> None:
+        if not self.overview_is_panning:
+            room_number = self.overview_room_at(event)
+            if room_number is not None:
+                self.room_number.set(room_number)
+                self._select_room()
+        self.overview_drag_origin = None
+        self.overview_is_panning = False
+
+    def overview_open_at(self, event: tk.Event) -> None:
+        room_number = self.overview_room_at(event)
+        if room_number is not None:
+            self.room_number.set(room_number)
+            self._select_room()
+            self.open_selected_room()
+
+    def overview_mousewheel(self, event: tk.Event) -> None:
+        units = -1 if event.delta > 0 else 1
+        if event.state & 0x0001:
+            self.overview_canvas.xview_scroll(units, "units")
+        else:
+            self.overview_canvas.yview_scroll(units, "units")
+
+    def open_selected_room(self) -> None:
+        self.map_notebook.select(self.map_notebook.tabs()[0])
+
+    def center_selected_room(self) -> None:
+        room_width, room_height, pitch_x, pitch_y = self.overview_geometry()
+        column, row = studio_model.castle_room_position(self.room_index + 1)
+        center_x = OVERVIEW_GAP + column * pitch_x + room_width / 2
+        center_y = OVERVIEW_GAP + row * pitch_y + room_height / 2
+        region = self.overview_canvas.cget("scrollregion").split()
+        if len(region) != 4:
+            return
+        total_width = float(region[2])
+        total_height = float(region[3])
+        viewport_width = max(1, self.overview_canvas.winfo_width())
+        viewport_height = max(1, self.overview_canvas.winfo_height())
+        if total_width > viewport_width:
+            self.overview_canvas.xview_moveto(
+                max(0.0, min(1.0, (center_x - viewport_width / 2) / total_width))
+            )
+        if total_height > viewport_height:
+            self.overview_canvas.yview_moveto(
+                max(0.0, min(1.0, (center_y - viewport_height / 2) / total_height))
+            )
+
+    def invalidate_overview_room(self, room_index: int) -> None:
+        for key in tuple(self.overview_image_cache):
+            if key[0] == room_index:
+                del self.overview_image_cache[key]
 
     def cell_at(self, event: tk.Event) -> tuple[int, int] | None:
         column = int(self.room_canvas.canvasx(event.x)) // CELL_WIDTH
@@ -385,6 +553,7 @@ class LevelStudio(tk.Tk):
         if not self.undo_stack:
             return
         self.document = self.undo_stack.pop()
+        self.overview_image_cache.clear()
         self.dirty = True
         self.selected_object = None
         self.refresh()
@@ -488,6 +657,70 @@ class LevelStudio(tk.Tk):
                             photo.transparency_set(scaled_x, scaled_y, True)
         self.sprite_image_cache[key] = photo
         return photo
+
+    def make_overview_room_image(self, room_index: int) -> tk.PhotoImage:
+        divisor = self.overview_divisor()
+        key = (room_index, divisor)
+        cached = self.overview_image_cache.get(key)
+        if cached is not None:
+            return cached
+        colors = studio_model.room_thumbnail_colors(
+            self.prg,
+            self.tiles,
+            self.palettes,
+            self.sprite_palettes,
+            self.document["rooms"][room_index],
+            divisor,
+        )
+        photo = tk.PhotoImage(width=len(colors[0]), height=len(colors))
+        photo.put(" ".join("{" + " ".join(row) + "}" for row in colors))
+        self.overview_image_cache[key] = photo
+        return photo
+
+    def draw_castle_overview(self) -> None:
+        self.overview_canvas.delete("all")
+        room_width, room_height, pitch_x, pitch_y = self.overview_geometry()
+        for room_index in range(room_data.ROOM_COUNT):
+            room_number = room_index + 1
+            column, row = studio_model.castle_room_position(room_number)
+            x = OVERVIEW_GAP + column * pitch_x
+            y = OVERVIEW_GAP + row * pitch_y
+            self.overview_canvas.create_image(
+                x,
+                y,
+                anchor="nw",
+                image=self.make_overview_room_image(room_index),
+            )
+            selected = room_index == self.room_index
+            self.overview_canvas.create_rectangle(
+                x,
+                y,
+                x + room_width - 1,
+                y + room_height - 1,
+                outline="#ffdc5e" if selected else "#52606a",
+                width=3 if selected else 1,
+            )
+            self.overview_canvas.create_text(
+                x + 4,
+                y + 4,
+                anchor="nw",
+                text=str(room_number),
+                fill="#000000",
+                font=("TkFixedFont", 8, "bold"),
+            )
+            self.overview_canvas.create_text(
+                x + 3,
+                y + 3,
+                anchor="nw",
+                text=str(room_number),
+                fill="#ffffff",
+                font=("TkFixedFont", 8, "bold"),
+            )
+        total_width = OVERVIEW_GAP + studio_model.CASTLE_COLUMNS * pitch_x
+        total_height = OVERVIEW_GAP + studio_model.CASTLE_ROWS * pitch_y
+        self.overview_canvas.configure(
+            scrollregion=(0, 0, total_width, total_height)
+        )
 
     def draw_room(self) -> None:
         self.room_canvas.delete("all")
@@ -630,6 +863,8 @@ class LevelStudio(tk.Tk):
         self.draw_room()
         self.draw_palette()
         self.draw_objects()
+        if self.overview_visible():
+            self.draw_castle_overview()
         self.update_status()
 
     def close(self) -> None:
@@ -675,11 +910,21 @@ def check_studio(args: argparse.Namespace) -> None:
     tiles = studio_model.decode_chr_bank(chr_data)
     if len(tiles) != studio_model.TILES_PER_BANK:
         raise studio_model.LevelStudioModelError("gameplay CHR tile count changed")
+    background_palettes = studio_model.room_palette(prg)
+    sprite_palettes = studio_model.sprite_palette(prg)
     for room in document["rooms"]:
-        studio_model.room_visuals(prg, room)
+        studio_model.room_thumbnail_colors(
+            prg,
+            tiles,
+            background_palettes,
+            sprite_palettes,
+            room,
+            4,
+        )
     print(
         f"[OK] level studio model: {len(rooms)} rooms, "
-        f"{len(studio_model.compression_symbols(prg))} paintable cell types"
+        f"{len(studio_model.compression_symbols(prg))} paintable cell types, "
+        "complete castle overview"
     )
 
 
@@ -704,9 +949,15 @@ def main() -> int:
             document, config, profile, image, prg, chr_data, path, args.profile
         )
         if args.smoke_ui:
+            application.map_notebook.select(application.overview_frame)
+            application.draw_castle_overview()
             application.update_idletasks()
+            if len(application.overview_image_cache) != room_data.ROOM_COUNT:
+                raise studio_model.LevelStudioModelError(
+                    "castle overview did not render all 100 rooms"
+                )
             application.destroy()
-            print("[OK] level studio widgets constructed")
+            print("[OK] level studio widgets and 100-room overview constructed")
         else:
             application.mainloop()
     except (

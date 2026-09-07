@@ -90,6 +90,14 @@ checked against room compression arenas, the 24-record runtime pool, the fixed
 object-stream range, and both persistent-state capacities before it enters the
 undo history.
 
+The Castle overview tab renders the complete original 10 by 10 room topology
+from those same background cells, CHR graphics, palettes, and object
+metasprites. At 25 percent scale all 100 rooms form a single visual map; 50 and
+100 percent scales expose progressively finer detail. Drag the map to pan,
+use the scroll bars or mouse wheel, click a room to select it, and double-click
+to return to that room in the editor. The selected room has a yellow border,
+and Center selected locates it after zooming or scrolling.
+
 Place player selects a room-local point, and Play builds the current workspace
 before launching the pinned FCEUX runtime. A short Lua bootstrap presses Start,
 selects the current room immediately after the game's own new-game store, lets
