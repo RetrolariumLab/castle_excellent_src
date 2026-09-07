@@ -557,62 +557,20 @@ scripts/object_catalog.py  unified room/runtime/update/sprite object catalog
 scripts/x_coordinates.py exhaustive player/object X-coordinate model
 scripts/audio_data.py      music table and textual-stream validator
 src/main.asm               assembly entrypoint
-src/input/famicom_data_pulse.asm PRG entry, pulse transport, and module order
-src/input/famicom_data_io.asm shared dispatch and expansion serial transport
-src/game/save_load.asm  save/load payload, validation, and room restoration
-src/input/controllers.asm  controller wrappers and eight-bit serial polling
-src/input/pause.asm        pause/resume edges and paused horizontal scrolling
-src/system/ppu.asm         PPU mode helpers and CNROM bank selection
-src/system/startup.asm     reset signature, initialization, and main frame loop
-src/system/nmi.asm         NMI task scheduler, input, OAM, scroll, and audio tick
-src/audio/stream_engine.asm textual MML interpreter and three-channel scheduler
-src/audio/channel_configuration.asm streamed-note APU channel setup
-src/audio/sound_effect_*.asm starters, per-frame updater, and parameter tables
-src/rendering/oam_dma.asm  64-sprite DMA interleave and order transforms
-src/rendering/frame_sprites.asm player/action selection and object render dispatch
-src/rendering/object_sprite_selectors.asm per-type descriptor and renderer selection
-src/rendering/object_metasprites.asm common object/player OAM composition paths
-src/rendering/metasprite_data.asm tile/attribute descriptor data
-src/rendering/status_upload.asm NMI HUD upload and task-handler tables
-src/rendering/room_cell_updates.asm cell-pointer row and NMI request helpers
-src/game/x_coordinates.asm player/object 16-bit X-coordinate helpers
-src/rendering/room_rows_*.asm  twenty complete NMI room-row upload tasks
-src/rendering/room_attribute_upload.asm final two NMI attribute tasks
-src/ui/castle_map.asm      map input, visited rooms, and current-room marker
-src/game/rooms/finalize_room.asm room display and 23 NMI task requests
-src/game/rooms/decoder.asm proven room codebook, pointers, and decoder
-src/game/rooms/load_room.asm top-level room-loading orchestration
-src/game/rooms/state_orchestration.asm snapshot selection and rotation
-src/game/rooms/persistent_state_*.asm offsets plus apply/load/save paths
-src/game/rooms/cell_coordinates.asm pixel, tile, and room-cell addressing
-src/game/rooms/sample_address.asm shared collision-sample address preparation
-src/game/rooms/mutable_cell_*.asm actions, lookup, predicates, and restoration
-src/game/rooms/navigation.asm boundary-safe castle room movement
-src/game/player/death_transition.asm guarded death and reserve-life transition
-src/game/player/transition_reload.asm countdown and persistent room reload
-src/game/player/hazard_state.asm protection decay and hazard-cell contact
-src/game/objects/player_proximity.asm shared object/player interaction predicate
-src/game/objects/player_span_overlap.asm shared player/object-span predicate
-src/game/objects/pushable_update.asm gravity, conveyors, crushing, and lift control
-src/game/objects/lift_update.asm small/large lift movement and occupant closure
-src/game/objects/flying_block_update.asm horizontal platform motion and reversal
-src/game/objects/transient_lifecycle.asm type 32/40/41 lifecycle handlers
-src/game/collision/object_filters.asm animated-cell and runtime-type filters
-src/game/collision/player_sample.asm player room-cell/object collision sampler
-src/game/collision/player_handler_tables.asm player collision handler pointers
-src/game/collision/player_update.asm frame collision probes and hazard dispatch
-src/game/collision/player_dispatch.asm player collision-handler dispatch
-src/game/collision/point_sample.asm room-cell/runtime-object point sampler
-src/game/collision/room_sample.asm room-cell-only point sampler
-src/game/collision/runtime_overlap.asm active-object span overlap scan
-src/game/collision/*.asm collision sampling, classification, flags, and dimensions
-src/rendering/room_attributes.asm proven room attribute-table construction
-src/rendering/room_screen.asm nametable, status, attribute, and OAM setup
-src/system/nmi_tasks.asm   NMI task-request reset
-src/game/objects/room_loader.asm proven static-object expansion into RAM
-src/game/objects/stream_seek.asm proven terminated-list stream navigation
-src/game/objects/room_data.asm typed object lists and persistent-state offsets
-src/game/objects/linked_lift_control.asm type-$8E control and linked lift pair
+src/system/               platform bootstrap, fixed PRG tail, and vectors
+src/game/player/          input, movement, transitions, and object pushing
+src/game/collectibles/    inventory pickups, rewards, and special collisions
+src/game/collision/       player and generic room/object collision pipelines
+src/game/runtime/         per-frame transition and object dispatch pipeline
+src/game/objects/enemies/ platform, walking, projectile, and special behaviors
+src/game/objects/lifts/   lift controls, movement, and occupant propagation
+src/game/rooms/           mutable cells, navigation, loading, state, and data
+src/audio/                bounded music and sound-effect engines
+src/rendering/sprites/    frame selection, selectors, and metasprite composition
+src/rendering/room_rows/  four complete five-row NMI upload groups
+src/rendering/rooms/      room decoding, attributes, and castle-map rendering
+src/rendering/             frame pipeline and scene initialization
+src/ui/                   title and sub-command interface
 src/graphics/chr.asm       private CHR include (graphics plus room streams)
 src/memory/                hardware and RAM symbol registries
 tests/                     tooling and decoder tests

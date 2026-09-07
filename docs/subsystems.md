@@ -9,21 +9,21 @@ The room decoder is the first promoted module.
 
 This area combines Famicom expansion-port/data signaling, controller polling,
 PPU state helpers, and CNROM selection. Controller code at `$80FF-$8157` now
-lives in `src/input/controllers.asm`. Both pollers strobe `$4016`, read eight
+lives in `src/system/famicom_platform.asm`. Both pollers strobe `$4016`, read eight
 serial samples from `$4016` or `$4017`, prefer D0 when it is set, otherwise use
 D1, and rotate the result into `$20` in NES button order. The controller-2
 poller additionally enables NMI before returning. Six bytes at `$8135-$813A`
 encode a plausible unused wrapper but remain raw because no static or runtime
 entry reaches them.
 
-PPU/CNROM code at `$8158-$817F` lives in `src/system/ppu.asm`.
+PPU/CNROM code at `$8158-$817F` lives in `src/system/famicom_platform.asm`.
 `DisableNmi` and `EnableNmi` write fixed gameplay PPUCTRL modes `$30/$B0`;
 `DisableRendering` and `WaitForVblankAndEnableRendering` use PPUMASK `$00/$1E`.
 `SelectChrBank` indexes `$00,$01,$02,$03` and writes the selected value back to
 the same ROM-table address, a bus-conflict-safe CNROM latch pattern.
 
-The two data transports now live in `src/input/famicom_data_pulse.asm` and
-`src/input/famicom_data_io.asm`. A negative selector at `$1F` chooses the
+The two data transports now share `src/system/famicom_platform.asm`. A negative
+selector at `$1F` chooses the
 pulse-width path; a nonnegative selector chooses the expansion serial path.
 The pulse sender uses one long cycle for a zero bit and two short cycles for a
 one bit, with an 8,448-cycle leader. Its receiver measures bit 1 of `$4016` and
@@ -34,7 +34,7 @@ transfers bytes MSB-first. Output data remains on bit 0 while bit 2 falls;
 input data is sampled from bit 2 of `$4017`. The receiver discards the first
 preamble byte, verifies `$AA,$55`, and reports failure in carry. Common byte
 wrappers preserve X. Higher code at `$FBFE-$FDC4` now lives in
-`src/game/save_load.asm`. It saves or loads a fixed 394-byte payload containing
+`src/game/persistence_and_endings.asm`. It saves or loads a fixed 394-byte payload containing
 the one-based room number, runtime state, 120 mutable-region bytes, 150 object-region
 bytes, 100 visited flags, and an eight-byte signature. The exact external accessory remains deliberately
 unnamed until hardware evidence distinguishes the two Japanese interfaces.
@@ -42,7 +42,7 @@ unnamed until hardware evidence distinguishes the two Japanese interfaces.
 ## Main loop and game/object logic (`$8225-$B7AC`)
 
 `Reset` and the main loop at `$8225-$82CD` now live in
-`src/system/startup.asm`. Reset waits for two vblanks, establishes the stack,
+`src/system/famicom_platform.asm`. Reset waits for two vblanks, establishes the stack,
 checks the `POW` RAM sentinel against the `POWER` ROM text, clears high score and
 counter state only after a signature mismatch, and increments a persistent
 16-bit reset counter. The main loop runs map and pause input first, then player,
@@ -145,7 +145,7 @@ calls `DecodeRoom`, loads static and tile-derived objects, applies persistent
 state, resets all 23 NMI task requests, initializes both nametables and sprite
 buffers, writes the status area, builds and uploads both attribute tables,
 clears per-room runtime state, and selects the room audio track. The routine is
-now isolated in `src/game/rooms/load_room.asm` rather than preservation code.
+now isolated in `src/game/session_initialization.asm` rather than preservation code.
 
 The coordinate and mutable-cell path is now semantic at `$A58A-$A5DC`,
 `$A66D-$A6C9`, and `$A70A-$A7DA`. It maps 16-bit pixel positions through a
@@ -256,7 +256,7 @@ score updated by point awards. Both entries join the same five-digit decimal
 converter. The common tail formats three life scratch digits, clamps the six
 inventory counters to nine, and clears `StatusTilesBusy` only when all output
 tiles are ready. The next 23 code-shaped bytes have no static or runtime entry
-and are explicitly typed in `src/data/unreferenced_bit_index_helper.asm`.
+and are explicitly typed in `src/game/session_initialization.asm`.
 
 `$AC13-$ADE6` now owns frame sprite orchestration. It clears and locks all 256
 staging bytes, draws the two-record player and optional action overlay, reserves
@@ -321,19 +321,19 @@ early without initializing outputs for a zero divisor. `UploadPaletteFromPointer
 disables NMI/rendering, waits for vblank, writes exactly 32 bytes to `$3F00`, and
 performs the original four-write PPU address/latch reset.
 
-`Nmi` and `NmiFrame` at `$C55D-$C6B8` now live in `src/system/nmi.asm`.
+`Nmi` and `NmiFrame` at `$C55D-$C6B8` now live in `src/rendering/frame_pipeline.asm`.
 They preserve A/X/Y and dispatch through 23 high/low frame-task pointers before
 performing OAM DMA, scroll-latch updates, request scheduling, controller/demo
 polling, eight modular timers, audio work, and the shared epilogue. The handler
 tables at `$C88E-$C8BB` are typed data and independently decoded.
 `BuildDmaOam` and `ReverseDmaOam` at `$C6B9-$C803` now live in
-`src/rendering/oam_dma.asm`. They transpose the staging OAM at `$0300` into DMA
+`src/rendering/frame_pipeline.asm`. They transpose the staging OAM at `$0300` into DMA
 OAM at `$0200` in an eight-frame rotated order and reverse all 64 hardware
 sprite records in place. Fifteen rotation offsets at `$C79D-$C7AB` are
 reachable; `$C7AC` is a separate unused data byte.
 
 `UploadStatusTiles` and the handler tables at `$C804-$C8BB` live in
-`src/rendering/status_upload.asm`. When the foreground formatter is idle, task
+`src/rendering/frame_pipeline.asm`. When the foreground formatter is idle, task
 zero writes five score, six inventory, and two lives tiles to the HUD. A busy
 formatter delegates to `UploadRoomCellRow00`, avoiding a partially formatted
 display. The exact 23 pointers resolve to status, 20 room rows, and two
@@ -365,12 +365,12 @@ independent.
 ## Room and object data pipeline (`$E45D-$F8FB`)
 
 The proven decoder subrange `$E45D-$E8DE` lives in
-`src/game/rooms/decoder.asm`. Its codebook, pointer table, masks, PPU bit reader,
+`src/rendering/rooms/upload_and_decode.asm`. Its codebook, pointer table, masks, PPU bit reader,
 16-byte lookahead, and 400-cell output loop form one closed source module.
 The immediately following `$E8DF-$EA35` range lives in
-`src/rendering/room_attributes.asm`; it builds both nametable attribute tables
+`src/rendering/rooms/attributes_and_map.asm`; it builds both nametable attribute tables
 and requests their NMI uploads. The closed `$EB8F-$EC62` static-object range
-lives in `src/game/objects/room_loader.asm`. The intervening room UI and later
+lives in `src/game/rooms/load_pipeline.asm`. The intervening room UI and later
 transition logic remains preservation code until its mixed boundaries are
 resolved.
 

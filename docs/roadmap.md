@@ -23,7 +23,7 @@
 ## Source reconstruction 1.0
 
 - [x] establish a contiguous multi-file source-layout contract and promote the
-  complete room decoder at `$E45D-$E8DE` into `src/game/rooms/decoder.asm`;
+  complete room decoder at `$E45D-$E8DE` into `src/rendering/rooms/upload_and_decode.asm`;
 - [x] add deterministic global and address-scoped RAM/I/O operand naming;
 - [x] promote `$E8DF-$EA35` into a semantic room attribute module and
   independently reconstruct both 64-byte attribute buffers for all 100 rooms;

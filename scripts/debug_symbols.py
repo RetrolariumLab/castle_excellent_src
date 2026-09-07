@@ -18,15 +18,15 @@ EXPECTED_SEGMENT_OFFSETS = {
     "CHR": 16 + 32_768,
 }
 EXPECTED_SOURCE_SYMBOLS = {
-    "Reset": "src/system/startup.asm",
-    "MainFrameLoop": "src/system/startup.asm",
+    "Reset": "src/system/famicom_platform.asm",
+    "MainFrameLoop": "src/system/famicom_platform.asm",
     "HandleLiftControlBlockHorizontalCollision": (
-        "src/game/objects/linked_lift_control.asm"
+        "src/game/objects/lifts/linked_control.asm"
     ),
-    "UpdateRuntimeObjects": "src/game/objects/update_dispatch.asm",
-    "DecodeRoom": "src/game/rooms/decoder.asm",
-    "UpdateAudioStreams": "src/audio/stream_engine.asm",
-    "Nmi": "src/system/nmi.asm",
+    "UpdateRuntimeObjects": "src/game/runtime/frame_pipeline.asm",
+    "DecodeRoom": "src/rendering/rooms/upload_and_decode.asm",
+    "UpdateAudioStreams": "src/audio/music_engine.asm",
+    "Nmi": "src/rendering/frame_pipeline.asm",
 }
 REQUIRED_RAM_SYMBOLS = {
     "RuntimeObjectRecords": 0x004A,

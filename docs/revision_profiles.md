@@ -24,17 +24,17 @@ inside an already reconstructed semantic module:
 
 | CPU range | Bytes | Owner | Current interpretation |
 | --- | ---: | --- | --- |
-| `$A2B6` | 1 | `src/game/new_game.asm` | initial lives: 3 versus 50 |
-| `$C50E-$C510` | 3 | `src/rendering/screen_palette_data.asm` | localized title palette |
-| `$C513-$C514` | 2 | `src/rendering/screen_palette_data.asm` | localized title palette |
-| `$C516-$C518` | 3 | `src/rendering/screen_palette_data.asm` | localized title palette |
-| `$C51A-$C51C` | 3 | `src/rendering/screen_palette_data.asm` | localized title palette |
-| `$FB18` | 1 | `src/ui/sub_command_menu.asm` | three versus five menu selections |
-| `$FB4B` | 1 | `src/ui/sub_command_menu.asm` | final selection index 2 versus 4 |
-| `$FB69-$FB6E` | 6 | `src/ui/sub_command_menu.asm` | disabled load/save dispatch branches |
-| `$FB83-$FB86` | 4 | `src/data/sub_command_text.asm` | third menu label becomes `GAME` |
-| `$FB88` | 1 | `src/data/sub_command_text.asm` | fourth menu label becomes empty |
-| `$FB98` | 1 | `src/data/sub_command_text.asm` | fifth menu label becomes empty |
+| `$A2B6` | 1 | `src/game/session_initialization.asm` | initial lives: 3 versus 50 |
+| `$C50E-$C510` | 3 | `src/rendering/frame_pipeline.asm` | localized title palette |
+| `$C513-$C514` | 2 | `src/rendering/frame_pipeline.asm` | localized title palette |
+| `$C516-$C518` | 3 | `src/rendering/frame_pipeline.asm` | localized title palette |
+| `$C51A-$C51C` | 3 | `src/rendering/frame_pipeline.asm` | localized title palette |
+| `$FB18` | 1 | `src/ui/title_and_subcommands.asm` | three versus five menu selections |
+| `$FB4B` | 1 | `src/ui/title_and_subcommands.asm` | final selection index 2 versus 4 |
+| `$FB69-$FB6E` | 6 | `src/ui/title_and_subcommands.asm` | disabled load/save dispatch branches |
+| `$FB83-$FB86` | 4 | `src/ui/title_and_subcommands.asm` | third menu label becomes `GAME` |
+| `$FB88` | 1 | `src/ui/title_and_subcommands.asm` | fourth menu label becomes empty |
+| `$FB98` | 1 | `src/ui/title_and_subcommands.asm` | fifth menu label becomes empty |
 
 The CHR regions differ in 3,567 bytes across 323 runs. Banks 0 and 2 are fully
 identical. Bank 1 differs in 2,664 bytes from bank offset `$13F0` onward, and

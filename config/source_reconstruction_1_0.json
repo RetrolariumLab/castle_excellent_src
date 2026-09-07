@@ -488,7 +488,7 @@
   },
   "source": {
     "semantic_prg_bytes": 32768,
-    "minimum_semantic_modules": 124,
+    "minimum_semantic_modules": 32,
     "maximum_open_unknowns": 0,
     "symbol_map": {
       "prg_symbols": 1232,
