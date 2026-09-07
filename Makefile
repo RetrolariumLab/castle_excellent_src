@@ -172,6 +172,7 @@ TIMEOUT_FRAMES ?= 15000
 	sound-studio music-editor check-sound-studio \
 	init-graphics export-graphics validate-graphics build-graphics roundtrip-graphics \
 	graphics-studio check-graphics-studio \
+	editor-quality-check-profile editor-quality-check editor-ui-smoke-profile \
 	symbols validate-symbols \
 	ghidra-bootstrap ghidra-status ghidra-inspect ghidra-analyze disassemble \
 	disassembly-check fceux-bootstrap fceux-status trace-boot trace-title \
@@ -347,6 +348,25 @@ graphics-studio: init-graphics
 
 check-graphics-studio: verify-profile
 	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+
+editor-quality-check-profile: verify-profile
+	$(PYTHON) scripts/level_editor.py roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(PYTHON) scripts/music_editor.py roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(PYTHON) scripts/graphics_editor.py roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+
+editor-quality-check:
+	$(MAKE) lint
+	$(PYTHON) -m unittest tests.test_level_studio_model tests.test_sound_studio_model tests.test_graphics_studio_model
+	$(MAKE) editor-quality-check-profile REVISION_PROFILE=castle-excellent-japan-hsp-05
+	$(MAKE) editor-quality-check-profile REVISION_PROFILE=castlequest-usa
+
+editor-ui-smoke-profile: init-levels init-music init-graphics
+	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
+	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
+	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
 
 symbols: $(ROM)
 	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"

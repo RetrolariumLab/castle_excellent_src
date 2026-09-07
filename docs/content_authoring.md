@@ -76,9 +76,12 @@ than introducing a second serializer.
 
 `make level-studio` (or the `level-editor` alias) opens the dependency-free
 Tkinter editor for the selected `REVISION_PROFILE`. It renders all 100 rooms
-from CHR bank 0, the reconstructed left/right tile tables, and the room palette
-and attribute rules. The cell palette offers exactly the 63 symbols accepted by
-the original prefix codebook.
+from CHR bank 0, using pattern table 1 for background cells exactly as gameplay
+does through `PPU_CTRL=$B0`. Pattern table 0 remains the 8x16 sprite source.
+The reconstructed left/right tile, attribute, palette, object-selector, and
+metasprite tables therefore produce black empty space, blue water, real object
+frames, and the neutral player frame. The cell palette offers exactly the 63
+symbols accepted by the original prefix codebook.
 
 Left-click or drag to paint cells, right-click to sample a cell, and use the
 Objects tab to place, edit, or delete static object records. Object markers show
@@ -127,9 +130,13 @@ instead of translating it into a lossy note grid.
 
 `make sound-studio` (or the `music-editor` alias) opens the dependency-free
 Tkinter editor for the selected profile. Its stream navigator exposes the 21
-MML texts and their restart destinations. Its track-set panel maps the three
-NES music channels to stream IDs and edits both raw channel parameters using
-decimal, `0x`-prefixed, or `$`-prefixed byte notation.
+MML texts and their restart destinations. Eight named track choices expand to
+Pulse 1, Pulse 2, and Triangle lanes whose note positions and lengths come from
+the reconstructed MML interpreter and APU period table. Each lane can be muted,
+and Preview track writes and asynchronously plays an ignored WAV rendition of
+the current in-memory workspace. Its track-set panel maps the three NES music
+channels to stream IDs and edits both raw channel parameters using decimal,
+`0x`-prefixed, or `$`-prefixed byte notation.
 
 Apply stream and Apply track validate the entire workspace and compose a full
 ROM in memory before accepting an edit. Undo retains the previous 40 accepted
@@ -172,11 +179,14 @@ Both supported profiles pass a complete zero-edit container round trip.
 ## Visual Graphics Studio
 
 `make graphics-studio` opens the dependency-free Tkinter frontend over the
-graphics codec. The CHR tab edits every two-bit pixel in both 512-tile banks and
-previews it through a selected gameplay palette. The room-cell tab composes its
-two tile halves with the selected attribute class. Further tabs edit individual
-NES palette bytes, the 203 metasprite tile/attribute pairs, all fixed localized
-text blocks, and the five sound-effect parameter tables.
+graphics codec. The CHR tab exposes both 512-tile CHR pages as separate sprite
+and background pattern-table atlases. A tile can be selected from the atlas,
+painted in the enlarged 2bpp editor, or restored from the selected revision.
+The room-cell tab composes its two halves from gameplay's background pattern
+table. The descriptor panel renders the selected 8x16 sprite with its palette
+and horizontal/vertical flip bits. The palette tab shows every stored byte as a
+color grid and provides a complete 64-color NES picker. Further controls retain
+the fixed localized text blocks and five sound-effect parameter tables.
 
 Pixel strokes and every Apply action validate and compose the entire workspace
 before entering the 40-state undo history. Save and Build ROM delegate to the
@@ -187,6 +197,13 @@ opening a window, for both local release work and headless CI.
 All three `check-*-studio` targets decode a fresh workspace from the selected
 manifest build. They deliberately ignore ignored user workspaces, so a local
 experiment cannot weaken or accidentally break the release gate.
+
+`make editor-quality-check` is the aggregate editor contract. It runs lint,
+visual/audio model regressions, byte-identical level/music/graphics round trips,
+and the complete headless studio models for both supported revisions.
+`make editor-ui-smoke-profile REVISION_PROFILE=...` additionally constructs and
+closes all three real Tk windows on a workstation; it is intentionally separate
+from the headless gate.
 
 ## Why there is no World Studio
 

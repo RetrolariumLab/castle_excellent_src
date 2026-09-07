@@ -367,6 +367,8 @@ make build-graphics REVISION_PROFILE=castlequest-usa # build an isolated graphic
 make roundtrip-graphics REVISION_PROFILE=castlequest-usa # prove zero-edit graphics identity
 make graphics-studio REVISION_PROFILE=castlequest-usa # open tile, palette, and display editor
 make check-graphics-studio REVISION_PROFILE=castlequest-usa # validate its model headlessly
+make editor-quality-check # verify authentic visuals, audio previews, and all editor round trips
+make editor-ui-smoke-profile REVISION_PROFILE=castlequest-usa # construct and close all three Tk editors
 make check-fixed-layout # verify and run the isolated start-room-1 variant
 make rooms           # decode all 100 rooms as JSON
 make validate-rooms  # decode every room without writing JSON

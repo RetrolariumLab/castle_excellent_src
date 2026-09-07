@@ -689,6 +689,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--revisions", default="config/revision_profiles.json")
     parser.add_argument("--profile", required=True)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--smoke-ui", action="store_true")
     return parser
 
 
@@ -699,9 +700,15 @@ def main() -> int:
             check_studio(args)
             return 0
         config, profile, _revision, image, prg, chr_data, path, document = load_studio(args)
-        LevelStudio(
+        application = LevelStudio(
             document, config, profile, image, prg, chr_data, path, args.profile
-        ).mainloop()
+        )
+        if args.smoke_ui:
+            application.update_idletasks()
+            application.destroy()
+            print("[OK] level studio widgets constructed")
+        else:
+            application.mainloop()
     except (
         OSError,
         ProjectError,
