@@ -2,12 +2,9 @@ from __future__ import annotations
 
 from contextlib import redirect_stdout
 import io
-from pathlib import Path
-import sys
 import unittest
 
 
-ROOT = Path(__file__).resolve().parent.parent
 
 from scripts.build import project
 from scripts.build import verify_rom

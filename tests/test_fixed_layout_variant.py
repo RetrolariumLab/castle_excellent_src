@@ -1,12 +1,9 @@
 from __future__ import annotations
 
 import hashlib
-from pathlib import Path
-import sys
 import unittest
 
 
-ROOT = Path(__file__).resolve().parent.parent
 
 from scripts.build import fixed_layout_variant as fixed
 class FixedLayoutVariantTests(unittest.TestCase):

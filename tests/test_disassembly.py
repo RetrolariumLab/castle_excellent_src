@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-from pathlib import Path
-import sys
 import unittest
 
 
-ROOT = Path(__file__).resolve().parent.parent
 
 from scripts.validation import format_project
 from scripts.workflow import generate_disassembly as disasm

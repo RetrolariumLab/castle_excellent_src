@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-from pathlib import Path
-import sys
 import unittest
 
 
-ROOT = Path(__file__).resolve().parent.parent
 
 from scripts.validation.gameplay import controller_input
 class ControllerInputTests(unittest.TestCase):

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 from pathlib import Path
-import sys
 import tempfile
 import unittest
 
 
-ROOT = Path(__file__).resolve().parent.parent
 
 from scripts.runtime import runtime_coverage
 class RuntimeCoverageTests(unittest.TestCase):
