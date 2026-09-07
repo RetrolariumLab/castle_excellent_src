@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import end_sequences
+from scripts.validation.gameplay import end_sequences
 
 
 ROOT = Path(__file__).resolve().parent.parent

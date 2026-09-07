@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import collision_point_sample as sample
+from scripts.validation.collision import collision_point_sample as sample
 
 
 class CollisionPointSampleTests(unittest.TestCase):

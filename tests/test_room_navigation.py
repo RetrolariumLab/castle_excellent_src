@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import room_navigation
+from scripts.validation.rooms import room_navigation
 
 
 class RoomNavigationTests(unittest.TestCase):

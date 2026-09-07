@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import player_collision_dispatch as dispatch
+from scripts.validation.player import player_collision_dispatch as dispatch
 
 
 class PlayerCollisionDispatchTests(unittest.TestCase):

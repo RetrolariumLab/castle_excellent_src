@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import new_game_state
+from scripts.validation.gameplay import new_game_state
 
 
 class NewGameStateTests(unittest.TestCase):

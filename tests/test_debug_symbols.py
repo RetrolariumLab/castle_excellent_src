@@ -4,7 +4,8 @@ import unittest
 from pathlib import Path
 import tempfile
 
-from scripts import debug_symbols, validate_debug_runtime
+from scripts.validation import debug_symbols
+from scripts.runtime import validate_debug_runtime
 
 
 class DebugSymbolsTests(unittest.TestCase):

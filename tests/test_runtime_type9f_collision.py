@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import runtime_type9f_collision
+from scripts.validation.objects import runtime_type9f_collision
 
 
 ROOT = Path(__file__).resolve().parent.parent

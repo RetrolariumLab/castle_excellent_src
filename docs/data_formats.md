@@ -26,7 +26,7 @@ serializes physical RAM regions, not only the currently named logical arrays.
 
 ROM `$FC99-$FCA1` contains ASCII `GNUTUEDEB`. Indexed reads from 8 down to 1
 produce the eight wire bytes `BEDEUTUN`; byte zero, the leading physical `G`,
-is not transferred. `scripts/save_data.py` independently round-trips all six
+is not transferred. `scripts/validation/gameplay/save_data.py` independently round-trips all six
 fields and validates the exact physical and wire signatures.
 
 The receiver checks carry after the room byte and every looped byte, but not
@@ -57,7 +57,7 @@ The serial pollers produce this one-byte layout at `$20`:
 | 7 | `$80` | Right |
 
 Each serial read chooses a set D0 bit first and otherwise falls back to D1.
-`scripts/controller_input.py` exhaustively reconstructs every mask on both data
+`scripts/validation/gameplay/controller_input.py` exhaustively reconstructs every mask on both data
 lines and is part of `make release-check`.
 
 ## Room pointers and compressed streams
@@ -74,7 +74,7 @@ output byte, one or more ASCII $30/$31 code bytes, $00
 ```
 
 An `$FF` entry marker terminates the candidate table. The original routine
-compares candidates in table order. `scripts/room_data.py` first proves that
+compares candidates in table order. `scripts/authoring/room_data.py` first proves that
 the recovered table is prefix-free, then uses an equivalent direct lookup.
 
 The independent decoder reaches exactly 400 output cells for all 100 rooms.
@@ -113,7 +113,7 @@ by row-major scan. Restoration uses the same scan over original candidates,
 writes `$62/$63` when either horizontal neighbor is `$16`, otherwise
 `$54/$55`, and maps ordinal `n` to byte `(n-1)/8` and mask
 `1 << ((n-1) & 7)`, with the byte division rounded down.
-`scripts/room_cell_coordinates.py` independently models
+`scripts/validation/rooms/room_cell_coordinates.py` independently models
 these conversions, predicates, writes, and bit selection.
 
 The collision handler table at `$9155` maps each original cell pair to an
@@ -166,7 +166,7 @@ followed immediately by 16 initial attribute bytes:
 
 `WriteTerminatedPpuTiles` copies each stream through `$2007`. A fifth pointer
 targets formatted score tiles at RAM `$079D`; `$07A2` is set to zero before
-the copy. `scripts/room_screen_data.py` checks the four exact boundaries, all
+the copy. `scripts/validation/rooms/room_screen_data.py` checks the four exact boundaries, all
 five immediate pointer loads, 45 tile bytes, and the 16-byte attribute tail.
 
 Foreground HUD formatting uses paired high/low tables at `$A551-$A55A` for
@@ -254,7 +254,7 @@ with the type byte. Those biased operands do not denote separate tables.
 The last height byte at `$AB49` is also the byte immediately before
 `RoomObjectCounts`. One-based room consumers therefore load
 `RoomObjectCounts - 1,x`; the overlap is an address-expression alias, not a
-fifth data structure. `scripts/collision_tables.py` proves the four physical
+fifth data structure. `scripts/validation/collision/collision_tables.py` proves the four physical
 ranges and all 18 exact code consumers.
 
 Player collision results select one of two little-endian pointer tables.
@@ -311,7 +311,7 @@ for encoded types `$12-$29`, so the two logical views intentionally share
 bytes. The typed-data registry represents this as two non-overlapping physical
 ranges rather than pretending the logical tables are disjoint.
 
-`scripts/object_catalog.py` validates the complete cross-table relation for
+`scripts/validation/objects/object_catalog.py` validates the complete cross-table relation for
 runtime types `$80-$A9`. For each index it reports all encoded sources, loader
 initial-state values, occurrence count and room set, update handler, sprite
 selector, and collision width/height. Of 61 legal encoded values, 34 occur in
@@ -459,7 +459,7 @@ with `$00`, then a little-endian restart pointer; `$0000` stops the channel.
 
 There are 21 consecutive streams containing 1,511 command bytes. Twenty stream
 starts are referenced by the track table; `$BE17` is structurally valid but is
-not selected by those eight records. `scripts/audio_data.py` checks the grammar,
+not selected by those eight records. `scripts/authoring/audio_data.py` checks the grammar,
 all pointers and terminators, restart targets, and gap-free coverage of the
 complete range.
 

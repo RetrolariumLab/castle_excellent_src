@@ -7,11 +7,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import runtime_coverage
-
-
+from scripts.runtime import runtime_coverage
 class RuntimeCoverageTests(unittest.TestCase):
     def test_builds_contiguous_ranges(self) -> None:
         self.assertEqual(

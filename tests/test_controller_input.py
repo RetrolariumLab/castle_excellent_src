@@ -6,11 +6,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import controller_input
-
-
+from scripts.validation.gameplay import controller_input
 class ControllerInputTests(unittest.TestCase):
     def test_decodes_standard_button_order_from_d0(self) -> None:
         buttons = 0x01 | 0x08 | 0x40

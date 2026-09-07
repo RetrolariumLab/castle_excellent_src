@@ -6,13 +6,10 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import graphics_editor
-import graphics_studio_model as model
-import room_data
-
-
+from scripts.authoring import graphics_editor
+from scripts.authoring import graphics_studio_model as model
+from scripts.authoring import room_data
 class GraphicsStudioModelTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:

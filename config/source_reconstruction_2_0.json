@@ -76,7 +76,7 @@
       "summary": "Build the USA localization byte-identically from the common entrypoint, semantic revision conditionals, and isolated private binary assets.",
       "evidence": [
         "src/revisions/profile.inc",
-        "scripts/revision_profiles.py",
+        "scripts/build/revision_profiles.py",
         "tests/test_revision_profiles.py"
       ]
     },
@@ -86,8 +86,8 @@
       "summary": "Observe Castlequest's 50-life startup and three-entry localized sub-command menu directly in pinned FCEUX while excluding the Japanese load/save handlers.",
       "evidence": [
         "scenarios/source_2_castlequest.json",
-        "scripts/capture_castlequest_runtime.lua",
-        "scripts/revision_runtime.py",
+        "scripts/runtime/capture_castlequest_runtime.lua",
+        "scripts/runtime/revision_runtime.py",
         "tests/test_revision_runtime.py"
       ]
     },
@@ -98,8 +98,8 @@
       "evidence": [
         "config/revision_profiles.json",
         "config/source_layout.json",
-        "scripts/revision_profiles.py",
-        "scripts/generate_disassembly.py",
+        "scripts/build/revision_profiles.py",
+        "scripts/workflow/generate_disassembly.py",
         "docs/revision_profiles.md"
       ]
     },
@@ -109,9 +109,9 @@
       "summary": "Add a profile-aware JSON workspace, fixed-capacity encoder, and visual Studio for all room maps, objects, pointers, counts, and persistent-state offsets.",
       "evidence": [
         "config/level_authoring.json",
-        "scripts/level_editor.py",
-        "scripts/level_studio.py",
-        "scripts/level_studio_model.py",
+        "scripts/authoring/level_editor.py",
+        "scripts/authoring/level_studio.py",
+        "scripts/authoring/level_studio_model.py",
         "tests/test_level_editor.py",
         "tests/test_level_studio_model.py",
         "docs/content_authoring.md"
@@ -122,8 +122,8 @@
       "kind": "authoring-runtime",
       "summary": "Launch an authored profile in pinned FCEUX, select any of the 100 rooms through the normal new-game and room-load path, and place the player at a validated room coordinate.",
       "evidence": [
-        "scripts/level_playtest.py",
-        "scripts/level_playtest.lua",
+        "scripts/runtime/level_playtest.py",
+        "scripts/runtime/level_playtest.lua",
         "tests/test_level_playtest.py",
         "docs/content_authoring.md"
       ]
@@ -134,9 +134,9 @@
       "summary": "Decode and rebuild all eight music track sets and 21 textual MML streams through a profile-aware fixed-capacity workspace, then expose the same validated codec through a thin visual studio.",
       "evidence": [
         "config/audio_authoring.json",
-        "scripts/music_editor.py",
-        "scripts/sound_studio.py",
-        "scripts/sound_studio_model.py",
+        "scripts/authoring/music_editor.py",
+        "scripts/authoring/sound_studio.py",
+        "scripts/authoring/sound_studio_model.py",
         "tests/test_music_editor.py",
         "tests/test_sound_studio_model.py",
         "docs/content_authoring.md"
@@ -148,9 +148,9 @@
       "summary": "Decode and rebuild two graphics-only CHR banks plus fixed PRG display, palette, metasprite, localized-text, and sound-effect parameter records, then expose them through a visual pixel and record editor without claiming ownership of the room-data CHR banks.",
       "evidence": [
         "config/graphics_authoring.json",
-        "scripts/graphics_editor.py",
-        "scripts/graphics_studio.py",
-        "scripts/graphics_studio_model.py",
+        "scripts/authoring/graphics_editor.py",
+        "scripts/authoring/graphics_studio.py",
+        "scripts/authoring/graphics_studio_model.py",
         "tests/test_graphics_editor.py",
         "tests/test_graphics_studio_model.py",
         "docs/content_authoring.md"
@@ -161,10 +161,10 @@
       "kind": "authoring-runtime",
       "summary": "Run every Studio check from a freshly decoded manifest baseline and resolve point-playtest ROMs from the revision profile instead of depending on ignored local workspaces.",
       "evidence": [
-        "scripts/level_studio.py",
-        "scripts/sound_studio.py",
-        "scripts/graphics_studio.py",
-        "scripts/level_playtest.py",
+        "scripts/authoring/level_studio.py",
+        "scripts/authoring/sound_studio.py",
+        "scripts/authoring/graphics_studio.py",
+        "scripts/runtime/level_playtest.py",
         "tests/test_level_playtest.py",
         "docs/content_authoring.md"
       ]
@@ -175,8 +175,8 @@
       "summary": "Build a one-byte starting-room variant under an exact changed-byte allowlist and observe the replacement through the normal boot path in pinned FCEUX.",
       "evidence": [
         "config/fixed_layout_variants.json",
-        "scripts/fixed_layout_variant.py",
-        "scripts/validate_fixed_layout.lua",
+        "scripts/build/fixed_layout_variant.py",
+        "scripts/runtime/validate_fixed_layout.lua",
         "tests/test_fixed_layout_variant.py",
         "docs/fixed_layout_variants.md"
       ]
@@ -189,7 +189,7 @@
         "source-2-check",
         "source-2-pre-tag-check",
         "source-2-tag-check",
-        "scripts/source_2_release_audit.py",
+        "scripts/validation/source_2_release_audit.py",
         "tests/test_source_2_release_audit.py"
       ]
     }
@@ -277,7 +277,7 @@
           "docs/fixed_layout_variants.md"
         ],
         "scenarios": [
-          "scripts/validate_fixed_layout.lua"
+          "scripts/runtime/validate_fixed_layout.lua"
         ],
         "artifacts": [
           "start-room-1-rom"
@@ -326,7 +326,7 @@
         ],
         "files": [
           "docs/content_authoring.md",
-          "scripts/room_navigation.py"
+          "scripts/validation/rooms/room_navigation.py"
         ],
         "scenarios": [],
         "artifacts": []
@@ -342,15 +342,15 @@
           "source-2-tag-check"
         ],
         "files": [
-          "scripts/source_2_release_audit.py",
+          "scripts/validation/source_2_release_audit.py",
           "tests/test_source_2_release_audit.py",
           "docs/verification.md"
         ],
         "scenarios": [
           "scenarios/source_1.json",
           "scenarios/source_2_castlequest.json",
-          "scripts/validate_fixed_layout.lua",
-          "scripts/level_playtest.lua"
+          "scripts/runtime/validate_fixed_layout.lua",
+          "scripts/runtime/level_playtest.lua"
         ],
         "artifacts": [
           "castle-excellent-japan-hsp-05-rom",
@@ -515,26 +515,27 @@
     "docs/symbol_map.md",
     "docs/subsystems.md",
     "docs/unknowns.md",
-    "docs/resolved_unknowns.md"
+    "docs/resolved_unknowns.md",
+    "docs/scripts.md"
   ],
   "layout_deviations": [
-    {
-      "rule_id": "scripts-run-launcher",
-      "actual_path": "scripts/*.py",
-      "reason": "The existing small-project command surface is stable and directly named by action.",
-      "equivalent_control": "Makefile owns all public invocations and the release audit proves every declared target exists."
-    },
-    {
-      "rule_id": "scripts-responsibility-subdirectories",
-      "actual_path": "scripts/",
-      "reason": "Moving the mature flat tooling tree would add path churn without changing responsibility or evidence.",
-      "equivalent_control": "Action-based filenames, top-level tests, and manifest evidence identify build, validation, runtime, authoring, and workflow roles."
-    },
     {
       "rule_id": "provenance-subdirectory",
       "actual_path": "docs/provenance.md",
       "reason": "A single provenance ledger is sufficient for the two closely related supported profiles.",
       "equivalent_control": "The document and machine-readable licensing/provenance records are mandatory release evidence."
+    }
+  ],
+  "resolved_layout_deviations": [
+    {
+      "rule_id": "scripts-run-launcher",
+      "resolution": "All Python tools are invoked through scripts/run.py with a categorized module name.",
+      "evidence": "tests/test_script_runner.py and every Python recipe in Makefile"
+    },
+    {
+      "rule_id": "scripts-responsibility-subdirectories",
+      "resolution": "Tools are split among authoring, build, runtime, validation, and workflow packages, with large validation families grouped by subsystem.",
+      "evidence": "docs/scripts.md and the scripts root boundary enforced by build.project lint"
     }
   ],
   "licensing": [

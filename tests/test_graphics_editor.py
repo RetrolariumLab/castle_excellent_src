@@ -7,12 +7,9 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import graphics_editor
-import room_data
-
-
+from scripts.authoring import graphics_editor
+from scripts.authoring import room_data
 class GraphicsEditorTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:

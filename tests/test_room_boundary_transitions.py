@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import room_boundary_transitions as transitions
+from scripts.validation.rooms import room_boundary_transitions as transitions
 
 
 ROOT = Path(__file__).resolve().parent.parent

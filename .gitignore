@@ -1,5 +1,7 @@
 # Build artifacts and original ROM images
 build/
+!scripts/build/
+!scripts/build/**
 *.o
 *.nes
 *.chr

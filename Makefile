@@ -1,4 +1,5 @@
 PYTHON ?= python
+RUN_TOOL := $(PYTHON) scripts/run.py
 CA65 ?= bin/ca65.exe
 LD65 ?= bin/ld65.exe
 REFERENCE_ROM ?= Castle Excellent (J).nes
@@ -18,7 +19,7 @@ FIXED_LAYOUT_MANIFEST := config/fixed_layout_variants.json
 FIXED_LAYOUT_VARIANT ?= start-room-1
 FIXED_LAYOUT_RESULT := build/variants/$(FIXED_LAYOUT_VARIANT)/runtime.txt
 CASTLEQUEST_RUNTIME_RESULT := build/revisions/castlequest-usa/runtime.txt
-VERIFY_ROM := scripts/verify_rom.py
+VERIFY_ROM := $(RUN_TOOL) build.verify_rom
 
 BUILD_DIR := build/native
 GENERATED_ASSET_DIR := assets/generated
@@ -173,13 +174,13 @@ TIMEOUT_FRAMES ?= 15000
 all: verify
 
 $(BUILD_DIR):
-	$(PYTHON) scripts/project.py mkdir --path "$(BUILD_DIR)"
+	$(RUN_TOOL) build.project mkdir --path "$(BUILD_DIR)"
 
 $(CHR_ASSET):
-	$(PYTHON) scripts/project.py require --path "$@" --hint "run 'make split' first"
+	$(RUN_TOOL) build.project require --path "$@" --hint "run 'make split' first"
 
 $(PRG_ASSET):
-	$(PYTHON) scripts/project.py require --path "$@" --hint "run 'make split' first"
+	$(RUN_TOOL) build.project require --path "$@" --hint "run 'make split' first"
 
 $(OBJECT): $(SOURCE_FILES) $(CHR_ASSET) | $(BUILD_DIR) build-toolchain-status
 	$(CA65) --debug-info -g -o "$@" -l "$(BUILD_DIR)/castle_excellent.lst" "src/main.asm"
@@ -190,110 +191,110 @@ $(ROM): $(OBJECT) config/linker/cnrom.cfg
 build: $(ROM)
 
 split-profile:
-	$(PYTHON) scripts/revision_profiles.py --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" split
+	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" split
 
 build-profile: build-toolchain-status
-	$(PYTHON) scripts/revision_profiles.py --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" build --ca65 "$(CA65)" --ld65 "$(LD65)"
+	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" build --ca65 "$(CA65)" --ld65 "$(LD65)"
 
 verify-profile: build-profile
-	$(PYTHON) scripts/revision_profiles.py --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" verify
+	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" verify
 
 castlequest-check:
 	$(MAKE) split-profile REVISION_PROFILE=castlequest-usa
 	$(MAKE) verify-profile REVISION_PROFILE=castlequest-usa
 
 castlequest-runtime: fceux-bootstrap castlequest-check
-	$(PYTHON) scripts/revision_runtime.py --revisions "$(REVISION_MANIFEST)" --profile castlequest-usa --fceux "$(FCEUX)" --lua scripts/capture_castlequest_runtime.lua --result "$(CASTLEQUEST_RUNTIME_RESULT)"
+	$(RUN_TOOL) runtime.revision_runtime --revisions "$(REVISION_MANIFEST)" --profile castlequest-usa --fceux "$(FCEUX)" --lua scripts/runtime/capture_castlequest_runtime.lua --result "$(CASTLEQUEST_RUNTIME_RESULT)"
 
 init-levels: verify-profile
-	$(PYTHON) scripts/level_editor.py init --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.level_editor init --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 export-levels: verify-profile
-	$(PYTHON) scripts/level_editor.py export --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.level_editor export --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 validate-levels: verify-profile
-	$(PYTHON) scripts/level_editor.py validate --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.level_editor validate --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 build-levels: verify-profile
-	$(PYTHON) scripts/level_editor.py build --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.level_editor build --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 roundtrip-levels: verify-profile
-	$(PYTHON) scripts/level_editor.py roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.level_editor roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 level-studio: init-levels
-	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.level_studio --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 level-editor: level-studio
 
 check-level-studio: verify-profile
-	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.level_studio --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
 
 smoke-level-playtest: fceux-bootstrap build-levels
-	$(PYTHON) scripts/level_playtest.py --fceux "$(FCEUX)" --rom "build/authoring/$(REVISION_PROFILE)/levels.nes" --lua scripts/level_playtest.lua --room "$(LEVEL_PLAYTEST_ROOM)" --player-x "$(LEVEL_PLAYTEST_X)" --player-y "$(LEVEL_PLAYTEST_Y)" --result "$(LEVEL_PLAYTEST_RESULT)" --check
+	$(RUN_TOOL) runtime.level_playtest --fceux "$(FCEUX)" --rom "build/authoring/$(REVISION_PROFILE)/levels.nes" --lua scripts/runtime/level_playtest.lua --room "$(LEVEL_PLAYTEST_ROOM)" --player-x "$(LEVEL_PLAYTEST_X)" --player-y "$(LEVEL_PLAYTEST_Y)" --result "$(LEVEL_PLAYTEST_RESULT)" --check
 
 smoke-baseline-level-playtest: fceux-bootstrap verify-profile
-	$(PYTHON) scripts/level_playtest.py --fceux "$(FCEUX)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --lua scripts/level_playtest.lua --room "$(LEVEL_PLAYTEST_ROOM)" --player-x "$(LEVEL_PLAYTEST_X)" --player-y "$(LEVEL_PLAYTEST_Y)" --result "$(LEVEL_PLAYTEST_RESULT)" --check
+	$(RUN_TOOL) runtime.level_playtest --fceux "$(FCEUX)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --lua scripts/runtime/level_playtest.lua --room "$(LEVEL_PLAYTEST_ROOM)" --player-x "$(LEVEL_PLAYTEST_X)" --player-y "$(LEVEL_PLAYTEST_Y)" --result "$(LEVEL_PLAYTEST_RESULT)" --check
 
 build-fixed-layout: build
-	$(PYTHON) scripts/fixed_layout_variant.py build --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
+	$(RUN_TOOL) build.fixed_layout_variant build --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
 
 verify-fixed-layout: build
-	$(PYTHON) scripts/fixed_layout_variant.py verify --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
+	$(RUN_TOOL) build.fixed_layout_variant verify --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
 
 check-fixed-layout: fceux-bootstrap build
-	$(PYTHON) scripts/fixed_layout_variant.py runtime --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)" --fceux "$(FCEUX)" --lua scripts/validate_fixed_layout.lua --result "$(FIXED_LAYOUT_RESULT)"
+	$(RUN_TOOL) build.fixed_layout_variant runtime --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)" --fceux "$(FCEUX)" --lua scripts/runtime/validate_fixed_layout.lua --result "$(FIXED_LAYOUT_RESULT)"
 
 init-music: verify-profile
-	$(PYTHON) scripts/music_editor.py init --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.music_editor init --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 export-music: verify-profile
-	$(PYTHON) scripts/music_editor.py export --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.music_editor export --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 validate-music: verify-profile
-	$(PYTHON) scripts/music_editor.py validate --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.music_editor validate --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 build-music: verify-profile
-	$(PYTHON) scripts/music_editor.py build --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.music_editor build --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 roundtrip-music: verify-profile
-	$(PYTHON) scripts/music_editor.py roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.music_editor roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 sound-studio: init-music
-	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.sound_studio --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 music-editor: sound-studio
 
 check-sound-studio: verify-profile
-	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.sound_studio --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
 
 init-graphics: verify-profile
-	$(PYTHON) scripts/graphics_editor.py init --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.graphics_editor init --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 export-graphics: verify-profile
-	$(PYTHON) scripts/graphics_editor.py export --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.graphics_editor export --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 validate-graphics: verify-profile
-	$(PYTHON) scripts/graphics_editor.py validate --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.graphics_editor validate --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 build-graphics: verify-profile
-	$(PYTHON) scripts/graphics_editor.py build --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.graphics_editor build --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 roundtrip-graphics: verify-profile
-	$(PYTHON) scripts/graphics_editor.py roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.graphics_editor roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 graphics-studio: init-graphics
-	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.graphics_studio --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
 
 check-graphics-studio: verify-profile
-	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.graphics_studio --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
 
 editor-quality-check-profile: verify-profile
-	$(PYTHON) scripts/level_editor.py roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
-	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
-	$(PYTHON) scripts/music_editor.py roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
-	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
-	$(PYTHON) scripts/graphics_editor.py roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
-	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.level_editor roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.level_studio --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.music_editor roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.sound_studio --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.graphics_editor roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.graphics_studio --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
 
 editor-quality-check:
 	$(MAKE) lint
@@ -302,70 +303,70 @@ editor-quality-check:
 	$(MAKE) editor-quality-check-profile REVISION_PROFILE=castlequest-usa
 
 editor-ui-smoke-profile: init-levels init-music init-graphics
-	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
-	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
-	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
+	$(RUN_TOOL) authoring.level_studio --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
+	$(RUN_TOOL) authoring.sound_studio --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
+	$(RUN_TOOL) authoring.graphics_studio --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
 
 symbols: $(ROM)
-	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --source-layout "$(SOURCE_LAYOUT)" --summary "$(DEBUG_SUMMARY)"
+	$(RUN_TOOL) validation.debug_symbols --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --source-layout "$(SOURCE_LAYOUT)" --summary "$(DEBUG_SUMMARY)"
 
 validate-symbols: fceux-bootstrap symbols
-	$(PYTHON) scripts/validate_debug_runtime.py --fceux "$(FCEUX)" --rom "$(ROM)" --lua scripts/validate_debug_symbols.lua --result "$(DEBUG_RUNTIME_RESULT)"
+	$(RUN_TOOL) runtime.validate_debug_runtime --fceux "$(FCEUX)" --rom "$(ROM)" --lua scripts/runtime/validate_debug_symbols.lua --result "$(DEBUG_RUNTIME_RESULT)"
 
 verify-reference:
-	$(PYTHON) scripts/project.py verify --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)"
+	$(RUN_TOOL) build.project verify --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)"
 
 verify-built: $(ROM)
-	$(PYTHON) scripts/project.py verify --image "$(ROM)" --manifest "$(MANIFEST)"
+	$(RUN_TOOL) build.project verify --image "$(ROM)" --manifest "$(MANIFEST)"
 
 verify-header: $(ROM)
-	$(PYTHON) "$(VERIFY_ROM)" compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region header
+	$(VERIFY_ROM) compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region header
 
 verify-prg: $(ROM)
-	$(PYTHON) "$(VERIFY_ROM)" compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region prg
+	$(VERIFY_ROM) compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region prg
 
 verify-chr: $(ROM)
-	$(PYTHON) "$(VERIFY_ROM)" compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region chr
+	$(VERIFY_ROM) compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region chr
 
 verify-payload: $(ROM)
-	$(PYTHON) "$(VERIFY_ROM)" compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region payload
+	$(VERIFY_ROM) compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region payload
 
 verify-rom: $(ROM)
-	$(PYTHON) "$(VERIFY_ROM)" compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region rom
+	$(VERIFY_ROM) compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region rom
 
 verify-assets: $(CHR_ASSET)
-	$(PYTHON) "$(VERIFY_ROM)" asset --asset "$(CHR_ASSET)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region chr
+	$(VERIFY_ROM) asset --asset "$(CHR_ASSET)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region chr
 
 check-assets: verify-assets
 
 verify: verify-reference verify-built verify-header verify-prg verify-chr verify-payload verify-rom verify-assets
 
 split:
-	$(PYTHON) scripts/project.py split --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --output-dir "$(GENERATED_ASSET_DIR)"
+	$(RUN_TOOL) build.project split --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --output-dir "$(GENERATED_ASSET_DIR)"
 
 rom-info-reference:
-	$(PYTHON) "$(VERIFY_ROM)" report --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)"
+	$(VERIFY_ROM) report --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)"
 
 rom-info-built: $(ROM)
-	$(PYTHON) "$(VERIFY_ROM)" report --image "$(ROM)" --manifest "$(MANIFEST)"
+	$(VERIFY_ROM) report --image "$(ROM)" --manifest "$(MANIFEST)"
 
 rom-info: rom-info-reference rom-info-built
 
 inspect: rom-info-reference
 
 format:
-	$(PYTHON) scripts/asm_style.py --fix src
-	$(PYTHON) scripts/format_project.py write
+	$(RUN_TOOL) validation.asm_style --fix src
+	$(RUN_TOOL) validation.format_project write
 	$(MAKE) lint
 
 format-check: lint-asm
 
 lint-asm:
-	$(PYTHON) scripts/asm_style.py src
+	$(RUN_TOOL) validation.asm_style src
 
 lint-source:
-	$(PYTHON) scripts/format_project.py check
-	$(PYTHON) scripts/project.py lint
+	$(RUN_TOOL) validation.format_project check
+	$(RUN_TOOL) build.project lint
 
 lint-project: lint-source
 
@@ -379,35 +380,35 @@ quality-check: lint test
 scaffold-check: quality-check
 
 reconstruction-audit:
-	$(PYTHON) scripts/source_reconstruction.py --layout "$(SOURCE_LAYOUT)"
+	$(RUN_TOOL) validation.source_reconstruction --layout "$(SOURCE_LAYOUT)"
 
 build-toolchain-status:
-	$(PYTHON) scripts/release_audit.py --project-root . --manifest "$(SOURCE_1_MANIFEST)" --build-tools-only
+	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --build-tools-only
 
 release-audit:
-	$(PYTHON) scripts/release_audit.py --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-clean
+	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-clean
 
 source-1-check:
 	$(MAKE) release-check
 
 source-1-pre-tag-check:
 	$(MAKE) release-check
-	$(PYTHON) scripts/release_audit.py --project-root . --manifest "$(SOURCE_1_MANIFEST)" --pre-tag
+	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --pre-tag
 
 source-1-tag-check:
 	$(MAKE) release-check
-	$(PYTHON) scripts/release_audit.py --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-tag
+	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-tag
 
 source-2-audit:
-	$(PYTHON) scripts/source_2_release_audit.py --project-root . --manifest "$(SOURCE_2_MANIFEST)"
+	$(RUN_TOOL) validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)"
 
 source-2-authoring-check-profile: verify-profile
-	$(PYTHON) scripts/level_editor.py roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
-	$(PYTHON) scripts/level_studio.py --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
-	$(PYTHON) scripts/music_editor.py roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
-	$(PYTHON) scripts/sound_studio.py --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
-	$(PYTHON) scripts/graphics_editor.py roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
-	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.level_editor roundtrip --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.level_studio --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.music_editor roundtrip --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.sound_studio --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
+	$(RUN_TOOL) authoring.graphics_editor roundtrip --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"
+	$(RUN_TOOL) authoring.graphics_studio --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --check
 
 source-2-check:
 	$(MAKE) source-1-check
@@ -421,462 +422,462 @@ source-2-check:
 
 source-2-pre-tag-check:
 	$(MAKE) source-2-check
-	$(PYTHON) scripts/source_2_release_audit.py --project-root . --manifest "$(SOURCE_2_MANIFEST)" --pre-tag
+	$(RUN_TOOL) validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)" --pre-tag
 
 source-2-tag-check:
 	$(MAKE) source-2-check
-	$(PYTHON) scripts/source_2_release_audit.py --project-root . --manifest "$(SOURCE_2_MANIFEST)" --require-tag
+	$(RUN_TOOL) validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)" --require-tag
 
 ghidra-bootstrap:
-	$(PYTHON) scripts/bootstrap_ghidra.py install
+	$(RUN_TOOL) workflow.bootstrap_ghidra install
 
 ghidra-status:
-	$(PYTHON) scripts/bootstrap_ghidra.py status
+	$(RUN_TOOL) workflow.bootstrap_ghidra status
 
 ghidra-inspect: ghidra-bootstrap
-	$(PYTHON) scripts/run_ghidra.py inspect --image "$(REFERENCE_ROM)" --output build/ghidra/program.json
+	$(RUN_TOOL) workflow.run_ghidra inspect --image "$(REFERENCE_ROM)" --output build/ghidra/program.json
 
 ghidra-analyze: ghidra-bootstrap verify-reference
-	$(PYTHON) scripts/run_ghidra.py export-facts --image "$(REFERENCE_ROM)" --false-instructions "$(FALSE_INSTRUCTION_STARTS)" --static-evidence "$(STATIC_CODE_EVIDENCE)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --data-ranges "$(PRG_DATA_RANGES)" --output "$(GHIDRA_FACTS)"
+	$(RUN_TOOL) workflow.run_ghidra export-facts --image "$(REFERENCE_ROM)" --false-instructions "$(FALSE_INSTRUCTION_STARTS)" --static-evidence "$(STATIC_CODE_EVIDENCE)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --data-ranges "$(PRG_DATA_RANGES)" --output "$(GHIDRA_FACTS)"
 
 disassemble: ghidra-analyze $(PRG_ASSET)
-	$(PYTHON) scripts/generate_disassembly.py write --prg "$(PRG_ASSET)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --memory-symbols "$(MEMORY_SYMBOLS)" --operand-overrides "$(OPERAND_OVERRIDES)" --layout "$(SOURCE_LAYOUT)"
+	$(RUN_TOOL) workflow.generate_disassembly write --prg "$(PRG_ASSET)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --memory-symbols "$(MEMORY_SYMBOLS)" --operand-overrides "$(OPERAND_OVERRIDES)" --layout "$(SOURCE_LAYOUT)"
 
 disassembly-check: ghidra-analyze $(PRG_ASSET)
-	$(PYTHON) scripts/generate_disassembly.py check --prg "$(PRG_ASSET)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --memory-symbols "$(MEMORY_SYMBOLS)" --operand-overrides "$(OPERAND_OVERRIDES)" --layout "$(SOURCE_LAYOUT)"
+	$(RUN_TOOL) workflow.generate_disassembly check --prg "$(PRG_ASSET)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --memory-symbols "$(MEMORY_SYMBOLS)" --operand-overrides "$(OPERAND_OVERRIDES)" --layout "$(SOURCE_LAYOUT)"
 
 fceux-bootstrap:
-	$(PYTHON) scripts/bootstrap_fceux.py install
+	$(RUN_TOOL) runtime.bootstrap_fceux install
 
 fceux-status:
-	$(PYTHON) scripts/bootstrap_fceux.py status
+	$(RUN_TOOL) runtime.bootstrap_fceux status
 
 trace-boot: fceux-bootstrap ghidra-analyze $(ROM)
-	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_boot_cdl.lua --frames "$(BOOT_FRAMES)" --scenario boot-gameplay --cdl "$(BOOT_CDL)" --metadata "$(BOOT_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(BOOT_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/runtime/capture_boot_cdl.lua --frames "$(BOOT_FRAMES)" --scenario boot-gameplay --cdl "$(BOOT_CDL)" --metadata "$(BOOT_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(BOOT_REPORT)"
 
 trace-title: fceux-bootstrap ghidra-analyze $(ROM)
-	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_title_demo_cdl.lua --frames "$(TITLE_FRAMES)" --scenario title-demo --cdl "$(TITLE_CDL)" --metadata "$(TITLE_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(TITLE_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/runtime/capture_title_demo_cdl.lua --frames "$(TITLE_FRAMES)" --scenario title-demo --cdl "$(TITLE_CDL)" --metadata "$(TITLE_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(TITLE_REPORT)"
 
 trace-timeout: fceux-bootstrap ghidra-analyze $(ROM)
-	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_timeout_cdl.lua --frames "$(TIMEOUT_FRAMES)" --scenario idle-timeout --cdl "$(TIMEOUT_CDL)" --metadata "$(TIMEOUT_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(TIMEOUT_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/runtime/capture_timeout_cdl.lua --frames "$(TIMEOUT_FRAMES)" --scenario idle-timeout --cdl "$(TIMEOUT_CDL)" --metadata "$(TIMEOUT_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(TIMEOUT_REPORT)"
 
 trace-release-paths: fceux-bootstrap ghidra-analyze symbols
-	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_release_paths_cdl.lua --frames 1200 --scenario room-transition --runtime-scenario room-transition --required-hook TransitionToRoomAbove --required-hook LoadRoom --required-hook FinishRoomTransition --cdl "$(TRANSITION_CDL)" --metadata "$(TRANSITION_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(TRANSITION_REPORT)"
-	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_release_paths_cdl.lua --frames 1800 --scenario death-game-over --runtime-scenario death-game-over --required-hook StartPlayerDeathTransition --required-hook CompletePlayerTransition --required-hook RunGameOverSequence --cdl "$(DEATH_CDL)" --metadata "$(DEATH_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(DEATH_REPORT)"
-	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_release_paths_cdl.lua --frames 1400 --scenario completion-ending --runtime-scenario completion-ending --required-hook HandleRuntimeType82PlayerCollision --required-hook RunType82CompletionSequence --cdl "$(ENDING_CDL)" --metadata "$(ENDING_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(ENDING_REPORT)"
-	$(PYTHON) scripts/runtime_coverage.py run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/capture_release_paths_cdl.lua --frames 1600 --scenario save-load-entry --runtime-scenario save-load-entry --required-hook OpenSubCommandMenu --required-hook SaveGameState --required-hook SendSaveDataSignature --required-hook LoadGameState --required-hook HandleLoadFailure --cdl "$(SAVE_LOAD_CDL)" --metadata "$(SAVE_LOAD_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(SAVE_LOAD_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/runtime/capture_release_paths_cdl.lua --frames 1200 --scenario room-transition --runtime-scenario room-transition --required-hook TransitionToRoomAbove --required-hook LoadRoom --required-hook FinishRoomTransition --cdl "$(TRANSITION_CDL)" --metadata "$(TRANSITION_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(TRANSITION_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/runtime/capture_release_paths_cdl.lua --frames 1800 --scenario death-game-over --runtime-scenario death-game-over --required-hook StartPlayerDeathTransition --required-hook CompletePlayerTransition --required-hook RunGameOverSequence --cdl "$(DEATH_CDL)" --metadata "$(DEATH_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(DEATH_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/runtime/capture_release_paths_cdl.lua --frames 1400 --scenario completion-ending --runtime-scenario completion-ending --required-hook HandleRuntimeType82PlayerCollision --required-hook RunType82CompletionSequence --cdl "$(ENDING_CDL)" --metadata "$(ENDING_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(ENDING_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage run --fceux "$(FCEUX)" --image "$(ROM)" --lua scripts/runtime/capture_release_paths_cdl.lua --frames 1600 --scenario save-load-entry --runtime-scenario save-load-entry --required-hook OpenSubCommandMenu --required-hook SaveGameState --required-hook SendSaveDataSignature --required-hook LoadGameState --required-hook HandleLoadFailure --cdl "$(SAVE_LOAD_CDL)" --metadata "$(SAVE_LOAD_METADATA)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(SAVE_LOAD_REPORT)"
 
 runtime-merge:
-	$(PYTHON) scripts/runtime_coverage.py merge --cdl "$(BOOT_CDL)" --cdl "$(TITLE_CDL)" --cdl "$(TIMEOUT_CDL)" --output "$(RUNTIME_CDL)"
-	$(PYTHON) scripts/runtime_coverage.py analyze --scenario suite --cdl "$(RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(RUNTIME_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage merge --cdl "$(BOOT_CDL)" --cdl "$(TITLE_CDL)" --cdl "$(TIMEOUT_CDL)" --output "$(RUNTIME_CDL)"
+	$(RUN_TOOL) runtime.runtime_coverage analyze --scenario suite --cdl "$(RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(RUNTIME_REPORT)"
 
 trace-suite: trace-boot trace-title trace-timeout
 	$(MAKE) runtime-merge
 
 trace-source-1: trace-suite trace-release-paths
-	$(PYTHON) scripts/runtime_coverage.py merge --cdl "$(BOOT_CDL)" --cdl "$(TITLE_CDL)" --cdl "$(TIMEOUT_CDL)" --cdl "$(TRANSITION_CDL)" --cdl "$(DEATH_CDL)" --cdl "$(ENDING_CDL)" --cdl "$(SAVE_LOAD_CDL)" --output "$(SOURCE_1_RUNTIME_CDL)"
-	$(PYTHON) scripts/runtime_coverage.py analyze --scenario source-1-suite --cdl "$(SOURCE_1_RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(SOURCE_1_RUNTIME_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage merge --cdl "$(BOOT_CDL)" --cdl "$(TITLE_CDL)" --cdl "$(TIMEOUT_CDL)" --cdl "$(TRANSITION_CDL)" --cdl "$(DEATH_CDL)" --cdl "$(ENDING_CDL)" --cdl "$(SAVE_LOAD_CDL)" --output "$(SOURCE_1_RUNTIME_CDL)"
+	$(RUN_TOOL) runtime.runtime_coverage analyze --scenario source-1-suite --cdl "$(SOURCE_1_RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(SOURCE_1_RUNTIME_REPORT)"
 
 trace: trace-source-1
 
 runtime-check:
-	$(PYTHON) scripts/runtime_coverage.py analyze --scenario suite --cdl "$(RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(RUNTIME_REPORT)"
+	$(RUN_TOOL) runtime.runtime_coverage analyze --scenario suite --cdl "$(RUNTIME_CDL)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --manifest "$(MANIFEST)" --output "$(RUNTIME_REPORT)"
 
 runtime-promote:
-	$(PYTHON) scripts/runtime_coverage.py promote-evidence --cdl "$(RUNTIME_CDL)" --manifest "$(MANIFEST)" --output "$(RUNTIME_EVIDENCE)"
+	$(RUN_TOOL) runtime.runtime_coverage promote-evidence --cdl "$(RUNTIME_CDL)" --manifest "$(MANIFEST)" --output "$(RUNTIME_EVIDENCE)"
 
 rooms: $(ROM)
-	$(PYTHON) scripts/room_data.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) authoring.room_data --image "$(ROM)" --pretty
 
 validate-rooms: $(ROM)
-	$(PYTHON) scripts/room_data.py --image "$(ROM)" --validate
+	$(RUN_TOOL) authoring.room_data --image "$(ROM)" --validate
 
 audio: $(ROM)
-	$(PYTHON) scripts/audio_data.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) authoring.audio_data --image "$(ROM)" --pretty
 
 validate-audio: $(ROM)
-	$(PYTHON) scripts/audio_data.py --image "$(ROM)" --validate
+	$(RUN_TOOL) authoring.audio_data --image "$(ROM)" --validate
 
 screen-data: $(ROM)
-	$(PYTHON) scripts/room_screen_data.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.rooms.room_screen_data --image "$(ROM)" --pretty
 
 validate-screen-data: $(ROM)
-	$(PYTHON) scripts/room_screen_data.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.rooms.room_screen_data --image "$(ROM)" --validate
 
 validate-input:
-	$(PYTHON) scripts/controller_input.py --validate
+	$(RUN_TOOL) validation.gameplay.controller_input --validate
 
 startup-state: $(ROM)
-	$(PYTHON) scripts/startup_state.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.gameplay.startup_state --image "$(ROM)" --pretty
 
 validate-startup: $(ROM)
-	$(PYTHON) scripts/startup_state.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.gameplay.startup_state --image "$(ROM)" --validate
 
 nmi-state: $(ROM)
-	$(PYTHON) scripts/nmi_scheduler.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.system.nmi_scheduler --image "$(ROM)" --pretty
 
 validate-nmi: $(ROM)
-	$(PYTHON) scripts/nmi_scheduler.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.system.nmi_scheduler --image "$(ROM)" --validate
 
 oam-state: $(ROM)
-	$(PYTHON) scripts/oam_dma.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.system.oam_dma --image "$(ROM)" --pretty
 
 validate-oam: $(ROM)
-	$(PYTHON) scripts/oam_dma.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.system.oam_dma --image "$(ROM)" --validate
 
 status-state: $(ROM)
-	$(PYTHON) scripts/status_upload.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.system.status_upload --image "$(ROM)" --pretty
 
 validate-status: $(ROM)
-	$(PYTHON) scripts/status_upload.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.system.status_upload --image "$(ROM)" --validate
 
 room-row-state: $(ROM)
-	$(PYTHON) scripts/room_row_upload.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.rooms.room_row_upload --image "$(ROM)" --pretty
 
 validate-room-rows: $(ROM)
-	$(PYTHON) scripts/room_row_upload.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.rooms.room_row_upload --image "$(ROM)" --validate
 
 attribute-upload-state: $(ROM)
-	$(PYTHON) scripts/room_attribute_upload.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.rooms.room_attribute_upload --image "$(ROM)" --pretty
 
 validate-attribute-upload: $(ROM)
-	$(PYTHON) scripts/room_attribute_upload.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.rooms.room_attribute_upload --image "$(ROM)" --validate
 
 castle-map-state:
-	$(PYTHON) scripts/castle_map.py --pretty
+	$(RUN_TOOL) validation.rooms.castle_map --pretty
 
 validate-castle-map:
-	$(PYTHON) scripts/castle_map.py --validate
+	$(RUN_TOOL) validation.rooms.castle_map --validate
 
 data-io-state:
-	$(PYTHON) scripts/famicom_data_io.py --pretty
+	$(RUN_TOOL) validation.gameplay.famicom_data_io --pretty
 
 validate-data-io:
-	$(PYTHON) scripts/famicom_data_io.py --validate
+	$(RUN_TOOL) validation.gameplay.famicom_data_io --validate
 
 save-data: $(ROM)
-	$(PYTHON) scripts/save_data.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.gameplay.save_data --image "$(ROM)" --pretty
 
 validate-save-data: $(ROM)
-	$(PYTHON) scripts/save_data.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.gameplay.save_data --image "$(ROM)" --validate
 
 room-cell-state:
-	$(PYTHON) scripts/room_cell_coordinates.py --pretty
+	$(RUN_TOOL) validation.rooms.room_cell_coordinates --pretty
 
 validate-room-cells:
-	$(PYTHON) scripts/room_cell_coordinates.py --validate
+	$(RUN_TOOL) validation.rooms.room_cell_coordinates --validate
 
 x-coordinate-state:
-	$(PYTHON) scripts/x_coordinates.py --pretty
+	$(RUN_TOOL) validation.player.x_coordinates --pretty
 
 validate-x-coordinates:
-	$(PYTHON) scripts/x_coordinates.py --validate
+	$(RUN_TOOL) validation.player.x_coordinates --validate
 
 transition-state:
-	$(PYTHON) scripts/room_transition.py --pretty
+	$(RUN_TOOL) validation.rooms.room_transition --pretty
 
 validate-transition:
-	$(PYTHON) scripts/room_transition.py --validate
+	$(RUN_TOOL) validation.rooms.room_transition --validate
 
 collision-state:
-	$(PYTHON) scripts/collision_cells.py --pretty
+	$(RUN_TOOL) validation.collision.collision_cells --pretty
 
 validate-collision:
-	$(PYTHON) scripts/collision_cells.py --validate
+	$(RUN_TOOL) validation.collision.collision_cells --validate
 
 object-dispatch-state: $(ROM)
-	$(PYTHON) scripts/runtime_object_dispatch.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.runtime_object_dispatch --image "$(ROM)" --pretty
 
 validate-object-dispatch: $(ROM)
-	$(PYTHON) scripts/runtime_object_dispatch.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.runtime_object_dispatch --image "$(ROM)" --validate
 
 player-object-span: $(ROM)
-	$(PYTHON) scripts/player_object_span.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_object_span --image "$(ROM)" --pretty
 
 validate-player-object-span: $(ROM)
-	$(PYTHON) scripts/player_object_span.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_object_span --image "$(ROM)" --validate
 
 transient-object-state: $(ROM)
-	$(PYTHON) scripts/transient_object_lifecycle.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.transient_object_lifecycle --image "$(ROM)" --pretty
 
 validate-transient-objects: $(ROM)
-	$(PYTHON) scripts/transient_object_lifecycle.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.transient_object_lifecycle --image "$(ROM)" --validate
 
 object-collision-filters: $(ROM)
-	$(PYTHON) scripts/object_collision_filters.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.object_collision_filters --image "$(ROM)" --pretty
 
 validate-object-collision-filters: $(ROM)
-	$(PYTHON) scripts/object_collision_filters.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.object_collision_filters --image "$(ROM)" --validate
 
 collision-point-sample: $(ROM)
-	$(PYTHON) scripts/collision_point_sample.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.collision.collision_point_sample --image "$(ROM)" --pretty
 
 validate-collision-point-sample: $(ROM)
-	$(PYTHON) scripts/collision_point_sample.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.collision.collision_point_sample --image "$(ROM)" --validate
 
 room-collision-sample: $(ROM)
-	$(PYTHON) scripts/room_collision_sample.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.collision.room_collision_sample --image "$(ROM)" --pretty
 
 validate-room-collision-sample: $(ROM)
-	$(PYTHON) scripts/room_collision_sample.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.collision.room_collision_sample --image "$(ROM)" --validate
 
 runtime-overlap-state: $(ROM)
-	$(PYTHON) scripts/runtime_object_overlap.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.runtime_object_overlap --image "$(ROM)" --pretty
 
 validate-runtime-overlap: $(ROM)
-	$(PYTHON) scripts/runtime_object_overlap.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.runtime_object_overlap --image "$(ROM)" --validate
 
 new-game-state: $(ROM)
-	$(PYTHON) scripts/new_game_state.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.gameplay.new_game_state --image "$(ROM)" --pretty
 
 validate-new-game: $(ROM)
-	$(PYTHON) scripts/new_game_state.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.gameplay.new_game_state --image "$(ROM)" --validate
 
 room-runtime-state:
-	$(PYTHON) scripts/room_runtime_reset.py --pretty
+	$(RUN_TOOL) validation.rooms.room_runtime_reset --pretty
 
 validate-room-runtime:
-	$(PYTHON) scripts/room_runtime_reset.py --validate
+	$(RUN_TOOL) validation.rooms.room_runtime_reset --validate
 
 room-cell-animation-state: $(ROM)
-	$(PYTHON) scripts/room_cell_animation.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.rooms.room_cell_animation --image "$(ROM)" --pretty
 
 validate-room-cell-animation: $(ROM)
-	$(PYTHON) scripts/room_cell_animation.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.rooms.room_cell_animation --image "$(ROM)" --validate
 
 hud-format-state: $(ROM)
-	$(PYTHON) scripts/status_format.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.system.status_format --image "$(ROM)" --pretty
 
 validate-hud-format: $(ROM)
-	$(PYTHON) scripts/status_format.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.system.status_format --image "$(ROM)" --validate
 
 mutable-cell-action-state: $(ROM)
-	$(PYTHON) scripts/mutable_cell_actions.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.rooms.mutable_cell_actions --image "$(ROM)" --pretty
 
 validate-mutable-cell-actions: $(ROM)
-	$(PYTHON) scripts/mutable_cell_actions.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.rooms.mutable_cell_actions --image "$(ROM)" --validate
 
 room-navigation-state: $(ROM)
-	$(PYTHON) scripts/room_navigation.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.rooms.room_navigation --image "$(ROM)" --pretty
 
 validate-room-navigation: $(ROM)
-	$(PYTHON) scripts/room_navigation.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.rooms.room_navigation --image "$(ROM)" --validate
 
 player-input-movement: $(ROM)
-	$(PYTHON) scripts/player_input_movement.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_input_movement --image "$(ROM)" --pretty
 
 validate-player-input-movement: $(ROM)
-	$(PYTHON) scripts/player_input_movement.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_input_movement --image "$(ROM)" --validate
 
 player-object-push: $(ROM)
-	$(PYTHON) scripts/player_object_push.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_object_push --image "$(ROM)" --pretty
 
 validate-player-object-push: $(ROM)
-	$(PYTHON) scripts/player_object_push.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_object_push --image "$(ROM)" --validate
 
 room-boundary-transitions: $(ROM)
-	$(PYTHON) scripts/room_boundary_transitions.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.rooms.room_boundary_transitions --image "$(ROM)" --pretty
 
 validate-room-boundary-transitions: $(ROM)
-	$(PYTHON) scripts/room_boundary_transitions.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.rooms.room_boundary_transitions --image "$(ROM)" --validate
 
 room-cell-sample-address: $(ROM)
-	$(PYTHON) scripts/room_cell_sample_address.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.collision.room_cell_sample_address --image "$(ROM)" --pretty
 
 validate-room-cell-sample-address: $(ROM)
-	$(PYTHON) scripts/room_cell_sample_address.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.collision.room_cell_sample_address --image "$(ROM)" --validate
 
 player-death-transition: $(ROM)
-	$(PYTHON) scripts/player_death_transition.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_death_transition --image "$(ROM)" --pretty
 
 validate-player-death-transition: $(ROM)
-	$(PYTHON) scripts/player_death_transition.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_death_transition --image "$(ROM)" --validate
 
 player-collision-sample: $(ROM)
-	$(PYTHON) scripts/player_collision_sample.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_collision_sample --image "$(ROM)" --pretty
 
 validate-player-collision-sample: $(ROM)
-	$(PYTHON) scripts/player_collision_sample.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_collision_sample --image "$(ROM)" --validate
 
 player-collision-update: $(ROM)
-	$(PYTHON) scripts/player_collision_update.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_collision_update --image "$(ROM)" --pretty
 
 validate-player-collision-update: $(ROM)
-	$(PYTHON) scripts/player_collision_update.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_collision_update --image "$(ROM)" --validate
 
 player-transition-reload: $(ROM)
-	$(PYTHON) scripts/player_transition_reload.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_transition_reload --image "$(ROM)" --pretty
 
 validate-player-transition-reload: $(ROM)
-	$(PYTHON) scripts/player_transition_reload.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_transition_reload --image "$(ROM)" --validate
 
 room-object-state-save: $(ROM)
-	$(PYTHON) scripts/room_object_state_save.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.rooms.room_object_state_save --image "$(ROM)" --pretty
 
 validate-room-object-state-save: $(ROM)
-	$(PYTHON) scripts/room_object_state_save.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.rooms.room_object_state_save --image "$(ROM)" --validate
 
 player-animated-cell-displacement: $(ROM)
-	$(PYTHON) scripts/player_animated_cell_displacement.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_animated_cell_displacement --image "$(ROM)" --pretty
 
 validate-player-animated-cell-displacement: $(ROM)
-	$(PYTHON) scripts/player_animated_cell_displacement.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_animated_cell_displacement --image "$(ROM)" --validate
 
 collectible-collision-handlers: $(ROM)
-	$(PYTHON) scripts/collectible_collision_handlers.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.collectible_collision_handlers --image "$(ROM)" --pretty
 
 validate-collectible-collision-handlers: $(ROM)
-	$(PYTHON) scripts/collectible_collision_handlers.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.collectible_collision_handlers --image "$(ROM)" --validate
 
 inventory-collectible-handlers: $(ROM)
-	$(PYTHON) scripts/inventory_collectible_handlers.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.inventory_collectible_handlers --image "$(ROM)" --pretty
 
 validate-inventory-collectible-handlers: $(ROM)
-	$(PYTHON) scripts/inventory_collectible_handlers.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.inventory_collectible_handlers --image "$(ROM)" --validate
 
 score-award: $(ROM)
-	$(PYTHON) scripts/score_award.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.gameplay.score_award --image "$(ROM)" --pretty
 
 validate-score-award: $(ROM)
-	$(PYTHON) scripts/score_award.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.gameplay.score_award --image "$(ROM)" --validate
 
 runtime-type9f-collision: $(ROM)
-	$(PYTHON) scripts/runtime_type9f_collision.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.runtime_type9f_collision --image "$(ROM)" --pretty
 
 validate-runtime-type9f-collision: $(ROM)
-	$(PYTHON) scripts/runtime_type9f_collision.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.runtime_type9f_collision --image "$(ROM)" --validate
 
 runtime-types81-82-collision: $(ROM)
-	$(PYTHON) scripts/runtime_types81_82_collision.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.runtime_types81_82_collision --image "$(ROM)" --pretty
 
 validate-runtime-types81-82-collision: $(ROM)
-	$(PYTHON) scripts/runtime_types81_82_collision.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.runtime_types81_82_collision --image "$(ROM)" --validate
 
 unreferenced-nmi-task-bytes: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/unreferenced_nmi_task_index_bytes.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
+	$(RUN_TOOL) validation.preservation.unreferenced_nmi_task_index_bytes --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
 
 validate-unreferenced-nmi-task-bytes: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/unreferenced_nmi_task_index_bytes.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
+	$(RUN_TOOL) validation.preservation.unreferenced_nmi_task_index_bytes --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
 
 unreferenced-object-clear-tail: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/unreferenced_runtime_object_clear_tail.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
+	$(RUN_TOOL) validation.preservation.unreferenced_runtime_object_clear_tail --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
 
 validate-unreferenced-object-clear-tail: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/unreferenced_runtime_object_clear_tail.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
+	$(RUN_TOOL) validation.preservation.unreferenced_runtime_object_clear_tail --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
 
 unreferenced-runtime-only-sample: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/unreferenced_runtime_only_sample.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
+	$(RUN_TOOL) validation.preservation.unreferenced_runtime_only_sample --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --pretty
 
 validate-unreferenced-runtime-only-sample: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/unreferenced_runtime_only_sample.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
+	$(RUN_TOOL) validation.preservation.unreferenced_runtime_only_sample --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --validate
 
 title-sub-command: $(ROM)
-	$(PYTHON) scripts/title_sub_command.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.gameplay.title_sub_command --image "$(ROM)" --pretty
 
 validate-title-sub-command: $(ROM)
-	$(PYTHON) scripts/title_sub_command.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.gameplay.title_sub_command --image "$(ROM)" --validate
 
 demo-playback: $(ROM)
-	$(PYTHON) scripts/demo_playback.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.gameplay.demo_playback --image "$(ROM)" --pretty
 
 validate-demo-playback: $(ROM)
-	$(PYTHON) scripts/demo_playback.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.gameplay.demo_playback --image "$(ROM)" --validate
 
 audio-track-selection: $(ROM)
-	$(PYTHON) scripts/audio_track_selection.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.audio.audio_track_selection --image "$(ROM)" --pretty
 
 validate-audio-track-selection: $(ROM)
-	$(PYTHON) scripts/audio_track_selection.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.audio.audio_track_selection --image "$(ROM)" --validate
 
 audio-stream-engine: $(ROM)
-	$(PYTHON) scripts/audio_stream_engine.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.audio.audio_stream_engine --image "$(ROM)" --pretty
 
 validate-audio-stream-engine: $(ROM)
-	$(PYTHON) scripts/audio_stream_engine.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.audio.audio_stream_engine --image "$(ROM)" --validate
 
 sound-effect-engine: $(ROM)
-	$(PYTHON) scripts/sound_effect_engine.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.audio.sound_effect_engine --image "$(ROM)" --pretty
 
 validate-sound-effect-engine: $(ROM)
-	$(PYTHON) scripts/sound_effect_engine.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.audio.sound_effect_engine --image "$(ROM)" --validate
 
 scroll-math-palette: $(ROM)
-	$(PYTHON) scripts/scroll_math_palette.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.system.scroll_math_palette --image "$(ROM)" --pretty
 
 validate-scroll-math-palette: $(ROM)
-	$(PYTHON) scripts/scroll_math_palette.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.system.scroll_math_palette --image "$(ROM)" --validate
 
 end-sequences: $(ROM)
-	$(PYTHON) scripts/end_sequences.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.gameplay.end_sequences --image "$(ROM)" --pretty
 
 validate-end-sequences: $(ROM)
-	$(PYTHON) scripts/end_sequences.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.gameplay.end_sequences --image "$(ROM)" --validate
 
 prg-tail-data: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/prg_tail_data.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --pretty
+	$(RUN_TOOL) validation.preservation.prg_tail_data --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --pretty
 
 validate-prg-tail-data: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/prg_tail_data.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --validate
+	$(RUN_TOOL) validation.preservation.prg_tail_data --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --validate
 
 palette-data: $(ROM)
-	$(PYTHON) scripts/palette_data.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.system.palette_data --image "$(ROM)" --pretty
 
 validate-palette-data: $(ROM)
-	$(PYTHON) scripts/palette_data.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.system.palette_data --image "$(ROM)" --validate
 
 player-collision-dispatch: $(ROM)
-	$(PYTHON) scripts/player_collision_dispatch.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_collision_dispatch --image "$(ROM)" --pretty
 
 validate-player-collision-dispatch: $(ROM)
-	$(PYTHON) scripts/player_collision_dispatch.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_collision_dispatch --image "$(ROM)" --validate
 
 player-hazard-state: $(ROM)
-	$(PYTHON) scripts/player_hazard_state.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.player.player_hazard_state --image "$(ROM)" --pretty
 
 validate-player-hazard: $(ROM)
-	$(PYTHON) scripts/player_hazard_state.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.player.player_hazard_state --image "$(ROM)" --validate
 
 object-player-proximity: $(ROM)
-	$(PYTHON) scripts/object_player_proximity.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.object_player_proximity --image "$(ROM)" --pretty
 
 validate-object-player-proximity: $(ROM)
-	$(PYTHON) scripts/object_player_proximity.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.object_player_proximity --image "$(ROM)" --validate
 
 pause-input-state: $(ROM)
-	$(PYTHON) scripts/pause_input.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.gameplay.pause_input --image "$(ROM)" --pretty
 
 validate-pause-input: $(ROM)
-	$(PYTHON) scripts/pause_input.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.gameplay.pause_input --image "$(ROM)" --validate
 
 collision-table-state: $(ROM)
-	$(PYTHON) scripts/collision_tables.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.collision.collision_tables --image "$(ROM)" --pretty
 
 validate-collision-tables: $(ROM)
-	$(PYTHON) scripts/collision_tables.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.collision.collision_tables --image "$(ROM)" --validate
 
 collision-handler-tables: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/player_movement_collision_tables.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --pretty
+	$(RUN_TOOL) validation.player.player_movement_collision_tables --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --pretty
 
 validate-collision-handler-tables: ghidra-analyze $(ROM)
-	$(PYTHON) scripts/player_movement_collision_tables.py --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --validate
+	$(RUN_TOOL) validation.player.player_movement_collision_tables --image "$(ROM)" --facts "$(GHIDRA_FACTS)" --validate
 
 frame-sprite-state: $(ROM)
-	$(PYTHON) scripts/frame_sprites.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) authoring.frame_sprites --image "$(ROM)" --pretty
 
 validate-frame-sprites: $(ROM)
-	$(PYTHON) scripts/frame_sprites.py --image "$(ROM)" --validate
+	$(RUN_TOOL) authoring.frame_sprites --image "$(ROM)" --validate
 
 metasprite-state: $(ROM)
-	$(PYTHON) scripts/metasprites.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) authoring.metasprites --image "$(ROM)" --pretty
 
 validate-metasprites: $(ROM)
-	$(PYTHON) scripts/metasprites.py --image "$(ROM)" --validate
+	$(RUN_TOOL) authoring.metasprites --image "$(ROM)" --validate
 
 object-catalog: $(ROM)
-	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --pretty
+	$(RUN_TOOL) validation.objects.object_catalog --image "$(ROM)" --pretty
 
 validate-object-catalog: $(ROM)
-	$(PYTHON) scripts/object_catalog.py --image "$(ROM)" --validate
+	$(RUN_TOOL) validation.objects.object_catalog --image "$(ROM)" --validate
 
 static-release-check: quality-check reconstruction-audit disassembly-check verify symbols validate-rooms validate-audio validate-screen-data validate-input validate-startup validate-nmi validate-oam validate-status validate-room-rows validate-attribute-upload validate-castle-map validate-data-io validate-save-data validate-room-cells validate-x-coordinates validate-transition validate-collision validate-object-dispatch validate-player-object-span validate-transient-objects validate-object-collision-filters validate-collision-point-sample validate-room-collision-sample validate-runtime-overlap validate-new-game validate-room-runtime validate-room-cell-animation validate-hud-format validate-mutable-cell-actions validate-room-navigation validate-player-input-movement validate-player-object-push validate-room-boundary-transitions validate-room-cell-sample-address validate-player-death-transition validate-player-collision-sample validate-player-collision-update validate-player-collision-dispatch validate-player-transition-reload validate-room-object-state-save validate-player-animated-cell-displacement validate-collectible-collision-handlers validate-inventory-collectible-handlers validate-score-award validate-runtime-type9f-collision validate-runtime-types81-82-collision validate-unreferenced-nmi-task-bytes validate-unreferenced-object-clear-tail validate-unreferenced-runtime-only-sample validate-title-sub-command validate-demo-playback validate-audio-track-selection validate-audio-stream-engine validate-sound-effect-engine validate-scroll-math-palette validate-end-sequences validate-prg-tail-data validate-palette-data validate-player-hazard validate-object-player-proximity validate-pause-input validate-collision-tables validate-collision-handler-tables validate-frame-sprites validate-metasprites validate-object-catalog
 
@@ -893,4 +894,4 @@ release-check:
 reconstruction-check: check trace-suite
 
 clean:
-	$(PYTHON) scripts/project.py clean --path build
+	$(RUN_TOOL) build.project clean --path build

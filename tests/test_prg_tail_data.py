@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import prg_tail_data
+from scripts.validation.preservation import prg_tail_data
 
 
 ROOT = Path(__file__).resolve().parent.parent

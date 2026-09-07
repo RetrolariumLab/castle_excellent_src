@@ -2,7 +2,7 @@ from collections import Counter
 from pathlib import Path
 import unittest
 
-from scripts import demo_playback
+from scripts.validation.gameplay import demo_playback
 
 
 ROOT = Path(__file__).resolve().parent.parent

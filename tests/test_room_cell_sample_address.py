@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import room_cell_sample_address as address
+from scripts.validation.collision import room_cell_sample_address as address
 
 
 class RoomCellSampleAddressTests(unittest.TestCase):

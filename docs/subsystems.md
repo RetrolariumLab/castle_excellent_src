@@ -275,7 +275,7 @@ and `$B4B6-$B64B` contains 203 tile/attribute pairs. The independent validator
 recognizes 107 descriptor selections, 98 unique pointers, and five unreferenced
 gaps.
 
-`scripts/object_catalog.py` ties the rendering view back to room data and
+`scripts/validation/objects/object_catalog.py` ties the rendering view back to room data and
 behavior dispatch. It follows each legal encoded value through the overlapping
 loader type/state tables, aggregates all 783 static and 176 cell-derived
 occurrences by room, and joins the resulting runtime type to its update

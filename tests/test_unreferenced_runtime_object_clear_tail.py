@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import unreferenced_runtime_object_clear_tail as unreferenced
+from scripts.validation.preservation import unreferenced_runtime_object_clear_tail as unreferenced
 
 
 ROOT = Path(__file__).resolve().parent.parent

@@ -8,11 +8,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import source_2_release_audit as audit
-
-
+from scripts.validation import source_2_release_audit as audit
 class Source2ReleaseAuditTests(unittest.TestCase):
     def test_not_applicable_requirement_needs_reason_and_excluded_scope(self) -> None:
         release = {

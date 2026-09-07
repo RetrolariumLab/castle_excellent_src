@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import room_attribute_upload
+from scripts.validation.rooms import room_attribute_upload
 
 
 class RoomAttributeUploadTests(unittest.TestCase):

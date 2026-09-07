@@ -6,12 +6,9 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import format_project
-import generate_disassembly as disasm
-
-
+from scripts.validation import format_project
+from scripts.workflow import generate_disassembly as disasm
 class FormattingTests(unittest.TestCase):
     def test_revision_overlay_preserves_baseline_and_exposes_replacement(self) -> None:
         overlay = disasm.RevisionOverlay(

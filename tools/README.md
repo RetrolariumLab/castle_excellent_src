@@ -7,8 +7,8 @@ expanded installation are intentionally ignored by Git.
 Install or verify them with:
 
 ```text
-python scripts/bootstrap_ghidra.py install
-python scripts/bootstrap_ghidra.py status
+python scripts/run.py workflow.bootstrap_ghidra install
+python scripts/run.py workflow.bootstrap_ghidra status
 ```
 
 The pinned versions are:
@@ -34,8 +34,8 @@ frame limits and exposes FCEUX's native Code/Data Logger to Lua.
 The default bootstrap source is the sibling directory `../fceux_automation`:
 
 ```text
-python scripts/bootstrap_fceux.py install
-python scripts/bootstrap_fceux.py status
+python scripts/run.py runtime.bootstrap_fceux install
+python scripts/run.py runtime.bootstrap_fceux status
 ```
 
 Every copied artifact is checked for exact size and SHA-256 before and after

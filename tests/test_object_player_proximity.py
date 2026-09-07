@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import object_player_proximity
+from scripts.validation.objects import object_player_proximity
 
 
 class ObjectPlayerProximityTests(unittest.TestCase):

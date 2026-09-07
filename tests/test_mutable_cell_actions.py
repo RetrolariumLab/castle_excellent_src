@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import mutable_cell_actions
+from scripts.validation.rooms import mutable_cell_actions
 
 
 class MutableCellActionTests(unittest.TestCase):

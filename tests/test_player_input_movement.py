@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import player_input_movement as movement
+from scripts.validation.player import player_input_movement as movement
 
 
 ROOT = Path(__file__).resolve().parent.parent

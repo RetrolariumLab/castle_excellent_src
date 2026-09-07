@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from scripts import player_death_transition
+from scripts.validation.player import player_death_transition
 
 
 ROOT = Path(__file__).resolve().parent.parent

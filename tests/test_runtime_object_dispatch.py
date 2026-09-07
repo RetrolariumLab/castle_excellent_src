@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import runtime_object_dispatch
+from scripts.validation.objects import runtime_object_dispatch
 
 
 class RuntimeObjectDispatchTests(unittest.TestCase):

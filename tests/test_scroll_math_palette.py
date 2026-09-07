@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import scroll_math_palette as helpers
+from scripts.validation.system import scroll_math_palette as helpers
 
 
 ROOT = Path(__file__).resolve().parent.parent

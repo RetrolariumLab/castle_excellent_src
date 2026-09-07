@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import save_data
+from scripts.validation.gameplay import save_data
 
 
 def patterned_state() -> save_data.SaveState:

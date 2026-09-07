@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import room_row_upload
+from scripts.validation.rooms import room_row_upload
 
 
 class RoomRowUploadTests(unittest.TestCase):

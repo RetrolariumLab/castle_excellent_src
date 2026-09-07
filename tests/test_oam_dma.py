@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from scripts import oam_dma
+from scripts.validation.system import oam_dma
 
 
 def sprite_ids() -> bytes:

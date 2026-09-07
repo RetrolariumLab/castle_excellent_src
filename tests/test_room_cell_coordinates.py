@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import room_cell_coordinates as cells
+from scripts.validation.rooms import room_cell_coordinates as cells
 
 
 class RoomCellCoordinateTests(unittest.TestCase):

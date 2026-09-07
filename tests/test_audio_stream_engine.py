@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import audio_stream_engine as engine
+from scripts.validation.audio import audio_stream_engine as engine
 
 
 ROOT = Path(__file__).resolve().parent.parent

@@ -220,7 +220,7 @@ world-to-area routes and selectable player-physics profiles as editable data.
 Castle Excellent has neither format. Its one-based room number maps directly to
 a fixed 10 by 10 grid; vertical neighbors are plus or minus ten and horizontal
 neighbors are plus or minus one unless the two ten-byte edge tables identify a
-castle boundary. `scripts/room_navigation.py` validates this for all 100 rooms.
+castle boundary. `scripts/validation/rooms/room_navigation.py` validates this for all 100 rooms.
 
 Room contents and object placement therefore belong to Level Studio, while
 visual and audio assets belong to Graphics and Sound Studio. Adding an empty

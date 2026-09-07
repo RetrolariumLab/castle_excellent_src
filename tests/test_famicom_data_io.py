@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import famicom_data_io
+from scripts.validation.gameplay import famicom_data_io
 
 
 class FamicomDataIoTests(unittest.TestCase):

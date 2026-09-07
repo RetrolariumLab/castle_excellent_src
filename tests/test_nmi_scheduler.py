@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from scripts import nmi_scheduler
+from scripts.validation.system import nmi_scheduler
 
 
 class NmiSchedulerTests(unittest.TestCase):

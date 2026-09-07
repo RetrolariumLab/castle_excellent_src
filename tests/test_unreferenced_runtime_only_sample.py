@@ -1,8 +1,8 @@
 from pathlib import Path
 import unittest
 
-from scripts import collision_point_sample
-from scripts import unreferenced_runtime_only_sample as runtime_only
+from scripts.validation.collision import collision_point_sample
+from scripts.validation.preservation import unreferenced_runtime_only_sample as runtime_only
 
 
 ROOT = Path(__file__).resolve().parent.parent

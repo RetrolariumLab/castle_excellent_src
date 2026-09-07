@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import object_catalog
+from scripts.validation.objects import object_catalog
 
 
 class ObjectCatalogTests(unittest.TestCase):

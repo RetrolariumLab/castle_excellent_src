@@ -6,18 +6,22 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import level_studio_model as model
-import room_data
-
-
+from scripts.authoring import level_studio_model as model
+from scripts.authoring import room_data
 def put_cpu(prg: bytearray, address: int, payload: bytes) -> None:
     start = room_data.cpu_offset(address)
     prg[start:start + len(payload)] = payload
 
 
 class LevelStudioModelTests(unittest.TestCase):
+    def test_play_action_uses_the_runtime_script(self) -> None:
+        self.assertEqual(
+            model.LEVEL_PLAYTEST_SCRIPT.relative_to(ROOT).as_posix(),
+            "scripts/runtime/level_playtest.lua",
+        )
+        self.assertTrue(model.LEVEL_PLAYTEST_SCRIPT.is_file())
+
     def test_decodes_both_nes_bitplanes(self) -> None:
         chr_data = bytearray(room_data.CHR_BANK_SIZE)
         chr_data[0] = 0b10000000

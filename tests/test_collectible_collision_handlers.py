@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import collectible_collision_handlers
+from scripts.validation.objects import collectible_collision_handlers
 
 
 ROOT = Path(__file__).resolve().parent.parent

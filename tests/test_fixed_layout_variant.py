@@ -7,11 +7,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import fixed_layout_variant as fixed
-
-
+from scripts.build import fixed_layout_variant as fixed
 class FixedLayoutVariantTests(unittest.TestCase):
     def variant(self, image: bytes) -> dict[str, object]:
         changed = bytearray(image)

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import pause_input
+from scripts.validation.gameplay import pause_input
 
 
 class PauseInputTests(unittest.TestCase):

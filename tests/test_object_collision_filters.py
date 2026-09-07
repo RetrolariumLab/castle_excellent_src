@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import object_collision_filters as filters
+from scripts.validation.objects import object_collision_filters as filters
 
 
 class ObjectCollisionFilterTests(unittest.TestCase):

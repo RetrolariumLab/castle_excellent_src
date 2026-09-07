@@ -129,7 +129,7 @@ evidence, and tested decoders for game data.
 - `make build` reconstructs a byte-identical image from the explicit iNES
   header, PRG ASM, and one ignored private CHR input; PRG is no longer included
   as a binary payload.
-- `scripts/room_data.py` independently implements the published prefix-code
+- `scripts/authoring/room_data.py` independently implements the published prefix-code
   room decoder; the exact local reference validates as 100 rooms, 40,000 cells,
   200 nametable attribute tables, and the exactly bounded 783-record static
   object stream. All 100 compressed rooms also re-encode byte-for-byte with
@@ -138,7 +138,7 @@ evidence, and tested decoders for game data.
   cumulative offsets prove 141 bytes of packed object state. A second table
   proves 108 bytes of mutable-cell state across all rooms. Five cell markers
   create 176 additional runtime objects without overflowing the 24-slot pool.
-- `scripts/object_catalog.py` joins all 61 encoded room types to the 42 runtime
+- `scripts/validation/objects/object_catalog.py` joins all 61 encoded room types to the 42 runtime
   indexes, update handlers, sprite selectors, collision dimensions, initial
   states, room occurrence sets, and five cell-marker sources. The original
   rooms use 34 encoded values and directly source 32 runtime types.
@@ -146,105 +146,105 @@ evidence, and tested decoders for game data.
   fields are named, and the five type-specific uses of auxiliary field `+5`
   have contextual source aliases. Friendly identities for every object remain
   explicitly deferred to Source 2.0.
-- `scripts/player_object_span.py` proves the shared three-call overlap helper,
+- `scripts/validation/player/player_object_span.py` proves the shared three-call overlap helper,
   including its 16-pixel Y interval, saturated `objectX-15` left boundary, and
   exclusive `objectX+width` right boundary across complete room-width domains.
-- `scripts/transient_object_lifecycle.py` proves update handlers 32, 40, and
+- `scripts/validation/objects/transient_object_lifecycle.py` proves update handlers 32, 40, and
   41: the 15-entry replacement table, parity-selected replacement state,
   complete six-byte clearing, bounded state lifetime, and odd-frame Y drift.
-- `scripts/object_collision_filters.py` proves both animated-cell families and
+- `scripts/validation/objects/object_collision_filters.py` proves both animated-cell families and
   the runtime type/filter tables used by collision samplers, including their
   intentional two-entry overlap with following instruction bytes.
-- `scripts/collision_point_sample.py` proves room-cell half selection, returned
+- `scripts/validation/collision/collision_point_sample.py` proves room-cell half selection, returned
   processor flags, animation-phase suppression, and the first matching runtime
   object across the complete 320x160 room domain.
-- `scripts/room_collision_sample.py` proves the room-only four-call variant
+- `scripts/validation/collision/room_collision_sample.py` proves the room-only four-call variant
   across every room pixel, cell half, and animation-counter sign.
-- `scripts/room_cell_sample_address.py` proves the shared seven-call address
+- `scripts/validation/collision/room_cell_sample_address.py` proves the shared seven-call address
   builder, including its row pointer, full 16-bit column shift, and half-cell
   carry across every possible X/Y machine-value combination.
-- `scripts/player_collision_sample.py` proves the 28-call player sampler,
+- `scripts/validation/player/player_collision_sample.py` proves the 28-call player sampler,
   including screen bounds, cell flags, runtime geometry/type filtering, scan
   order, and the special type-`$86` phase and motion behavior.
-- `scripts/player_collision_dispatch.py` proves the seven-call result
+- `scripts/validation/player/player_collision_dispatch.py` proves the seven-call result
   dispatcher, both 100/41-entry handler tables, room/runtime selection, and
   its synthetic indirect-call return address.
-- `scripts/runtime_object_overlap.py` proves the 24-record active-object scan,
+- `scripts/validation/objects/runtime_object_overlap.py` proves the 24-record active-object scan,
   asymmetric width bounds, vertical dimension test, first-match/resume order,
   and the carry-clear match versus carry-set exhaustion contract.
-- `scripts/audio_data.py` validates the eight-set music table and all 21
+- `scripts/authoring/audio_data.py` validates the eight-set music table and all 21
   textual command streams, including their terminators and restart pointers.
-- `scripts/audio_stream_engine.py` pins the interpreter's code/data boundaries
+- `scripts/validation/audio/audio_stream_engine.py` pins the interpreter's code/data boundaries
   and callers, walks every MML stream, and exhaustively models pointer advance,
   sound-effect arbitration, channel setup, countdown expiry, and APU gating.
-- `scripts/sound_effect_engine.py` validates five starter write traces, the NMI
+- `scripts/validation/audio/sound_effect_engine.py` validates five starter write traces, the NMI
   updater's request/status arbitration, byte-wide step sequences, and all five
   period/envelope tables.
-- `scripts/scroll_math_palette.py` validates the horizontal camera curve, the
+- `scripts/validation/system/scroll_math_palette.py` validates the horizontal camera curve, the
   shared unsigned 16-bit divider, and the exact 32-byte PPU palette upload.
-- `scripts/unreferenced_runtime_object_clear_tail.py` proves that the five
+- `scripts/validation/preservation/unreferenced_runtime_object_clear_tail.py` proves that the five
   code-shaped bytes at `$8C7B` have no Ghidra, runtime, or PRG-pointer entry.
-- `scripts/room_screen_data.py` validates four status-screen tile streams,
+- `scripts/validation/rooms/room_screen_data.py` validates four status-screen tile streams,
   their code-level pointer loads, and the 16 initial attribute bytes.
-- `scripts/controller_input.py` exhaustively validates all 256 controller masks
+- `scripts/validation/gameplay/controller_input.py` exhaustively validates all 256 controller masks
   through both the D0 path and the D1 fallback used by the original pollers.
-- `scripts/startup_state.py` validates the `POWER` ROM signature, the three-byte
+- `scripts/validation/gameplay/startup_state.py` validates the `POWER` ROM signature, the three-byte
   `POW` RAM sentinel, cold/warm reset behavior, and the two-NMI frame gate.
-- `scripts/nmi_scheduler.py` validates all 23 handler pointers, request scanning,
+- `scripts/validation/system/nmi_scheduler.py` validates all 23 handler pointers, request scanning,
   and the eight modular NMI frame counters.
-- `scripts/oam_dma.py` validates the 64-sprite interleave, all eight frame
+- `scripts/validation/system/oam_dma.py` validates the 64-sprite interleave, all eight frame
   rotations, the unused sixteenth table byte, and whole-record reversal.
-- `scripts/status_upload.py` validates the HUD interlock, destinations, and
+- `scripts/validation/system/status_upload.py` validates the HUD interlock, destinations, and
   source order for score, inventory, and lives tiles.
-- `scripts/status_format.py` exhaustively validates all 65,536 score values,
+- `scripts/validation/system/status_format.py` exhaustively validates all 65,536 score values,
   all 256 life counts, 1,536 inventory position/value cases, and the exact
   decimal/bit-mask/helper bytes interleaved with the formatter.
-- `scripts/room_row_upload.py` validates all 20 unrolled handlers, 400 cell
+- `scripts/validation/rooms/room_row_upload.py` validates all 20 unrolled handlers, 400 cell
   lookups, and 800 left/right metatile writes byte-for-byte against the ROM.
-- `scripts/room_attribute_upload.py` validates both final NMI tasks, including
+- `scripts/validation/rooms/room_attribute_upload.py` validates both final NMI tasks, including
   the right-nametable edge expansion and timing delay.
-- `scripts/castle_map.py` validates the complete 10x10 visited-room and current
+- `scripts/validation/rooms/castle_map.py` validates the complete 10x10 visited-room and current
   room marker geometry.
-- `scripts/famicom_data_io.py` exhaustively validates all 256 expansion-port
+- `scripts/validation/gameplay/famicom_data_io.py` exhaustively validates all 256 expansion-port
   byte transfers plus the pulse symbols, leader, and shared preamble contract.
-- `scripts/save_data.py` losslessly encodes and decodes the 394-byte save
+- `scripts/validation/gameplay/save_data.py` losslessly encodes and decodes the 394-byte save
   payload and validates the exact `GNUTUEDEB`/`BEDEUTUN` ROM/wire signature.
-- `scripts/room_cell_coordinates.py` models the 40x20 tile-to-cell mapping,
+- `scripts/validation/rooms/room_cell_coordinates.py` models the 40x20 tile-to-cell mapping,
   mutable ordinals, restored forms, and persistent-state bit selection.
-- `scripts/mutable_cell_actions.py` proves all 12 collision-table pointers,
+- `scripts/validation/rooms/mutable_cell_actions.py` proves all 12 collision-table pointers,
   six inventory-slot mappings, handler templates, readiness guards, probe
   adjustment, and signed-direction horizontal boundary behavior.
-- `scripts/room_navigation.py` proves the exact navigation machine code and
+- `scripts/validation/rooms/room_navigation.py` proves the exact navigation machine code and
   both edge tables, then checks every direction from all 100 one-based rooms.
-- `scripts/room_boundary_transitions.py` proves all four boundary routes,
+- `scripts/validation/rooms/room_boundary_transitions.py` proves all four boundary routes,
   vertical X alignment, horizontal edge clamps, and entrance-cell restoration.
-- `scripts/player_hazard_state.py` proves both protection countdowns, exact
+- `scripts/validation/player/player_hazard_state.py` proves both protection countdowns, exact
   routine bytes, all 400 room-cell probes, and full X/Y/cell input domains.
-- `scripts/object_player_proximity.py` proves the shared 15-call interaction
+- `scripts/validation/objects/object_player_proximity.py` proves the shared 15-call interaction
   predicate, both exclusive distance limits, and its original page-delta alias.
-- `scripts/pause_input.py` proves pause/resume edges, APU shutdown, paused
+- `scripts/validation/gameplay/pause_input.py` proves pause/resume edges, APU shutdown, paused
   scroll priority and saturation across complete button and byte domains.
-- `scripts/collision_tables.py` validates both 100x2 flag tables, all 48 object
+- `scripts/validation/collision/collision_tables.py` validates both 100x2 flag tables, all 48 object
   dimensions, their processor-flag encoding, and all 18 exact consumers.
-- `scripts/frame_sprites.py` validates player/action frame selection, the full
+- `scripts/authoring/frame_sprites.py` validates player/action frame selection, the full
   staging clear and object scan, and all 42 object render pointers.
-- `scripts/metasprites.py` validates all 41 selector indexes, five composition
+- `scripts/authoring/metasprites.py` validates all 41 selector indexes, five composition
   paths, page-zero horizontal clipping and OAM compaction, 203 descriptor
   pairs, and all 107 statically selected descriptor references.
-- `scripts/x_coordinates.py` exhaustively validates all player/object X helper
+- `scripts/validation/player/x_coordinates.py` exhaustively validates all player/object X helper
   offsets, carry, borrow, register order, and 16-bit wrapping.
-- `scripts/room_transition.py` validates transition mirroring and the exact
+- `scripts/validation/rooms/room_transition.py` validates transition mirroring and the exact
   rendering-resume call order.
-- `scripts/collision_cells.py` exhaustively validates all runtime-type and
+- `scripts/validation/collision/collision_cells.py` exhaustively validates all runtime-type and
   doubled cell-index bytes plus all 65,536 room-cell/status combinations
   without losing sampler flags.
-- `scripts/runtime_object_dispatch.py` verifies all 42 handler pointers and
+- `scripts/validation/objects/runtime_object_dispatch.py` verifies all 42 handler pointers and
   models selection across the complete 24-record runtime pool.
-- `scripts/new_game_state.py` validates starting state, exact clear ranges,
+- `scripts/validation/gameplay/new_game_state.py` validates starting state, exact clear ranges,
   preserved mirror/snapshot tails, and the `$C53D` room-palette pointer.
-- `scripts/room_runtime_reset.py` validates ten reset fields and exhaustively
+- `scripts/validation/rooms/room_runtime_reset.py` validates ten reset fields and exhaustively
   checks the game-over/audio-pointer restart guard.
-- `scripts/room_cell_animation.py` validates all 256 cell values, the three
+- `scripts/validation/rooms/room_cell_animation.py` validates all 256 cell values, the three
   exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
   coverage across all 20 room rows.
 - `make format`, `make lint`, 558 unit tests, reproducible disassembly checks,
@@ -505,57 +505,12 @@ config/runtime_evidence.txt tracked code/data ranges observed by FCEUX
 config/prg_data_ranges.txt typed data ranges removed from Ghidra code output
 config/debugger_*.json     symbol-resolved Mesen/FCEUX breakpoints and watches
 docs/                      architecture, formats, evidence, and roadmap
-scripts/bootstrap_ghidra.py pinned local toolchain installer
-scripts/bootstrap_fceux.py pinned runtime-emulator installer
-scripts/run_ghidra.py      deterministic headless import and fact export
-scripts/generate_disassembly.py Ghidra facts to canonical ca65 source
-scripts/runtime_coverage.py FCEUX CDL capture and static/runtime reconciliation
-scripts/asm_style.py       shared ca65 formatter and linter
-scripts/format_project.py  dependency-free formatting contract
-scripts/project.py         inspect, split, build-support, verify, and lint tools
-scripts/verify_rom.py      focused image/region comparison diagnostics
-scripts/room_data.py       100-room prefix-code decoder
-scripts/room_screen_data.py room status-screen data validator
-scripts/controller_input.py controller serial-polling model
-scripts/famicom_data_io.py pulse and expansion data-transport model
-scripts/save_data.py     394-byte save-payload codec and validator
-scripts/room_cell_coordinates.py room-cell coordinate and mutation model
-scripts/room_cell_sample_address.py shared collision-sample address model
-scripts/player_collision_sample.py player room-cell/object collision model
-scripts/player_input_movement.py player input, motion, and action-hit model
-scripts/player_object_push.py player/runtime-object push model
-scripts/player_collision_dispatch.py player collision-handler dispatch model
-scripts/inventory_collectible_handlers.py six-counter runtime pickup model
-scripts/runtime_types81_82_collision.py type-$81/$82 transform/completion model
-scripts/unreferenced_nmi_task_index_bytes.py typed orphan-byte validator
-scripts/unreferenced_runtime_object_clear_tail.py five-byte orphan validator
-scripts/unreferenced_runtime_only_sample.py dead runtime-only sampler model
-scripts/title_sub_command.py title screen and sub-command menu model
-scripts/demo_playback.py title-demo controller-script model
-scripts/audio_track_selection.py track records and demo-gated selector model
-scripts/audio_stream_engine.py MML interpreter and channel-arbitration model
-scripts/sound_effect_engine.py sound-effect starter and updater model
-scripts/scroll_math_palette.py camera, unsigned-divider, and palette-upload model
-scripts/end_sequences.py game-over/completion and high-score model
-scripts/prg_tail_data.py room-cell tiles, padding, and vector validator
-scripts/palette_data.py overlapping screen and room palette validator
-scripts/room_navigation.py one-based 10x10 castle navigation model
-scripts/room_boundary_transitions.py player room-boundary transition model
-scripts/player_hazard_state.py protection countdown and hazard-probe model
-scripts/object_player_proximity.py runtime-object/player proximity model
-scripts/player_object_span.py player/object-span overlap model
-scripts/transient_object_lifecycle.py transient-object state-machine model
-scripts/object_collision_filters.py animated-cell and object filter model
-scripts/collision_point_sample.py room-cell/runtime-object point-sample model
-scripts/room_collision_sample.py room-cell-only point-sample model
-scripts/runtime_object_overlap.py runtime-pool overlap scan model
-scripts/pause_input.py     pause toggle and paused-scroll model
-scripts/collision_tables.py room-cell flags and object-dimension validator
-scripts/frame_sprites.py   player/action and object frame-sprite validator
-scripts/metasprites.py     metasprite composition and descriptor validator
-scripts/object_catalog.py  unified room/runtime/update/sprite object catalog
-scripts/x_coordinates.py exhaustive player/object X-coordinate model
-scripts/audio_data.py      music table and textual-stream validator
+scripts/run.py              stable module launcher and tool inventory
+scripts/authoring/          editors, codecs, and presentation models
+scripts/build/              ROM assembly, profiles, variants, and comparisons
+scripts/runtime/            emulator capture, playtest, and live validation
+scripts/validation/         audits and subsystem behavior contracts
+scripts/workflow/           Ghidra and disassembly reconstruction workflow
 src/main.asm               assembly entrypoint
 src/system/               platform bootstrap, fixed PRG tail, and vectors
 src/game/player/          input, movement, transitions, and object pushing

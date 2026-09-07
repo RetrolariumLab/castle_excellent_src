@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import room_object_state_save
+from scripts.validation.rooms import room_object_state_save
 
 
 ROOT = Path(__file__).resolve().parent.parent

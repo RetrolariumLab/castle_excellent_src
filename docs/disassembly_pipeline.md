@@ -35,7 +35,7 @@ The safe staged filename avoids a Windows batch-parser failure caused by
 parentheses in the conventional ROM filename. It is a verified byte-for-byte
 copy under ignored `build/`.
 
-Before each import, `scripts/run_ghidra.py` removes only the disposable
+Before each import, `scripts/workflow/run_ghidra.py` removes only the disposable
 `build/ghidra/castle_excellent.gpr` marker and matching `.rep` directory. This
 handles a Windows/Ghidra failure mode where `-deleteProject` removes the marker
 but leaves the repository directory behind. Exported facts and reports in the

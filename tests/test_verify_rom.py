@@ -8,12 +8,9 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import project
-import verify_rom
-
-
+from scripts.build import project
+from scripts.build import verify_rom
 def sample_ines() -> bytes:
     header = b"NES\x1a" + bytes((1, 1, 0x30, 0)) + bytes(8)
     return header + bytes(range(256)) * 64 + bytes([0xA5]) * 8_192

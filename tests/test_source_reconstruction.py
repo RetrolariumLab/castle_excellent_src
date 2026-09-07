@@ -5,7 +5,7 @@ import json
 import tempfile
 import unittest
 
-from scripts.source_reconstruction import (
+from scripts.validation.source_reconstruction import (
     ReconstructionError,
     audit_module_text,
     audit_symbol_maps,

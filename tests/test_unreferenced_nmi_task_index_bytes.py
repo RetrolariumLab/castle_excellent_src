@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import unreferenced_nmi_task_index_bytes as unreferenced
+from scripts.validation.preservation import unreferenced_nmi_task_index_bytes as unreferenced
 
 
 ROOT = Path(__file__).resolve().parent.parent

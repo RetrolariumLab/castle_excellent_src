@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from scripts import player_collision_update
+from scripts.validation.player import player_collision_update
 
 
 ROOT = Path(__file__).resolve().parent.parent

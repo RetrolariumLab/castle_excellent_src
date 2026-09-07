@@ -6,7 +6,7 @@
   "scenarios": [
     {
       "id": "boot-gameplay",
-      "capture": "scripts/capture_boot_cdl.lua",
+      "capture": "scripts/runtime/capture_boot_cdl.lua",
       "maximum_frames": 900,
       "start_condition": "emulator reset",
       "expected_result": "title input starts the main game loop",
@@ -15,7 +15,7 @@
     },
     {
       "id": "title-demo",
-      "capture": "scripts/capture_title_demo_cdl.lua",
+      "capture": "scripts/runtime/capture_title_demo_cdl.lua",
       "maximum_frames": 1800,
       "start_condition": "emulator reset with no controller input",
       "expected_result": "title and attract-mode paths execute without runtime/static disagreement",
@@ -24,7 +24,7 @@
     },
     {
       "id": "idle-timeout",
-      "capture": "scripts/capture_timeout_cdl.lua",
+      "capture": "scripts/runtime/capture_timeout_cdl.lua",
       "maximum_frames": 15000,
       "start_condition": "start a game, then provide no input",
       "expected_result": "natural timer, death, and post-death paths execute",
@@ -33,7 +33,7 @@
     },
     {
       "id": "room-transition",
-      "capture": "scripts/capture_release_paths_cdl.lua",
+      "capture": "scripts/runtime/capture_release_paths_cdl.lua",
       "maximum_frames": 1200,
       "start_condition": "main frame loop reached in room 0x47",
       "expected_result": "the upper room boundary performs a normal room reload and resumes rendering",
@@ -53,7 +53,7 @@
     },
     {
       "id": "death-game-over",
-      "capture": "scripts/capture_release_paths_cdl.lua",
+      "capture": "scripts/runtime/capture_release_paths_cdl.lua",
       "maximum_frames": 1800,
       "start_condition": "first UpdatePlayerCollisionState after the main frame loop",
       "expected_result": "a final-life hazard enters the death transition and game-over sequence",
@@ -85,7 +85,7 @@
     },
     {
       "id": "completion-ending",
-      "capture": "scripts/capture_release_paths_cdl.lua",
+      "capture": "scripts/runtime/capture_release_paths_cdl.lua",
       "maximum_frames": 1400,
       "start_condition": "first UpdatePlayerCollisionState after the main frame loop",
       "expected_result": "collision with runtime type 0x82 enters the terminal completion sequence",
@@ -104,7 +104,7 @@
     },
     {
       "id": "save-load-entry",
-      "capture": "scripts/capture_release_paths_cdl.lua",
+      "capture": "scripts/runtime/capture_release_paths_cdl.lua",
       "maximum_frames": 1600,
       "start_condition": "main frame loop reached",
       "expected_result": "save transport runs, then load reaches the expected no-device failure handler",

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import collision_cells
+from scripts.validation.collision import collision_cells
 
 
 class CollisionCellTests(unittest.TestCase):

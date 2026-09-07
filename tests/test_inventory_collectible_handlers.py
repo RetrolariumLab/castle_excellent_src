@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import inventory_collectible_handlers as inventory_collectibles
+from scripts.validation.objects import inventory_collectible_handlers as inventory_collectibles
 
 
 ROOT = Path(__file__).resolve().parent.parent

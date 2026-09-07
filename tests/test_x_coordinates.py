@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import x_coordinates
+from scripts.validation.player import x_coordinates
 
 
 class XCoordinateTests(unittest.TestCase):

@@ -16,7 +16,7 @@ The ignored outputs in `build/native/` are:
 - `castle_excellent.nes.0.nl` and `.ram.nl`, automatically loaded FCEUX labels;
 - `debug_symbols.json`, the resolved breakpoint/watch manifest.
 
-`scripts/debug_symbols.py` checks that the debug file maps HEADER, PRG, and CHR
+`scripts/validation/debug_symbols.py` checks that the debug file maps HEADER, PRG, and CHR
 to file offsets 0, 16, and 32784, follows representative semantic labels back
 to their exact source files and current label lines, and resolves every entry
 in `config/debugger_breakpoints.json` and `config/debugger_watches.json`.

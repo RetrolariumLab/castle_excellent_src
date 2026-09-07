@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import player_object_push as push
+from scripts.validation.player import player_object_push as push
 
 
 ROOT = Path(__file__).resolve().parent.parent

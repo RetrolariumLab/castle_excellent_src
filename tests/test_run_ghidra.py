@@ -7,11 +7,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import run_ghidra
-
-
+from scripts.workflow import run_ghidra
 class GhidraProjectCleanupTests(unittest.TestCase):
     def test_removes_only_disposable_project_pair(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

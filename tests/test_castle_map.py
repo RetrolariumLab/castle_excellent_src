@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import castle_map
+from scripts.validation.rooms import castle_map
 
 
 class CastleMapTests(unittest.TestCase):

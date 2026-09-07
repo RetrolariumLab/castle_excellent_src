@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import runtime_object_overlap as overlap
+from scripts.validation.objects import runtime_object_overlap as overlap
 
 
 class RuntimeObjectOverlapTests(unittest.TestCase):

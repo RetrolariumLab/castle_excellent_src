@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import player_animated_cell_displacement
+from scripts.validation.player import player_animated_cell_displacement
 
 
 ROOT = Path(__file__).resolve().parent.parent

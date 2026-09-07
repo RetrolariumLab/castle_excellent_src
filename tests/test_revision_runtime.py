@@ -7,11 +7,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import revision_runtime
-
-
+from scripts.runtime import revision_runtime
 class RevisionRuntimeTests(unittest.TestCase):
     def test_castlequest_manifest_declares_direct_scenario(self) -> None:
         scenario = revision_runtime.load_scenario(

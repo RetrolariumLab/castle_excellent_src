@@ -71,7 +71,7 @@ inside the target range. Their descriptive names live in a dedicated
 
 `config/source_layout.json` is the machine-readable authority. The platform
 module declares the PRG segment and includes the following 31 modules in CPU
-order. `scripts/generate_disassembly.py` regenerates every module from pinned
+order. `scripts/workflow/generate_disassembly.py` regenerates every module from pinned
 Ghidra facts, named symbols, operand overrides, revision overlays, and typed
 source replacements. `make disassembly-check` rejects any stale module.
 

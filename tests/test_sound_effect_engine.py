@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import sound_effect_engine as sound
+from scripts.validation.audio import sound_effect_engine as sound
 
 
 ROOT = Path(__file__).resolve().parent.parent

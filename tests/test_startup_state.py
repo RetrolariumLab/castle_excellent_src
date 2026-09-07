@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from scripts import startup_state
+from scripts.validation.gameplay import startup_state
 
 
 class StartupStateTests(unittest.TestCase):

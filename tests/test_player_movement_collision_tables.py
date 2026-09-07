@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import player_movement_collision_tables
+from scripts.validation.player import player_movement_collision_tables
 
 
 ROOT = Path(__file__).resolve().parent.parent

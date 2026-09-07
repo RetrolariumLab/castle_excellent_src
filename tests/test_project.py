@@ -8,11 +8,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import project
-
-
+from scripts.build import project
 def sample_ines() -> bytes:
     header = b"NES\x1a" + bytes((2, 4, 0x31, 0)) + bytes(8)
     return header + bytes(32_768) + bytes([0xFF]) * 32_768

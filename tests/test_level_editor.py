@@ -6,12 +6,9 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import level_editor
-import room_data
-
-
+from scripts.authoring import level_editor
+from scripts.authoring import room_data
 def put_cpu(prg: bytearray, address: int, payload: bytes) -> None:
     offset = room_data.cpu_offset(address)
     prg[offset:offset + len(payload)] = payload

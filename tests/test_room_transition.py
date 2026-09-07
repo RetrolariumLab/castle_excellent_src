@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import room_transition
+from scripts.validation.rooms import room_transition
 
 
 class RoomTransitionTests(unittest.TestCase):

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import player_hazard_state
+from scripts.validation.player import player_hazard_state
 
 
 class PlayerHazardStateTests(unittest.TestCase):

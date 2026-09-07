@@ -8,12 +8,15 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import release_audit
-
-
+from scripts.validation import release_audit
 class ReleaseAuditTests(unittest.TestCase):
+    def test_project_scenario_captures_resolve_after_tool_reorganization(self) -> None:
+        release = release_audit.load_json(
+            ROOT / "config" / "source_reconstruction_1_0.json"
+        )
+        self.assertEqual(release_audit.validate_scenario_manifest(ROOT, release), [])
+
     def test_reference_contract_accepts_matching_identity(self) -> None:
         release = {
             "reference": {

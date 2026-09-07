@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import replace
 import unittest
 
-from scripts import transient_object_lifecycle as lifecycle
+from scripts.validation.objects import transient_object_lifecycle as lifecycle
 
 
 class TransientObjectLifecycleTests(unittest.TestCase):

@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import score_award
+from scripts.validation.gameplay import score_award
 
 
 ROOT = Path(__file__).resolve().parent.parent

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import collision_tables
+from scripts.validation.collision import collision_tables
 
 
 class CollisionTableTests(unittest.TestCase):

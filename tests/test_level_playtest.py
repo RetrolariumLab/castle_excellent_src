@@ -7,11 +7,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import level_playtest
-
-
+from scripts.runtime import level_playtest
 class LevelPlaytestTests(unittest.TestCase):
     def test_environment_exposes_validated_runtime_coordinates(self) -> None:
         environment = level_playtest.playtest_environment(71, 319, 159)

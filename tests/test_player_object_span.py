@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import player_object_span
+from scripts.validation.player import player_object_span
 
 
 class PlayerObjectSpanTests(unittest.TestCase):

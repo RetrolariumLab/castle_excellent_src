@@ -6,7 +6,7 @@
   "scenarios": [
     {
       "id": "castlequest-startup-menu",
-      "capture": "scripts/capture_castlequest_runtime.lua",
+      "capture": "scripts/runtime/capture_castlequest_runtime.lua",
       "maximum_frames": 900,
       "start_condition": "emulator reset",
       "expected_result": "new game starts with 50 lives and the localized sub-command selection wraps after three entries without entering Japanese load/save handlers",

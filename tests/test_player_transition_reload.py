@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from scripts import player_transition_reload
+from scripts.validation.player import player_transition_reload
 
 
 ROOT = Path(__file__).resolve().parent.parent

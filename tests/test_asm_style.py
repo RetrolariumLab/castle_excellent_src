@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.asm_style import format_file, lint_file
+from scripts.validation.asm_style import format_file, lint_file
 
 
 class AssemblyStyleTests(unittest.TestCase):

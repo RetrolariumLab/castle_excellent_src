@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import status_format
+from scripts.validation.system import status_format
 
 
 class StatusFormatTests(unittest.TestCase):

@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import audio_track_selection as selection
+from scripts.validation.audio import audio_track_selection as selection
 
 
 ROOT = Path(__file__).resolve().parent.parent

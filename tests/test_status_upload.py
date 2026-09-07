@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from scripts import status_upload
+from scripts.validation.system import status_upload
 
 
 class StatusUploadTests(unittest.TestCase):

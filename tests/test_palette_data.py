@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest
 
-from scripts import palette_data
+from scripts.validation.system import palette_data
 
 
 ROOT = Path(__file__).resolve().parent.parent

@@ -6,11 +6,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
-import room_screen_data
-
-
+from scripts.validation.rooms import room_screen_data
 def make_screen_prg() -> bytes:
     prg = bytearray(room_screen_data.PRG_SIZE)
     for _name, _ppu, start, limit in room_screen_data.STATUS_TILE_STREAMS:
