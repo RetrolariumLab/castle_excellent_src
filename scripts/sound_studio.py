@@ -39,6 +39,11 @@ class SoundStudio(tk.Tk):
         self.profile_id = profile_id
         self.selected_stream = 0
         self.selected_track = 0
+        self.track_choice = tk.StringVar(value=studio_model.track_label(0))
+        self.channel_enabled = {
+            name: tk.BooleanVar(value=True)
+            for name, _offset in studio_model.CHANNELS
+        }
         self.undo_stack: list[dict[str, Any]] = []
         self.dirty = False
         self.status = tk.StringVar()
@@ -46,8 +51,8 @@ class SoundStudio(tk.Tk):
         self.track_streams = [tk.StringVar() for _ in range(3)]
         self.track_parameters = [tk.StringVar() for _ in range(2)]
         self.title(f"Castle Excellent Sound Studio [{profile_id}]")
-        self.geometry("1040x720")
-        self.minsize(820, 580)
+        self.geometry("1240x820")
+        self.minsize(960, 680)
         self.protocol("WM_DELETE_WINDOW", self.close)
         self.build_ui()
         self.bind_all("<Control-s>", lambda _event: self.save())
@@ -75,6 +80,20 @@ class SoundStudio(tk.Tk):
         ttk.Button(toolbar, text="Validate", command=self.validate).pack(
             side="left", padx=3
         )
+        ttk.Label(toolbar, text="Track").pack(side="left", padx=(12, 3))
+        self.track_box = ttk.Combobox(
+            toolbar,
+            textvariable=self.track_choice,
+            state="readonly",
+            width=27,
+            values=[studio_model.track_label(index) for index in range(8)],
+        )
+        self.track_box.pack(side="left")
+        self.track_box.bind("<<ComboboxSelected>>", self.select_track_box)
+        ttk.Button(toolbar, text="Preview track", command=self.preview_track).pack(
+            side="left", padx=(5, 2)
+        )
+        ttk.Button(toolbar, text="Stop", command=self.stop_preview).pack(side="left")
 
         body = ttk.Panedwindow(self, orient="horizontal")
         body.pack(fill="both", expand=True, padx=7, pady=(0, 7))
@@ -108,8 +127,35 @@ class SoundStudio(tk.Tk):
         self.track_list.pack(fill="x")
         self.track_list.bind("<<ListboxSelect>>", self.select_track)
 
+        sequencer = ttk.LabelFrame(editor, text="Track lanes", padding=7)
+        sequencer.pack(fill="both", expand=True)
+        mixer = ttk.Frame(sequencer)
+        mixer.pack(fill="x", pady=(0, 5))
+        ttk.Label(mixer, text="Preview channels:").pack(side="left")
+        for name, _offset in studio_model.CHANNELS:
+            ttk.Checkbutton(
+                mixer,
+                text=name,
+                variable=self.channel_enabled[name],
+                command=self.draw_lanes,
+            ).pack(side="left", padx=8)
+        lane_frame = ttk.Frame(sequencer)
+        lane_frame.pack(fill="both", expand=True)
+        self.lane_canvas = tk.Canvas(
+            lane_frame,
+            height=230,
+            background="#111824",
+            highlightthickness=0,
+        )
+        lane_scroll = ttk.Scrollbar(
+            lane_frame, orient="horizontal", command=self.lane_canvas.xview
+        )
+        self.lane_canvas.configure(xscrollcommand=lane_scroll.set)
+        self.lane_canvas.pack(fill="both", expand=True)
+        lane_scroll.pack(fill="x")
+
         stream_editor = ttk.LabelFrame(editor, text="Textual MML stream", padding=7)
-        stream_editor.pack(fill="both", expand=True)
+        stream_editor.pack(fill="both", expand=True, pady=(7, 0))
         ttk.Label(
             stream_editor,
             text=(
@@ -226,7 +272,18 @@ class SoundStudio(tk.Tk):
         if not selected:
             return
         self.selected_track = selected[0]
+        self.track_choice.set(studio_model.track_label(self.selected_track))
         self.load_track_editor()
+        self.draw_lanes()
+        self.update_status()
+
+    def select_track_box(self, _event: tk.Event) -> None:
+        self.selected_track = self.track_box.current()
+        self.track_list.selection_clear(0, "end")
+        self.track_list.selection_set(self.selected_track)
+        self.track_list.see(self.selected_track)
+        self.load_track_editor()
+        self.draw_lanes()
         self.update_status()
 
     def apply_stream(self) -> None:
@@ -294,6 +351,109 @@ class SoundStudio(tk.Tk):
             f"built {output_path.name}: {report['changed_bytes']} changed ROM bytes"
         )
 
+    def preview_prg(self) -> bytes:
+        validated = music_editor.validate_workspace(self.document, self.profile_id)
+        output, _report = music_editor.compose_music(
+            self.image, self.prg, self.chr_data, validated
+        )
+        preview_prg, _preview_chr = room_data.extract_rom(output)
+        return preview_prg
+
+    def draw_lanes(self) -> None:
+        if not hasattr(self, "lane_canvas"):
+            return
+        self.lane_canvas.delete("all")
+        lanes = studio_model.track_lanes(
+            self.preview_prg(), self.selected_track, max_frames=600
+        )
+        colors = ("#55b9ff", "#ffcf5a", "#8ef28e")
+        frame_width = 2
+        left = 82
+        lane_height = 72
+        for lane_index, lane in enumerate(lanes):
+            top = lane_index * lane_height
+            enabled = self.channel_enabled[lane.name].get()
+            self.lane_canvas.create_rectangle(
+                0,
+                top,
+                left + 600 * frame_width,
+                top + lane_height,
+                fill="#111824" if enabled else "#1b1d22",
+                outline="#334354",
+            )
+            self.lane_canvas.create_text(
+                8,
+                top + 12,
+                text=lane.name,
+                fill="#f1f5f9" if enabled else "#687582",
+                anchor="nw",
+                font=("TkDefaultFont", 9, "bold"),
+            )
+            notes = [event for event in lane.events if event.frequency > 0]
+            midi_values = [
+                round(69 + 12 * __import__("math").log2(event.frequency / 440.0))
+                for event in notes
+            ]
+            low = min(midi_values, default=0)
+            high = max(midi_values, default=1)
+            span = max(1, high - low)
+            for event in lane.events:
+                x0 = left + event.start_frame * frame_width
+                x1 = x0 + max(2, event.duration_frames * frame_width)
+                if event.frequency <= 0:
+                    y0 = top + lane_height - 12
+                    fill = "#303b48"
+                else:
+                    midi = round(
+                        69 + 12 * __import__("math").log2(event.frequency / 440.0)
+                    )
+                    y0 = top + 51 - (midi - low) * 38 / span
+                    fill = colors[lane_index] if enabled else "#46505a"
+                self.lane_canvas.create_rectangle(
+                    x0, y0, x1, y0 + 8, fill=fill, outline=""
+                )
+                if event.frequency > 0 and x1 - x0 >= 30:
+                    self.lane_canvas.create_text(
+                        x0 + 3,
+                        y0 + 4,
+                        text=event.note,
+                        fill="#071018",
+                        anchor="w",
+                        font=("TkFixedFont", 7),
+                    )
+        self.lane_canvas.configure(
+            scrollregion=(0, 0, left + 600 * frame_width, len(lanes) * lane_height)
+        )
+
+    def preview_track(self) -> None:
+        self.guarded(self._preview_track)
+
+    def _preview_track(self) -> None:
+        enabled = {
+            name for name, variable in self.channel_enabled.items() if variable.get()
+        }
+        path = self.workspace_path.with_name("preview.wav")
+        studio_model.write_track_preview(
+            self.preview_prg(),
+            self.selected_track,
+            path,
+            enabled_channels=enabled,
+        )
+        if sys.platform == "win32":
+            import winsound
+
+            winsound.PlaySound(str(path), winsound.SND_FILENAME | winsound.SND_ASYNC)
+        self.update_status(
+            f"previewing {studio_model.track_label(self.selected_track)}"
+        )
+
+    @staticmethod
+    def stop_preview() -> None:
+        if sys.platform == "win32":
+            import winsound
+
+            winsound.PlaySound(None, winsound.SND_PURGE)
+
     def load_stream_editor(self) -> None:
         self.mml_text.delete("1.0", "end")
         self.mml_text.insert("1.0", self.stream["text"])
@@ -318,8 +478,12 @@ class SoundStudio(tk.Tk):
         self.track_list.delete(0, "end")
         for track in self.document["track_sets"]:
             active = sum(pointer is not None for pointer in track["streams"])
-            self.track_list.insert("end", f"Track {track['index']}  {active}/3 channels")
+            self.track_list.insert(
+                "end",
+                f"{studio_model.track_label(track['index'])}  {active}/3",
+            )
         self.track_list.selection_set(self.selected_track)
+        self.track_choice.set(studio_model.track_label(self.selected_track))
 
     def update_status(self, suffix: str = "") -> None:
         summary = studio_model.summarize(self.document, self.profile_id)
@@ -337,6 +501,7 @@ class SoundStudio(tk.Tk):
         self.refresh_lists()
         self.load_stream_editor()
         self.load_track_editor()
+        self.draw_lanes()
         self.update_status()
 
     def close(self) -> None:
@@ -344,6 +509,7 @@ class SoundStudio(tk.Tk):
             "Castle Excellent Sound Studio", "Discard unsaved music changes?"
         ):
             return
+        self.stop_preview()
         self.destroy()
 
 
@@ -393,6 +559,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--revisions", default="config/revision_profiles.json")
     parser.add_argument("--profile", required=True)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--smoke-ui", action="store_true")
     return parser
 
 
@@ -403,9 +570,15 @@ def main() -> int:
             check_studio(args)
             return 0
         profile, image, prg, chr_data, path, document = load_studio(args)
-        SoundStudio(
+        application = SoundStudio(
             document, profile, image, prg, chr_data, path, args.profile
-        ).mainloop()
+        )
+        if args.smoke_ui:
+            application.update_idletasks()
+            application.destroy()
+            print("[OK] sound studio widgets constructed")
+        else:
+            application.mainloop()
     except (
         OSError,
         ProjectError,
