@@ -475,6 +475,49 @@ def validate_config_layout(root: Path) -> None:
         )
 
 
+def validate_documentation(root: Path) -> None:
+    docs_root = root / "docs"
+    documents = {
+        path.relative_to(docs_root).as_posix()
+        for path in docs_root.rglob("*.md")
+        if path.is_file()
+    }
+    if "index.md" not in documents:
+        raise ProjectError("documentation index not found: docs/index.md")
+
+    link_pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+    indexed: list[str] = []
+    for source in sorted(docs_root.rglob("*.md")):
+        text = source.read_text(encoding="utf-8")
+        for raw_target in link_pattern.findall(text):
+            target = raw_target.split("#", 1)[0].strip()
+            if not target or "://" in target or target.startswith("mailto:"):
+                continue
+            target_path = (source.parent / target).resolve()
+            try:
+                relative = target_path.relative_to(docs_root.resolve()).as_posix()
+            except ValueError as exc:
+                raise ProjectError(
+                    f"documentation link escapes docs/: {source}: {raw_target}"
+                ) from exc
+            if not target_path.is_file():
+                raise ProjectError(
+                    f"broken documentation link: {source}: {raw_target}"
+                )
+            if source == docs_root / "index.md" and relative.endswith(".md"):
+                indexed.append(relative)
+
+    duplicates = sorted({path for path in indexed if indexed.count(path) > 1})
+    expected = documents - {"index.md"}
+    missing = sorted(expected - set(indexed))
+    unexpected = sorted(set(indexed) - expected)
+    if duplicates or missing or unexpected:
+        raise ProjectError(
+            "documentation index mismatch; "
+            f"missing={missing}, unexpected={unexpected}, duplicates={duplicates}"
+        )
+
+
 def command_lint(_args: argparse.Namespace) -> None:
     required = (
         "README.md",
@@ -498,11 +541,9 @@ def command_lint(_args: argparse.Namespace) -> None:
         "config/revision_profiles.json",
         "config/source_reconstruction_1_0.json",
         "config/source_reconstruction_2_0.json",
-        "docs/code_quality.md",
-        "docs/configuration.md",
+        "docs/development.md",
         "docs/source_reconstruction.md",
         "docs/resolved_unknowns.md",
-        "docs/scripts.md",
         "docs/verification.md",
         "tools/disassembly.lock.json",
         "tools/runtime.lock.json",
@@ -613,6 +654,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         )
     validate_test_layout(ROOT)
     validate_config_layout(ROOT)
+    validate_documentation(ROOT)
     load_manifest(ROOT / "assets/manifest.json")
     memory_symbols = load_memory_symbols(ROOT / "config/reconstruction/memory_symbols.json")
     load_operand_overrides(ROOT / "config/reconstruction/operand_overrides.json")

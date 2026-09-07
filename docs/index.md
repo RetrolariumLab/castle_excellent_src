@@ -1,35 +1,49 @@
-# Documentation index
+# Documentation
 
-## Release and verification
+The sections below provide one canonical entry for every maintained document.
+New pages must be added here, and obsolete pages must be removed rather than
+left as disconnected notes.
 
-- [Source Reconstruction 2.0 tag-ready boundary](source_reconstruction_2_0.md)
-- [Source Reconstruction 1.0 boundary](source_reconstruction_1_0.md)
-- [Revision profiles](revision_profiles.md)
-- [Content authoring](content_authoring.md)
-- [Verification](verification.md)
-- [Runtime verification](runtime_verification.md)
-- [Debugger workflow](debugger_workflow.md)
-- [Disassembly pipeline](disassembly_pipeline.md)
-- [Configuration layout](configuration.md)
+## Release contracts
 
-## Source and architecture
+- [Source Reconstruction contract](source_reconstruction.md) — enduring
+  definition of a reconstructed source release.
+- [Source Reconstruction 2.0](source_reconstruction_2_0.md) — current
+  tag-ready scope and acceptance boundary.
+- [Source Reconstruction 1.0](source_reconstruction_1_0.md) — preserved
+  Japanese-only release boundary.
+- [Revision profiles](revision_profiles.md) — Japanese and USA identities and
+  their shared-source strategy.
+- [Fixed-layout variants](fixed_layout_variants.md) — bounded experimental
+  edits and their byte allowlists.
+- [Disassembly pipeline](disassembly_pipeline.md) — reproducible Ghidra inputs
+  and source regeneration.
+- [Verification](verification.md) — identity, runtime, debugger, and release
+  gates.
 
-- [Source layout](source_layout.md)
-- [Architecture](architecture.md)
-- [Subsystems](subsystems.md)
-- [RAM map](ram_map.md)
-- [Symbol map](symbol_map.md)
-- [Data formats](data_formats.md)
+## Engine reference
 
-## Policy and evidence
+- [Architecture](architecture.md) — conceptual runtime design.
+- [Subsystem landmarks](subsystems.md) — address-ordered PRG inventory.
+- [Source layout and symbols](source_layout.md) — modules, naming ledgers, and
+  original-name provenance.
+- [RAM map](ram_map.md) — storage lifetimes and shared scratch contracts.
+- [Data formats](data_formats.md) — binary formats and round-trip status.
+- [Content authoring](content_authoring.md) — headless codecs and visual
+  studios.
 
-- [Naming](naming.md)
-- [Provenance](provenance.md)
-- [Active unknowns](unknowns.md)
-- [Resolved unknowns](resolved_unknowns.md)
-- [Code quality](code_quality.md)
-- [Roadmap](roadmap.md)
+## Project policy and evidence
 
-The accepted 1.0 boundary is owned by
-`config/source_reconstruction_1_0.json`. The tag-ready 2.0 scope is owned
-separately by `config/source_reconstruction_2_0.json`.
+- [Development guide](development.md) — commands, naming, configuration,
+  scripts, tests, and source policy.
+- [Provenance](provenance.md) — cartridge, research, and toolchain origins.
+- [Open questions](unknowns.md) — unresolved claims that can affect public
+  contracts.
+- [Resolved findings](resolved_unknowns.md) — evidence-backed investigation
+  ledger.
+- [Roadmap](roadmap.md) — release history and deferred work.
+
+Machine-readable release ownership lives in
+`config/source_reconstruction_1_0.json` and
+`config/source_reconstruction_2_0.json`; prose documents explain those
+contracts but do not replace them.

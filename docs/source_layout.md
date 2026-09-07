@@ -1,4 +1,4 @@
-# Source layout
+# Source layout and symbols
 
 The source is one canonical address-ordered PRG translation unit. Its 32 PRG
 modules own every byte from `$8000` through `$FFFF` exactly once.
@@ -89,3 +89,56 @@ and an evidence note; regeneration fails if the underlying instruction changes.
 
 CHR banks 2 and 3 are not purely graphics. Their room bitstreams remain
 address-stable and are authored only through the proven level codec.
+
+## PRG symbol map
+
+`config/reconstruction/symbols.json` is the machine-readable PRG symbol
+ledger. Its 1,232 records contain an immutable CPU address, current ca65 name,
+semantic kind, and evidence confidence. Source 1.0 contains 295 routine
+entries, 755 local control labels, 127 data labels, 48 general labels, and 7
+tables. Every record belongs to exactly one registered source region.
+
+The module table above provides the address-to-module view; the symbol ledger
+provides the exact address-to-name and kind view. Together they form the
+complete routine map without maintaining a second 1,232-row appendix.
+
+## Original-name provenance
+
+CPU address is the stable join key between imported and reconstructed names.
+Headless Ghidra exports its original `symbol` and `function` columns to
+`build/ghidra/instructions.tsv`; the current name at the same address lives in
+the symbol ledger.
+
+| Address | Original Ghidra identity | Current source name |
+| ---: | --- | --- |
+| `$8000` | `FUN_PRG0__8000` | `DelayLongPulseHalf` |
+| `$8225` | `reset` | `Reset` |
+| `$9583` | `FUN_PRG0__9583` | `UpdateRuntimeObjects` |
+| `$C569` | `vblank` | `Nmi` |
+| `$E830` | `FUN_PRG0__e830` | `DecodeRoom` |
+| `$EBE9` | `FUN_PRG0__ebe9` | `LoadStaticRoomObjects` |
+| `$FE31` | `FUN_PRG0__fe31` | `RunGameOverSequence` |
+
+Labels introduced for typed data or unnamed control-flow targets use
+`PRG0:$address` as their original identity. Names can therefore improve
+without losing the connection to the imported ROM, while relocated code
+cannot silently masquerade as a rename.
+
+`make disassembly-check` regenerates Ghidra facts and applies the symbol ledger
+to every source range. `make reconstruction-audit` additionally verifies
+symbol metadata, unique ownership, and RAM aliases. Release manifests freeze
+the expected counts, so additions or removals require a deliberate contract
+update.
+
+## RAM and I/O symbols
+
+`config/reconstruction/memory_symbols.json` is the assembly-facing RAM/I/O
+ledger: 495 aliases, including 368 restricted to a proven PRG consumer range.
+A global alias states a stable game-wide meaning; a scoped alias documents
+scratch reuse without claiming false global ownership. Array records carry a
+validated size so indexed operands remain relocatable.
+
+`src/memory/ram.inc` exposes those addresses and evidence-backed constants to
+ca65. [ram_map.md](ram_map.md) describes lifetimes, overlaps, and subsystem
+contracts for human readers. Bytes without a stable consumer-derived meaning
+remain outside the public RAM ABI rather than receiving speculative names.

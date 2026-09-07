@@ -497,27 +497,22 @@
     "CONTRIBUTING.md",
     "docs/index.md",
     "docs/architecture.md",
-    "docs/debugger_workflow.md",
-    "docs/naming.md",
+    "docs/development.md",
     "docs/provenance.md",
     "docs/ram_map.md",
     "docs/roadmap.md",
-    "docs/runtime_verification.md",
     "docs/source_layout.md",
     "docs/source_reconstruction.md",
     "docs/source_reconstruction_1_0.md",
     "docs/source_reconstruction_2_0.md",
     "docs/revision_profiles.md",
-    "docs/configuration.md",
     "docs/content_authoring.md",
     "docs/fixed_layout_variants.md",
     "docs/data_formats.md",
     "docs/verification.md",
-    "docs/symbol_map.md",
     "docs/subsystems.md",
     "docs/unknowns.md",
-    "docs/resolved_unknowns.md",
-    "docs/scripts.md"
+    "docs/resolved_unknowns.md"
   ],
   "layout_deviations": [
     {
@@ -536,7 +531,7 @@
     {
       "rule_id": "scripts-responsibility-subdirectories",
       "resolution": "Tools are split among authoring, build, runtime, validation, and workflow packages, with large validation families grouped by subsystem.",
-      "evidence": "docs/scripts.md and the scripts root boundary enforced by build.project lint"
+      "evidence": "docs/development.md and the scripts root boundary enforced by build.project lint"
     }
   ],
   "licensing": [

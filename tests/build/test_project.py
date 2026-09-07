@@ -15,6 +15,9 @@ class RepositoryLayoutTests(unittest.TestCase):
     def test_config_is_grouped_by_responsibility(self) -> None:
         project.validate_config_layout(ROOT)
 
+    def test_documentation_index_is_complete_and_links_resolve(self) -> None:
+        project.validate_documentation(ROOT)
+
 
 def sample_ines() -> bytes:
     header = b"NES\x1a" + bytes((2, 4, 0x31, 0)) + bytes(8)

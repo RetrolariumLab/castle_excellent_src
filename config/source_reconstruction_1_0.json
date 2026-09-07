@@ -187,8 +187,8 @@
           "validate-symbols"
         ],
         "files": [
-          "docs/naming.md",
-          "docs/debugger_workflow.md"
+          "docs/development.md",
+          "docs/verification.md"
         ],
         "scenarios": [],
         "artifacts": []
@@ -230,7 +230,7 @@
           "trace"
         ],
         "files": [
-          "docs/runtime_verification.md",
+          "docs/verification.md",
           "scenarios/source_1.json"
         ],
         "scenarios": [
@@ -573,16 +573,13 @@
     "docs/index.md",
     "docs/architecture.md",
     "docs/data_formats.md",
-    "docs/debugger_workflow.md",
-    "docs/naming.md",
+    "docs/development.md",
     "docs/provenance.md",
     "docs/ram_map.md",
     "docs/roadmap.md",
-    "docs/runtime_verification.md",
     "docs/source_layout.md",
     "docs/source_reconstruction.md",
     "docs/source_reconstruction_1_0.md",
-    "docs/symbol_map.md",
     "docs/subsystems.md",
     "docs/unknowns.md",
     "docs/resolved_unknowns.md",

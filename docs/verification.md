@@ -1,4 +1,16 @@
-# Verification contract
+# Verification
+
+Verification is layered so a passing build does not depend on one kind of
+evidence alone:
+
+1. lint and unit tests protect authored contracts;
+2. deterministic Ghidra regeneration protects the code/data classification;
+3. assembly and byte comparison protect the original cartridge identity;
+4. subsystem validators protect reconstructed behavior and data formats;
+5. FCEUX scenarios and live symbols exercise the rebuilt ROM at runtime;
+6. release audits reconcile all evidence with the versioned manifests.
+
+## Binary identity
 
 The preservation proof has three independent inputs:
 
@@ -11,7 +23,7 @@ The preservation proof has three independent inputs:
 performs direct byte comparisons of the iNES header, PRG, CHR, headerless
 payload, full image, and extracted CHR.
 
-## Targets
+## Key targets
 
 | Target | Contract |
 | --- | --- |
@@ -26,17 +38,11 @@ payload, full image, and extracted CHR.
 | `check-assets` | alias for `verify-assets` |
 | `verify` | aggregate of every target above |
 | `rom-info` | print and validate identities for original and built images |
-| `validate-title-sub-command` | title/menu hashes and transfer topology, eight strings, timeout/copy plans, exhaustive input priority, and room actions |
-| `validate-demo-playback` | script hashes and callers, 72-command distribution, 863 expanded samples, pointer carry, input mask, and terminal reset |
-| `validate-audio-track-selection` | seven selectors, eight track records, 24 stream-pointer slots, exact channel initialization, and exhaustive demo gating |
-| `validate-audio-stream-engine` | exact engine partitions and callers, all 21 streams, stop/clear mutations, and exhaustive pointer, request, channel, and tick/gate domains |
-| `validate-sound-effect-engine` | five starter write traces, exact call topology and NMI order, request/status arbitration, byte-wide step sequences, and table bounds |
-| `validate-scroll-math-palette` | exact camera/divider/uploader partitions and callers, exhaustive camera and divider domains, and all 38 ordered PPU writes |
-| `validate-unreferenced-object-clear-tail` | exact five-byte hash and boundaries, hypothetical decode, and absence of Ghidra, runtime, and PRG-pointer entries |
-| `validate-room-boundary-transitions` | exact 222-byte range and four callers, exhaustive vertical alignment, all room edges, horizontal entrance probes, and optional mutable restoration |
-| `validate-player-input-movement` | exact 940-byte range and main-loop caller, three synthetic collision calls, exhaustive action/button state, both directions over 16-bit X, action bounds, and all runtime types |
-| `validate-player-object-push` | exact 455-byte range, six handler entries and direct caller, twelve collision calls, exhaustive 16-bit movement/bounds, motion states, collision ordering, and obstruction types |
-| `validate-object-dispatch` | 42 exact update pointers, all 24 six-byte records, exact pushable/lift/Flying Block/walking-enemy/Knight/Fairy/Fighter/Flame/Witch/arrow hashes, relevant handler entries, collision and call topology, cadence, widths, slot conversion, movement boundaries, projectile/summon creation, axis tracking, and cleanup rules |
+| `reconstruction-audit` | verify complete PRG ownership, naming, operands, and module policy |
+| `validate-*` | run one focused subsystem or data-format contract |
+| `symbols` | generate linker, Mesen, FCEUX, breakpoint, and watch artifacts |
+| `validate-symbols` | prove symbol lookup and a named execution hook in FCEUX |
+| `trace-source-1` | freshly capture and reconcile the seven accepted runtime scenarios |
 | `check` | fast aggregate of lint, tests, deterministic source regeneration, byte identity, symbols, and all static subsystem/format validators |
 | `release-check` | remove `build/`, verify private inputs and build tools before use, run `check`, validate live debugger symbols, freshly capture the seven declared runtime scenarios from the source-built image, and audit revision 3 release metadata on a clean tree |
 | `source-1-check` | compatibility alias for `release-check` |
@@ -52,6 +58,53 @@ Focused region targets compare only their named output region. For example,
 `verify-prg` can prove that the source-only PRG reconstruction is correct while
 investigating an unrelated CHR issue. `verify` remains the release gate and
 accepts no differences anywhere.
+
+The exact focused-validator inventory belongs to `Makefile` and the release
+manifests. This document describes their shared contract rather than repeating
+a list that can drift from executable policy.
+
+## Runtime evidence
+
+Static analysis cannot by itself distinguish every code-shaped byte from data
+in a 6502 image. The independent runtime layer uses the native FCEUX Code/Data
+Logger (CDL). `tools/runtime.lock.json` pins the exact automation build by
+source revision, artifact size, and SHA-256; `make fceux-bootstrap` verifies it
+before use.
+
+The baseline suite covers boot/gameplay, the idle title path, and a natural
+timeout/death path. The Source 1.0 suite adds state-injected room transition,
+final-life game over, ending, successful save, and expected no-device load
+failure paths. The authoritative declarations live in
+`scenarios/source_1.json`; each rare path must reach its declared symbols after
+setup rather than receiving credit from initialization calls.
+
+Every capture validates the reference image, runs a deterministic controller
+script, saves a native 64 KiB CDL, compares its PRG half with Ghidra's
+instruction facts, and records hit semantic routines. CHR bytes present in the
+CDL format never enter generated assembly.
+
+`make runtime-promote` converts ignored CDL observations into address ranges in
+`config/reconstruction/runtime_evidence.txt`. Static evidence, runtime
+evidence, and typed-data ranges remain separate, and lint rejects overlaps.
+Execution of even one PRG byte outside the registered code classification is a
+failure; unexecuted instructions are not automatically treated as data.
+
+## Debugger symbols
+
+`make symbols` derives all debugger artifacts from the same ca65/ld65 build
+that reproduces the ROM. Outputs under `build/native/` include the Mesen
+`.dbg`, linker map and labels, FCEUX ROM/RAM labels, and a resolved JSON summary
+of `config/debugger/breakpoints.json` and `config/debugger/watches.json`.
+
+The symbol validator checks segment file offsets, representative
+source-file/line mappings, and every configured fixed address. `make
+validate-symbols` then opens the rebuilt ROM in pinned FCEUX, resolves
+representative ROM and RAM names through the live debugger API, and reaches
+`MainFrameLoop` through a named execution hook.
+
+For interactive work, keep `build/native/castle_excellent.dbg` beside the ROM
+and open the rebuilt image in Mesen 2. Regenerate symbols after moving the
+checkout or changing source lines.
 
 ## Failure diagnostics
 
