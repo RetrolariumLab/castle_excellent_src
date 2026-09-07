@@ -31,6 +31,9 @@ PATTERN_TABLE_TILES = 256
 TILES_PER_BANK = 512
 BACKGROUND_PATTERN_TABLE = 1
 ROOM_PALETTE_BYTES = 32
+CASTLE_COLUMNS = 10
+CASTLE_ROWS = 10
+OVERVIEW_DIVISORS = (4, 2, 1)
 
 OBJECT_RENDER_X_OFFSETS = {
     "object_one": (0,),
@@ -231,6 +234,58 @@ def representative_object_sprites(
 def object_preview_y(_runtime_type: int, row: int) -> int:
     """Translate room-object rows into the editor's room-local coordinate space."""
     return row * 8
+
+
+def castle_room_position(room_number: int) -> tuple[int, int]:
+    """Return the fixed castle-map column and row for a one-based room."""
+    if not 1 <= room_number <= room_data.ROOM_COUNT:
+        raise LevelStudioModelError("castle-map room must be between 1 and 100")
+    index = room_number - 1
+    return index % CASTLE_COLUMNS, index // CASTLE_COLUMNS
+
+
+def room_thumbnail_colors(
+    prg: bytes,
+    tiles: Sequence[Sequence[Sequence[int]]],
+    background_palettes: Sequence[Sequence[int]],
+    sprite_palettes: Sequence[Sequence[int]],
+    room: dict[str, Any],
+    divisor: int,
+) -> tuple[tuple[str, ...], ...]:
+    """Render one complete room, including static objects, for the castle overview."""
+    if divisor not in OVERVIEW_DIVISORS:
+        raise LevelStudioModelError(f"unsupported castle-map scale divisor: {divisor}")
+    width = room_data.ROOM_WIDTH * 16 // divisor
+    height = room_data.ROOM_HEIGHT * 8 // divisor
+    surface = [["#000000"] * width for _ in range(height)]
+    cells, objects = room_visuals(prg, room)
+    for index, visual in enumerate(cells):
+        column = index % room_data.ROOM_WIDTH
+        row = index // room_data.ROOM_WIDTH
+        pixels = logical_cell_pixels(tiles, visual)
+        colors = pixel_colors(pixels, background_palettes[visual.palette_index])
+        left = column * 16 // divisor
+        top = row * 8 // divisor
+        for source_y in range(0, 8, divisor):
+            for source_x in range(0, 16, divisor):
+                surface[top + source_y // divisor][left + source_x // divisor] = (
+                    colors[source_y][source_x]
+                )
+    for visual in objects:
+        for sprite in visual.sprites:
+            pixels = sprite_pixels(tiles, sprite.tile, sprite.attributes)
+            palette = sprite_palettes[sprite.attributes & 3]
+            for source_y, pixel_row in enumerate(pixels):
+                target_y = (sprite.y + source_y) // divisor
+                if not 0 <= target_y < height:
+                    continue
+                for source_x, value in enumerate(pixel_row):
+                    if value == 0:
+                        continue
+                    target_x = (sprite.x + source_x) // divisor
+                    if 0 <= target_x < width:
+                        surface[target_y][target_x] = NES_RGB[palette[value] & 0x3F]
+    return tuple(tuple(row) for row in surface)
 
 
 @lru_cache(maxsize=84)

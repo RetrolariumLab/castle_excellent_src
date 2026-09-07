@@ -127,6 +127,41 @@ class LevelStudioModelTests(unittest.TestCase):
             self.assertEqual(model.object_preview_y(runtime_type, 7), 56)
         self.assertEqual(model.object_preview_y(0x96, 7), 56)
 
+    def test_castle_overview_uses_the_runtime_ten_by_ten_room_grid(self) -> None:
+        self.assertEqual(model.castle_room_position(1), (0, 0))
+        self.assertEqual(model.castle_room_position(10), (9, 0))
+        self.assertEqual(model.castle_room_position(91), (0, 9))
+        self.assertEqual(model.castle_room_position(100), (9, 9))
+        for room_number in (0, 101):
+            with self.assertRaises(model.LevelStudioModelError):
+                model.castle_room_position(room_number)
+
+    def test_castle_overview_thumbnail_contains_room_cells_and_objects(self) -> None:
+        image = (ROOT / "Castle Excellent (J).nes").read_bytes()
+        prg, chr_data = room_data.extract_rom(image)
+        room = room_data.decode_room(prg, chr_data, 0)
+        room["objects"] = room["object_stream"]["objects"]
+        colors = model.room_thumbnail_colors(
+            prg,
+            model.decode_chr_bank(chr_data),
+            model.room_palette(prg),
+            model.sprite_palette(prg),
+            room,
+            4,
+        )
+        self.assertEqual(len(colors), 40)
+        self.assertTrue(all(len(row) == 80 for row in colors))
+        self.assertGreater(len({color for row in colors for color in row}), 2)
+        with self.assertRaises(model.LevelStudioModelError):
+            model.room_thumbnail_colors(
+                prg,
+                model.decode_chr_bank(chr_data),
+                model.room_palette(prg),
+                model.sprite_palette(prg),
+                room,
+                3,
+            )
+
     def test_player_preview_uses_the_room_local_sprite_origin(self) -> None:
         image = (ROOT / "Castle Excellent (J).nes").read_bytes()
         prg, _chr_data = room_data.extract_rom(image)
