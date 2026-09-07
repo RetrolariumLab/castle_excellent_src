@@ -57,6 +57,7 @@ class SourceRegion:
     includes_after: tuple[str, ...]
     revision_overlays: tuple["RevisionOverlay", ...]
     source_replacements: tuple["SourceReplacement", ...]
+    size_exception: str | None
 
 
 @dataclass(frozen=True)
@@ -288,6 +289,14 @@ def load_source_layout(path: Path) -> list[SourceRegion]:
                 )
             )
             previous_replacement_end = replacement_end
+        size_exception_value = item.get("size_exception")
+        size_exception = (
+            str(size_exception_value).strip()
+            if size_exception_value is not None
+            else None
+        )
+        if size_exception_value is not None and not size_exception:
+            raise DisassemblyError(f"empty size exception: {relative}")
         result.append(
             SourceRegion(
                 relative,
@@ -298,6 +307,7 @@ def load_source_layout(path: Path) -> list[SourceRegion]:
                 tuple(includes),
                 tuple(overlays),
                 tuple(replacements),
+                size_exception,
             )
         )
         expected_start = end

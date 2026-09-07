@@ -32,6 +32,7 @@ INSTRUCTION_RE = re.compile(r"^\s+[A-Z]{3}(?:\s+(?P<operand>[^;]+?))?\s*$")
 GENERIC_LABEL_RE = re.compile(r"^(?:Func|Label)_[0-9A-F]{4}(?::|\s*=)")
 RAW_ADDRESS_RE = re.compile(r"(?<![#<>])(?:a:)?\$[0-9A-F]{2,4}")
 MAX_SEMANTIC_LINES = 700
+MIN_SEMANTIC_LINES = 300
 SYMBOL_KINDS = {"routine", "local", "data", "label", "table"}
 SYMBOL_CONFIDENCE = {"confirmed", "high"}
 
@@ -83,12 +84,33 @@ def audit_layout(layout_path: Path, root: Path = ROOT) -> tuple[int, int, int]:
     if not semantic:
         raise ReconstructionError("source layout has no promoted semantic modules")
     issues: list[str] = []
+    prefixes: dict[tuple[Path, str], list[Path]] = {}
     for region in semantic:
         path = root / region.path
         if not path.is_file():
             issues.append(f"semantic module not found: {region.path.as_posix()}")
             continue
-        issues.extend(audit_module_text(region.path, path.read_text(encoding="utf-8")))
+        text = path.read_text(encoding="utf-8")
+        line_count = len(text.splitlines())
+        if line_count < MIN_SEMANTIC_LINES and not region.size_exception:
+            issues.append(
+                f"{region.path.as_posix()}: {line_count} lines are below the semantic "
+                f"module target {MIN_SEMANTIC_LINES} without a size exception"
+            )
+        if line_count >= MIN_SEMANTIC_LINES and region.size_exception:
+            issues.append(
+                f"{region.path.as_posix()}: obsolete size exception on a "
+                f"{line_count}-line module"
+            )
+        issues.extend(audit_module_text(region.path, text))
+        prefix = region.path.stem.split("_", 1)[0].lower()
+        prefixes.setdefault((region.path.parent, prefix), []).append(region.path)
+    for (directory, prefix), paths in prefixes.items():
+        if len(paths) > 1:
+            joined = ", ".join(path.name for path in paths)
+            issues.append(
+                f"{directory.as_posix()}: repeated source prefix {prefix!r}: {joined}"
+            )
     if issues:
         raise ReconstructionError("\n".join(issues))
     semantic_bytes = sum(region.end - region.start for region in semantic)

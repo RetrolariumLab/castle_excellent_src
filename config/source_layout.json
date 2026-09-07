@@ -2,682 +2,168 @@
   "schema_version": 1,
   "files": [
     {
-      "path": "src/input/famicom_data_pulse.asm",
+      "path": "src/system/famicom_platform.asm",
       "start": "0x8000",
-      "end": "0x80FF",
-      "title": "Famicom pulse-width data transport",
+      "end": "0x82CE",
+      "title": "Famicom platform transport, PPU, and startup",
       "segment": "PRG",
       "includes_after": [
-        "controllers.asm",
-        "../system/ppu.asm",
-        "famicom_data_io.asm",
-        "../system/startup.asm",
         "../game/player/input_and_movement.asm",
-        "../game/rooms/boundary_transitions.asm",
-        "../game/rooms/object_state_save.asm",
-        "../game/player/animated_cell_displacement.asm",
-        "../game/player/object_push.asm",
-        "../game/objects/linked_lift_control.asm",
-        "../game/objects/inventory_collectible_handlers.asm",
-        "../data/unreferenced_runtime_object_clear_tail.asm",
-        "../game/objects/collectible_collision_handlers.asm",
-        "../game/objects/collectible_type97.asm",
-        "../game/scoring/add_score.asm",
-        "../game/collision/runtime_type9f.asm",
-        "../game/collision/runtime_types81_82.asm",
-        "../game/player/death_transition.asm",
-        "../game/collision/player_sample.asm",
-        "../game/rooms/sample_address.asm",
-        "../game/objects/runtime_record_offsets.asm",
-        "../game/collision/player_movement_handler_tables.asm",
-        "../game/collision/player_handler_tables.asm",
-        "../game/collision/player_update.asm",
-        "../game/player/transition_reload.asm",
-        "../game/collision/player_dispatch.asm",
-        "../rendering/room_cell_updates.asm",
-        "../game/x_coordinates.asm",
-        "../game/rooms/finish_transition.asm",
-        "../game/collision/cell_samples.asm",
-        "../system/nmi_tasks.asm",
-        "../game/objects/update_dispatch.asm",
-        "../game/objects/player_span_overlap.asm",
-        "../game/objects/pushable_update.asm",
-        "../game/objects/lift_update.asm",
-        "../game/objects/flying_block_update.asm",
-        "../game/objects/walking_enemy_physics.asm",
-        "../game/objects/knight_update.asm",
-        "../game/objects/fairy_fighter_update.asm",
-        "../game/objects/flame_and_movement_helpers.asm",
-        "../game/objects/witch_summoning.asm",
-        "../game/objects/knight_arrow_update.asm",
-        "../game/objects/transient_lifecycle.asm",
-        "../game/collision/object_filters.asm",
-        "../game/collision/point_sample.asm",
-        "../game/collision/room_sample.asm",
-        "../game/collision/unreferenced_runtime_only_sample.asm",
-        "../game/collision/runtime_overlap.asm",
-        "../data/unreferenced_nmi_task_index_bytes.asm",
-        "../game/new_game.asm",
-        "../rendering/room_palette.asm",
-        "../game/rooms/load_room.asm",
-        "../game/rooms/runtime_reset.asm",
-        "../game/rooms/cell_animation.asm",
-        "../rendering/status_format.asm",
-        "../data/unreferenced_bit_index_helper.asm",
-        "../game/rooms/cell_coordinates.asm",
-        "../game/rooms/mutable_cell_actions.asm",
-        "../game/rooms/mutable_cell_lookup.asm",
-        "../game/collision/cell_pair_index.asm",
-        "../game/rooms/mutable_cell_predicates.asm",
-        "../game/rooms/mutable_cell_restore.asm",
-        "../game/rooms/navigation.asm",
-        "../game/player/hazard_state.asm",
-        "../game/objects/player_proximity.asm",
-        "pause.asm",
-        "../game/collision/tables.asm",
-        "../game/rooms/room_metadata.asm",
-        "../rendering/frame_sprites.asm",
-        "../rendering/object_sprite_selectors.asm",
-        "../rendering/object_metasprites.asm",
-        "../rendering/metasprite_data.asm",
-        "../rendering/room_screen.asm",
-        "../input/demo_playback.asm",
-        "../data/title_demo_input.asm",
-        "../audio/track_selection.asm",
-        "../audio/track_table.asm",
-        "../audio/stream_engine.asm",
-        "../data/unreferenced_lowercase_hex_digit_decode_bytes.asm",
-        "../audio/channel_configuration.asm",
-        "../audio/note_semitone_offsets.asm",
-        "../audio/note_length_table.asm",
-        "../audio/apu_period_table.asm",
-        "../audio/music_mml_data.asm",
-        "../audio/sound_effect_starters.asm",
-        "../audio/sound_effect_update.asm",
-        "../audio/sound_effect_tables.asm",
-        "../rendering/horizontal_scroll.asm",
-        "../math/divide_unsigned16.asm",
-        "../rendering/palette_upload.asm",
-        "../rendering/screen_palette_data.asm",
-        "../rendering/room_palette_data.asm",
-        "../system/nmi.asm",
-        "../rendering/oam_dma.asm",
-        "../rendering/status_upload.asm",
-        "../rendering/room_rows_00_04.asm",
-        "../rendering/room_rows_05_09.asm",
-        "../rendering/room_rows_10_14.asm",
-        "../rendering/room_rows_15_19.asm",
-        "../rendering/room_attribute_upload.asm",
-        "../game/rooms/decoder.asm",
-        "../rendering/room_attributes.asm",
-        "../ui/castle_map.asm",
-        "../game/rooms/finalize_room.asm",
-        "../game/objects/room_loader.asm",
-        "../game/rooms/state_orchestration.asm",
-        "../game/rooms/persistent_state_apply.asm",
-        "../game/objects/stream_seek.asm",
-        "../game/rooms/mutable_cell_state_apply.asm",
-        "../game/rooms/persistent_state_load.asm",
-        "../game/objects/room_data.asm",
-        "../ui/title_screen.asm",
-        "../rendering/chr_nametable_copy.asm",
-        "../ui/sub_command_input.asm",
-        "../ui/sub_command_menu.asm",
-        "../data/sub_command_text.asm",
-        "../ui/sub_command_room_actions.asm",
-        "../game/save_load.asm",
-        "../game/rooms/persistent_state_save.asm",
-        "../game/end_sequences.asm",
-        "../data/prg_tail_padding.asm",
-        "../rendering/room_cell_tile_tables.asm",
-        "../system/interrupt_vectors.asm"
+        "../game/player/transitions_and_push.asm",
+        "../game/objects/lifts/linked_control.asm",
+        "../game/collectibles/pickups_and_rewards.asm",
+        "../game/collision/player_pipeline.asm",
+        "../game/runtime/frame_pipeline.asm",
+        "../game/objects/lifts/movement.asm",
+        "../game/objects/enemies/patrol.asm",
+        "../game/objects/enemies/special.asm",
+        "../game/collision/sampling.asm",
+        "../game/session_initialization.asm",
+        "../game/rooms/mutable_cells.asm",
+        "../game/rooms/navigation_and_rules.asm",
+        "../rendering/sprites/frame.asm",
+        "../rendering/sprites/selectors.asm",
+        "../rendering/sprites/metasprites.asm",
+        "../rendering/scenes.asm",
+        "../audio/music_engine.asm",
+        "../audio/sound_effects.asm",
+        "../rendering/frame_pipeline.asm",
+        "../rendering/room_rows/top.asm",
+        "../rendering/room_rows/upper_middle.asm",
+        "../rendering/room_rows/lower_middle.asm",
+        "../rendering/room_rows/bottom.asm",
+        "../rendering/rooms/upload_and_decode.asm",
+        "../rendering/rooms/attributes_and_map.asm",
+        "../game/rooms/load_pipeline.asm",
+        "../game/rooms/state_and_data.asm",
+        "../ui/title_and_subcommands.asm",
+        "../game/persistence_and_endings.asm",
+        "../system/prg_tail.asm"
       ]
-    },
-    {
-      "path": "src/input/controllers.asm",
-      "start": "0x80FF",
-      "end": "0x8158",
-      "title": "Controller wrappers and serial polling"
-    },
-    {
-      "path": "src/system/ppu.asm",
-      "start": "0x8158",
-      "end": "0x8180",
-      "title": "PPU state helpers and CNROM bank selection"
-    },
-    {
-      "path": "src/input/famicom_data_io.asm",
-      "start": "0x8180",
-      "end": "0x8225",
-      "title": "Famicom data-transport selection and expansion-port serial I/O"
-    },
-    {
-      "path": "src/system/startup.asm",
-      "start": "0x8225",
-      "end": "0x82CE",
-      "title": "Reset initialization and NMI-paced main loop"
     },
     {
       "path": "src/game/player/input_and_movement.asm",
       "start": "0x82CE",
       "end": "0x867A",
-      "title": "Player input, movement, collision dispatch, and action hits"
+      "title": "Player input and movement"
     },
     {
-      "path": "src/game/rooms/boundary_transitions.asm",
+      "path": "src/game/player/transitions_and_push.asm",
       "start": "0x867A",
-      "end": "0x8758",
-      "title": "Player room-boundary transitions and edge clamping"
-    },
-    {
-      "path": "src/game/rooms/object_state_save.asm",
-      "start": "0x8758",
-      "end": "0x8785",
-      "title": "Current-room runtime object-state bitmap save"
-    },
-    {
-      "path": "src/game/player/animated_cell_displacement.asm",
-      "start": "0x8785",
-      "end": "0x881A",
-      "title": "Animated-cell forced player displacement"
-    },
-    {
-      "path": "src/game/player/object_push.asm",
-      "start": "0x881A",
       "end": "0x89E1",
-      "title": "Player-driven horizontal runtime-object pushing"
+      "title": "Player room transitions and object pushing"
     },
     {
-      "path": "src/game/objects/linked_lift_control.asm",
+      "path": "src/game/objects/lifts/linked_control.asm",
       "start": "0x89E1",
       "end": "0x8C12",
-      "title": "Lift-control block and linked-lift occupant propagation"
+      "title": "Linked lift control"
     },
     {
-      "path": "src/game/objects/inventory_collectible_handlers.asm",
+      "path": "src/game/collectibles/pickups_and_rewards.asm",
       "start": "0x8C12",
-      "end": "0x8C7B",
-      "title": "Runtime inventory collectible collision handlers"
-    },
-    {
-      "path": "src/data/unreferenced_runtime_object_clear_tail.asm",
-      "start": "0x8C7B",
-      "end": "0x8C80",
-      "title": "Unreferenced code-shaped runtime-object clear tail bytes"
-    },
-    {
-      "path": "src/game/objects/collectible_collision_handlers.asm",
-      "start": "0x8C80",
-      "end": "0x8CF2",
-      "title": "Runtime collectible collision handlers"
-    },
-    {
-      "path": "src/game/objects/collectible_type97.asm",
-      "start": "0x8CF2",
-      "end": "0x8D04",
-      "title": "Runtime type $97 collectible collision handler"
-    },
-    {
-      "path": "src/game/scoring/add_score.asm",
-      "start": "0x8D04",
-      "end": "0x8D3D",
-      "title": "Player score award and extra-life threshold"
-    },
-    {
-      "path": "src/game/collision/runtime_type9f.asm",
-      "start": "0x8D3D",
-      "end": "0x8D57",
-      "title": "Runtime type $9F player collision handler"
-    },
-    {
-      "path": "src/game/collision/runtime_types81_82.asm",
-      "start": "0x8D57",
       "end": "0x8DAB",
-      "title": "Runtime types $81 and $82 player collision handlers"
+      "title": "Collectible collision, inventory, and rewards",
+      "size_exception": "The cohesive collectible subsystem is 284 lines; merging either neighbor would mix lift control or player collision state."
     },
     {
-      "path": "src/game/player/death_transition.asm",
+      "path": "src/game/collision/player_pipeline.asm",
       "start": "0x8DAB",
-      "end": "0x8DD3",
-      "title": "Player death-transition state and reserve-life handling"
-    },
-    {
-      "path": "src/game/collision/player_sample.asm",
-      "start": "0x8DD3",
-      "end": "0x8ECB",
-      "title": "Player room-cell and runtime-object collision sampler"
-    },
-    {
-      "path": "src/game/rooms/sample_address.asm",
-      "start": "0x8ECB",
-      "end": "0x8F10",
-      "title": "Room-cell sample address preparation"
-    },
-    {
-      "path": "src/game/objects/runtime_record_offsets.asm",
-      "start": "0x8F10",
-      "end": "0x8F29",
-      "title": "Runtime object record offsets by object count"
-    },
-    {
-      "path": "src/game/collision/player_movement_handler_tables.asm",
-      "start": "0x8F29",
-      "end": "0x926B",
-      "title": "Directional player collision handler pointer matrices"
-    },
-    {
-      "path": "src/game/collision/player_handler_tables.asm",
-      "start": "0x926B",
-      "end": "0x9386",
-      "title": "Player room-cell and runtime-object collision handler tables"
-    },
-    {
-      "path": "src/game/collision/player_update.asm",
-      "start": "0x9386",
       "end": "0x93F6",
-      "title": "Frame-level player collision sampling and hazard dispatch"
+      "title": "Player collision pipeline"
     },
     {
-      "path": "src/game/player/transition_reload.asm",
+      "path": "src/game/runtime/frame_pipeline.asm",
       "start": "0x93F6",
-      "end": "0x9477",
-      "title": "Player transition countdown and current-room reload"
-    },
-    {
-      "path": "src/game/collision/player_dispatch.asm",
-      "start": "0x9477",
-      "end": "0x949C",
-      "title": "Player collision-result handler dispatch"
-    },
-    {
-      "path": "src/rendering/room_cell_updates.asm",
-      "start": "0x949C",
-      "end": "0x94DB",
-      "title": "Room-cell pointer conversion and NMI row update requests"
-    },
-    {
-      "path": "src/game/x_coordinates.asm",
-      "start": "0x94DB",
-      "end": "0x952D",
-      "title": "Player and runtime-object 16-bit X-coordinate helpers"
-    },
-    {
-      "path": "src/game/rooms/finish_transition.asm",
-      "start": "0x952D",
-      "end": "0x9552",
-      "title": "Room-transition state mirroring and rendering resume"
-    },
-    {
-      "path": "src/game/collision/cell_samples.asm",
-      "start": "0x9552",
-      "end": "0x9578",
-      "title": "Runtime-type filtering and mutable-cell collision normalization"
-    },
-    {
-      "path": "src/system/nmi_tasks.asm",
-      "start": "0x9578",
-      "end": "0x9583",
-      "title": "NMI task-request reset"
-    },
-    {
-      "path": "src/game/objects/update_dispatch.asm",
-      "start": "0x9583",
-      "end": "0x9613",
-      "title": "Runtime-object update dispatcher and handler table"
-    },
-    {
-      "path": "src/game/objects/player_span_overlap.asm",
-      "start": "0x9613",
       "end": "0x965C",
-      "title": "Player and object-span overlap test"
+      "title": "Player transition and object frame pipeline"
     },
     {
-      "path": "src/game/objects/pushable_update.asm",
+      "path": "src/game/objects/lifts/movement.asm",
       "start": "0x965C",
-      "end": "0x9796",
-      "title": "Pushable-object gravity, conveyor motion, crushing, and lift control"
-    },
-    {
-      "path": "src/game/objects/lift_update.asm",
-      "start": "0x9796",
       "end": "0x9A37",
-      "title": "Small and large lift state machines and occupant propagation"
+      "title": "Pushable and lift movement"
     },
     {
-      "path": "src/game/objects/flying_block_update.asm",
+      "path": "src/game/objects/enemies/patrol.asm",
       "start": "0x9A37",
-      "end": "0x9B00",
-      "title": "Flying-block horizontal motion and collision reversal"
-    },
-    {
-      "path": "src/game/objects/walking_enemy_physics.asm",
-      "start": "0x9B00",
-      "end": "0x9C3B",
-      "title": "Walking-enemy gravity, support, hazard, ledge, and patrol physics"
-    },
-    {
-      "path": "src/game/objects/knight_update.asm",
-      "start": "0x9C3B",
-      "end": "0x9CC6",
-      "title": "Knight patrol, facing gate, and arrow creation"
-    },
-    {
-      "path": "src/game/objects/fairy_fighter_update.asm",
-      "start": "0x9CC6",
       "end": "0x9D65",
-      "title": "Fairy bobbing and Fighter player-triggered jump updates"
+      "title": "Platform and walking enemy patrol behaviors"
     },
     {
-      "path": "src/game/objects/flame_and_movement_helpers.asm",
+      "path": "src/game/objects/enemies/special.asm",
       "start": "0x9D65",
-      "end": "0x9ECB",
-      "title": "Flame tracking plus shared enemy edge and player-distance helpers"
-    },
-    {
-      "path": "src/game/objects/witch_summoning.asm",
-      "start": "0x9ECB",
-      "end": "0x9F74",
-      "title": "Witch patrol, summon-space probes, and transient enemy creation"
-    },
-    {
-      "path": "src/game/objects/knight_arrow_update.asm",
-      "start": "0x9F74",
-      "end": "0x9FF3",
-      "title": "Knight arrow directional collision probes, movement, and cleanup"
-    },
-    {
-      "path": "src/game/objects/transient_lifecycle.asm",
-      "start": "0x9FF3",
       "end": "0xA044",
-      "title": "Transient runtime-object lifecycles and replacement table"
+      "title": "Special enemy behaviors and transient lifecycle"
     },
     {
-      "path": "src/game/collision/object_filters.asm",
+      "path": "src/game/collision/sampling.asm",
       "start": "0xA044",
-      "end": "0xA0C4",
-      "title": "Animated-cell and runtime-object collision filters"
-    },
-    {
-      "path": "src/game/collision/point_sample.asm",
-      "start": "0xA0C4",
-      "end": "0xA1A3",
-      "title": "Room-cell and runtime-object point collision sample"
-    },
-    {
-      "path": "src/game/collision/room_sample.asm",
-      "start": "0xA1A3",
-      "end": "0xA1D4",
-      "title": "Room-cell-only collision sample"
-    },
-    {
-      "path": "src/game/collision/unreferenced_runtime_only_sample.asm",
-      "start": "0xA1D4",
-      "end": "0xA247",
-      "title": "Unreferenced runtime-object-only point collision sampler"
-    },
-    {
-      "path": "src/game/collision/runtime_overlap.asm",
-      "start": "0xA247",
-      "end": "0xA2AA",
-      "title": "Runtime-object overlap scan"
-    },
-    {
-      "path": "src/data/unreferenced_nmi_task_index_bytes.asm",
-      "start": "0xA2AA",
       "end": "0xA2B1",
-      "title": "Unreferenced code-shaped NMI task-index bytes"
+      "title": "Room and runtime object collision sampling"
     },
     {
-      "path": "src/game/new_game.asm",
+      "path": "src/game/session_initialization.asm",
       "start": "0xA2B1",
-      "end": "0xA351",
-      "title": "New-game state and persistent-region initialization"
-    },
-    {
-      "path": "src/rendering/room_palette.asm",
-      "start": "0xA351",
-      "end": "0xA35C",
-      "title": "Room palette pointer setup and upload"
-    },
-    {
-      "path": "src/game/rooms/load_room.asm",
-      "start": "0xA35C",
-      "end": "0xA3AC",
-      "title": "Top-level room loading and audio selection"
-    },
-    {
-      "path": "src/game/rooms/runtime_reset.asm",
-      "start": "0xA3AC",
-      "end": "0xA3D2",
-      "title": "Room-runtime reset and conditional room-audio restart"
-    },
-    {
-      "path": "src/game/rooms/cell_animation.asm",
-      "start": "0xA3D2",
-      "end": "0xA497",
-      "title": "Room-cell animation scans and frame tables"
-    },
-    {
-      "path": "src/rendering/status_format.asm",
-      "start": "0xA497",
-      "end": "0xA573",
-      "title": "HUD score, lives, and inventory formatting"
-    },
-    {
-      "path": "src/data/unreferenced_bit_index_helper.asm",
-      "start": "0xA573",
       "end": "0xA58A",
-      "title": "Unreferenced bit-index helper bytes"
+      "title": "New game, room initialization, animation, and status formatting"
     },
     {
-      "path": "src/game/rooms/cell_coordinates.asm",
+      "path": "src/game/rooms/mutable_cells.asm",
       "start": "0xA58A",
-      "end": "0xA5DD",
-      "title": "Pixel, tile, and room-cell coordinate conversion"
-    },
-    {
-      "path": "src/game/rooms/mutable_cell_actions.asm",
-      "start": "0xA5DD",
-      "end": "0xA66D",
-      "title": "Inventory-backed persistent mutable-cell actions"
-    },
-    {
-      "path": "src/game/rooms/mutable_cell_lookup.asm",
-      "start": "0xA66D",
-      "end": "0xA6CA",
-      "title": "Mutable room-cell lookup and ordinal calculation"
-    },
-    {
-      "path": "src/game/collision/cell_pair_index.asm",
-      "start": "0xA6CA",
-      "end": "0xA6D8",
-      "title": "Collision-cell pair lookup-index classification"
-    },
-    {
-      "path": "src/game/rooms/mutable_cell_predicates.asm",
-      "start": "0xA6D8",
-      "end": "0xA70A",
-      "title": "Persistent mutable-cell predicates"
-    },
-    {
-      "path": "src/game/rooms/mutable_cell_restore.asm",
-      "start": "0xA70A",
       "end": "0xA7DB",
-      "title": "Mutable room-cell restoration and render requests"
+      "title": "Mutable room cell coordinates, actions, and restoration"
     },
     {
-      "path": "src/game/rooms/navigation.asm",
+      "path": "src/game/rooms/navigation_and_rules.asm",
       "start": "0xA7DB",
-      "end": "0xA835",
-      "title": "Ten-by-ten castle room navigation"
-    },
-    {
-      "path": "src/game/player/hazard_state.asm",
-      "start": "0xA835",
-      "end": "0xA8A9",
-      "title": "Player protection countdowns and hazard-cell contact"
-    },
-    {
-      "path": "src/game/objects/player_proximity.asm",
-      "start": "0xA8A9",
-      "end": "0xA8E3",
-      "title": "Runtime-object proximity to the player"
-    },
-    {
-      "path": "src/input/pause.asm",
-      "start": "0xA8E3",
-      "end": "0xA95A",
-      "title": "Pause toggle and paused horizontal-scroll input"
-    },
-    {
-      "path": "src/game/collision/tables.asm",
-      "start": "0xA95A",
-      "end": "0xAB4A",
-      "title": "Room-cell collision flags and runtime-object dimensions"
-    },
-    {
-      "path": "src/game/rooms/room_metadata.asm",
-      "start": "0xAB4A",
       "end": "0xAC13",
-      "title": "Room object counts and mutable-cell state offsets"
+      "title": "Room navigation and player interaction rules"
     },
     {
-      "path": "src/rendering/frame_sprites.asm",
+      "path": "src/rendering/sprites/frame.asm",
       "start": "0xAC13",
       "end": "0xADE7",
-      "title": "Frame sprite orchestration and object render pointers"
+      "title": "Frame sprite construction",
+      "size_exception": "The bounded frame-sprite builder is a cohesive 237-line subsystem."
     },
     {
-      "path": "src/rendering/object_sprite_selectors.asm",
+      "path": "src/rendering/sprites/selectors.asm",
       "start": "0xADE7",
       "end": "0xB1D6",
-      "title": "Runtime-object sprite descriptor selection"
+      "title": "Object sprite selectors"
     },
     {
-      "path": "src/rendering/object_metasprites.asm",
+      "path": "src/rendering/sprites/metasprites.asm",
       "start": "0xB1D6",
-      "end": "0xB4B6",
-      "title": "Object and player metasprite composition"
-    },
-    {
-      "path": "src/rendering/metasprite_data.asm",
-      "start": "0xB4B6",
       "end": "0xB64C",
-      "title": "Metasprite tile and attribute descriptors"
+      "title": "Object metasprites and descriptor data"
     },
     {
-      "path": "src/rendering/room_screen.asm",
+      "path": "src/rendering/scenes.asm",
       "start": "0xB64C",
-      "end": "0xB7FD",
-      "title": "Room nametable, status, attribute, and sprite initialization"
-    },
-    {
-      "path": "src/input/demo_playback.asm",
-      "start": "0xB7FD",
-      "end": "0xB82C",
-      "title": "Title-demo controller script playback"
-    },
-    {
-      "path": "src/data/title_demo_input.asm",
-      "start": "0xB82C",
       "end": "0xB875",
-      "title": "Title-demo controller input script"
+      "title": "Room screen and title demo scenes",
+      "size_exception": "The 253-line scene renderer owns one contiguous room-screen and title-demo span."
     },
     {
-      "path": "src/audio/track_selection.asm",
+      "path": "src/audio/music_engine.asm",
       "start": "0xB875",
-      "end": "0xB8C6",
-      "title": "Audio track-set selection and channel initialization"
-    },
-    {
-      "path": "src/audio/track_table.asm",
-      "start": "0xB8C6",
-      "end": "0xB906",
-      "title": "Eight audio track-set records"
-    },
-    {
-      "path": "src/audio/stream_engine.asm",
-      "start": "0xB906",
-      "end": "0xBADE",
-      "title": "Textual MML stream interpreter and scheduler"
-    },
-    {
-      "path": "src/data/unreferenced_lowercase_hex_digit_decode_bytes.asm",
-      "start": "0xBADE",
-      "end": "0xBAE9",
-      "title": "Unreferenced lowercase hexadecimal digit decoder bytes"
-    },
-    {
-      "path": "src/audio/channel_configuration.asm",
-      "start": "0xBAE9",
-      "end": "0xBB16",
-      "title": "APU channel configuration for streamed notes"
-    },
-    {
-      "path": "src/audio/note_semitone_offsets.asm",
-      "start": "0xBB16",
-      "end": "0xBB1D",
-      "title": "MML note-to-semitone offsets"
-    },
-    {
-      "path": "src/audio/note_length_table.asm",
-      "start": "0xBB1D",
-      "end": "0xBB55",
-      "title": "Tempo-indexed MML note lengths"
-    },
-    {
-      "path": "src/audio/apu_period_table.asm",
-      "start": "0xBB55",
-      "end": "0xBBE7",
-      "title": "APU note period table"
-    },
-    {
-      "path": "src/audio/music_mml_data.asm",
-      "start": "0xBBE7",
       "end": "0xC20D",
-      "title": "Terminated textual MML streams"
+      "title": "Music selection, stream engine, tables, and MML data"
     },
     {
-      "path": "src/audio/sound_effect_starters.asm",
+      "path": "src/audio/sound_effects.asm",
       "start": "0xC20D",
-      "end": "0xC2F9",
-      "title": "Five sound-effect channel starters"
-    },
-    {
-      "path": "src/audio/sound_effect_update.asm",
-      "start": "0xC2F9",
-      "end": "0xC429",
-      "title": "Per-frame sound-effect channel updater"
-    },
-    {
-      "path": "src/audio/sound_effect_tables.asm",
-      "start": "0xC429",
       "end": "0xC43D",
-      "title": "Sound-effect period, volume, and length tables"
+      "title": "Sound effect engine and tables",
+      "size_exception": "The complete sound-effect engine is 291 lines and its adjacent ranges belong to music data and rendering."
     },
     {
-      "path": "src/rendering/horizontal_scroll.asm",
+      "path": "src/rendering/frame_pipeline.asm",
       "start": "0xC43D",
-      "end": "0xC47A",
-      "title": "Player-following horizontal scroll update"
-    },
-    {
-      "path": "src/math/divide_unsigned16.asm",
-      "start": "0xC47A",
-      "end": "0xC4CD",
-      "title": "Unsigned 16-bit division helper"
-    },
-    {
-      "path": "src/rendering/palette_upload.asm",
-      "start": "0xC4CD",
-      "end": "0xC4FD",
-      "title": "32-byte PPU palette uploader"
-    },
-    {
-      "path": "src/rendering/screen_palette_data.asm",
-      "start": "0xC4FD",
-      "end": "0xC53D",
-      "title": "Overlapping completion, title, and castle-map palettes",
+      "end": "0xC8BC",
+      "title": "Scroll, palette, NMI, OAM, and status rendering pipeline",
       "source_replacements": [
         {
           "start": "0xC50D",
@@ -694,148 +180,58 @@
       ]
     },
     {
-      "path": "src/rendering/room_palette_data.asm",
-      "start": "0xC53D",
-      "end": "0xC55D",
-      "title": "Gameplay room background and sprite palette"
-    },
-    {
-      "path": "src/system/nmi.asm",
-      "start": "0xC55D",
-      "end": "0xC6B9",
-      "title": "NMI frame handler and scheduler"
-    },
-    {
-      "path": "src/rendering/oam_dma.asm",
-      "start": "0xC6B9",
-      "end": "0xC804",
-      "title": "OAM DMA construction and sprite-order transforms"
-    },
-    {
-      "path": "src/rendering/status_upload.asm",
-      "start": "0xC804",
-      "end": "0xC8BC",
-      "title": "NMI status upload and task handler tables"
-    },
-    {
-      "path": "src/rendering/room_rows_00_04.asm",
+      "path": "src/rendering/room_rows/top.asm",
       "start": "0xC8BC",
       "end": "0xCF0B",
-      "title": "NMI room-row tile upload tasks 00-04"
+      "title": "Room row upload tasks 00 through 04"
     },
     {
-      "path": "src/rendering/room_rows_05_09.asm",
+      "path": "src/rendering/room_rows/upper_middle.asm",
       "start": "0xCF0B",
       "end": "0xD55A",
-      "title": "NMI room-row tile upload tasks 05-09"
+      "title": "Room row upload tasks 05 through 09"
     },
     {
-      "path": "src/rendering/room_rows_10_14.asm",
+      "path": "src/rendering/room_rows/lower_middle.asm",
       "start": "0xD55A",
       "end": "0xDBA9",
-      "title": "NMI room-row tile upload tasks 10-14"
+      "title": "Room row upload tasks 10 through 14"
     },
     {
-      "path": "src/rendering/room_rows_15_19.asm",
+      "path": "src/rendering/room_rows/bottom.asm",
       "start": "0xDBA9",
       "end": "0xE1F8",
-      "title": "NMI room-row tile upload tasks 15-19"
+      "title": "Room row upload tasks 15 through 19"
     },
     {
-      "path": "src/rendering/room_attribute_upload.asm",
+      "path": "src/rendering/rooms/upload_and_decode.asm",
       "start": "0xE1F8",
-      "end": "0xE45D",
-      "title": "NMI left and right room attribute upload tasks"
-    },
-    {
-      "path": "src/game/rooms/decoder.asm",
-      "start": "0xE45D",
       "end": "0xE8DF",
-      "title": "Room prefix-code tables and decoder"
+      "title": "Room attribute upload and compressed map decoding"
     },
     {
-      "path": "src/rendering/room_attributes.asm",
+      "path": "src/rendering/rooms/attributes_and_map.asm",
       "start": "0xE8DF",
-      "end": "0xEA36",
-      "title": "Room attribute addressing and table builder"
-    },
-    {
-      "path": "src/ui/castle_map.asm",
-      "start": "0xEA36",
       "end": "0xEB6C",
-      "title": "Castle map input, visited-room drawing, and player marker"
+      "title": "Room attributes and castle map"
     },
     {
-      "path": "src/game/rooms/finalize_room.asm",
+      "path": "src/game/rooms/load_pipeline.asm",
       "start": "0xEB6C",
-      "end": "0xEB8F",
-      "title": "Room-screen finalization and NMI task requests"
-    },
-    {
-      "path": "src/game/objects/room_loader.asm",
-      "start": "0xEB8F",
-      "end": "0xEC63",
-      "title": "Static room object tables and runtime-record loader"
-    },
-    {
-      "path": "src/game/rooms/state_orchestration.asm",
-      "start": "0xEC63",
-      "end": "0xECB7",
-      "title": "Room object loading, state selection, and snapshot rotation"
-    },
-    {
-      "path": "src/game/rooms/persistent_state_apply.asm",
-      "start": "0xECB7",
-      "end": "0xEDD2",
-      "title": "Persistent state application and room-cell object creation"
-    },
-    {
-      "path": "src/game/objects/stream_seek.asm",
-      "start": "0xEDD2",
       "end": "0xEDEF",
-      "title": "Static room object stream seeker"
+      "title": "Room finalization, object loading, and persistent-state application"
     },
     {
-      "path": "src/game/rooms/mutable_cell_state_apply.asm",
+      "path": "src/game/rooms/state_and_data.asm",
       "start": "0xEDEF",
-      "end": "0xEE56",
-      "title": "Mutable-cell state bit application"
-    },
-    {
-      "path": "src/game/rooms/persistent_state_load.asm",
-      "start": "0xEE56",
-      "end": "0xEF06",
-      "title": "Room-state snapshot restore and persistent-state loading"
-    },
-    {
-      "path": "src/game/objects/room_data.asm",
-      "start": "0xEF06",
       "end": "0xF8FC",
-      "title": "Room object state offsets and terminated object lists"
+      "title": "Mutable state, persistent state, and room object data"
     },
     {
-      "path": "src/ui/title_screen.asm",
+      "path": "src/ui/title_and_subcommands.asm",
       "start": "0xF8FC",
-      "end": "0xF973",
-      "title": "Title screen, input edge, and attract-mode timeout"
-    },
-    {
-      "path": "src/rendering/chr_nametable_copy.asm",
-      "start": "0xF973",
-      "end": "0xF9AD",
-      "title": "Four-page CHR-ROM to PPU nametable copier"
-    },
-    {
-      "path": "src/ui/sub_command_input.asm",
-      "start": "0xF9AD",
-      "end": "0xF9CC",
-      "title": "Sub-command menu entry gating and controller edge detection"
-    },
-    {
-      "path": "src/ui/sub_command_menu.asm",
-      "start": "0xF9CC",
-      "end": "0xFB77",
-      "title": "Sub-command menu rendering, selection, and dispatch",
+      "end": "0xFBFE",
+      "title": "Title screen and sub-command interface",
       "revision_overlays": [
         {
           "condition": "CASTLEQUEST_USA",
@@ -856,13 +252,7 @@
             "    NOP"
           ]
         }
-      ]
-    },
-    {
-      "path": "src/data/sub_command_text.asm",
-      "start": "0xFB77",
-      "end": "0xFBAC",
-      "title": "Sub-command menu and transfer-status tile text",
+      ],
       "source_replacements": [
         {
           "start": "0xFB77",
@@ -963,46 +353,17 @@
       ]
     },
     {
-      "path": "src/ui/sub_command_room_actions.asm",
-      "start": "0xFBAC",
-      "end": "0xFBFE",
-      "title": "Sub-command current and previous room restoration"
-    },
-    {
-      "path": "src/game/save_load.asm",
+      "path": "src/game/persistence_and_endings.asm",
       "start": "0xFBFE",
-      "end": "0xFDC5",
-      "title": "Save and load transfer, validation, and room restoration"
-    },
-    {
-      "path": "src/game/rooms/persistent_state_save.asm",
-      "start": "0xFDC5",
-      "end": "0xFE31",
-      "title": "Room-state snapshot persistence writer"
-    },
-    {
-      "path": "src/game/end_sequences.asm",
-      "start": "0xFE31",
       "end": "0xFEE8",
-      "title": "Game-over and type $82 completion sequences"
+      "title": "Save, load, persistent snapshots, and ending sequences"
     },
     {
-      "path": "src/data/prg_tail_padding.asm",
+      "path": "src/system/prg_tail.asm",
       "start": "0xFEE8",
-      "end": "0xFF30",
-      "title": "PRG tail padding before room-cell tile tables"
-    },
-    {
-      "path": "src/rendering/room_cell_tile_tables.asm",
-      "start": "0xFF30",
-      "end": "0xFFF8",
-      "title": "Left and right tile indexes for 100 room-cell types"
-    },
-    {
-      "path": "src/system/interrupt_vectors.asm",
-      "start": "0xFFF8",
       "end": "0x10000",
-      "title": "Vector padding and 6502 interrupt vectors"
+      "title": "Fixed PRG tail, room tile tables, and interrupt vectors",
+      "size_exception": "The short fixed-layout tail must remain adjacent to the vectors at the end of PRG."
     }
   ]
 }

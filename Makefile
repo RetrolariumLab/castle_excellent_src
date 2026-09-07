@@ -32,86 +32,24 @@ MAP := $(BUILD_DIR)/castle_excellent.map
 DEBUG := $(BUILD_DIR)/castle_excellent.dbg
 DEBUG_SUMMARY := $(BUILD_DIR)/debug_symbols.json
 DEBUG_RUNTIME_RESULT := $(BUILD_DIR)/debug_symbols_runtime.txt
-SOURCE_FILES := src/main.asm src/input/famicom_data_pulse.asm src/graphics/chr.asm \
-	src/input/controllers.asm src/system/ppu.asm \
-	src/input/famicom_data_io.asm src/system/startup.asm \
-	src/game/player/input_and_movement.asm \
-	src/game/rooms/boundary_transitions.asm src/game/rooms/object_state_save.asm \
-	src/game/player/animated_cell_displacement.asm \
-	src/game/player/object_push.asm src/game/objects/linked_lift_control.asm \
-	src/game/objects/inventory_collectible_handlers.asm \
-	src/data/unreferenced_runtime_object_clear_tail.asm \
-	src/game/objects/collectible_collision_handlers.asm \
-	src/game/objects/collectible_type97.asm src/game/scoring/add_score.asm \
-	src/game/collision/runtime_type9f.asm src/game/collision/runtime_types81_82.asm \
-	src/game/player/death_transition.asm \
-	src/game/collision/player_sample.asm \
-	src/game/rooms/sample_address.asm \
-	src/game/objects/runtime_record_offsets.asm \
-	src/game/collision/player_movement_handler_tables.asm \
-	src/game/collision/player_handler_tables.asm \
-	src/game/collision/player_update.asm \
-	src/game/player/transition_reload.asm \
-	src/game/collision/player_dispatch.asm \
-	src/rendering/room_cell_updates.asm src/game/x_coordinates.asm \
-	src/game/rooms/finish_transition.asm src/game/collision/cell_samples.asm \
-	src/system/nmi_tasks.asm src/game/objects/update_dispatch.asm \
-	src/game/objects/player_span_overlap.asm src/game/objects/pushable_update.asm \
-	src/game/objects/lift_update.asm src/game/objects/flying_block_update.asm \
-	src/game/objects/walking_enemy_physics.asm src/game/objects/knight_update.asm \
-	src/game/objects/fairy_fighter_update.asm \
-	src/game/objects/flame_and_movement_helpers.asm \
-	src/game/objects/witch_summoning.asm src/game/objects/knight_arrow_update.asm \
-	src/game/objects/transient_lifecycle.asm \
-	src/game/collision/object_filters.asm src/game/collision/point_sample.asm \
-	src/game/collision/room_sample.asm \
-	src/game/collision/unreferenced_runtime_only_sample.asm \
-	src/game/collision/runtime_overlap.asm src/data/unreferenced_nmi_task_index_bytes.asm \
-	src/game/new_game.asm \
-	src/rendering/room_palette.asm \
-	src/game/rooms/load_room.asm src/game/rooms/runtime_reset.asm \
-	src/game/rooms/cell_animation.asm src/rendering/status_format.asm \
-	src/data/unreferenced_bit_index_helper.asm \
-	src/game/rooms/cell_coordinates.asm src/game/rooms/mutable_cell_actions.asm \
-	src/game/rooms/mutable_cell_lookup.asm src/game/collision/cell_pair_index.asm \
-	src/game/rooms/mutable_cell_predicates.asm \
-	src/game/rooms/mutable_cell_restore.asm src/game/rooms/navigation.asm \
-	src/game/player/hazard_state.asm src/game/objects/player_proximity.asm \
-	src/input/pause.asm src/game/collision/tables.asm \
-	src/game/rooms/room_metadata.asm src/rendering/frame_sprites.asm \
-	src/rendering/object_sprite_selectors.asm src/rendering/object_metasprites.asm \
-	src/rendering/metasprite_data.asm \
-	src/rendering/room_screen.asm src/input/demo_playback.asm \
-	src/data/title_demo_input.asm \
-	src/audio/track_selection.asm src/audio/track_table.asm \
-	src/audio/stream_engine.asm \
-	src/data/unreferenced_lowercase_hex_digit_decode_bytes.asm \
-	src/audio/channel_configuration.asm \
-	src/audio/note_semitone_offsets.asm src/audio/note_length_table.asm \
-	src/audio/apu_period_table.asm src/audio/music_mml_data.asm \
-	src/audio/sound_effect_starters.asm src/audio/sound_effect_update.asm \
-	src/audio/sound_effect_tables.asm src/rendering/horizontal_scroll.asm \
-	src/math/divide_unsigned16.asm src/rendering/palette_upload.asm \
-	src/rendering/screen_palette_data.asm src/rendering/room_palette_data.asm \
-	src/system/nmi.asm src/rendering/oam_dma.asm \
-	src/rendering/status_upload.asm src/rendering/room_rows_00_04.asm \
-	src/rendering/room_rows_05_09.asm src/rendering/room_rows_10_14.asm \
-	src/rendering/room_rows_15_19.asm \
-	src/rendering/room_attribute_upload.asm \
-	src/game/rooms/decoder.asm src/rendering/room_attributes.asm \
-	src/ui/castle_map.asm src/game/rooms/finalize_room.asm \
-	src/game/objects/room_loader.asm \
-	src/game/rooms/state_orchestration.asm src/game/rooms/persistent_state_apply.asm \
-	src/game/objects/stream_seek.asm src/game/rooms/mutable_cell_state_apply.asm \
-	src/game/rooms/persistent_state_load.asm \
-	src/game/objects/room_data.asm src/ui/title_screen.asm \
-	src/rendering/chr_nametable_copy.asm src/ui/sub_command_input.asm \
-	src/ui/sub_command_menu.asm src/data/sub_command_text.asm \
-	src/ui/sub_command_room_actions.asm \
-	src/game/save_load.asm \
-	src/game/rooms/persistent_state_save.asm src/game/end_sequences.asm \
-	src/data/prg_tail_padding.asm src/rendering/room_cell_tile_tables.asm \
-	src/system/interrupt_vectors.asm \
+SOURCE_FILES := src/main.asm src/system/famicom_platform.asm src/graphics/chr.asm \
+	src/game/player/input_and_movement.asm src/game/player/transitions_and_push.asm \
+	src/game/objects/lifts/linked_control.asm \
+	src/game/collectibles/pickups_and_rewards.asm \
+	src/game/collision/player_pipeline.asm src/game/runtime/frame_pipeline.asm \
+	src/game/objects/lifts/movement.asm src/game/objects/enemies/patrol.asm \
+	src/game/objects/enemies/special.asm src/game/collision/sampling.asm \
+	src/game/session_initialization.asm src/game/rooms/mutable_cells.asm \
+	src/game/rooms/navigation_and_rules.asm src/rendering/sprites/frame.asm \
+	src/rendering/sprites/selectors.asm src/rendering/sprites/metasprites.asm \
+	src/rendering/scenes.asm src/audio/music_engine.asm src/audio/sound_effects.asm \
+	src/rendering/frame_pipeline.asm src/rendering/room_rows/top.asm \
+	src/rendering/room_rows/upper_middle.asm \
+	src/rendering/room_rows/lower_middle.asm src/rendering/room_rows/bottom.asm \
+	src/rendering/rooms/upload_and_decode.asm \
+	src/rendering/rooms/attributes_and_map.asm src/game/rooms/load_pipeline.asm \
+	src/game/rooms/state_and_data.asm src/ui/title_and_subcommands.asm \
+	src/game/persistence_and_endings.asm src/system/prg_tail.asm \
 	src/memory/hardware.inc src/revisions/profile.inc src/memory/ram.inc
 
 GHIDRA_FACTS := build/ghidra/instructions.tsv

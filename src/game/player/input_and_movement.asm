@@ -1,4 +1,4 @@
-; Player input, movement, collision dispatch, and action hits
+; Player input and movement
 ; CPU range $82CE-$8679
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify

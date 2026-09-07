@@ -17,5 +17,5 @@
 .include "revisions/profile.inc"
 .include "memory/ram.inc"
 
-.include "input/famicom_data_pulse.asm"
+.include "system/famicom_platform.asm"
 .include "graphics/chr.asm"
