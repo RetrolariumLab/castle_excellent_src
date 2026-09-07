@@ -20,8 +20,8 @@ authoring are also excluded. They belong to later releases and are not inferred
 from matching addresses or mechanics.
 
 The complete pre-release gate is `make release-check`. It starts from an empty
-`build/`, validates private inputs and pinned build tools before use, runs lint and all unit and
-contract tests, proves full image identity, regenerates debugger/runtime
-evidence from the source-built image, and audits this boundary against the
-release manifest. Tag creation, moving `main`, and publishing remain explicit
-owner actions outside this document.
+`build/`, validates private inputs and pinned build tools before use, runs lint
+and all unit and contract tests, proves full image identity, regenerates
+debugger/runtime evidence from the source-built image, and audits this boundary
+against the release manifest. Tag creation, moving `main`, and publishing
+remain explicit owner actions outside this document.

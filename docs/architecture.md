@@ -1,9 +1,10 @@
 # Architecture
 
-The address-level subsystem inventory is maintained in
-`docs/subsystems.md`. The PRG remains one address-ordered ca65 translation
-unit, while proven ranges are gradually promoted from preservation regions to
-semantic modules. The first promotion is the room decoder at `$E45D-$E8DE`.
+This document describes runtime behavior and relationships between systems.
+The address-level inventory is maintained in [subsystems.md](subsystems.md),
+and exact module ownership in [source_layout.md](source_layout.md). The PRG is
+one address-ordered ca65 translation unit whose complete range now has semantic
+or explicitly typed-data ownership.
 
 ## Cartridge layout
 

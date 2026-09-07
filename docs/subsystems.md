@@ -1,9 +1,10 @@
 # PRG subsystem landmarks
 
-The canonical reconstruction remains one address-ordered translation unit.
-Subsystems begin as landmarks in preservation regions and are promoted to
-physical source modules only when their boundaries and contracts are proven.
-The room decoder is the first promoted module.
+This is the address-ordered PRG inventory. It complements the conceptual
+[architecture](architecture.md) and exact module table in
+[source_layout.md](source_layout.md). Every range has semantic or explicitly
+typed-data ownership; notes below retain address provenance and the evidence
+that justified each boundary.
 
 ## Platform I/O (`$8000-$8224`)
 
