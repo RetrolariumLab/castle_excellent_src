@@ -298,7 +298,7 @@ editor-quality-check-profile: verify-profile
 
 editor-quality-check:
 	$(MAKE) lint
-	$(PYTHON) -m unittest tests.test_level_studio_model tests.test_sound_studio_model tests.test_graphics_studio_model
+	$(PYTHON) -m unittest tests.authoring.test_level_studio_model tests.authoring.test_sound_studio_model tests.authoring.test_graphics_studio_model
 	$(MAKE) editor-quality-check-profile REVISION_PROFILE=castle-excellent-japan-hsp-05
 	$(MAKE) editor-quality-check-profile REVISION_PROFILE=castlequest-usa
 

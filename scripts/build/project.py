@@ -388,6 +388,67 @@ def command_clean(args: argparse.Namespace) -> None:
         print(f"[CLEAN] {target}")
 
 
+def validate_test_layout(root: Path) -> None:
+    scripts_root = root / "scripts"
+    tests_root = root / "tests"
+    package_dirs = {
+        scripts_root,
+        tests_root,
+        *(path.parent for path in scripts_root.rglob("*.py")),
+        *(path.parent for path in tests_root.rglob("*.py")),
+    }
+    missing_markers = sorted(
+        path.relative_to(root).as_posix()
+        for path in package_dirs
+        if "__pycache__" not in path.parts and not (path / "__init__.py").is_file()
+    )
+    if missing_markers:
+        raise ProjectError(
+            "Python package directories need __init__.py: "
+            + ", ".join(missing_markers)
+        )
+
+    unexpected_root_tests = sorted(
+        path.name
+        for path in tests_root.glob("test_*.py")
+        if path.name != "test_script_runner.py"
+    )
+    if unexpected_root_tests:
+        raise ProjectError(
+            "tests must mirror categorized script packages: "
+            + ", ".join(unexpected_root_tests)
+        )
+
+    tools_by_stem: dict[str, Path] = {}
+    for path in scripts_root.rglob("*.py"):
+        if path.name in {"__init__.py", "run.py"}:
+            continue
+        if path.stem in tools_by_stem:
+            raise ProjectError(f"ambiguous script module name for tests: {path.stem}")
+        tools_by_stem[path.stem] = path
+
+    mismatches: list[str] = []
+    for test_path in tests_root.rglob("test_*.py"):
+        if test_path == tests_root / "test_script_runner.py":
+            continue
+        module_name = test_path.stem.removeprefix("test_")
+        tool_path = tools_by_stem.get(module_name)
+        if tool_path is None:
+            mismatches.append(f"{test_path.relative_to(root)} has no matching tool")
+            continue
+        expected = (
+            tests_root
+            / tool_path.relative_to(scripts_root).parent
+            / test_path.name
+        )
+        if test_path != expected:
+            mismatches.append(
+                f"{test_path.relative_to(root)} should be {expected.relative_to(root)}"
+            )
+    if mismatches:
+        raise ProjectError("test layout mismatch: " + "; ".join(mismatches))
+
+
 def command_lint(_args: argparse.Namespace) -> None:
     required = (
         "README.md",
@@ -514,6 +575,7 @@ def command_lint(_args: argparse.Namespace) -> None:
             "scripts must live in responsibility packages: "
             + ", ".join(unexpected_root_tools)
         )
+    validate_test_layout(ROOT)
     load_manifest(ROOT / "assets/manifest.json")
     memory_symbols = load_memory_symbols(ROOT / "config/memory_symbols.json")
     load_operand_overrides(ROOT / "config/operand_overrides.json")

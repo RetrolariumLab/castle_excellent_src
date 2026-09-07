@@ -528,7 +528,7 @@ src/rendering/             frame pipeline and scene initialization
 src/ui/                   title and sub-command interface
 src/graphics/chr.asm       private CHR include (graphics plus room streams)
 src/memory/                hardware and RAM symbol registries
-tests/                     tooling and decoder tests
+tests/                     tests mirroring the categorized script packages
 tools/disassembly.lock.json exact Ghidra and GhidraNes supply-chain lock
 tools/runtime.lock.json exact FCEUX runtime artifact lock
 tools/ghidra_scripts/      tracked headless analysis exporters

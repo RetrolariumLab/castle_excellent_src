@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from scripts import run
+from scripts.build.project import validate_test_layout
 
 
 class ScriptRunnerTests(unittest.TestCase):
@@ -28,6 +29,9 @@ class ScriptRunnerTests(unittest.TestCase):
         for name in ("level_editor", "unknown.missing", "validation.__hidden"):
             with self.subTest(name=name), self.assertRaises(SystemExit):
                 run.require_tool(name)
+
+    def test_suite_mirrors_tool_packages(self) -> None:
+        validate_test_layout(run.SCRIPT_ROOT.parent)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,1 @@
+"""Room system contract tests."""

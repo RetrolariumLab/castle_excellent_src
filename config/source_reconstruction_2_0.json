@@ -77,7 +77,7 @@
       "evidence": [
         "src/revisions/profile.inc",
         "scripts/build/revision_profiles.py",
-        "tests/test_revision_profiles.py"
+        "tests/build/test_revision_profiles.py"
       ]
     },
     {
@@ -88,7 +88,7 @@
         "scenarios/source_2_castlequest.json",
         "scripts/runtime/capture_castlequest_runtime.lua",
         "scripts/runtime/revision_runtime.py",
-        "tests/test_revision_runtime.py"
+        "tests/runtime/test_revision_runtime.py"
       ]
     },
     {
@@ -112,8 +112,8 @@
         "scripts/authoring/level_editor.py",
         "scripts/authoring/level_studio.py",
         "scripts/authoring/level_studio_model.py",
-        "tests/test_level_editor.py",
-        "tests/test_level_studio_model.py",
+        "tests/authoring/test_level_editor.py",
+        "tests/authoring/test_level_studio_model.py",
         "docs/content_authoring.md"
       ]
     },
@@ -124,7 +124,7 @@
       "evidence": [
         "scripts/runtime/level_playtest.py",
         "scripts/runtime/level_playtest.lua",
-        "tests/test_level_playtest.py",
+        "tests/runtime/test_level_playtest.py",
         "docs/content_authoring.md"
       ]
     },
@@ -137,8 +137,8 @@
         "scripts/authoring/music_editor.py",
         "scripts/authoring/sound_studio.py",
         "scripts/authoring/sound_studio_model.py",
-        "tests/test_music_editor.py",
-        "tests/test_sound_studio_model.py",
+        "tests/authoring/test_music_editor.py",
+        "tests/authoring/test_sound_studio_model.py",
         "docs/content_authoring.md"
       ]
     },
@@ -151,8 +151,8 @@
         "scripts/authoring/graphics_editor.py",
         "scripts/authoring/graphics_studio.py",
         "scripts/authoring/graphics_studio_model.py",
-        "tests/test_graphics_editor.py",
-        "tests/test_graphics_studio_model.py",
+        "tests/authoring/test_graphics_editor.py",
+        "tests/authoring/test_graphics_studio_model.py",
         "docs/content_authoring.md"
       ]
     },
@@ -165,7 +165,7 @@
         "scripts/authoring/sound_studio.py",
         "scripts/authoring/graphics_studio.py",
         "scripts/runtime/level_playtest.py",
-        "tests/test_level_playtest.py",
+        "tests/runtime/test_level_playtest.py",
         "docs/content_authoring.md"
       ]
     },
@@ -177,7 +177,7 @@
         "config/fixed_layout_variants.json",
         "scripts/build/fixed_layout_variant.py",
         "scripts/runtime/validate_fixed_layout.lua",
-        "tests/test_fixed_layout_variant.py",
+        "tests/build/test_fixed_layout_variant.py",
         "docs/fixed_layout_variants.md"
       ]
     },
@@ -190,7 +190,7 @@
         "source-2-pre-tag-check",
         "source-2-tag-check",
         "scripts/validation/source_2_release_audit.py",
-        "tests/test_source_2_release_audit.py"
+        "tests/validation/test_source_2_release_audit.py"
       ]
     }
   ],
@@ -343,7 +343,7 @@
         ],
         "files": [
           "scripts/validation/source_2_release_audit.py",
-          "tests/test_source_2_release_audit.py",
+          "tests/validation/test_source_2_release_audit.py",
           "docs/verification.md"
         ],
         "scenarios": [

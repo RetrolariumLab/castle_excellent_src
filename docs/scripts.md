@@ -33,3 +33,12 @@ module runner is useful for focused inspection, development, and diagnostics.
 Only `scripts/run.py` and package metadata may live directly under `scripts/`.
 `make lint-source` enforces that boundary so new utilities cannot silently
 recreate the former flat tool directory.
+
+The `tests/` tree mirrors these package paths. For example,
+`scripts/validation/player/player_input_movement.py` is covered by
+`tests/validation/player/test_player_input_movement.py`. Focused tests can be
+run by module name:
+
+```text
+python -m unittest tests.validation.player.test_player_input_movement
+```

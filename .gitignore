@@ -2,6 +2,8 @@
 build/
 !scripts/build/
 !scripts/build/**
+!tests/build/
+!tests/build/**
 *.o
 *.nes
 *.chr
