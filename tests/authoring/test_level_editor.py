@@ -37,7 +37,7 @@ def empty_workspace(profile: str = "test-profile") -> dict[str, object]:
 class LevelEditorTests(unittest.TestCase):
     def test_project_configuration_matches_reconstructed_capacities(self) -> None:
         config, profile = level_editor.load_authoring(
-            ROOT / "config/level_authoring.json",
+            ROOT / "config/authoring/levels.json",
             "castle-excellent-japan-hsp-05",
         )
         self.assertEqual(profile["status"], "supported")

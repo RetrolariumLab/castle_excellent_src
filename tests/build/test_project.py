@@ -5,9 +5,17 @@ from pathlib import Path
 import tempfile
 import unittest
 
-
-
 from scripts.build import project
+
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+class RepositoryLayoutTests(unittest.TestCase):
+    def test_config_is_grouped_by_responsibility(self) -> None:
+        project.validate_config_layout(ROOT)
+
+
 def sample_ines() -> bytes:
     header = b"NES\x1a" + bytes((2, 4, 0x31, 0)) + bytes(8)
     return header + bytes(32_768) + bytes([0xFF]) * 32_768

@@ -47,7 +47,7 @@ while `src/graphics/chr.asm` includes the four private 8 KiB CHR banks.
 
 Semantic PRG modules target 300–700 lines. The reconstruction audit rejects a
 larger module, a smaller module without an explicit `size_exception` in
-`config/source_layout.json`, or two source names with the same first
+`config/reconstruction/source_layout.json`, or two source names with the same first
 underscore-delimited word in one directory. This keeps names useful at a glance
 and prevents address-era fragments such as repeated `room_*` or `enemy_*`
 files from accumulating again.
@@ -69,7 +69,7 @@ inside the target range. Their descriptive names live in a dedicated
 
 ## Deterministic regeneration
 
-`config/source_layout.json` is the machine-readable authority. The platform
+`config/reconstruction/source_layout.json` is the machine-readable authority. The platform
 module declares the PRG segment and includes the following 31 modules in CPU
 order. `scripts/workflow/generate_disassembly.py` regenerates every module from pinned
 Ghidra facts, named symbols, operand overrides, revision overlays, and typed
@@ -81,9 +81,9 @@ Ghidra cannot represent overlapping instructions, proven entry points inside an
 existing instruction remain ca65 offset symbols such as
 `Label_E5A1 = * + 1`.
 
-`config/memory_symbols.json` makes operand naming deterministic. A global
+`config/reconstruction/memory_symbols.json` makes operand naming deterministic. A global
 entry is used everywhere its address appears; an address-scoped entry is used
-only inside the proven subsystem range. `config/operand_overrides.json`
+only inside the proven subsystem range. `config/reconstruction/operand_overrides.json`
 records relocatable ca65 expressions together with the exact original operand
 and an evidence note; regeneration fails if the underlying instruction changes.
 

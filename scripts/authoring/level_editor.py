@@ -442,7 +442,7 @@ def run(args: argparse.Namespace) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("init", "export", "validate", "build", "roundtrip"))
-    parser.add_argument("--authoring", default="config/level_authoring.json")
+    parser.add_argument("--authoring", default="config/authoring/levels.json")
     parser.add_argument("--revisions", default="config/revision_profiles.json")
     parser.add_argument("--profile", required=True)
     return parser

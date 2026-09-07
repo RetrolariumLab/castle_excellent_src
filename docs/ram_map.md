@@ -74,7 +74,7 @@ The room decoder also gives contextual names to shared zero-page scratch:
 `$16` bit index, `$17` lookahead write index, `$19` decoded cell, `$21-$22`
 CHR stream pointer, `$23-$24` codebook pointer, `$25-$26` output offset, and
 `$29-$2A` output pointer. These aliases are scoped to `$E7EC-$E8DE` in
-`config/memory_symbols.json`; they do not claim that the bytes have the same
+`config/reconstruction/memory_symbols.json`; they do not claim that the bytes have the same
 meaning elsewhere.
 
 Controller polling contextually names `$20` as `PolledControllerButtons`.

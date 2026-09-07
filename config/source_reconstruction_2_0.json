@@ -97,7 +97,7 @@
       "summary": "Extract each profile's CHR, title palette, and sub-command text from its private ROM under explicit size and hash contracts while forbidding undeclared PRG binary includes.",
       "evidence": [
         "config/revision_profiles.json",
-        "config/source_layout.json",
+        "config/reconstruction/source_layout.json",
         "scripts/build/revision_profiles.py",
         "scripts/workflow/generate_disassembly.py",
         "docs/revision_profiles.md"
@@ -108,7 +108,7 @@
       "kind": "authoring",
       "summary": "Add a profile-aware JSON workspace, fixed-capacity encoder, and visual Studio for all room maps, objects, pointers, counts, and persistent-state offsets.",
       "evidence": [
-        "config/level_authoring.json",
+        "config/authoring/levels.json",
         "scripts/authoring/level_editor.py",
         "scripts/authoring/level_studio.py",
         "scripts/authoring/level_studio_model.py",
@@ -133,7 +133,7 @@
       "kind": "authoring",
       "summary": "Decode and rebuild all eight music track sets and 21 textual MML streams through a profile-aware fixed-capacity workspace, then expose the same validated codec through a thin visual studio.",
       "evidence": [
-        "config/audio_authoring.json",
+        "config/authoring/audio.json",
         "scripts/authoring/music_editor.py",
         "scripts/authoring/sound_studio.py",
         "scripts/authoring/sound_studio_model.py",
@@ -147,7 +147,7 @@
       "kind": "authoring",
       "summary": "Decode and rebuild two graphics-only CHR banks plus fixed PRG display, palette, metasprite, localized-text, and sound-effect parameter records, then expose them through a visual pixel and record editor without claiming ownership of the room-data CHR banks.",
       "evidence": [
-        "config/graphics_authoring.json",
+        "config/authoring/graphics.json",
         "scripts/authoring/graphics_editor.py",
         "scripts/authoring/graphics_studio.py",
         "scripts/authoring/graphics_studio_model.py",
@@ -303,9 +303,9 @@
           "check-graphics-studio"
         ],
         "files": [
-          "config/level_authoring.json",
-          "config/audio_authoring.json",
-          "config/graphics_authoring.json",
+          "config/authoring/levels.json",
+          "config/authoring/audio.json",
+          "config/authoring/graphics.json",
           "docs/content_authoring.md",
           "docs/data_formats.md"
         ],
@@ -508,6 +508,7 @@
     "docs/source_reconstruction_1_0.md",
     "docs/source_reconstruction_2_0.md",
     "docs/revision_profiles.md",
+    "docs/configuration.md",
     "docs/content_authoring.md",
     "docs/fixed_layout_variants.md",
     "docs/data_formats.md",

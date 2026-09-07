@@ -50,9 +50,9 @@ The reconciliation deliberately considers only PRG bytes; CHR data never enters
 the generated assembly source.
 
 `make runtime-promote` converts the ignored binary CDL into tracked address
-ranges in `config/runtime_evidence.txt`. These ranges contain no ROM bytes.
+ranges in `config/reconstruction/runtime_evidence.txt`. These ranges contain no ROM bytes.
 Headless Ghidra applies them after the independent pointer/control-flow ranges
-in `config/static_code_evidence.txt`, then clears separately proven data ranges
+in `config/reconstruction/static_code_evidence.txt`, then clears separately proven data ranges
 before exporting its facts. This keeps the refined classification reproducible
 from a clean checkout without misrepresenting static proof as execution.
 Repository lint rejects typed-data overlap with either code-evidence class.

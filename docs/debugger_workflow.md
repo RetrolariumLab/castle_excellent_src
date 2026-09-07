@@ -19,7 +19,7 @@ The ignored outputs in `build/native/` are:
 `scripts/validation/debug_symbols.py` checks that the debug file maps HEADER, PRG, and CHR
 to file offsets 0, 16, and 32784, follows representative semantic labels back
 to their exact source files and current label lines, and resolves every entry
-in `config/debugger_breakpoints.json` and `config/debugger_watches.json`.
+in `config/debugger/breakpoints.json` and `config/debugger/watches.json`.
 Each configured fixed address must equal the current linker symbol, so a stale
 manual breakpoint fails `make symbols` instead of drifting silently.
 

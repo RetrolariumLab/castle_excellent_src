@@ -479,7 +479,8 @@ def validate_release(
 
     try:
         module_count, semantic_bytes, total_bytes = audit_layout(
-            project_root / "config" / "source_layout.json", project_root
+            project_root / "config" / "reconstruction" / "source_layout.json",
+            project_root,
         )
     except (OSError, ReconstructionError) as exc:
         errors.append(f"semantic source audit: {exc}")
@@ -498,9 +499,9 @@ def validate_release(
 
     try:
         symbol_counts = audit_symbol_maps(
-            project_root / "config" / "symbols.json",
-            project_root / "config" / "memory_symbols.json",
-            project_root / "config" / "source_layout.json",
+            project_root / "config" / "reconstruction" / "symbols.json",
+            project_root / "config" / "reconstruction" / "memory_symbols.json",
+            project_root / "config" / "reconstruction" / "source_layout.json",
         )
     except (OSError, ReconstructionError) as exc:
         errors.append(f"symbol map audit: {exc}")

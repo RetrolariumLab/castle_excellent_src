@@ -15,17 +15,17 @@ tools/disassembly.lock.json
   -> headless NES ROM import
   -> PRG0::$8000-$FFFF; CHR mapping skipped
   -> Ghidra recursive 6502 analysis
-  -> config/false_instruction_starts.txt proven analyzer-overreach removals
-  -> config/static_code_evidence.txt pointer/control-flow-proven code ranges
-  -> config/runtime_evidence.txt code ranges from pinned FCEUX CDL
+  -> config/reconstruction/false_instruction_starts.txt proven analyzer-overreach removals
+  -> config/reconstruction/static_code_evidence.txt pointer/control-flow-proven code ranges
+  -> config/reconstruction/runtime_evidence.txt code ranges from pinned FCEUX CDL
   -> clear conflicting auto-data and disassemble both evidence classes
-  -> config/prg_data_ranges.txt evidence-backed typed data ranges
+  -> config/reconstruction/prg_data_ranges.txt evidence-backed typed data ranges
   -> clear false-positive instructions from proven data
   -> build/ghidra/instructions.tsv
-  -> config/symbols.json naming overlay
-  -> config/memory_symbols.json operand overlay
-  -> config/operand_overrides.json checked relocatable expressions
-  -> config/source_layout.json contiguous region ownership
+  -> config/reconstruction/symbols.json naming overlay
+  -> config/reconstruction/memory_symbols.json operand overlay
+  -> config/reconstruction/operand_overrides.json checked relocatable expressions
+  -> config/reconstruction/source_layout.json contiguous region ownership
   -> semantic src/**/*.asm modules (preservation paths only during promotion)
   -> ca65 + ld65
   -> byte-identical iNES verification
@@ -78,11 +78,11 @@ make release-check     # clean build plus live symbols, runtime, and release aud
 ## Evidence boundary
 
 Ghidra's code classification is a preservation starting point, not proof that
-every emitted mnemonic is executable code. `config/static_code_evidence.txt`
+every emitted mnemonic is executable code. `config/reconstruction/static_code_evidence.txt`
 records entry points proven by ROM-resident pointer tables or direct control
 flow but not yet reached by the runtime suite. The tracked FCEUX evidence
 independently repairs false negatives observed during deterministic scenarios.
-`config/prg_data_ranges.txt` handles the opposite case: format proofs and
+`config/reconstruction/prg_data_ranges.txt` handles the opposite case: format proofs and
 static consumers establish ranges that must be emitted as data even when
 recursive or switch analysis mistakes them for instructions. Lint rejects an
 overlap between typed data and either code-evidence class. Static and runtime
@@ -90,7 +90,7 @@ code ranges may overlap when independent evidence corroborates an entry.
 Unclassified regions still require broader traces and byte-level proofs before
 final types.
 
-`config/false_instruction_starts.txt` handles the narrower case where an
+`config/reconstruction/false_instruction_starts.txt` handles the narrower case where an
 analyzer-created entry lands inside a real instruction operand rather than in
 typed data. The current entry removes `$A207`: Ghidra extrapolates object-sprite
 switch case `$66` beyond the proven 42-entry table, but `$A207` is byte two of

@@ -8,7 +8,7 @@ state offsets. The second headless pipeline owns the eight music track records
 and 21 textual MML streams.
 
 The machine-readable layout and capacity contract is
-`config/level_authoring.json`. Local JSON workspaces live below the ignored
+`config/authoring/levels.json`. Local JSON workspaces live below the ignored
 `content/workspace/` directory. Generated ROMs and reports live below the
 ignored `build/authoring/` directory. Neither original ROMs nor decoded local
 workspaces are committed.
@@ -106,7 +106,7 @@ pixel coordinate. The bootstrap then ends so physical controller input returns
 to the user. It does not patch the authored ROM or bypass its room loader.
 
 Save writes only the ignored JSON workspace. Build ROM writes the isolated
-authoring image and capacity report declared by `config/level_authoring.json`;
+authoring image and capacity report declared by `config/authoring/levels.json`;
 it never replaces a reference ROM or the normal profile build. The Studio uses
 the same `validate_workspace` and `compose_levels` functions as the headless
 commands. `make check-level-studio` validates the complete display model without
@@ -119,7 +119,7 @@ release-gate form and never reads or rewrites a local workspace.
 
 ## Music workspace
 
-The machine-readable music layout is `config/audio_authoring.json`. Each JSON
+The machine-readable music layout is `config/authoring/audio.json`. Each JSON
 workspace exposes eight track sets. A track set selects up to three stream IDs
 and retains its two channel parameters. The 21 streams contain ASCII MML text
 and an optional restart stream ID; no raw pointer is editable.
@@ -160,7 +160,7 @@ third-party toolkit beyond Python's Tkinter.
 
 ## Graphics and display workspace
 
-The profile-aware graphics codec uses `config/graphics_authoring.json` and the
+The profile-aware graphics codec uses `config/authoring/graphics.json` and the
 same `init`, `export`, `validate`, `build`, and `roundtrip` command pattern:
 
 ```console

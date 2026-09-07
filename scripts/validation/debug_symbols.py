@@ -312,7 +312,7 @@ def main() -> int:
     parser.add_argument("--watches", required=True, type=Path)
     parser.add_argument("--summary", required=True, type=Path)
     parser.add_argument(
-        "--source-layout", default="config/source_layout.json", type=Path
+        "--source-layout", default="config/reconstruction/source_layout.json", type=Path
     )
     args = parser.parse_args()
     try:

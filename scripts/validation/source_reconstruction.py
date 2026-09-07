@@ -162,9 +162,9 @@ def audit_symbol_maps(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--layout", default="config/source_layout.json")
-    parser.add_argument("--symbols", default="config/symbols.json")
-    parser.add_argument("--memory-symbols", default="config/memory_symbols.json")
+    parser.add_argument("--layout", default="config/reconstruction/source_layout.json")
+    parser.add_argument("--symbols", default="config/reconstruction/symbols.json")
+    parser.add_argument("--memory-symbols", default="config/reconstruction/memory_symbols.json")
     args = parser.parse_args()
     try:
         module_count, semantic_bytes, total_bytes = audit_layout(

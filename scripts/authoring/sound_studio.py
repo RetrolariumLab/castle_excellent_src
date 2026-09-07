@@ -555,7 +555,7 @@ def check_studio(args: argparse.Namespace) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--authoring", default="config/audio_authoring.json")
+    parser.add_argument("--authoring", default="config/authoring/audio.json")
     parser.add_argument("--revisions", default="config/revision_profiles.json")
     parser.add_argument("--profile", required=True)
     parser.add_argument("--check", action="store_true")

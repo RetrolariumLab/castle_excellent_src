@@ -55,7 +55,7 @@ The quality targets follow the same contract as the sibling
   fresh Source 1.0 runtime evidence, and the revision 3 release audit
 
 The address-ordered PRG translation unit is split only at boundaries recorded
-in `config/source_layout.json`. Proven ranges move into named modules while
+in `config/reconstruction/source_layout.json`. Proven ranges move into named modules while
 unknown ranges retain `preservation` ownership. The layout validator requires
 contiguous coverage of `$8000-$FFFF` and rejects boundaries that split an
 instruction. Formatting is safe because the release check rebuilds the ROM and

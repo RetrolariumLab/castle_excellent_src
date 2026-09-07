@@ -35,7 +35,7 @@ Use confidence levels consistently:
 - unknown: address-based identity only.
 
 Codecs must reject truncated data and include focused unit tests. Generated PRG
-labels must be changed through `config/symbols.json`, followed by
+labels must be changed through `config/reconstruction/symbols.json`, followed by
 `make disassemble`; do not hand-edit the generated address structure. A future room
 encoder must prove decode/encode equality for every one of the 100 rooms before
 authored data can replace raw CHR ranges.

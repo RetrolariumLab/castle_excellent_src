@@ -449,21 +449,57 @@ def validate_test_layout(root: Path) -> None:
         raise ProjectError("test layout mismatch: " + "; ".join(mismatches))
 
 
+def validate_config_layout(root: Path) -> None:
+    config_root = root / "config"
+    expected_root_files = {
+        "fixed_layout_variants.json",
+        "revision_profiles.json",
+        "source_reconstruction_1_0.json",
+        "source_reconstruction_2_0.json",
+    }
+    expected_directories = {"authoring", "debugger", "linker", "reconstruction"}
+    actual_root_files = {path.name for path in config_root.iterdir() if path.is_file()}
+    actual_directories = {path.name for path in config_root.iterdir() if path.is_dir()}
+    if actual_root_files != expected_root_files:
+        missing = sorted(expected_root_files - actual_root_files)
+        unexpected = sorted(actual_root_files - expected_root_files)
+        raise ProjectError(
+            f"config root manifest mismatch; missing={missing}, unexpected={unexpected}"
+        )
+    if actual_directories != expected_directories:
+        missing = sorted(expected_directories - actual_directories)
+        unexpected = sorted(actual_directories - expected_directories)
+        raise ProjectError(
+            f"config responsibility directories mismatch; "
+            f"missing={missing}, unexpected={unexpected}"
+        )
+
+
 def command_lint(_args: argparse.Namespace) -> None:
     required = (
         "README.md",
         "Makefile",
         "assets/manifest.json",
+        "config/authoring/audio.json",
+        "config/authoring/graphics.json",
+        "config/authoring/levels.json",
+        "config/debugger/breakpoints.json",
+        "config/debugger/watches.json",
+        "config/fixed_layout_variants.json",
         "config/linker/cnrom.cfg",
-        "config/memory_symbols.json",
-        "config/operand_overrides.json",
-        "config/source_layout.json",
-        "config/symbols.json",
-        "config/static_code_evidence.txt",
-        "config/runtime_evidence.txt",
-        "config/prg_data_ranges.txt",
-        "config/false_instruction_starts.txt",
+        "config/reconstruction/memory_symbols.json",
+        "config/reconstruction/operand_overrides.json",
+        "config/reconstruction/source_layout.json",
+        "config/reconstruction/symbols.json",
+        "config/reconstruction/static_code_evidence.txt",
+        "config/reconstruction/runtime_evidence.txt",
+        "config/reconstruction/prg_data_ranges.txt",
+        "config/reconstruction/false_instruction_starts.txt",
+        "config/revision_profiles.json",
+        "config/source_reconstruction_1_0.json",
+        "config/source_reconstruction_2_0.json",
         "docs/code_quality.md",
+        "docs/configuration.md",
         "docs/source_reconstruction.md",
         "docs/resolved_unknowns.md",
         "docs/scripts.md",
@@ -576,10 +612,11 @@ def command_lint(_args: argparse.Namespace) -> None:
             + ", ".join(unexpected_root_tools)
         )
     validate_test_layout(ROOT)
+    validate_config_layout(ROOT)
     load_manifest(ROOT / "assets/manifest.json")
-    memory_symbols = load_memory_symbols(ROOT / "config/memory_symbols.json")
-    load_operand_overrides(ROOT / "config/operand_overrides.json")
-    source_regions = load_source_layout(ROOT / "config/source_layout.json")
+    memory_symbols = load_memory_symbols(ROOT / "config/reconstruction/memory_symbols.json")
+    load_operand_overrides(ROOT / "config/reconstruction/operand_overrides.json")
+    source_regions = load_source_layout(ROOT / "config/reconstruction/source_layout.json")
     definitions = "\n".join(
         (ROOT / relative).read_text(encoding="utf-8")
         for relative in ("src/memory/ram.inc", "src/memory/hardware.inc")
@@ -600,14 +637,14 @@ def command_lint(_args: argparse.Namespace) -> None:
     for region in source_regions:
         if not (ROOT / region.path).is_file():
             raise ProjectError(f"source-layout module not found: {region.path}")
-    data_ranges = load_prg_data_ranges(ROOT / "config/prg_data_ranges.txt")
-    load_false_instruction_starts(ROOT / "config/false_instruction_starts.txt")
+    data_ranges = load_prg_data_ranges(ROOT / "config/reconstruction/prg_data_ranges.txt")
+    load_false_instruction_starts(ROOT / "config/reconstruction/false_instruction_starts.txt")
     validate_code_data_separation(
-        data_ranges, ROOT / "config/static_code_evidence.txt", "static"
+        data_ranges, ROOT / "config/reconstruction/static_code_evidence.txt", "static"
     )
-    validate_code_data_separation(data_ranges, ROOT / "config/runtime_evidence.txt", "runtime")
+    validate_code_data_separation(data_ranges, ROOT / "config/reconstruction/runtime_evidence.txt", "runtime")
     for relative in (
-        "config/symbols.json",
+        "config/reconstruction/symbols.json",
         "tools/disassembly.lock.json",
         "tools/runtime.lock.json",
     ):
@@ -617,7 +654,7 @@ def command_lint(_args: argparse.Namespace) -> None:
             raise ProjectError(f"cannot read {relative}: {exc}") from exc
         if document.get("schema_version") != 1:
             raise ProjectError(f"unsupported schema in {relative}")
-    for relative in ("config/debugger_watches.json", "config/debugger_breakpoints.json"):
+    for relative in ("config/debugger/watches.json", "config/debugger/breakpoints.json"):
         try:
             config = json.loads((ROOT / relative).read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:

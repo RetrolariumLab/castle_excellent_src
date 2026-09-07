@@ -50,7 +50,7 @@ class UnreferencedRuntimeOnlySampleTests(unittest.TestCase):
         report = runtime_only.validate_contract(
             self.prg,
             runtime_only.load_instruction_starts(ROOT / "build/ghidra/instructions.tsv"),
-            runtime_only.load_code_evidence(ROOT / "config/runtime_evidence.txt"),
+            runtime_only.load_code_evidence(ROOT / "config/reconstruction/runtime_evidence.txt"),
         )
         self.assertEqual(report["bytes"], 115)
         self.assertEqual(report["dispatch_entries_checked"], 641)

@@ -25,7 +25,7 @@ class UnreferencedRuntimeObjectClearTailTests(unittest.TestCase):
         report = unreferenced.validate_contract(
             unreferenced.extract_prg((ROOT / "Castle Excellent (J).nes").read_bytes()),
             unreferenced.load_instruction_starts(ROOT / "build/ghidra/instructions.tsv"),
-            unreferenced.load_code_evidence(ROOT / "config/runtime_evidence.txt"),
+            unreferenced.load_code_evidence(ROOT / "config/reconstruction/runtime_evidence.txt"),
         )
         self.assertEqual(report["bytes"], 5)
         self.assertEqual(report["instruction_starts"], 0)

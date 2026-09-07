@@ -293,7 +293,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--image", required=True)
     parser.add_argument(
-        "--static-evidence", default="config/static_code_evidence.txt"
+        "--static-evidence", default="config/reconstruction/static_code_evidence.txt"
     )
     parser.add_argument("--pretty", action="store_true")
     parser.add_argument("--validate", action="store_true")

@@ -10,6 +10,7 @@
 - [Runtime verification](runtime_verification.md)
 - [Debugger workflow](debugger_workflow.md)
 - [Disassembly pipeline](disassembly_pipeline.md)
+- [Configuration layout](configuration.md)
 
 ## Source and architecture
 

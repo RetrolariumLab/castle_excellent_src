@@ -8,9 +8,9 @@ SOURCE_1_MANIFEST := config/source_reconstruction_1_0.json
 SOURCE_2_MANIFEST := config/source_reconstruction_2_0.json
 REVISION_MANIFEST := config/revision_profiles.json
 REVISION_PROFILE ?= castlequest-usa
-LEVEL_AUTHORING := config/level_authoring.json
-AUDIO_AUTHORING := config/audio_authoring.json
-GRAPHICS_AUTHORING := config/graphics_authoring.json
+LEVEL_AUTHORING := config/authoring/levels.json
+AUDIO_AUTHORING := config/authoring/audio.json
+GRAPHICS_AUTHORING := config/authoring/graphics.json
 LEVEL_PLAYTEST_ROOM ?= 71
 LEVEL_PLAYTEST_X ?= 16
 LEVEL_PLAYTEST_Y ?= 152
@@ -54,10 +54,10 @@ SOURCE_FILES := src/main.asm src/system/famicom_platform.asm src/graphics/chr.as
 	src/memory/hardware.inc src/revisions/profile.inc src/memory/ram.inc
 
 GHIDRA_FACTS := build/ghidra/instructions.tsv
-SYMBOLS := config/symbols.json
-MEMORY_SYMBOLS := config/memory_symbols.json
-OPERAND_OVERRIDES := config/operand_overrides.json
-SOURCE_LAYOUT := config/source_layout.json
+SYMBOLS := config/reconstruction/symbols.json
+MEMORY_SYMBOLS := config/reconstruction/memory_symbols.json
+OPERAND_OVERRIDES := config/reconstruction/operand_overrides.json
+SOURCE_LAYOUT := config/reconstruction/source_layout.json
 FCEUX := tools/fceux/fceux64.exe
 RUNTIME_DIR := build/runtime
 BOOT_CDL := $(RUNTIME_DIR)/boot-gameplay.cdl
@@ -85,10 +85,10 @@ RUNTIME_CDL := $(RUNTIME_DIR)/suite.cdl
 RUNTIME_REPORT := $(RUNTIME_DIR)/suite.json
 SOURCE_1_RUNTIME_CDL := $(RUNTIME_DIR)/source-1-suite.cdl
 SOURCE_1_RUNTIME_REPORT := $(RUNTIME_DIR)/source-1-suite.json
-STATIC_CODE_EVIDENCE := config/static_code_evidence.txt
-RUNTIME_EVIDENCE := config/runtime_evidence.txt
-PRG_DATA_RANGES := config/prg_data_ranges.txt
-FALSE_INSTRUCTION_STARTS := config/false_instruction_starts.txt
+STATIC_CODE_EVIDENCE := config/reconstruction/static_code_evidence.txt
+RUNTIME_EVIDENCE := config/reconstruction/runtime_evidence.txt
+PRG_DATA_RANGES := config/reconstruction/prg_data_ranges.txt
+FALSE_INSTRUCTION_STARTS := config/reconstruction/false_instruction_starts.txt
 BOOT_FRAMES ?= 900
 TITLE_FRAMES ?= 1800
 TIMEOUT_FRAMES ?= 15000
@@ -308,7 +308,7 @@ editor-ui-smoke-profile: init-levels init-music init-graphics
 	$(RUN_TOOL) authoring.graphics_studio --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
 
 symbols: $(ROM)
-	$(RUN_TOOL) validation.debug_symbols --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --source-layout "$(SOURCE_LAYOUT)" --summary "$(DEBUG_SUMMARY)"
+	$(RUN_TOOL) validation.debug_symbols --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger/breakpoints.json --watches config/debugger/watches.json --source-layout "$(SOURCE_LAYOUT)" --summary "$(DEBUG_SUMMARY)"
 
 validate-symbols: fceux-bootstrap symbols
 	$(RUN_TOOL) runtime.validate_debug_runtime --fceux "$(FCEUX)" --rom "$(ROM)" --lua scripts/runtime/validate_debug_symbols.lua --result "$(DEBUG_RUNTIME_RESULT)"

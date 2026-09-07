@@ -495,15 +495,11 @@ make clean           # remove build artifacts only
 ```text
 assets/manifest.json       reference identity and private extraction contract
 bin/                       local ca65/ld65 toolchain and license
-config/linker/cnrom.cfg    complete iNES/PRG/CHR linker layout
-config/symbols.json        evidence-ranked initial semantic naming
-config/memory_symbols.json global and address-scoped RAM/I/O operand naming
-config/operand_overrides.json evidence-backed relocatable operand expressions
-config/source_layout.json  contiguous generated PRG source-region contract
-config/static_code_evidence.txt pointer/control-flow-proven code ranges
-config/runtime_evidence.txt tracked code/data ranges observed by FCEUX
-config/prg_data_ranges.txt typed data ranges removed from Ghidra code output
-config/debugger_*.json     symbol-resolved Mesen/FCEUX breakpoints and watches
+config/authoring/         level, music, and graphics editor contracts
+config/debugger/          symbol-resolved Mesen/FCEUX breakpoints and watches
+config/linker/            complete iNES/PRG/CHR linker layout
+config/reconstruction/    symbols, source layout, operands, and code/data evidence
+config/*.json             public revision, variant, and release manifests
 docs/                      architecture, formats, evidence, and roadmap
 scripts/run.py              stable module launcher and tool inventory
 scripts/authoring/          editors, codecs, and presentation models

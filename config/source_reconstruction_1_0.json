@@ -55,7 +55,7 @@
       "kind": "source",
       "summary": "Reconstruct every byte of the 32 KiB PRG as address-ordered ca65 source with semantic or typed-data ownership.",
       "evidence": [
-        "config/source_layout.json",
+        "config/reconstruction/source_layout.json",
         "src/main.asm"
       ]
     },
