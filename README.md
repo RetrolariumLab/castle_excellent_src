@@ -1,543 +1,133 @@
-# Castle Excellent NES Disassembly
+# Castle Excellent NES source reconstruction
 
-A preservation-first ca65 reconstruction and reverse-engineering workspace for
-the Japanese Famicom release of **Castle Excellent** (`HSP-05`). The repository
-uses the same baseline structure as the sibling `solomon_no_kagi_src` project:
-private ROM inputs, explicit identity checks, a deterministic build, documented
-evidence, and tested decoders for game data.
+A byte-identical ca65 reconstruction and content-authoring workspace for
+**Castle Excellent** (`HSP-05`) on Famicom and **Castlequest** on NES. The
+repository rebuilds both supported revisions from shared PRG source, isolates
+private ROM-derived assets, and validates reconstructed behavior with static,
+format, debugger, and emulator evidence.
 
-## Current status
+## Status
 
-- Source Reconstruction 2.0 is tag-ready on its development branch. It adds a
-  byte-identical Castlequest profile, direct runtime coverage, isolated private
-  revision assets, a fixed-layout variant proof, and profile-aware level,
-  music, and graphics authoring with thin visual studios.
-- `make source-2-check` first revalidates the immutable 1.0 contract, then
-  proves both revisions, the experimental variant, all authoring round trips,
-  direct runtime checks, room playtests, and the 2.0 release manifest.
-- The repository scaffold, CNROM linker layout, manifest, tests, and research
-  documentation are in place.
-- The local Japanese reference is identified by complete file and region
-  hashes; the public physical-chip CRCs agree with it.
-- `make split` validates and extracts a legally obtained reference image.
-- The complete 32 KiB PRG is represented by one address-ordered ca65
-  translation unit generated from pinned headless Ghidra/GhidraNes analysis.
-  The proven semantic modules are the room decoder at `$E45D-$E8DE`, room
-  attribute construction at `$E8DF-$EA35`, the static-object tables and loader
-  at `$EB8F-$EC62`, the stream seeker at `$EDD2-$EDEE`, and object/state data
-  at `$EF06-$F8FB`. Persistent room-state offsets, snapshot restore/load, and
-  save paths are also semantic modules, together with bitmap application,
-  mutable-cell predicates, and cell-derived object creation. The top-level
-  room loader, NMI-request reset, room-screen initialization, and room-state
-  snapshot orchestration now form a semantic vertical slice. Pixel-to-tile
-  conversion, room-cell addressing, mutable-anchor lookup, and ordinal-based
-  restoration are reconstructed with their persistence/render side effects.
-  The primary player collision sampler now owns its 320x160 screen-to-room
-  transform, player-specific cell flags, 24-record object scan, restricted
-  `$90-$95` mode, and phase-dependent type-`$86` geometry.
-  A separate 115-byte runtime-object-only sampler is reconstructed as
-  unreferenced code: no call, pointer table, fallthrough, or captured runtime
-  path reaches it, and its Japanese/USA bytes are identical.
-  The shared death handler now exposes its animated-cell phase predicate,
-  invulnerability/transition guard, 128-frame transition, action reset,
-  reserve-life branch, game-over latch, and death-audio selection for all 61
-  collision-table identities.
-  Frame-level collision orchestration now names all seven ordered player probes,
-  their sample/dispatch pairs, the active-transition bypass, and the final
-  protected-hazard death decision.
-  Transition completion now restores saved player coordinates, extends hazard
-  protection, selects game over or a complete persistent-state room reload,
-  and documents the exact rendering-resume order.
-  Runtime collision types `$81` and `$82` now expose their shared proximity and
-  audio waits: `$81` transforms into type `$91` and creates a room-`$59` clone,
-  while `$82` discards the synthetic dispatcher return and enters the terminal
-  completion sequence.
-  The complete game-over and type-`$82` ending paths now own their PPU/audio
-  ordering, `GAME OVER` tile string, 60-vblank reset delay, terminal freeze,
-  and shared unsigned high-score update.
-  The remaining PRG tail is now explicit typed source: 80 padding bytes, both
-  100-entry room-cell tile tables, and the NMI/reset/IRQ vectors.
-  Shared screen-palette storage is typed as three overlapping 32-byte views for
-  completion, title, and castle-map screens; the adjacent room palette is a
-  separate semantic table.
-  Six inventory-backed handlers now connect persistent cell pairs to all six
-  counters, player-motion/alignment guards, boundary delay, and opening sound.
-  Another six collision-table-selected handlers map runtime pickups `$90-$95`
-  bijectively onto those counters, award 10 points, play their shared sound,
-  and transform the collected object into its 20-frame transient state.
-  Four room-transition helpers now expose the one-based 10x10 castle grid,
-  including both ten-entry horizontal edge tables and boundary-safe movement.
-  The four player boundary routes now preserve aligned entry coordinates,
-  save outgoing object state, reload the adjacent room, update scrolling, and
-  restore a mutable cell at either horizontal entrance; castle edges clamp X
-  without performing a room reload.
-  The complete `$82CE-$8679` player controller now owns jump/ascent/gravity,
-  three-point horizontal collision probes, room-edge dispatch, the ten-frame
-  B action, and its 24-record object hit scan. All three indirect collision
-  calls expose their synthetic RTS continuation labels.
-  The adjacent push controller now proves player-driven horizontal movement
-  of runtime types `$8A-$8D/$8F`: support, player-clearance, and object-leading
-  edges are sampled in order, world bounds are enforced, and obstructing
-  runtime types `$84-$89` can be transformed before the two-pixel commit.
-  Player protection countdowns and the exact bottom-center hazard probe now
-  expose three lethal cell forms, 32-frame decay, and room-music restoration.
-  Their pointer-to-row helper and current/next NMI task requests are semantic
-  too. Player and runtime-object 16-bit X-coordinate helpers now have explicit
-  A=high/X=low contracts. Room-transition completion now names its player/state
-  mirrors and rendering-resume order; collision helpers identify runtime types
-  `$90-$95`, doubled cell indexes `$8A-$91`, and four mutable visual cells. Two
-  100x2 room-cell collision-flag tables and width/height tables for runtime
-  types `$80-$AF` are now typed, named, and linked to all 18 consumers. The
-  runtime object dispatcher and all 42 handler pointers now expose the exact
-  24-record scan, type mask, visibility cutoff, and manual indirect-call return.
-  Frame sprite construction now owns the 256-byte staging clear, player and
-  action animation selection, 24-record object render scan, and the separate
-  42-entry render-handler table. Five common metasprite render paths now own
-  one-, two-, compact-two-, and four-component object composition plus the
-  fixed two-component player path. Their 203 tile/attribute pairs and all 107
-  statically selected descriptor references are validated independently.
-  All 41 object render indexes now lead into a semantic selector module with
-  named state/frame branches; the shared indexes 29/30 and seven unreachable
-  code-shaped bytes after the type-09 terminator are preserved explicitly.
-  New-game initialization now covers the
-  starting room, lives/player state, persistent
-  stores, partial snapshot invalidation, and room-palette upload. Room-runtime
-  reset and the guarded room-audio restart are semantic too. The complete
-  400-cell animation pass now names both opposite-direction fast phase tables,
-  the intermittent four-frame family, scan pointers, cadence, and row-redraw
-  requests. HUD formatting now distinguishes the persistent high score from
-  the current player score and owns five-digit decimal conversion, lives,
-  inventory saturation, and the foreground/NMI interlock. Controller
-  polling, both Famicom save-data
-  transports, PPU mode helpers, and CNROM bank
-  selection are also semantic platform modules. The 394-byte save/load payload,
-  its signature, validation, and room-restoration path are reconstructed too.
-  Reset and the NMI-paced main loop are reconstructed with
-  their cold/warm boot contract and named frame phases. The NMI handler now
-  exposes its 23-task scheduler, OAM/scroll synchronization, controller paths,
-  modular counters, and audio tick. OAM staging-to-DMA construction and full
-  sprite-order reversal are also reconstructed. The first NMI rendering task
-  now documents the status interlock and all three HUD tile uploads. Twenty
-  consecutive NMI tasks reconstruct the complete 20x20 room into the two
-  horizontal nametables. Every PRG byte now belongs to a semantic or explicitly
-  typed-data module; no preservation range remains.
-- All direct branches, jumps, and calls use labels; the first semantic names
-  cover reset/interrupts, CHR switching, rooms, objects, and core data tables.
-- `make symbols` validates ld65 source mappings, resolves every configured
-  watch/breakpoint, and emits Mesen/FCEUX artifacts; `make validate-symbols`
-  proves seven live lookups and a named NMI execution hook in pinned FCEUX.
-- `make build` reconstructs a byte-identical image from the explicit iNES
-  header, PRG ASM, and one ignored private CHR input; PRG is no longer included
-  as a binary payload.
-- `scripts/authoring/room_data.py` independently implements the published prefix-code
-  room decoder; the exact local reference validates as 100 rooms, 40,000 cells,
-  200 nametable attribute tables, and the exactly bounded 783-record static
-  object stream. All 100 compressed rooms also re-encode byte-for-byte with
-  gapless pointers and fixed 8,192/5,120-byte CHR arenas, leaving 153/671 bytes
-  of proven `$FF` capacity. The object stream round-trips all 2,449 bytes and its 101
-  cumulative offsets prove 141 bytes of packed object state. A second table
-  proves 108 bytes of mutable-cell state across all rooms. Five cell markers
-  create 176 additional runtime objects without overflowing the 24-slot pool.
-- `scripts/validation/objects/object_catalog.py` joins all 61 encoded room types to the 42 runtime
-  indexes, update handlers, sprite selectors, collision dimensions, initial
-  states, room occurrence sets, and five cell-marker sources. The original
-  rooms use 34 encoded values and directly source 32 runtime types.
-- The 24-entry, six-byte runtime-object ABI is closed for Source 1.0: all six
-  fields are named, and the five type-specific uses of auxiliary field `+5`
-  have contextual source aliases. Friendly identities for every object remain
-  explicitly deferred to Source 2.0.
-- `scripts/validation/player/player_object_span.py` proves the shared three-call overlap helper,
-  including its 16-pixel Y interval, saturated `objectX-15` left boundary, and
-  exclusive `objectX+width` right boundary across complete room-width domains.
-- `scripts/validation/objects/transient_object_lifecycle.py` proves update handlers 32, 40, and
-  41: the 15-entry replacement table, parity-selected replacement state,
-  complete six-byte clearing, bounded state lifetime, and odd-frame Y drift.
-- `scripts/validation/objects/object_collision_filters.py` proves both animated-cell families and
-  the runtime type/filter tables used by collision samplers, including their
-  intentional two-entry overlap with following instruction bytes.
-- `scripts/validation/collision/collision_point_sample.py` proves room-cell half selection, returned
-  processor flags, animation-phase suppression, and the first matching runtime
-  object across the complete 320x160 room domain.
-- `scripts/validation/collision/room_collision_sample.py` proves the room-only four-call variant
-  across every room pixel, cell half, and animation-counter sign.
-- `scripts/validation/collision/room_cell_sample_address.py` proves the shared seven-call address
-  builder, including its row pointer, full 16-bit column shift, and half-cell
-  carry across every possible X/Y machine-value combination.
-- `scripts/validation/player/player_collision_sample.py` proves the 28-call player sampler,
-  including screen bounds, cell flags, runtime geometry/type filtering, scan
-  order, and the special type-`$86` phase and motion behavior.
-- `scripts/validation/player/player_collision_dispatch.py` proves the seven-call result
-  dispatcher, both 100/41-entry handler tables, room/runtime selection, and
-  its synthetic indirect-call return address.
-- `scripts/validation/objects/runtime_object_overlap.py` proves the 24-record active-object scan,
-  asymmetric width bounds, vertical dimension test, first-match/resume order,
-  and the carry-clear match versus carry-set exhaustion contract.
-- `scripts/authoring/audio_data.py` validates the eight-set music table and all 21
-  textual command streams, including their terminators and restart pointers.
-- `scripts/validation/audio/audio_stream_engine.py` pins the interpreter's code/data boundaries
-  and callers, walks every MML stream, and exhaustively models pointer advance,
-  sound-effect arbitration, channel setup, countdown expiry, and APU gating.
-- `scripts/validation/audio/sound_effect_engine.py` validates five starter write traces, the NMI
-  updater's request/status arbitration, byte-wide step sequences, and all five
-  period/envelope tables.
-- `scripts/validation/system/scroll_math_palette.py` validates the horizontal camera curve, the
-  shared unsigned 16-bit divider, and the exact 32-byte PPU palette upload.
-- `scripts/validation/preservation/unreferenced_runtime_object_clear_tail.py` proves that the five
-  code-shaped bytes at `$8C7B` have no Ghidra, runtime, or PRG-pointer entry.
-- `scripts/validation/rooms/room_screen_data.py` validates four status-screen tile streams,
-  their code-level pointer loads, and the 16 initial attribute bytes.
-- `scripts/validation/gameplay/controller_input.py` exhaustively validates all 256 controller masks
-  through both the D0 path and the D1 fallback used by the original pollers.
-- `scripts/validation/gameplay/startup_state.py` validates the `POWER` ROM signature, the three-byte
-  `POW` RAM sentinel, cold/warm reset behavior, and the two-NMI frame gate.
-- `scripts/validation/system/nmi_scheduler.py` validates all 23 handler pointers, request scanning,
-  and the eight modular NMI frame counters.
-- `scripts/validation/system/oam_dma.py` validates the 64-sprite interleave, all eight frame
-  rotations, the unused sixteenth table byte, and whole-record reversal.
-- `scripts/validation/system/status_upload.py` validates the HUD interlock, destinations, and
-  source order for score, inventory, and lives tiles.
-- `scripts/validation/system/status_format.py` exhaustively validates all 65,536 score values,
-  all 256 life counts, 1,536 inventory position/value cases, and the exact
-  decimal/bit-mask/helper bytes interleaved with the formatter.
-- `scripts/validation/rooms/room_row_upload.py` validates all 20 unrolled handlers, 400 cell
-  lookups, and 800 left/right metatile writes byte-for-byte against the ROM.
-- `scripts/validation/rooms/room_attribute_upload.py` validates both final NMI tasks, including
-  the right-nametable edge expansion and timing delay.
-- `scripts/validation/rooms/castle_map.py` validates the complete 10x10 visited-room and current
-  room marker geometry.
-- `scripts/validation/gameplay/famicom_data_io.py` exhaustively validates all 256 expansion-port
-  byte transfers plus the pulse symbols, leader, and shared preamble contract.
-- `scripts/validation/gameplay/save_data.py` losslessly encodes and decodes the 394-byte save
-  payload and validates the exact `GNUTUEDEB`/`BEDEUTUN` ROM/wire signature.
-- `scripts/validation/rooms/room_cell_coordinates.py` models the 40x20 tile-to-cell mapping,
-  mutable ordinals, restored forms, and persistent-state bit selection.
-- `scripts/validation/rooms/mutable_cell_actions.py` proves all 12 collision-table pointers,
-  six inventory-slot mappings, handler templates, readiness guards, probe
-  adjustment, and signed-direction horizontal boundary behavior.
-- `scripts/validation/rooms/room_navigation.py` proves the exact navigation machine code and
-  both edge tables, then checks every direction from all 100 one-based rooms.
-- `scripts/validation/rooms/room_boundary_transitions.py` proves all four boundary routes,
-  vertical X alignment, horizontal edge clamps, and entrance-cell restoration.
-- `scripts/validation/player/player_hazard_state.py` proves both protection countdowns, exact
-  routine bytes, all 400 room-cell probes, and full X/Y/cell input domains.
-- `scripts/validation/objects/object_player_proximity.py` proves the shared 15-call interaction
-  predicate, both exclusive distance limits, and its original page-delta alias.
-- `scripts/validation/gameplay/pause_input.py` proves pause/resume edges, APU shutdown, paused
-  scroll priority and saturation across complete button and byte domains.
-- `scripts/validation/collision/collision_tables.py` validates both 100x2 flag tables, all 48 object
-  dimensions, their processor-flag encoding, and all 18 exact consumers.
-- `scripts/authoring/frame_sprites.py` validates player/action frame selection, the full
-  staging clear and object scan, and all 42 object render pointers.
-- `scripts/authoring/metasprites.py` validates all 41 selector indexes, five composition
-  paths, page-zero horizontal clipping and OAM compaction, 203 descriptor
-  pairs, and all 107 statically selected descriptor references.
-- `scripts/validation/player/x_coordinates.py` exhaustively validates all player/object X helper
-  offsets, carry, borrow, register order, and 16-bit wrapping.
-- `scripts/validation/rooms/room_transition.py` validates transition mirroring and the exact
-  rendering-resume call order.
-- `scripts/validation/collision/collision_cells.py` exhaustively validates all runtime-type and
-  doubled cell-index bytes plus all 65,536 room-cell/status combinations
-  without losing sampler flags.
-- `scripts/validation/objects/runtime_object_dispatch.py` verifies all 42 handler pointers and
-  models selection across the complete 24-record runtime pool.
-- `scripts/validation/gameplay/new_game_state.py` validates starting state, exact clear ranges,
-  preserved mirror/snapshot tails, and the `$C53D` room-palette pointer.
-- `scripts/validation/rooms/room_runtime_reset.py` validates ten reset fields and exhaustively
-  checks the game-over/audio-pointer restart guard.
-- `scripts/validation/rooms/room_cell_animation.py` validates all 256 cell values, the three
-  exact ROM frame tables, all 65,536 frame/counter cadence cases, and redraw
-  coverage across all 20 room rows.
-- `make format`, `make lint`, 558 unit tests, reproducible disassembly checks,
-  byte identity, and all static subsystem validators form the fast `make check`
-  gate.
-- A pinned local FCEUX fork captures native code/data logs; `make trace-boot`
-  rejects runtime-executed PRG bytes that Ghidra failed to classify as code.
-- `make trace-source-1` freshly captures seven deterministic paths on the
-  byte-identical build: boot/gameplay, title/demo, idle timeout, room
-  transition, death/game over, type-`$82` completion, and Japanese sub-command
-  save plus expected no-device load failure. Rare paths use documented RAM
-  state injection and must hit named debugger symbols before their CDL counts.
-  A separate static registry feeds pointer-table and direct-control-flow proof
-  into the same deterministic Ghidra pass without presenting it as execution.
-  The boot/gameplay, title/attract, and idle-timeout suite proves 15,175 code
-  bytes, 3,330 data bytes, and 6,283 instruction starts, with zero runtime/static
-  disagreements. Evidence-refined Ghidra exports 10,489 instructions after 52
-  static code ranges recover pointer-selected entries and 73 evidence-backed data
-  ranges remove 199 false-positive instructions. A separate registry clears
-  five overextended or misaligned starts embedded in real instruction operands.
-  The source layout owns all 32,768 PRG bytes semantically (100%). The title and
-  sub-command path now owns title palette/CHR upload, Start/attract timeout,
-  controller-2 menu entry, five-entry wrapped selection, typed menu text,
-  load/save dispatch, and current/previous-room restoration.
+Source Reconstruction 1.0 is the released Japanese-only preservation
+baseline. Source Reconstruction 2.0 is tag-ready and adds:
 
-`assets/manifest.json` records the complete iNES, payload, header, PRG, and CHR
-identity. `make verify` validates both images against that independent manifest
-and compares every region with the supplied reference byte-for-byte.
+- a byte-identical Castlequest USA profile;
+- complete semantic or typed-data ownership of the 32 KiB PRG;
+- profile-aware level, object, music, and graphics round trips;
+- visual Level, Sound, and Graphics studios backed by the same headless codecs;
+- deterministic Ghidra regeneration, FCEUX scenarios, and debugger symbols;
+- a bounded fixed-layout modification proof.
 
-## Reference image
+The game uses CNROM mapper 3: one fixed 32 KiB PRG at `$8000-$FFFF` and four
+switchable 8 KiB CHR banks. CPU code is not bank-switched; CHR banks 2 and 3
+also contain compressed room data.
 
-The baseline profile is:
+## Quick start
 
-```text
-Castle Excellent (Japan)
-Catalog ID   HSP-05
-File size    65,552 bytes for a standard 16-byte iNES header
-Payload CRC  7FA2CC55 (headerless PRG + CHR)
-Mapper       3 (CNROM), vertical mirroring
-PRG          32 KiB, fixed at $8000-$FFFF, CRC32 9FA1C11F
-CHR          32 KiB, four switchable 8 KiB banks, CRC32 04A8FF2E
-```
+Requirements are Python 3, GNU Make, and legally obtained reference ROMs. The
+pinned ca65/ld65 binaries are included; Ghidra, GhidraNes, and the automation
+emulator are installed or verified by their Make targets.
 
-ROM images and locally extracted regions are ignored by Git.
-
-## Bootstrap
-
-Place a legally obtained matching ROM in the project root, then run:
+Place the Japanese ROM in the repository root, then run:
 
 ```bash
 make inspect REFERENCE_ROM="Castle Excellent (J).nes"
 make split REFERENCE_ROM="Castle Excellent (J).nes"
-make disassemble REFERENCE_ROM="Castle Excellent (J).nes"
-make release-check REFERENCE_ROM="Castle Excellent (J).nes"
+make check
 ```
 
-`make inspect` prints the complete hashes for checking another dump.
+The resulting byte-identical image and debugger outputs are written under
+`build/native/`. ROM images, extracted private assets, editor workspaces, and
+build products are ignored by Git.
 
-## Useful targets
+To prepare and verify another supported profile:
 
 ```bash
-make scaffold-check  # lint and test without a ROM
-make ghidra-bootstrap # install pinned local Ghidra and GhidraNes
-make ghidra-inspect  # report loader blocks, functions, and instruction count
-make disassemble    # headless analysis and canonical PRG regeneration
-make fceux-bootstrap # install the hash-pinned local runtime emulator
-make trace-boot     # capture CDL and reconcile execution with Ghidra facts
-make trace-title    # capture an independent title/attract-mode CDL
-make trace-timeout  # capture an idle game through timeout/death paths
-make trace-suite    # run and merge the baseline boot/title/timeout suite
-make trace-source-1 # run the seven-scenario Source 1.0 runtime matrix
-make trace          # stable alias for the Source 1.0 runtime matrix
-make release-audit  # reconcile the declarative Source 1.0 manifest
-make release-check  # clean build, static checks, live symbols, runtime, and audit
-make source-1-check # compatibility alias for the complete Source 1.0 gate
-make source-1-pre-tag-check # require tag-ready metadata and compliant history
-make source-1-tag-check # verify the complete gate and annotated tag at HEAD
-make source-2-audit # reconcile the declarative Source 2.0 manifest
-make source-2-check # prove both revisions, authoring, variants, and runtime
-make source-2-pre-tag-check # require tag-ready 2.0 metadata and clean history
-make source-2-tag-check # verify the complete 2.0 gate and annotated tag at HEAD
-make reconstruction-check # static checks plus a fresh emulator trace
-make reconstruction-audit # enforce semantic-module ownership and naming
-make player-input-movement # inspect player motion and action contracts
-make validate-player-input-movement # validate the player controller model
-make player-object-push # inspect player/object horizontal pushing
-make validate-player-object-push # validate push bounds and collision topology
-make runtime-types81-82-collision # inspect the type $81/$82 collision model
-make format         # normalize ca65 sources and all repository text/JSON
-make format-check   # check ca65 style without changing source files
-make lint-asm       # check the shared ca65 source-style contract
-make lint-source    # check structure, manifests, and binary policy
-make lint           # run every formatting and project linter
-make test           # regenerate Ghidra facts, then run every Python unit test
-make quality-check  # lint and tests without requiring a reference ROM
-make split           # validate and extract private header/PRG/CHR regions
-make build           # assemble the complete iNES image from PRG source + CHR
-make verify-prg      # compare built and original PRG with CPU-address diagnostics
-make verify          # validate and compare every ROM region and extracted asset
-make rom-info        # print and validate original and built image identities
-make check           # fast static quality, source, identity, and subsystem checks
-make split-profile REVISION_PROFILE=castlequest-usa # extract a revision's private assets
-make verify-profile REVISION_PROFILE=castlequest-usa # build and compare that revision
-make castlequest-runtime # verify USA startup and menu behavior in pinned FCEUX
-make init-levels REVISION_PROFILE=castlequest-usa # create an ignored level workspace
-make level-studio REVISION_PROFILE=castlequest-usa # open the visual room/object editor
-make check-level-studio REVISION_PROFILE=castlequest-usa # validate its display model headlessly
-make build-levels REVISION_PROFILE=castlequest-usa # build an isolated edited ROM
-make roundtrip-levels REVISION_PROFILE=castlequest-usa # prove zero-edit container identity
-make smoke-level-playtest REVISION_PROFILE=castlequest-usa # enter an authored room in FCEUX
-make smoke-baseline-level-playtest REVISION_PROFILE=castlequest-usa # test the manifest ROM without a workspace
-make init-music REVISION_PROFILE=castlequest-usa # create an ignored textual-music workspace
-make validate-music REVISION_PROFILE=castlequest-usa # validate MML, references, and capacity
-make build-music REVISION_PROFILE=castlequest-usa # build an isolated edited-music ROM
-make roundtrip-music REVISION_PROFILE=castlequest-usa # prove zero-edit container identity
-make sound-studio REVISION_PROFILE=castlequest-usa # open the visual MML and track editor
-make check-sound-studio REVISION_PROFILE=castlequest-usa # validate its model headlessly
-make init-graphics REVISION_PROFILE=castlequest-usa # create an ignored graphics workspace
-make build-graphics REVISION_PROFILE=castlequest-usa # build an isolated graphics ROM
-make roundtrip-graphics REVISION_PROFILE=castlequest-usa # prove zero-edit graphics identity
-make graphics-studio REVISION_PROFILE=castlequest-usa # open tile, palette, and display editor
-make check-graphics-studio REVISION_PROFILE=castlequest-usa # validate its model headlessly
-make editor-quality-check # verify authentic visuals, audio previews, and all editor round trips
-make editor-ui-smoke-profile REVISION_PROFILE=castlequest-usa # construct and close all three Tk editors
-make check-fixed-layout # verify and run the isolated start-room-1 variant
-make rooms           # decode all 100 rooms as JSON
-make validate-rooms  # decode every room without writing JSON
-make audio           # inspect music track sets and textual streams as JSON
-make validate-audio  # validate music grammar, bounds, and restart pointers
-make screen-data     # inspect room status-screen tile and attribute data
-make validate-screen-data # validate status pointers, terminators, and bounds
-make validate-input   # exhaustively validate controller serial-bit semantics
-make startup-state    # inspect cold/warm reset and frame-gate state as JSON
-make validate-startup # validate POWER/POW and two-NMI main-loop pacing
-make nmi-state        # inspect NMI handlers, scheduler, and counters as JSON
-make validate-nmi     # validate the NMI scheduling contract
-make oam-state        # inspect OAM interleave and rotation as JSON
-make validate-oam     # validate staging-to-DMA and reversal transforms
-make status-state     # inspect the three NMI HUD writes as JSON
-make validate-status  # validate HUD destinations and source order
-make room-row-state   # inspect handler, nametable, and row layout as JSON
-make validate-room-rows # validate all 20 room-row upload handlers
-make attribute-upload-state # inspect both attribute transfers as JSON
-make validate-attribute-upload # validate 108 attribute PPU writes
-make transition-state # inspect room-transition mirrors and rendering resume
-make validate-transition # validate the room-transition completion contract
-make collision-state # inspect runtime-type, cell-index, and collision filters
-make validate-collision # exhaustively validate collision classification
-make object-dispatch-state # inspect handler pointers and record traversal
-make validate-object-dispatch # validate the runtime-object frame dispatcher
-make new-game-state # inspect new-game initialization as JSON
-make validate-new-game # validate state ordering, clears, and room palette
-make room-runtime-state # inspect reset ownership and audio restart guard
-make validate-room-runtime # exhaustively validate the room-runtime contract
-make room-cell-animation-state # inspect room-cell animation tables and cadence
-make validate-room-cell-animation # validate every animation mapping and row
-make hud-format-state # inspect decimal HUD tiles and source-buffer order
-make validate-hud-format # exhaustively validate HUD formatting and ROM tables
-make castle-map-state # inspect the 10x10 map marker geometry
-make validate-castle-map # validate all 100 map positions
-make data-io-state   # inspect pulse and expansion serial contracts as JSON
-make validate-data-io # validate both Famicom data transports
-make save-data       # inspect the 394-byte save-payload layout as JSON
-make validate-save-data # validate payload codec and ROM signature
-make room-cell-state # inspect room-cell coordinate and ordinal contracts
-make validate-room-cells # validate mutable-cell lookup and restoration
-make mutable-cell-action-state # inspect inventory-backed cell actions
-make validate-mutable-cell-actions # validate all action mappings and guards
-make room-navigation-state # inspect the one-based 10x10 castle grid
-make validate-room-navigation # validate every room movement and edge table
-make room-boundary-transitions # inspect entry coordinates and reload routes
-make validate-room-boundary-transitions # validate every boundary path
-make room-cell-sample-address # inspect shared room-cell address arithmetic
-make validate-room-cell-sample-address # validate all 16-bit X and byte Y inputs
-make player-death-transition # inspect death guards, lives, and game-over state
-make validate-player-death-transition # validate all death guard/life domains
-make player-collision-sample # inspect player cell/object collision sampling
-make validate-player-collision-sample # validate all proven player sample domains
-make player-collision-update # inspect the seven frame-level player probes
-make validate-player-collision-update # validate probe order and hazard dispatch
-make player-collision-dispatch # inspect room/runtime collision handler selection
-make validate-player-collision-dispatch # validate handler tables and synthetic return
-make player-transition-reload # inspect countdown, protection, and room reload
-make validate-player-transition-reload # validate all countdown/protection cases
-make room-object-state-save # inspect the outgoing 24-object state bitmap
-make validate-room-object-state-save # validate all type and slot mappings
-make player-animated-cell-displacement # inspect forced horizontal movement
-make validate-player-animated-cell-displacement # validate bounds and probes
-make collectible-collision-handlers # inspect six collectible effects
-make validate-collectible-collision-handlers # validate pointers and state cases
-make score-award     # inspect type-$97 collection and score/life transitions
-make validate-score-award # validate score topology and exhaustive state cases
-make runtime-type9f-collision # inspect the phase/X guarded type-$9F effect
-make validate-runtime-type9f-collision # validate its pointer and state domains
-make runtime-types81-82-collision # inspect transform, clone, and completion effects
-make validate-runtime-types81-82-collision # validate pointers and machine-width states
-make unreferenced-nmi-task-bytes # inspect the typed code-shaped byte sequence
-make validate-unreferenced-nmi-task-bytes # prove it has no code/dispatch entry
-make unreferenced-object-clear-tail # inspect the five-byte orphan tail
-make validate-unreferenced-object-clear-tail # prove it has no reachable entry
-make title-sub-command # inspect title/menu bytes, strings, and behavior
-make validate-title-sub-command # exhaustively validate title/menu input and room actions
-make demo-playback # inspect title-demo commands and expanded controller samples
-make validate-demo-playback # validate all 863 samples and terminal reset
-make audio-track-selection # inspect track records and selector behavior
-make validate-audio-track-selection # validate all selectors and demo-gate cases
-make audio-stream-engine # inspect interpreter partitions and behavior
-make validate-audio-stream-engine # validate all stream-engine state domains
-make sound-effect-engine # inspect starter and per-frame effect behavior
-make validate-sound-effect-engine # validate requests, steps, and effect tables
-make scroll-math-palette # inspect camera, divider, and palette-upload behavior
-make validate-scroll-math-palette # validate all three exact code partitions
-make end-sequences   # inspect game-over and type-$82 completion routes
-make validate-end-sequences # validate ending bytes, calls, text, and score comparisons
-make prg-tail-data    # inspect tail padding, tile tables, and vectors
-make validate-prg-tail-data # validate 800 reads and all vector targets
-make player-hazard-state # inspect protection timers and hazard contact
-make validate-player-hazard # validate all timer/probe/cell input domains
-make object-player-proximity # inspect the object/player carry predicate
-make validate-object-player-proximity # validate every proven distance domain
-make player-object-span # inspect the player/object-span carry predicate
-make validate-player-object-span # validate every proven span boundary
-make transient-object-state # inspect type 32/40/41 lifecycle contracts
-make validate-transient-objects # validate transient-object tables and states
-make object-collision-filters # inspect animated-cell and object type filters
-make validate-object-collision-filters # validate filter domains and overlaps
-make runtime-overlap-state # inspect the active-object overlap scan
-make validate-runtime-overlap # validate type, geometry, and traversal domains
-make pause-input-state # inspect pause edges and paused scrolling
-make validate-pause-input # validate all pause button/mode/scroll domains
-make collision-table-state # inspect room-cell flags and object dimensions
-make validate-collision-tables # validate every table index and exact consumer
-make collision-handler-tables # inspect directional room/runtime pointer matrices
-make validate-collision-handler-tables # validate maps, consumers, and target starts
-make frame-sprite-state # inspect player/action frames and object render dispatch
-make validate-frame-sprites # validate the complete frame-sprite contract
-make metasprite-state # inspect composition paths, descriptors, references, and gaps
-make validate-metasprites # validate clipping, OAM output, and descriptor data
-make object-catalog # inspect encoded/runtime/update/sprite/collision correlations
-make validate-object-catalog # validate all object-type tables and room sources
-make x-coordinate-state # inspect 16-bit X helper contracts as JSON
-make validate-x-coordinates # exhaustively validate coordinate arithmetic
-make clean           # remove build artifacts only
+make split-profile REVISION_PROFILE=castlequest-usa
+make verify-profile REVISION_PROFILE=castlequest-usa
 ```
 
-## Repository structure
+Profile identities and expected local inputs are declared in
+`config/revision_profiles.json`.
+
+## Content editors
+
+Open a studio for either supported revision:
+
+```bash
+make level-studio REVISION_PROFILE=castle-excellent-japan-hsp-05
+make sound-studio REVISION_PROFILE=castle-excellent-japan-hsp-05
+make graphics-studio REVISION_PROFILE=castle-excellent-japan-hsp-05
+```
+
+Use `REVISION_PROFILE=castlequest-usa` for the USA release. Each studio writes
+an ignored workspace and delegates serialization to its validated headless
+codec. Common non-GUI commands are:
+
+```bash
+make roundtrip-levels REVISION_PROFILE=castlequest-usa
+make build-levels REVISION_PROFILE=castlequest-usa
+make smoke-level-playtest REVISION_PROFILE=castlequest-usa
+
+make roundtrip-music REVISION_PROFILE=castlequest-usa
+make build-music REVISION_PROFILE=castlequest-usa
+
+make roundtrip-graphics REVISION_PROFILE=castlequest-usa
+make build-graphics REVISION_PROFILE=castlequest-usa
+```
+
+See [Content authoring](docs/content_authoring.md) for workspace formats,
+capacity limits, preview behavior, and editor controls.
+
+## Verification and release gates
+
+```bash
+make format           # normalize authored source, configuration, and docs
+make lint             # validate style, layout, links, manifests, and policy
+make test             # regenerate Ghidra facts and run the Python suite
+make check            # build, prove byte identity, and run static contracts
+make source-2-audit   # reconcile the Source 2.0 manifest and evidence
+make source-2-check   # run the complete two-profile release candidate gate
+```
+
+`make quality-check` runs lint and tests without requiring a reference ROM.
+`make source-2-pre-tag-check` adds clean-tree, history, and tag-readiness
+requirements. The full gate model is documented in
+[Verification](docs/verification.md).
+
+## Repository map
 
 ```text
-assets/manifest.json       reference identity and private extraction contract
-bin/                       local ca65/ld65 toolchain and license
-config/authoring/         level, music, and graphics editor contracts
-config/debugger/          symbol-resolved Mesen/FCEUX breakpoints and watches
-config/linker/            complete iNES/PRG/CHR linker layout
-config/reconstruction/    symbols, source layout, operands, and code/data evidence
-config/*.json             public revision, variant, and release manifests
-docs/                      architecture, formats, evidence, and roadmap
-scripts/run.py              stable module launcher and tool inventory
-scripts/authoring/          editors, codecs, and presentation models
-scripts/build/              ROM assembly, profiles, variants, and comparisons
-scripts/runtime/            emulator capture, playtest, and live validation
-scripts/validation/         audits and subsystem behavior contracts
-scripts/workflow/           Ghidra and disassembly reconstruction workflow
-src/main.asm               assembly entrypoint
-src/system/               platform bootstrap, fixed PRG tail, and vectors
-src/game/player/          input, movement, transitions, and object pushing
-src/game/collectibles/    inventory pickups, rewards, and special collisions
-src/game/collision/       player and generic room/object collision pipelines
-src/game/runtime/         per-frame transition and object dispatch pipeline
-src/game/objects/enemies/ platform, walking, projectile, and special behaviors
-src/game/objects/lifts/   lift controls, movement, and occupant propagation
-src/game/rooms/           mutable cells, navigation, loading, state, and data
-src/audio/                bounded music and sound-effect engines
-src/rendering/sprites/    frame selection, selectors, and metasprite composition
-src/rendering/room_rows/  four complete five-row NMI upload groups
-src/rendering/rooms/      room decoding, attributes, and castle-map rendering
-src/rendering/             frame pipeline and scene initialization
-src/ui/                   title and sub-command interface
-src/graphics/chr.asm       private CHR include (graphics plus room streams)
-src/memory/                hardware and RAM symbol registries
-tests/                     tests mirroring the categorized script packages
-tools/disassembly.lock.json exact Ghidra and GhidraNes supply-chain lock
-tools/runtime.lock.json exact FCEUX runtime artifact lock
-tools/ghidra_scripts/      tracked headless analysis exporters
+assets/                 reference manifests and ignored extracted assets
+config/authoring/       level, music, and graphics contracts
+config/debugger/        symbol-resolved breakpoints and watches
+config/reconstruction/  symbols, operands, source layout, and code evidence
+docs/                   architecture, formats, workflows, and release policy
+scripts/authoring/      headless codecs and visual studios
+scripts/build/          assembly, profiles, variants, and byte comparison
+scripts/runtime/        emulator capture, playtesting, and live validation
+scripts/validation/     release and subsystem contracts
+scripts/workflow/       Ghidra and deterministic disassembly workflow
+src/                    address-ordered semantic ca65 source
+tests/                  tests mirroring the script package layout
 ```
 
-## Research sources and rights
+Start with the [documentation index](docs/index.md). In particular:
 
-The main published analysis and extractor are:
+- [Architecture](docs/architecture.md) explains the runtime design;
+- [Source layout and symbols](docs/source_layout.md) maps PRG ownership;
+- [Data formats](docs/data_formats.md) defines binary records and round trips;
+- [Development guide](docs/development.md) defines repository conventions;
+- [Roadmap](docs/roadmap.md) separates released, tag-ready, and deferred work.
+
+## Research and rights
+
+The reconstruction builds on the published Castle Excellent room-data
+analysis and extractor:
 
 - <https://habr.com/ru/articles/991848/>
 - <https://github.com/wizzard2010/cex>
 
-The upstream extractor had no explicit license when inspected. Local research
-clones live under ignored `references/` and are not part of this repository.
-Original game code, graphics, music, and room data remain property of their
-respective rights holders.
+The upstream extractor had no explicit license when inspected and is not
+bundled. Original game code, graphics, music, and room data remain property of
+their respective rights holders. Users must supply their own lawful ROMs.
