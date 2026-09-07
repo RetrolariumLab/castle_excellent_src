@@ -7,6 +7,7 @@ import argparse
 from collections import defaultdict
 import json
 from pathlib import Path
+import posixpath
 import re
 
 
@@ -70,6 +71,44 @@ def load_debug_symbols(records: list[tuple[str, dict[str, str]]]) -> list[tuple[
             continue
         symbols.append((int(fields["val"], 0), fields["name"], fields.get("type", "")))
     return symbols
+
+
+def load_source_layout_paths(path: Path) -> set[str]:
+    document = json.loads(path.read_text(encoding="utf-8"))
+    files = document.get("files")
+    if document.get("schema_version") != 1 or not isinstance(files, list):
+        raise ValueError(f"unsupported source-layout schema: {path}")
+    result = {str(item.get("path", "")).replace("\\", "/") for item in files}
+    if not result or "" in result:
+        raise ValueError(f"source layout contains an invalid path: {path}")
+    return result
+
+
+def validate_debug_file_coverage(
+    records: list[tuple[str, dict[str, str]]], expected_paths: set[str]
+) -> None:
+    files: dict[int, str] = {}
+    line_file_ids: set[int] = set()
+    for kind, fields in records:
+        if kind == "file" and "id" in fields and "name" in fields:
+            files[int(fields["id"], 0)] = posixpath.normpath(
+                fields["name"].replace("\\", "/")
+            )
+        elif kind == "line" and "file" in fields:
+            line_file_ids.add(int(fields["file"], 0))
+    covered = {
+        expected
+        for expected in expected_paths
+        if any(
+            file_id in line_file_ids and source.endswith(expected)
+            for file_id, source in files.items()
+        )
+    }
+    missing = sorted(expected_paths - covered)
+    if missing:
+        raise ValueError(
+            "debug file lacks source-line mappings for: " + ", ".join(missing)
+        )
 
 
 def choose_unique_addresses(
@@ -205,8 +244,10 @@ def build_summary(args: argparse.Namespace) -> dict[str, object]:
         counts[kind] += 1
         if kind == "seg" and Path(fields.get("oname", "")).name == args.rom.name:
             segment_offsets[fields["name"]] = int(fields["ooffs"], 0)
-    if counts["file"] < 100 or not counts["line"] or not counts["span"]:
+    if not counts["file"] or not counts["line"] or not counts["span"]:
         raise ValueError("debug file lacks complete source-line mappings")
+    expected_source_paths = load_source_layout_paths(args.source_layout)
+    validate_debug_file_coverage(records, expected_source_paths)
     if segment_offsets != EXPECTED_SEGMENT_OFFSETS:
         raise ValueError(f"unexpected iNES segment offsets: {segment_offsets}")
     rom = args.rom.read_bytes()
@@ -252,6 +293,7 @@ def build_summary(args: argparse.Namespace) -> dict[str, object]:
         "fceux_rom_labels": str(rom_nl),
         "fceux_ram_labels": str(ram_nl),
         "record_counts": dict(counts),
+        "source_module_count": len(expected_source_paths),
         "rom_label_count": rom_label_count,
         "ram_label_count": ram_label_count,
         "breakpoints": breakpoints,
@@ -269,6 +311,9 @@ def main() -> int:
     parser.add_argument("--breakpoints", required=True, type=Path)
     parser.add_argument("--watches", required=True, type=Path)
     parser.add_argument("--summary", required=True, type=Path)
+    parser.add_argument(
+        "--source-layout", default="config/source_layout.json", type=Path
+    )
     args = parser.parse_args()
     try:
         summary = build_summary(args)

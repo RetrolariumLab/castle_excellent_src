@@ -307,7 +307,7 @@ editor-ui-smoke-profile: init-levels init-music init-graphics
 	$(PYTHON) scripts/graphics_studio.py --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
 
 symbols: $(ROM)
-	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --summary "$(DEBUG_SUMMARY)"
+	$(PYTHON) scripts/debug_symbols.py --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger_breakpoints.json --watches config/debugger_watches.json --source-layout "$(SOURCE_LAYOUT)" --summary "$(DEBUG_SUMMARY)"
 
 validate-symbols: fceux-bootstrap symbols
 	$(PYTHON) scripts/validate_debug_runtime.py --fceux "$(FCEUX)" --rom "$(ROM)" --lua scripts/validate_debug_symbols.lua --result "$(DEBUG_RUNTIME_RESULT)"

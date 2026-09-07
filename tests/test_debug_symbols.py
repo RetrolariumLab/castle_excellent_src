@@ -39,6 +39,22 @@ class DebugSymbolsTests(unittest.TestCase):
                 Path("breakpoints.json"),
             )
 
+    def test_debug_file_coverage_requires_a_line_for_every_module(self) -> None:
+        records = [
+            ("file", {"id": "0", "name": "src/game/rooms/load.asm"}),
+            ("file", {"id": "1", "name": "src/audio/music.asm"}),
+            ("line", {"id": "0", "file": "0", "line": "1"}),
+            ("line", {"id": "1", "file": "1", "line": "1"}),
+        ]
+        debug_symbols.validate_debug_file_coverage(
+            records, {"src/game/rooms/load.asm", "src/audio/music.asm"}
+        )
+        with self.assertRaisesRegex(ValueError, "src/system/startup.asm"):
+            debug_symbols.validate_debug_file_coverage(
+                records,
+                {"src/game/rooms/load.asm", "src/system/startup.asm"},
+            )
+
     def test_live_result_requires_all_symbols_and_named_breakpoint(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             result = Path(directory) / "debug-symbols.txt"
