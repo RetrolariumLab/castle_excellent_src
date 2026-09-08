@@ -26,6 +26,10 @@ REQUIREMENT_STATUSES = {
     "unsupported",
     "planned",
 }
+DELTA_METADATA_PATHS = {
+    "config/source_reconstruction_2_0.json",
+    "docs/source_reconstruction_2_0.md",
+}
 
 
 class Source2AuditError(ValueError):
@@ -210,6 +214,23 @@ def validate_profiles(project_root: Path, release: dict[str, Any]) -> list[str]:
     return errors
 
 
+def validate_runtime_manifests(
+    project_root: Path, release: dict[str, Any]
+) -> list[str]:
+    errors: list[str] = []
+    for coverage in release.get("runtime_coverage", []):
+        manifest = coverage.get("manifest")
+        if not manifest:
+            errors.append(
+                f"runtime coverage {coverage.get('profile_id')} has no scenario manifest"
+            )
+            continue
+        errors.extend(
+            release_audit.validate_scenario_document(project_root, manifest, coverage)
+        )
+    return errors
+
+
 def validate_release_metadata(project_root: Path, release: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     predecessor_path = project_root / release.get("predecessor", {}).get("manifest", "")
@@ -302,6 +323,72 @@ def validate_artifacts(project_root: Path, release: dict[str, Any]) -> list[str]
     return errors
 
 
+def validate_development_branch(
+    project_root: Path, release: dict[str, Any]
+) -> list[str]:
+    branch = (
+        release.get("provenance", {})
+        .get("history_policy", {})
+        .get("development_branch")
+    )
+    if not isinstance(branch, str) or not branch:
+        return ["pre-tag audit requires a development branch"]
+    try:
+        branch_head = git_lines(
+            project_root, "rev-parse", "--verify", f"refs/heads/{branch}"
+        )
+        head = git_lines(project_root, "rev-parse", "HEAD")
+    except subprocess.CalledProcessError:
+        return [f"development branch cannot be resolved: {branch}"]
+    if branch_head != head:
+        return [f"development branch does not point to HEAD: {branch}"]
+    return []
+
+
+def validate_delta_history(project_root: Path, release: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    predecessor = release.get("predecessor", {}).get("commit")
+    history = release.get("delta_history")
+    if not isinstance(history, dict):
+        return ["delta_history is missing"]
+    if history.get("from_exclusive") != predecessor:
+        errors.append("delta_history does not start at the predecessor commit")
+    through = history.get("through_inclusive")
+    expected_count = history.get("commit_count")
+    if not isinstance(through, str) or not through:
+        errors.append("delta_history has no terminal commit")
+        return errors
+    if not isinstance(expected_count, int) or expected_count <= 0:
+        errors.append("delta_history has no positive commit count")
+        return errors
+    documented = git_lines(
+        project_root, "rev-list", "--reverse", f"{predecessor}..{through}"
+    )
+    if not documented or documented[-1] != through:
+        errors.append("delta_history terminal commit is not reachable from predecessor")
+    if len(documented) != expected_count:
+        errors.append(
+            f"delta_history covers {len(documented)} commits, expected {expected_count}"
+        )
+    trailing = git_lines(project_root, "rev-list", "--reverse", f"{through}..HEAD")
+    for commit in trailing:
+        changed = set(
+            git_lines(
+                project_root,
+                "diff-tree",
+                "--no-commit-id",
+                "--name-only",
+                "-r",
+                commit,
+            )
+        )
+        if not changed.issubset(DELTA_METADATA_PATHS):
+            errors.append(
+                f"delta_history does not cover substantive commit {commit[:12]}"
+            )
+    return errors
+
+
 def validate_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     expected_contract = {
@@ -390,6 +477,8 @@ def validate_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
         errors.append("provenance must declare private_inputs_tracked false")
     errors.extend(validate_requirements(project_root, release, targets))
     errors.extend(validate_profiles(project_root, release))
+    errors.extend(validate_runtime_manifests(project_root, release))
+    errors.extend(validate_delta_history(project_root, release))
     errors.extend(validate_release_metadata(project_root, release))
     return errors
 
@@ -427,6 +516,7 @@ def validate_pre_tag(project_root: Path, release: dict[str, Any]) -> list[str]:
         )
         if remote_tags:
             errors.append(f"future release tag already exists on {remotes[0]}: {tag}")
+    errors.extend(validate_development_branch(project_root, release))
     errors.extend(release_audit.validate_commit_history(project_root, release))
     return errors
 

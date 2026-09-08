@@ -24,9 +24,11 @@ also contain compressed room data.
 
 ## Quick start
 
-Requirements are Python 3, GNU Make, and legally obtained reference ROMs. The
-pinned ca65/ld65 binaries are included; Ghidra, GhidraNes, and the automation
-emulator are installed or verified by their Make targets.
+The supported release host is Windows x64 with PowerShell; exact validated
+versions are recorded in `config/source_reconstruction_2_0.json`. Requirements
+are Python 3, GNU Make, and legally obtained reference ROMs. The pinned
+ca65/ld65 binaries are included; Ghidra, GhidraNes, and the automation emulator
+are installed or verified by their Make targets.
 
 Place the Japanese ROM in the repository root, then run:
 

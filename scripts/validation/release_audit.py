@@ -269,12 +269,13 @@ def validate_release_commands(
     ]
 
 
-def validate_scenario_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
+def validate_scenario_document(
+    project_root: Path, relative: str, declared: dict[str, Any]
+) -> list[str]:
     errors: list[str] = []
-    path = project_root / release["runtime"]["scenarios_manifest"]
+    path = project_root / relative
     document = load_json(path)
     scenarios = document.get("scenarios", [])
-    declared = release["runtime_coverage"][0]
     if document.get("profile_id") != declared["profile_id"]:
         errors.append("scenario manifest profile does not match runtime coverage")
     ids = [item.get("id") for item in scenarios if isinstance(item, dict)]
@@ -293,6 +294,14 @@ def validate_scenario_manifest(project_root: Path, release: dict[str, Any]) -> l
         if int(scenario.get("maximum_frames", 0)) <= 0:
             errors.append(f"scenario {scenario_id} has no positive frame budget")
     return errors
+
+
+def validate_scenario_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
+    return validate_scenario_document(
+        project_root,
+        release["runtime"]["scenarios_manifest"],
+        release["runtime_coverage"][0],
+    )
 
 
 def validate_artifacts(project_root: Path, release: dict[str, Any]) -> list[str]:

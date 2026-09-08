@@ -4,12 +4,77 @@ import hashlib
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
 
 from scripts.validation import source_2_release_audit as audit
 class Source2ReleaseAuditTests(unittest.TestCase):
+    def test_delta_history_allows_only_trailing_release_metadata(self) -> None:
+        release = {
+            "predecessor": {"commit": "base"},
+            "delta_history": {
+                "from_exclusive": "base",
+                "through_inclusive": "covered",
+                "commit_count": 2,
+            },
+        }
+        responses = [
+            ["feature", "covered"],
+            ["metadata"],
+            ["config/source_reconstruction_2_0.json"],
+        ]
+        with mock.patch.object(audit, "git_lines", side_effect=responses):
+            self.assertEqual(audit.validate_delta_history(ROOT, release), [])
+
+    def test_delta_history_rejects_a_trailing_substantive_commit(self) -> None:
+        release = {
+            "predecessor": {"commit": "base"},
+            "delta_history": {
+                "from_exclusive": "base",
+                "through_inclusive": "covered",
+                "commit_count": 1,
+            },
+        }
+        responses = [["covered"], ["later"], ["scripts/build/project.py"]]
+        with mock.patch.object(audit, "git_lines", side_effect=responses):
+            errors = audit.validate_delta_history(ROOT, release)
+        self.assertEqual(
+            errors,
+            ["delta_history does not cover substantive commit later"],
+        )
+
+    def test_project_runtime_manifests_and_captures_resolve(self) -> None:
+        release = audit.load_json(ROOT / "config" / "source_reconstruction_2_0.json")
+        self.assertEqual(audit.validate_runtime_manifests(ROOT, release), [])
+
+    def test_development_branch_must_point_to_head(self) -> None:
+        release = {
+            "provenance": {
+                "history_policy": {"development_branch": "source-reconstruction-2.0"}
+            }
+        }
+        with mock.patch.object(audit, "git_lines", side_effect=[["candidate"], ["head"]]):
+            self.assertEqual(
+                audit.validate_development_branch(ROOT, release),
+                [
+                    "development branch does not point to HEAD: "
+                    "source-reconstruction-2.0"
+                ],
+            )
+
+    def test_development_branch_accepts_head(self) -> None:
+        release = {
+            "provenance": {
+                "history_policy": {"development_branch": "source-reconstruction-2.0"}
+            }
+        }
+        with mock.patch.object(
+            audit, "git_lines", side_effect=[["candidate"], ["candidate"]]
+        ):
+            self.assertEqual(audit.validate_development_branch(ROOT, release), [])
+
     def test_not_applicable_requirement_needs_reason_and_excluded_scope(self) -> None:
         release = {
             "status": "development",
