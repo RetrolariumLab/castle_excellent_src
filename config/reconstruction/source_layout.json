@@ -144,7 +144,7 @@
       "start": "0xB64C",
       "end": "0xB875",
       "title": "Room screen and title demo scenes",
-      "size_exception": "The 253-line scene renderer owns one contiguous room-screen and title-demo span."
+      "size_exception": "The 245-line scene renderer owns one contiguous room-screen and title-demo span."
     },
     {
       "path": "src/audio/music_engine.asm",

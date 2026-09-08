@@ -3,6 +3,23 @@
 This archive preserves the evidence and closure of questions removed from the
 active registry in `docs/unknowns.md`.
 
+## Registry map
+
+- [Objects and runtime records](#obj-001---six-byte-runtime-record-abi):
+  `OBJ-001` through `OBJ-011`.
+- [Encoded data and tables](#data-002---room-bitstream-boundaries):
+  `DATA-001` through `DATA-011`.
+- [ROM and controller input](#rom-001---exact-ines-identity): `ROM-001`,
+  `INPUT-001`, and `INPUT-002`.
+- [System and rendering](#sys-001---reset-signature-and-frame-gate):
+  `SYS-001` through `SYS-003`, `RENDER-001` through `RENDER-006`, and `UI-001`.
+- [Collision and player](#collision-001---transition-adjacent-type-and-cell-filters):
+  `COLLISION-001`, `COLLISION-002`, and `PLAYER-001` through `PLAYER-005`.
+- [Gameplay and rooms](#game-001---new-game-state-initialization):
+  `GAME-001` through `GAME-008`, `ROOM-001`, and `ROOM-002`.
+- [Audio](#audio-001---alleged-textual-mml-region): `AUDIO-001` through
+  `AUDIO-003`.
+
 ## Resolved registry
 
 ### OBJ-001 - six-byte runtime record ABI

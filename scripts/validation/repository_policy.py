@@ -171,6 +171,51 @@ def validate_documentation(root: Path) -> None:
         )
 
 
+def validate_tool_layout(root: Path) -> None:
+    path = root / "config/reconstruction/tool_layout.json"
+    try:
+        contract = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ProjectError(f"cannot read tool layout contract: {exc}") from exc
+    if contract.get("schema_version") != 1:
+        raise ProjectError("unsupported tool layout schema")
+    target_maximum = contract.get("python_target_lines", {}).get("maximum")
+    if not isinstance(target_maximum, int) or target_maximum <= 0:
+        raise ProjectError("tool layout has no positive Python maximum")
+    exceptions = contract.get("size_exceptions", [])
+    declared = {
+        item.get("path"): item for item in exceptions if isinstance(item, dict)
+    }
+    if len(declared) != len(exceptions) or None in declared:
+        raise ProjectError("tool layout size exceptions are duplicated or incomplete")
+    oversized: dict[str, int] = {}
+    for source in sorted((root / "scripts").rglob("*.py")):
+        if source.name == "__init__.py":
+            continue
+        lines = len(source.read_text(encoding="utf-8").splitlines())
+        relative = source.relative_to(root).as_posix()
+        if lines > target_maximum:
+            oversized[relative] = lines
+    if set(oversized) != set(declared):
+        raise ProjectError(
+            "tool layout exception mismatch; "
+            f"missing={sorted(set(oversized) - set(declared))}, "
+            f"stale={sorted(set(declared) - set(oversized))}"
+        )
+    for relative, lines in oversized.items():
+        item = declared[relative]
+        if item.get("lines") != lines:
+            raise ProjectError(
+                f"tool layout line count is stale for {relative}: "
+                f"declared {item.get('lines')}, actual {lines}"
+            )
+        maximum = item.get("maximum")
+        if not isinstance(maximum, int) or lines > maximum:
+            raise ProjectError(f"tool layout maximum is exceeded for {relative}")
+        if not item.get("reason"):
+            raise ProjectError(f"tool layout exception lacks a reason: {relative}")
+
+
 def command_lint(_args: argparse.Namespace) -> None:
     required = (
         "README.md",
@@ -186,6 +231,7 @@ def command_lint(_args: argparse.Namespace) -> None:
         "config/reconstruction/memory_symbols.json",
         "config/reconstruction/operand_overrides.json",
         "config/reconstruction/source_layout.json",
+        "config/reconstruction/tool_layout.json",
         "config/reconstruction/symbols.json",
         "config/reconstruction/static_code_evidence.txt",
         "config/reconstruction/runtime_evidence.txt",
@@ -313,6 +359,7 @@ def command_lint(_args: argparse.Namespace) -> None:
     validate_test_layout(ROOT)
     validate_config_layout(ROOT)
     validate_documentation(ROOT)
+    validate_tool_layout(ROOT)
     load_manifest(ROOT / "assets/manifest.json")
     memory_symbols = load_memory_symbols(ROOT / "config/reconstruction/memory_symbols.json")
     load_operand_overrides(ROOT / "config/reconstruction/operand_overrides.json")

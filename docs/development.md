@@ -93,12 +93,13 @@ The tracked `config/` tree contains only authored inputs and release contracts:
 - `reconstruction/` owns symbols, operands, source layout, analyzer
   corrections, typed-data ranges, and code evidence.
 
-Four release-facing manifests remain directly under `config/`:
+Five release-facing manifests remain directly under `config/`:
 
 - `revision_profiles.json`;
 - `fixed_layout_variants.json`;
 - `source_reconstruction_1_0.json`;
-- `source_reconstruction_2_0.json`.
+- `source_reconstruction_2_0.json`;
+- `source_reconstruction_2_1.json`.
 
 Generated output, caches, and disposable analysis data never belong in
 `config/`. `make lint-source` rejects unexpected files or responsibility
@@ -129,6 +130,12 @@ Tools are grouped by responsibility:
   reconstruction contracts, with large families grouped by subsystem;
 - `workflow/` owns Ghidra installation, headless analysis, and deterministic
   disassembly regeneration.
+
+Python support modules target 300-700 physical lines. Oversized GUI controllers
+are bounded at 900 lines and listed with exact current counts and reasons in
+`config/reconstruction/tool_layout.json`; lint rejects undeclared, stale, or
+over-limit exceptions. Level Studio rendering and disassembly CLI ownership are
+already split from their engines rather than justified as mixed modules.
 
 Only `scripts/run.py` and package metadata may live directly under `scripts/`.
 The `tests/` tree mirrors the package layout. For example:

@@ -58,7 +58,7 @@ Five deliberately short modules remain:
 | --- | ---: | --- |
 | `src/game/collectibles/pickups_and_rewards.asm` | 284 | The cohesive collectible subsystem is 284 lines; merging either neighbor would mix lift control or player collision state. |
 | `src/rendering/sprites/frame.asm` | 237 | The bounded frame-sprite builder is a cohesive 237-line subsystem. |
-| `src/rendering/scenes.asm` | 245 | The 253-line scene renderer owns one contiguous room-screen and title-demo span. |
+| `src/rendering/scenes.asm` | 245 | The 245-line scene renderer owns one contiguous room-screen and title-demo span. |
 | `src/audio/sound_effects.asm` | 291 | The complete sound-effect engine is 291 lines and its adjacent ranges belong to music data and rendering. |
 | `src/system/prg_tail.asm` | 41 | The short fixed-layout tail must remain adjacent to the vectors at the end of PRG. |
 
