@@ -7,7 +7,7 @@ describes the emitted ca65 modules.
 
 ## Everyday commands
 
-The public interface is the Makefile:
+The public interface is the root Makefile:
 
 ```bash
 make format
@@ -25,6 +25,11 @@ the subsystem contracts.
 
 Use `make quality-check` when the private reference ROM is unavailable. Release
 and profile gates are listed in [verification.md](verification.md).
+
+The root file owns shared variables, build/profile rules, tool bootstrap, and
+release orchestration. Repetitive implementation rules are grouped in
+`mk/authoring.mk`, `mk/runtime.mk`, and `mk/validation.mk`. These are internal
+includes, not alternative command interfaces.
 
 ## Naming and evidence
 

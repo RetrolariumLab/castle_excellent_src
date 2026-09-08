@@ -11,7 +11,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 TEXT_SUFFIXES = {
-    ".asm", ".cfg", ".inc", ".java", ".json", ".lua", ".md", ".py", ".txt"
+    ".asm", ".cfg", ".inc", ".java", ".json", ".lua", ".md", ".mk", ".py", ".txt"
 }
 TEXT_NAMES = {".editorconfig", ".gitattributes", ".gitignore", "Makefile"}
 SKIP_PARTS = {

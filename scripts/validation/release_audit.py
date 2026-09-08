@@ -87,6 +87,31 @@ def make_targets(makefile: str) -> set[str]:
     }
 
 
+def phony_targets(make_database: str) -> set[str]:
+    targets: set[str] = set()
+    for match in re.finditer(r"^\.PHONY:\s*(.*)$", make_database, re.MULTILINE):
+        targets.update(match.group(1).split())
+    return targets
+
+
+def project_make_targets(project_root: Path) -> set[str]:
+    result = subprocess.run(
+        ["make", "-qp"],
+        cwd=project_root,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if result.returncode not in (0, 1):
+        raise ReleaseAuditError(f"cannot inspect Make targets: {result.stderr.strip()}")
+    targets = phony_targets(result.stdout)
+    if not targets:
+        raise ReleaseAuditError("Make database contains no phony targets")
+    return targets
+
+
 def validate_reference_contract(
     release: dict[str, Any], assets: dict[str, Any]
 ) -> list[str]:
@@ -111,7 +136,7 @@ def validate_reference_contract(
 
 
 def validate_manifest_contract(
-    project_root: Path, release: dict[str, Any], makefile: str
+    project_root: Path, release: dict[str, Any], targets: set[str]
 ) -> list[str]:
     errors: list[str] = []
     contract = release.get("contract", {})
@@ -149,7 +174,6 @@ def validate_manifest_contract(
     if not release.get("delta"):
         errors.append("first-release delta is empty")
 
-    targets = make_targets(makefile)
     artifact_ids = {
         item.get("id") for item in release.get("artifacts", []) if isinstance(item, dict)
     }
@@ -231,7 +255,18 @@ def validate_manifest_contract(
         errors.append("licensing does not classify every required component category")
     if release.get("provenance", {}).get("private_inputs_tracked") is not False:
         errors.append("provenance must declare private_inputs_tracked false")
+    errors.extend(validate_release_commands(release, targets))
     return errors
+
+
+def validate_release_commands(
+    release: dict[str, Any], targets: set[str]
+) -> list[str]:
+    return [
+        f"release command has no Make target: {target}"
+        for target in release.get("release_commands", [])
+        if target not in targets
+    ]
 
 
 def validate_scenario_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
@@ -470,8 +505,8 @@ def validate_release(
 ) -> list[str]:
     release = load_json(manifest_path)
     assets = load_json(project_root / "assets" / "manifest.json")
-    makefile = (project_root / "Makefile").read_text(encoding="utf-8")
-    errors = validate_manifest_contract(project_root, release, makefile)
+    targets = project_make_targets(project_root)
+    errors = validate_manifest_contract(project_root, release, targets)
     errors.extend(validate_reference_contract(release, assets))
     errors.extend(validate_scenario_manifest(project_root, release))
     errors.extend(validate_artifacts(project_root, release))
@@ -570,10 +605,6 @@ def validate_release(
             errors.append(f"generated artifact is tracked: {relative}")
         if normalized.startswith("src/preservation/"):
             errors.append(f"preservation source remains tracked: {relative}")
-
-    for target in release["release_commands"]:
-        if re.search(rf"^{re.escape(target)}\s*:", makefile, re.MULTILINE) is None:
-            errors.append(f"release command has no Make target: {target}")
 
     if require_clean and git_lines(project_root, "status", "--porcelain"):
         errors.append("release audit requires a clean worktree")

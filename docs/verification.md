@@ -59,9 +59,10 @@ Focused region targets compare only their named output region. For example,
 investigating an unrelated CHR issue. `verify` remains the release gate and
 accepts no differences anywhere.
 
-The exact focused-validator inventory belongs to `Makefile` and the release
-manifests. This document describes their shared contract rather than repeating
-a list that can drift from executable policy.
+The exact focused-validator inventory belongs to `mk/validation.mk` and the
+release manifests, with the root `Makefile` providing the public entrypoints.
+This document describes their shared contract rather than repeating a list
+that can drift from executable policy.
 
 ## Runtime evidence
 

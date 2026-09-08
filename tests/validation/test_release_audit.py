@@ -10,10 +10,11 @@ import unittest
 from scripts.validation import release_audit
 class ReleaseAuditTests(unittest.TestCase):
     def test_project_scenario_captures_resolve_after_tool_reorganization(self) -> None:
+        root = Path(__file__).resolve().parents[2]
         release = release_audit.load_json(
-            ROOT / "config" / "source_reconstruction_1_0.json"
+            root / "config" / "source_reconstruction_1_0.json"
         )
-        self.assertEqual(release_audit.validate_scenario_manifest(ROOT, release), [])
+        self.assertEqual(release_audit.validate_scenario_manifest(root, release), [])
 
     def test_reference_contract_accepts_matching_identity(self) -> None:
         release = {
@@ -81,6 +82,23 @@ class ReleaseAuditTests(unittest.TestCase):
     def test_make_targets_extracts_only_public_rules(self) -> None:
         makefile = "lint:\n\tpython lint.py\n\nfile.o: file.asm\n\n.PHONY: lint\n"
         self.assertEqual(release_audit.make_targets(makefile), {"lint", "file.o"})
+
+    def test_release_commands_use_expanded_make_targets(self) -> None:
+        errors = release_audit.validate_release_commands(
+            {"release_commands": ["included-target", "missing-target"]},
+            {"included-target"},
+        )
+        self.assertEqual(
+            errors,
+            ["release command has no Make target: missing-target"],
+        )
+
+    def test_phony_targets_read_the_expanded_make_database(self) -> None:
+        database = ".PHONY: lint check validate-rooms\nfile.o: file.asm\n"
+        self.assertEqual(
+            release_audit.phony_targets(database),
+            {"lint", "check", "validate-rooms"},
+        )
 
     def test_scenario_manifest_matches_direct_profile_coverage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

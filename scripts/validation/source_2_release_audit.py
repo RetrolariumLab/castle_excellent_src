@@ -347,8 +347,7 @@ def validate_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
     delta_ids = [item.get("id") for item in delta if isinstance(item, dict)]
     if not delta_ids or len(delta_ids) != len(set(delta_ids)):
         errors.append("delta IDs are empty or duplicated")
-    makefile = (project_root / "Makefile").read_text(encoding="utf-8")
-    targets = release_audit.make_targets(makefile)
+    targets = release_audit.project_make_targets(project_root)
     for item in delta:
         if not item.get("summary") or not item.get("kind") or not item.get("evidence"):
             errors.append(f"delta {item.get('id')} is incomplete")

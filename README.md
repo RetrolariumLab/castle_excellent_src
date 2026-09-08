@@ -103,6 +103,7 @@ config/authoring/       level, music, and graphics contracts
 config/debugger/        symbol-resolved breakpoints and watches
 config/reconstruction/  symbols, operands, source layout, and code evidence
 docs/                   architecture, formats, workflows, and release policy
+mk/                     authoring, runtime, and validation Make rules
 scripts/authoring/      headless codecs and visual studios
 scripts/build/          assembly, profiles, variants, and byte comparison
 scripts/runtime/        emulator capture, playtesting, and live validation
