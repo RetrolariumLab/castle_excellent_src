@@ -15,7 +15,13 @@
   "predecessor": {
     "manifest": "config/source_reconstruction_1_0.json",
     "tag": "source-reconstruction-1.0",
-    "commit": "6ae3cc3505c30cc77941703e025c46aab88e7d2a"
+    "commit": "ce382dc14ec83d3d0738da085000325531c82e42"
+  },
+  "delta_history": {
+    "from_exclusive": "ce382dc14ec83d3d0738da085000325531c82e42",
+    "through_inclusive": "6f580866aa2229be06188dde27649b75514c89c3",
+    "commit_count": 33,
+    "coverage_document": "docs/source_reconstruction_2_0.md"
   },
   "included_scope": [
     "unchanged-source-reconstruction-1.0-contract",
@@ -179,6 +185,85 @@
         "scripts/runtime/validate_fixed_layout.lua",
         "tests/build/test_fixed_layout_variant.py",
         "docs/fixed_layout_variants.md"
+      ]
+    },
+    {
+      "id": "editor-fidelity-and-castle-overview",
+      "kind": "authoring",
+      "summary": "Render rooms, objects, the player, water, music lanes, audio previews, and editable graphics from reconstructed runtime data, including a navigable overview of all 100 rooms.",
+      "evidence": [
+        "scripts/authoring/level_studio_model.py",
+        "scripts/authoring/sound_studio_model.py",
+        "scripts/authoring/graphics_studio_model.py",
+        "tests/authoring/test_level_studio_model.py",
+        "tests/authoring/test_sound_studio_model.py",
+        "tests/authoring/test_graphics_studio_model.py",
+        "docs/content_authoring.md"
+      ]
+    },
+    {
+      "id": "editor-quality-contract",
+      "kind": "authoring-validation",
+      "summary": "Validate visual editor composition for both supported profiles, keep preview audio at a safe level, and pin the Level Studio Play action to the maintained runtime launcher.",
+      "evidence": [
+        "editor-quality-check",
+        "editor-ui-smoke-profile",
+        "scripts/authoring/level_studio.py",
+        "scripts/authoring/sound_studio.py",
+        "tests/authoring/test_level_studio_model.py"
+      ]
+    },
+    {
+      "id": "semantic-source-hierarchy",
+      "kind": "source-and-debugging",
+      "summary": "Reorganize the complete address-ordered PRG into bounded subsystem modules while preserving byte identity and validating debugger line coverage against the source-layout registry.",
+      "evidence": [
+        "src/main.asm",
+        "config/reconstruction/source_layout.json",
+        "docs/source_layout.md",
+        "scripts/validation/debug_symbols.py",
+        "tests/validation/test_debug_symbols.py"
+      ]
+    },
+    {
+      "id": "repository-responsibility-layout",
+      "kind": "tooling-and-documentation",
+      "summary": "Group scripts, mirrored tests, configuration, and documentation by responsibility while preserving one stable repository-local tool launcher and validated path boundaries.",
+      "evidence": [
+        "scripts/run.py",
+        "scripts/build/project.py",
+        "tests/test_script_runner.py",
+        "tests/build/test_project.py",
+        "docs/development.md",
+        "docs/index.md"
+      ]
+    },
+    {
+      "id": "public-workflow-surface",
+      "kind": "tooling-and-documentation",
+      "summary": "Reduce README and Make orchestration to a documented public interface with categorized help, modular rule fragments, a meaningful ROM-less scaffold gate, and checked root-document links.",
+      "evidence": [
+        "README.md",
+        "CONTRIBUTING.md",
+        "Makefile",
+        "mk/authoring.mk",
+        "mk/runtime.mk",
+        "mk/validation.mk",
+        "scripts/build/make_help.py",
+        "tests/build/test_make_help.py"
+      ]
+    },
+    {
+      "id": "release-path-hardening",
+      "kind": "release-evidence",
+      "summary": "Repair and test the inherited Source 1 audit, resolve every relocated runtime capture path, validate both profile scenario manifests, bind pre-tag checks to the declared development branch, and reject substantive commits omitted from the Source 2 delta history.",
+      "evidence": [
+        "scenarios/source_1.json",
+        "scenarios/source_2_castlequest.json",
+        "scripts/validation/release_audit.py",
+        "scripts/validation/source_2_release_audit.py",
+        "tests/validation/test_release_audit.py",
+        "tests/validation/test_source_2_release_audit.py"
       ]
     },
     {
@@ -587,7 +672,7 @@
     "private_inputs_tracked": false,
     "history_policy": {
       "current_history_status": "compliant",
-      "predecessor_commit": "6ae3cc3505c30cc77941703e025c46aab88e7d2a",
+      "predecessor_commit": "ce382dc14ec83d3d0738da085000325531c82e42",
       "development_branch": "source-reconstruction-2.0",
       "reason": "Source 2.0 was developed as ordinary atomic commits after the accepted Source 1.0 predecessor; every commit is checked for English subject and body text plus exact Codex attribution."
     }
