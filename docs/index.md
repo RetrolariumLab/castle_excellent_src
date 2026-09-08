@@ -7,7 +7,7 @@ left as disconnected notes.
 ## Release contracts
 
 - [Source Reconstruction 2.1](source_reconstruction_2_1.md) — compatible
-  hardening scope under active development.
+  repository-hardening release.
 - [Source Reconstruction contract](source_reconstruction.md) — enduring
   definition of a reconstructed source release.
 - [Source Reconstruction 2.0](source_reconstruction_2_0.md) — current
@@ -22,6 +22,7 @@ left as disconnected notes.
   and source regeneration.
 - [Verification](verification.md) — identity, runtime, debugger, and release
   gates.
+
 ## Engine reference
 
 - [Architecture](architecture.md) — conceptual runtime design.

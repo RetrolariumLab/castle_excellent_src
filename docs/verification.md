@@ -53,7 +53,7 @@ payload, full image, and extracted CHR.
 | `source-2-check` | run the complete 1.0 gate, Castlequest runtime, fixed-layout proof, authoring checks and baseline room playtests for both revisions, then audit the 2.0 manifest |
 | `source-2-pre-tag-check` | full 2.0 gate plus `tag-ready` metadata, clean tree, absent local/remote future tag, and commit-history policy |
 | `source-2-tag-check` | full 2.0 gate plus clean tree and an annotated `source-reconstruction-2.0` tag peeled to `HEAD` |
-| `source-2-minor-audit` | reconcile the compatible 2.1 manifest, pinned rev.5 contract chain, immutable 2.0 predecessor, complete delta and inherited release evidence |
+| `source-2-minor-audit` | reconcile the compatible 2.1 project manifest, immutable 2.0 predecessor, complete delta and inherited release evidence |
 | `source-2-minor-check` | run the accepted complete 2.0 gate first, then the compatible 2.1 hardening and release audit |
 | `source-2-minor-pre-tag-check` | full 2.1 gate plus clean-tree, history, branch and absent-tag requirements |
 | `source-2-minor-tag-check` | full 2.1 gate plus an annotated `source-reconstruction-2.1` tag peeled to `HEAD` |

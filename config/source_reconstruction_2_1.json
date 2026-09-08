@@ -24,7 +24,7 @@
     "castle-excellent-japan-hsp-05-byte-identical-profile",
     "castlequest-usa-byte-identical-profile",
     "profile-aware-level-music-graphics-authoring",
-    "project-release-metadata",
+    "project-release-quality",
     "repository-quality-hardening"
   ],
   "excluded_scope": [
@@ -51,14 +51,88 @@
   ],
   "delta": [
     {
-      "id": "source-2.1-release-interface",
+      "id": "project-release-quality",
       "kind": "release-metadata",
-      "summary": "Define the compatible Source Reconstruction 2.1 boundary with a self-contained project manifest and aggregate release commands.",
+      "summary": "Define self-contained Source 2.1 release metadata, enforce English public text, and retain the compatible project boundary.",
       "evidence": [
         "config/source_reconstruction_2_1.json",
         "scripts/validation/source_2_minor_release_audit.py",
         "tests/validation/test_source_2_minor_release_audit.py",
         "docs/source_reconstruction_2_1.md"
+      ]
+    },
+    {
+      "id": "git-object-history-audit",
+      "kind": "release-evidence",
+      "summary": "Reject empty commits from their Git trees and validate the complete English message, paragraph, and attribution contract across the release delta.",
+      "evidence": [
+        "scripts/validation/release_history.py",
+        "tests/validation/test_release_history.py"
+      ]
+    },
+    {
+      "id": "immutable-predecessor-and-minor-gate",
+      "kind": "release-tooling",
+      "summary": "Anchor published audits to annotated tags and add a compatible 2.1 gate that executes the accepted Source 2.0 gate before validating the current delta.",
+      "evidence": [
+        "source-2-minor-check",
+        "scripts/validation/source_2_minor_release_audit.py",
+        "tests/validation/test_source_2_minor_release_audit.py"
+      ]
+    },
+    {
+      "id": "disposable-public-command-smoke",
+      "kind": "release-evidence",
+      "summary": "Run the real public lint command in a disposable tracked-only clone and reject failures or worktree mutations.",
+      "evidence": [
+        "public-command-smoke",
+        "scripts/validation/public_command_smoke.py",
+        "tests/validation/test_public_command_smoke.py"
+      ]
+    },
+    {
+      "id": "python-source-and-layout-policy",
+      "kind": "repository-tooling",
+      "summary": "Add non-mutating AST source lint, machine-readable Python size exceptions, and focused ownership boundaries for previously oversized build, editor, object, and disassembly modules.",
+      "evidence": [
+        "lint-python",
+        "config/reconstruction/tool_layout.json",
+        "scripts/validation/python_source.py",
+        "scripts/validation/repository_policy.py",
+        "scripts/authoring/level_studio_rendering.py",
+        "scripts/validation/objects/runtime_object_dispatch_contract.py",
+        "scripts/workflow/generate_disassembly_cli.py"
+      ]
+    },
+    {
+      "id": "atomic-output-contract",
+      "kind": "repository-tooling",
+      "summary": "Route important ROM, JSON, report, debugger, analysis, generated-source, and formatter outputs through one tested same-directory atomic writer.",
+      "evidence": [
+        "scripts/build/atomic_io.py",
+        "tests/build/test_atomic_io.py"
+      ]
+    },
+    {
+      "id": "editor-workstation-interactions",
+      "kind": "authoring-evidence",
+      "summary": "Exercise Save, Build, Play, preview, and both dirty-close decisions in all applicable visual editors with disposable outputs for both supported profiles.",
+      "evidence": [
+        "editor-ui-smoke-profile",
+        "scripts/authoring/editor_workstation_smoke.py",
+        "tests/authoring/test_editor_workstation_smoke.py",
+        "docs/content_authoring.md"
+      ]
+    },
+    {
+      "id": "documentation-and-contract-reconciliation",
+      "kind": "documentation",
+      "summary": "Correct stale source-layout metadata, add resolved-evidence navigation, document tool boundaries, and expose the Source 2.1 verification interface.",
+      "evidence": [
+        "docs/source_layout.md",
+        "docs/resolved_unknowns.md",
+        "docs/development.md",
+        "docs/verification.md"
       ]
     }
   ],
@@ -67,7 +141,7 @@
       "status": "satisfied",
       "evidence": {
         "targets": [
-          "source-2-tag-check"
+          "source-2-check"
         ],
         "files": [
           "config/source_reconstruction_2_0.json"
@@ -82,7 +156,7 @@
         ]
       }
     },
-    "project_release_metadata": {
+    "project_release_quality": {
       "status": "satisfied",
       "evidence": {
         "targets": [
@@ -91,47 +165,83 @@
         "files": [
           "config/source_reconstruction_2_1.json",
           "scripts/validation/source_2_minor_release_audit.py",
-          "tests/validation/test_source_2_minor_release_audit.py",
-          "docs/source_reconstruction_2_1.md"
+          "tests/validation/test_source_2_minor_release_audit.py"
         ],
         "scenarios": [],
         "artifacts": []
       }
     },
     "history_and_public_command_audit": {
-      "status": "planned",
+      "status": "satisfied",
       "evidence": {
-        "targets": [],
-        "files": [],
+        "targets": [
+          "public-command-smoke",
+          "source-2-minor-audit"
+        ],
+        "files": [
+          "scripts/validation/release_history.py",
+          "scripts/validation/public_command_smoke.py",
+          "tests/validation/test_release_history.py",
+          "tests/validation/test_public_command_smoke.py"
+        ],
         "scenarios": [],
         "artifacts": []
       }
     },
     "repository_quality_hardening": {
-      "status": "planned",
+      "status": "satisfied",
       "evidence": {
-        "targets": [],
-        "files": [],
+        "targets": [
+          "lint",
+          "lint-python"
+        ],
+        "files": [
+          "config/reconstruction/tool_layout.json",
+          "scripts/build/atomic_io.py",
+          "scripts/validation/repository_policy.py",
+          "docs/resolved_unknowns.md"
+        ],
         "scenarios": [],
         "artifacts": []
       }
     },
     "editor_interaction_evidence": {
-      "status": "planned",
+      "status": "satisfied",
       "evidence": {
-        "targets": [],
-        "files": [],
+        "targets": [
+          "editor-ui-smoke-profile"
+        ],
+        "files": [
+          "scripts/authoring/editor_workstation_smoke.py",
+          "tests/authoring/test_editor_workstation_smoke.py"
+        ],
         "scenarios": [],
-        "artifacts": []
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom",
+          "castlequest-usa-rom"
+        ]
       }
     },
     "aggregate_source_2_minor_gate": {
-      "status": "planned",
+      "status": "satisfied",
       "evidence": {
-        "targets": [],
-        "files": [],
-        "scenarios": [],
-        "artifacts": []
+        "targets": [
+          "source-2-minor-check",
+          "source-2-minor-pre-tag-check",
+          "source-2-minor-tag-check"
+        ],
+        "files": [
+          "Makefile",
+          "docs/verification.md"
+        ],
+        "scenarios": [
+          "scenarios/source_1.json",
+          "scenarios/source_2_castlequest.json"
+        ],
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom",
+          "castlequest-usa-rom"
+        ]
       }
     }
   },
@@ -352,10 +462,10 @@
     ],
     "private_inputs_tracked": false,
     "history_policy": {
-      "current_history_status": "development",
+      "current_history_status": "tag-ready",
       "predecessor_commit": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
       "development_branch": "rewrite/source-2.1-modernization",
-      "reason": "Source 2.1 is developed as non-empty atomic commits after the immutable Source 2.0 release."
+      "reason": "Source 2.1 is developed as a sequence of non-empty atomic commits after the immutable Source 2.0 release."
     }
   },
   "artifacts": [
@@ -408,6 +518,10 @@
     "source-2-check",
     "source-2-minor-check",
     "source-2-minor-pre-tag-check",
-    "source-2-minor-tag-check"
+    "source-2-minor-tag-check",
+    "public-command-smoke",
+    "lint-python",
+    "editor-ui-smoke-profile",
+    "source-2-minor-audit"
   ]
 }

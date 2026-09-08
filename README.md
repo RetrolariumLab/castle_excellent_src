@@ -9,7 +9,8 @@ format, debugger, and emulator evidence.
 ## Status
 
 Source Reconstruction 1.0 is the released Japanese-only preservation
-baseline. Source Reconstruction 2.0 is tag-ready and adds:
+baseline. Source Reconstruction 2.0 is the released profile-aware baseline and
+adds:
 
 - a byte-identical Castlequest USA profile;
 - complete semantic or typed-data ownership of the 32 KiB PRG;
@@ -17,6 +18,12 @@ baseline. Source Reconstruction 2.0 is tag-ready and adds:
 - visual Level, Sound, and Graphics studios backed by the same headless codecs;
 - deterministic Ghidra regeneration, FCEUX scenarios, and debugger symbols;
 - a bounded fixed-layout modification proof.
+
+Source Reconstruction 2.1 is the active compatible release candidate. It
+preserves the 2.0 ROM, profile, runtime, and editor contracts while adding
+self-contained release metadata, object-level history auditing, disposable
+public command smoke, Python source policy, atomic output writes, bounded tool
+modules, and complete workstation editor interactions.
 
 The game uses CNROM mapper 3: one fixed 32 KiB PRG at `$8000-$FFFF` and four
 switchable 8 KiB CHR banks. CPU code is not bank-switched; CHR banks 2 and 3
@@ -93,10 +100,12 @@ make quality-check    # lint and the complete ROM-backed Python suite
 make check            # build, prove byte identity, and run static contracts
 make source-2-audit   # reconcile the Source 2.0 manifest and evidence
 make source-2-check   # run the complete two-profile release candidate gate
+make source-2-minor-audit # reconcile the compatible Source 2.1 delta
+make source-2-minor-check # run accepted 2.0 first, then the complete 2.1 delta
 ```
 
-`make source-2-pre-tag-check` adds clean-tree, history, and tag-readiness
-requirements. The full gate model is documented in
+`make source-2-minor-pre-tag-check` adds clean-tree, history, branch, and
+tag-readiness requirements for 2.1. The full gate model is documented in
 [Verification](docs/verification.md).
 
 ## Repository map

@@ -8,20 +8,21 @@ level, music, and graphics authoring contracts accepted by 2.0.
 
 The release uses a self-contained project manifest that records its public
 scope, predecessor, evidence, supported profiles, exclusions, and aggregate
-verification commands.
+verification commands. The project audit also rejects non-English public text.
 
-## Planned compatible delta
+## Compatible delta
 
-The 2.1 line is limited to repository-quality improvements that preserve the
-2.0 source, profile, runtime, and authoring architecture:
+The 2.1 line contains repository-quality improvements that preserve the 2.0
+source, profile, runtime, and authoring architecture:
 
 - enforce non-empty commits, release-message policy, and rewrite chronology;
 - exercise a real public release command in a disposable repository fixture;
-- add Python syntax/static checks and atomic report writes;
+- add non-mutating Python syntax/static checks and one atomic writer for ROM,
+  JSON, report, debugger, analysis, generated-source, and formatter output;
 - strengthen workstation editor smokes around save, build, play, preview, and
   dirty-close behavior;
-- review Python file-size exceptions and split mixed responsibilities where it
-  improves the public API;
+- split build policy, Level Studio rendering, object-dispatch facts, and the
+  disassembly CLI; machine-check the two remaining bounded GUI exceptions;
 - add navigation to the resolved-evidence ledger and record all remaining
   layout deviations explicitly.
 
@@ -29,7 +30,10 @@ Additional platforms, general relocation, expanded ROM architecture, sibling
 engines, and a different canonical preservation image remain outside Source
 2.x. They require a later major release or a separate architectural decision.
 
-The manifest remains `development` until every planned requirement has concrete
-evidence, the complete 2.0 baseline gate runs first, the 2.1 delta gate passes
-from a clean build on the supported Windows x64 host, and the exact Git history
-is recorded.
+The machine-readable delta boundary remains open while this modernization
+snapshot is reviewed. The release audit will close it on the final substantive
+commit before the aggregate gate is accepted.
+
+The manifest remains `development` until the reconstructed history, complete
+aggregate gate, and final release boundary are accepted on the supported
+Windows x64 host.

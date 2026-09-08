@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 from typing import Any
+import unicodedata
 
 from scripts.validation import release_audit
 from scripts.validation import release_history
@@ -18,6 +19,21 @@ from scripts.validation import source_2_release_audit as source_2
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_SCHEMA_VERSION = 1
 RELEASE_STATUSES = {"development", "tag-ready", "tagged"}
+PUBLIC_TEXT_SUFFIXES = {
+    ".asm",
+    ".cfg",
+    ".inc",
+    ".json",
+    ".lua",
+    ".md",
+    ".mk",
+    ".py",
+    ".toml",
+    ".txt",
+    ".yaml",
+    ".yml",
+}
+PUBLIC_TEXT_NAMES = {"Makefile"}
 MINOR_METADATA_PATHS = {
     "config/source_reconstruction_2_1.json",
     "docs/source_reconstruction_2_1.md",
@@ -42,12 +58,61 @@ def git_lines(project_root: Path, *arguments: str) -> list[str]:
     return source_2.git_lines(project_root, *arguments)
 
 
+def release_terminal(project_root: Path, release: dict[str, Any]) -> str:
+    tag = release.get("tag")
+    if not tag:
+        return "HEAD"
+    result = subprocess.run(
+        ["git", "show-ref", "--verify", "--quiet", f"refs/tags/{tag}"],
+        cwd=project_root,
+        check=False,
+    )
+    if result.returncode != 0:
+        return "HEAD"
+    target = git_lines(project_root, "rev-parse", f"refs/tags/{tag}^{{commit}}")
+    head = git_lines(project_root, "rev-parse", "HEAD")
+    return target[0] if target == head else "HEAD"
+
+
 def validate_release_schema(release: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if release.get("schema_version") != MANIFEST_SCHEMA_VERSION:
         errors.append(f"schema_version must be {MANIFEST_SCHEMA_VERSION!r}")
     if release.get("release_line") != "2.x":
         errors.append("release_line must be '2.x'")
+    return errors
+
+
+def validate_public_english_text(project_root: Path) -> list[str]:
+    errors: list[str] = []
+    for relative in git_lines(project_root, "ls-files"):
+        path = project_root / relative
+        if (
+            path.name not in PUBLIC_TEXT_NAMES
+            and path.suffix.lower() not in PUBLIC_TEXT_SUFFIXES
+        ):
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            errors.append(f"tracked public text is not UTF-8: {relative}")
+            continue
+        for line_number, line in enumerate(text.splitlines(), start=1):
+            non_latin = next(
+                (
+                    character
+                    for character in line
+                    if character.isalpha()
+                    and "LATIN" not in unicodedata.name(character, "")
+                ),
+                None,
+            )
+            if non_latin is not None:
+                errors.append(
+                    f"non-English public text at {relative}:{line_number} "
+                    f"({unicodedata.name(non_latin, 'unknown character')})"
+                )
+                break
     return errors
 
 
@@ -119,6 +184,8 @@ def validate_delta_history(project_root: Path, release: dict[str, Any]) -> list[
         errors.append("delta_history does not start at the predecessor commit")
     through = history.get("through_inclusive")
     count = history.get("commit_count")
+    if release.get("status") == "development" and through is None and count == 0:
+        return errors
     if not isinstance(through, str) or not through:
         return errors + ["delta_history has no terminal commit"]
     if not isinstance(count, int) or count <= 0:
@@ -130,7 +197,7 @@ def validate_delta_history(project_root: Path, release: dict[str, Any]) -> list[
         errors.append("delta_history terminal commit is not reachable from predecessor")
     if len(commits) != count:
         errors.append(f"delta_history covers {len(commits)} commits, expected {count}")
-    boundary = source_2.release_terminal(project_root, release)
+    boundary = release_terminal(project_root, release)
     trailing = git_lines(project_root, "rev-list", "--reverse", f"{through}..{boundary}")
     for commit in trailing:
         changed = set(
@@ -263,6 +330,7 @@ def validate_release(
     errors.extend(release_audit.validate_toolchain(project_root, release))
     errors.extend(source_2.validate_artifacts(project_root, release))
     errors.extend(source_2.validate_repository_policy(project_root))
+    errors.extend(validate_public_english_text(project_root))
     if require_clean and git_lines(project_root, "status", "--porcelain"):
         errors.append("release audit requires a clean worktree")
     if pre_tag:
