@@ -209,9 +209,14 @@ experiment cannot weaken or accidentally break the release gate.
 `make editor-quality-check` is the aggregate editor contract. It runs lint,
 visual/audio model regressions, byte-identical level/music/graphics round trips,
 and the complete headless studio models for both supported revisions.
-`make editor-ui-smoke-profile REVISION_PROFILE=...` additionally constructs and
-closes all three real Tk windows on a workstation; it is intentionally separate
-from the headless gate.
+`make editor-ui-smoke-profile REVISION_PROFILE=...` additionally exercises all
+three real Tk applications on a workstation. Disposable outputs prove Save and
+Build; Level Studio invokes the Play adapter and renders the 100-room overview;
+Sound Studio renders lanes, writes a playable WAV, and invokes workstation
+playback; Graphics Studio draws tile, atlas, and descriptor previews. Every
+editor also proves both outcomes of its dirty-close confirmation. The smoke is
+intentionally separate from the headless gate and runs for each supported
+profile in the Source 2.1 aggregate gate.
 
 ## Why there is no World Studio
 

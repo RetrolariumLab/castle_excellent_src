@@ -60,7 +60,5 @@ editor-quality-check:
 	$(MAKE) editor-quality-check-profile REVISION_PROFILE=castle-excellent-japan-hsp-05
 	$(MAKE) editor-quality-check-profile REVISION_PROFILE=castlequest-usa
 
-editor-ui-smoke-profile: init-levels init-music init-graphics
-	$(RUN_TOOL) authoring.level_studio --authoring "$(LEVEL_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
-	$(RUN_TOOL) authoring.sound_studio --authoring "$(AUDIO_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
-	$(RUN_TOOL) authoring.graphics_studio --authoring "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" --smoke-ui
+editor-ui-smoke-profile: fceux-bootstrap init-levels init-music init-graphics
+	$(RUN_TOOL) authoring.editor_workstation_smoke --levels "$(LEVEL_AUTHORING)" --audio "$(AUDIO_AUTHORING)" --graphics "$(GRAPHICS_AUTHORING)" --revisions "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)"

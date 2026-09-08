@@ -249,6 +249,8 @@ public-command-smoke:
 
 source-2-minor-check:
 	$(MAKE) source-2-check
+	$(MAKE) editor-ui-smoke-profile REVISION_PROFILE=castle-excellent-japan-hsp-05
+	$(MAKE) editor-ui-smoke-profile REVISION_PROFILE=castlequest-usa
 	$(MAKE) public-command-smoke
 	$(MAKE) source-2-minor-audit
 
