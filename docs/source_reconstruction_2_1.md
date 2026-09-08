@@ -30,9 +30,10 @@ Additional platforms, general relocation, expanded ROM architecture, sibling
 engines, and a different canonical preservation image remain outside Source
 2.x. They require a later major release or a separate architectural decision.
 
-The machine-readable delta boundary remains open while this modernization
-snapshot is reviewed. The release audit will close it on the final substantive
-commit before the aggregate gate is accepted.
+The machine-readable delta covers 13 non-empty implementation and scope commits
+through `009cc2759ca82e6f20d573f86637fb2e94a76df4`. Later release-only commits may
+change only this document and `config/source_reconstruction_2_1.json`; the audit
+rejects any uncovered substantive path.
 
 The manifest remains `development` until the reconstructed history, complete
 aggregate gate, and final release boundary are accepted on the supported
