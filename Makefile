@@ -30,7 +30,8 @@ ROMLESS_TEST_MODULES := \
 	tests.validation.test_source_2_release_audit \
 	tests.validation.test_release_history \
 	tests.validation.test_source_2_minor_release_audit \
-	tests.validation.test_public_command_smoke
+	tests.validation.test_public_command_smoke \
+	tests.validation.test_python_source
 
 LEVEL_AUTHORING := config/authoring/levels.json
 AUDIO_AUTHORING := config/authoring/audio.json
@@ -75,7 +76,7 @@ MAKE_FRAGMENTS := mk/authoring.mk mk/runtime.mk mk/validation.mk
 	split-profile build-profile verify-profile castlequest-check \
 	castlequest-runtime build-fixed-layout verify-fixed-layout \
 	check-fixed-layout symbols validate-symbols format format-check lint-asm \
-	lint-source lint-project lint test quality-check scaffold-check \
+	lint-source lint-python lint-project lint test quality-check scaffold-check \
 	reconstruction-audit build-toolchain-status release-audit source-1-check \
 	source-1-pre-tag-check source-1-tag-check source-2-audit \
 	source-2-authoring-check-profile source-2-check source-2-pre-tag-check \
@@ -182,9 +183,12 @@ lint-source:
 	$(RUN_TOOL) validation.format_project check
 	$(RUN_TOOL) build.project lint
 
+lint-python:
+	$(RUN_TOOL) validation.python_source --project-root .
+
 lint-project: lint-source
 
-lint: lint-asm lint-source
+lint: lint-asm lint-source lint-python
 
 test: ghidra-analyze
 	$(PYTHON) -m unittest discover -s tests -v
