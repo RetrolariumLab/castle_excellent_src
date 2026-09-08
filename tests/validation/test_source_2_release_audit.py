@@ -11,6 +11,20 @@ ROOT = Path(__file__).resolve().parents[2]
 
 from scripts.validation import source_2_release_audit as audit
 class Source2ReleaseAuditTests(unittest.TestCase):
+    def test_published_release_uses_immutable_tag_as_history_terminal(self) -> None:
+        release = {"tag": "source-reconstruction-2.0"}
+        with mock.patch("subprocess.run") as run, mock.patch.object(
+            audit, "git_lines", return_value=["release-commit"]
+        ):
+            run.return_value.returncode = 0
+            self.assertEqual(audit.release_terminal(ROOT, release), "release-commit")
+
+    def test_unpublished_release_uses_head_as_history_terminal(self) -> None:
+        release = {"tag": "future-tag"}
+        with mock.patch("subprocess.run") as run:
+            run.return_value.returncode = 1
+            self.assertEqual(audit.release_terminal(ROOT, release), "HEAD")
+
     def test_delta_history_allows_only_trailing_release_metadata(self) -> None:
         release = {
             "predecessor": {"commit": "base"},
