@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 import sys
 
+from scripts.build import atomic_io
+
 
 ROOT = Path(__file__).resolve().parents[2]
 TEXT_SUFFIXES = {
@@ -59,7 +61,7 @@ def command_write(_args: argparse.Namespace) -> None:
         expected = formatted(path)
         if original == expected:
             continue
-        path.write_text(expected, encoding="utf-8", newline="\n")
+        atomic_io.atomic_write_text(path, expected)
         changed += 1
         print(f"[FORMAT] {path.relative_to(ROOT)}")
     print(f"[OK] formatted {changed} file(s)")

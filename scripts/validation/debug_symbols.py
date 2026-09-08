@@ -10,6 +10,8 @@ from pathlib import Path
 import posixpath
 import re
 
+from scripts.build import atomic_io
+
 
 RECORD_FIELD_RE = re.compile(r'(?:^|,)([a-z]+)=("(?:[^"]|"")*"|[^,]*)')
 VICE_LABEL_RE = re.compile(r"^al ([0-9A-Fa-f]{6}) \.([A-Za-z_][A-Za-z0-9_]*)$")
@@ -228,10 +230,9 @@ def write_fceux_labels(
     rom_output = output_dir / f"{rom_path.name}.0.nl"
     ram_output = output_dir / f"{rom_path.name}.ram.nl"
     for output, selected in ((rom_output, selected_rom), (ram_output, selected_ram)):
-        output.write_text(
+        atomic_io.atomic_write_text(
+            output,
             "".join(f"${address:04X}#{name}#\n" for address, name in selected),
-            encoding="utf-8",
-            newline="\n",
         )
     return rom_output, ram_output, len(selected_rom), len(selected_ram)
 
@@ -320,8 +321,7 @@ def main() -> int:
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"[ERROR] {exc}")
         return 1
-    args.summary.parent.mkdir(parents=True, exist_ok=True)
-    args.summary.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    atomic_io.atomic_write_json(args.summary, summary)
     print(
         "[OK] debugger artifacts: "
         f"{summary['record_counts'].get('sym', 0)} symbols, "

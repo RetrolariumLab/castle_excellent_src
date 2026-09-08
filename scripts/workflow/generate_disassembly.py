@@ -11,6 +11,8 @@ from pathlib import Path
 import re
 import sys
 
+from scripts.build import atomic_io
+
 
 PRG_START = 0x8000
 PRG_END = 0x10000
@@ -660,7 +662,7 @@ def command_write(args: argparse.Namespace) -> None:
         if output.is_file() and output.read_text(encoding="utf-8") == text:
             print(f"[OK] unchanged {output}")
             continue
-        output.write_text(text, encoding="utf-8", newline="\n")
+        atomic_io.atomic_write_text(output, text)
         print(f"[WRITE] {output} ({len(text.splitlines())} lines)")
 
 

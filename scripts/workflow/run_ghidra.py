@@ -11,6 +11,7 @@ import subprocess
 import sys
 
 from scripts.build import project
+from scripts.build import atomic_io
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -75,7 +76,7 @@ def run_headless(image: Path, scripts: list[tuple[str, list[str]]]) -> None:
         errors="replace",
     )
     log = PROJECT_DIR / "headless.log"
-    log.write_text(result.stdout + result.stderr, encoding="utf-8", newline="\n")
+    atomic_io.atomic_write_text(log, result.stdout + result.stderr)
     for line in (result.stdout + result.stderr).splitlines():
         if "[OK]" in line:
             print(line.strip())

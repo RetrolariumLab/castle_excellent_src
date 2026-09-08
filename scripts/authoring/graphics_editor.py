@@ -6,13 +6,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import sys
 from typing import Any
 
 from scripts.authoring import room_data
 from scripts.build import revision_profiles
+from scripts.build import atomic_io
 from scripts.build.project import ProjectError, safe_asset_path
 
 
@@ -377,14 +377,11 @@ def compose_graphics(
 
 
 def atomic_write(path: Path, payload: bytes) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(path.name + ".tmp")
-    temporary.write_bytes(payload)
-    os.replace(temporary, path)
+    atomic_io.atomic_write_bytes(path, payload)
 
 
 def atomic_write_json(path: Path, document: dict[str, Any]) -> None:
-    atomic_write(path, (json.dumps(document, indent=2) + "\n").encode("utf-8"))
+    atomic_io.atomic_write_json(path, document)
 
 
 def run(args: argparse.Namespace) -> None:

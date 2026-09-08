@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
@@ -14,6 +13,7 @@ import subprocess
 import sys
 import zlib
 
+from scripts.build import atomic_io
 from scripts.workflow.generate_disassembly import (
     load_memory_symbols,
     load_operand_overrides,
@@ -288,10 +288,7 @@ def safe_asset_path(root: Path, relative: str) -> Path:
 def write_if_changed(path: Path, data: bytes) -> str:
     if path.is_file() and path.read_bytes() == data:
         return "OK"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(path.name + ".tmp")
-    temporary.write_bytes(data)
-    os.replace(temporary, path)
+    atomic_io.atomic_write_bytes(path, data)
     return "WRITE"
 
 

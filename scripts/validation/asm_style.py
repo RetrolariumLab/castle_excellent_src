@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+from scripts.build import atomic_io
+
 
 MNEMONICS = frozenset(
     """
@@ -264,7 +266,7 @@ def format_file(path: Path) -> bool:
     normalized = "\n".join(output) + "\n"
     if normalized == original:
         return False
-    path.write_text(normalized, encoding="utf-8", newline="\n")
+    atomic_io.atomic_write_text(path, normalized)
     return True
 
 

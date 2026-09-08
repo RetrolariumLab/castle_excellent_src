@@ -12,6 +12,8 @@ from pathlib import Path
 import subprocess
 import sys
 
+from scripts.build import atomic_io
+
 
 CPU_BASE = 0x8000
 ROOT = Path(__file__).resolve().parents[2]
@@ -115,8 +117,7 @@ def write_evidence(cdl: bytes, prg_size: int, output: Path, rom_sha1: str) -> No
     for kind, offsets in kinds.items():
         for start, end in contiguous_ranges(offsets):
             lines.append(f"{kind} {CPU_BASE + start:04X} {CPU_BASE + end:04X}")
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    atomic_io.atomic_write_text(output, "\n".join(lines) + "\n")
     print(f"[OK] runtime evidence {output}")
 
 
@@ -217,12 +218,7 @@ def write_report(args: argparse.Namespace) -> dict[str, object]:
             "cdl_sha256": hashlib.sha256(cdl).hexdigest(),
         }
     )
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    atomic_io.atomic_write_json(args.output, report, ensure_ascii=False)
     if report["executed_bytes_outside_ghidra_code"]:
         addresses = ", ".join(report["executed_bytes_outside_ghidra_code_addresses"])
         raise CoverageError(f"runtime executed bytes outside Ghidra code: {addresses}")
@@ -299,8 +295,7 @@ def command_merge(args: argparse.Namespace) -> None:
     if missing:
         raise CoverageError("required CDL not found: " + ", ".join(map(str, missing)))
     merged = merge_cdls([path.read_bytes() for path in args.cdl])
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_bytes(merged)
+    atomic_io.atomic_write_bytes(args.output, merged)
     print(f"[OK] merged {len(args.cdl)} CDL files into {args.output}")
 
 
