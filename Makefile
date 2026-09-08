@@ -18,6 +18,7 @@ LEVEL_PLAYTEST_Y ?= 152
 
 ROMLESS_TEST_MODULES := \
 	tests.test_script_runner \
+	tests.build.test_make_help \
 	tests.build.test_project \
 	tests.build.test_revision_profiles \
 	tests.build.test_verify_rom \
@@ -64,7 +65,7 @@ SOURCE_FILES := $(sort $(wildcard \
 	src/*.inc src/*/*.inc src/*/*/*.inc src/*/*/*/*.inc))
 MAKE_FRAGMENTS := mk/authoring.mk mk/runtime.mk mk/validation.mk
 
-.PHONY: all build clean split inspect rom-info rom-info-reference \
+.PHONY: all help build clean split inspect rom-info rom-info-reference \
 	rom-info-built verify verify-reference verify-built verify-header \
 	verify-prg verify-chr verify-payload verify-rom verify-assets check-assets \
 	split-profile build-profile verify-profile castlequest-check \
@@ -79,6 +80,9 @@ MAKE_FRAGMENTS := mk/authoring.mk mk/runtime.mk mk/validation.mk
 	check release-check
 
 all: verify
+
+help:
+	@$(RUN_TOOL) build.make_help
 
 $(BUILD_DIR):
 	$(RUN_TOOL) build.project mkdir --path "$(BUILD_DIR)"

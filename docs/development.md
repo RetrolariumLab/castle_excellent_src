@@ -10,6 +10,7 @@ describes the emitted ca65 modules.
 The public interface is the root Makefile:
 
 ```bash
+make help
 make format
 make lint
 make scaffold-check
@@ -17,6 +18,10 @@ make test
 make quality-check
 make check
 ```
+
+`make help` groups the stable public targets by workflow and lists the common
+profile selectors. The complete lower-level Python tool catalog is available
+through `python scripts/run.py --list`.
 
 `make format` normalizes tracked authored text. `make lint` checks formatting,
 assembly style, repository boundaries, manifest schemas, source ownership,

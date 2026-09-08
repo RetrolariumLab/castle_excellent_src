@@ -82,6 +82,7 @@ capacity limits, preview behavior, and editor controls.
 ## Verification and release gates
 
 ```bash
+make help             # show the curated command catalog
 make format           # normalize authored source, configuration, and docs
 make lint             # validate style, layout, links, manifests, and policy
 make scaffold-check   # lint and synthetic tests without private ROM assets
