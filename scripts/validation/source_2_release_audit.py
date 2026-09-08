@@ -15,9 +15,7 @@ from scripts.validation import release_audit
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CONTRACT_SCHEMA = "retrolarium.source_reconstruction_release_contract"
-CONTRACT_VERSION = 3
-CONTRACT_SHA256 = "d07f16f12e09c6ea2691e736088f09da5eace82c6a014c774c8a33e52804086d"
+MANIFEST_SCHEMA_VERSION = 1
 RELEASE_STATUSES = {"development", "tag-ready", "tagged"}
 REQUIREMENT_STATUSES = {
     "satisfied",
@@ -370,7 +368,10 @@ def validate_delta_history(project_root: Path, release: dict[str, Any]) -> list[
         errors.append(
             f"delta_history covers {len(documented)} commits, expected {expected_count}"
         )
-    trailing = git_lines(project_root, "rev-list", "--reverse", f"{through}..HEAD")
+    terminal = release_terminal(project_root, release)
+    trailing = git_lines(
+        project_root, "rev-list", "--reverse", f"{through}..{terminal}"
+    )
     for commit in trailing:
         changed = set(
             git_lines(
@@ -389,18 +390,27 @@ def validate_delta_history(project_root: Path, release: dict[str, Any]) -> list[
     return errors
 
 
+def release_terminal(project_root: Path, release: dict[str, Any]) -> str:
+    """Use the immutable release tag after publication and HEAD before it."""
+    tag = release.get("tag")
+    if not isinstance(tag, str) or not tag:
+        return "HEAD"
+    result = subprocess.run(
+        ["git", "show-ref", "--verify", "--quiet", f"refs/tags/{tag}"],
+        cwd=project_root,
+        check=False,
+    )
+    if result.returncode != 0:
+        return "HEAD"
+    return git_lines(project_root, "rev-parse", f"{tag}^{{commit}}")[0]
+
+
 def validate_manifest(project_root: Path, release: dict[str, Any]) -> list[str]:
     errors: list[str] = []
-    expected_contract = {
-        "schema": CONTRACT_SCHEMA,
-        "version": CONTRACT_VERSION,
-        "release_line": "2.0",
-        "source_document_sha256": CONTRACT_SHA256,
-    }
-    contract = release.get("contract", {})
-    for field, expected in expected_contract.items():
-        if contract.get(field) != expected:
-            errors.append(f"contract {field} must be {expected!r}")
+    if release.get("schema_version") != MANIFEST_SCHEMA_VERSION:
+        errors.append(f"schema_version must be {MANIFEST_SCHEMA_VERSION!r}")
+    if release.get("release_line") != "2.0":
+        errors.append("release_line must be '2.0'")
     if release.get("release") != {
         "name": "Source Reconstruction 2.0",
         "version": "2.0",
@@ -517,7 +527,11 @@ def validate_pre_tag(project_root: Path, release: dict[str, Any]) -> list[str]:
         if remote_tags:
             errors.append(f"future release tag already exists on {remotes[0]}: {tag}")
     errors.extend(validate_development_branch(project_root, release))
-    errors.extend(release_audit.validate_commit_history(project_root, release))
+    errors.extend(
+        release_audit.validate_commit_history(
+            project_root, release, terminal=release_terminal(project_root, release)
+        )
+    )
     return errors
 
 

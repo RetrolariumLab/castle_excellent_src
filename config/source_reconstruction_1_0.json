@@ -1,10 +1,6 @@
 {
-  "contract": {
-    "schema": "retrolarium.source_reconstruction_release_contract",
-    "version": 3,
-    "release_line": "1.0",
-    "source_document_sha256": "d07f16f12e09c6ea2691e736088f09da5eace82c6a014c774c8a33e52804086d"
-  },
+  "schema_version": 1,
+  "release_line": "1.0",
   "release": {
     "name": "Source Reconstruction 1.0",
     "version": "1.0"
@@ -89,9 +85,9 @@
       ]
     },
     {
-      "id": "release-contract-revision-3",
+      "id": "source-1.0-release-interface",
       "kind": "tooling",
-      "summary": "Adopt revision 3 machine-readable release metadata and aggregate pre-tag/post-tag audits.",
+      "summary": "Define machine-readable project release metadata and aggregate pre-tag and post-tag audits.",
       "evidence": [
         "config/source_reconstruction_1_0.json",
         "docs/source_reconstruction_1_0.md",

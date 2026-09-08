@@ -1,10 +1,6 @@
 {
-  "contract": {
-    "schema": "retrolarium.source_reconstruction_release_contract",
-    "version": 3,
-    "release_line": "2.0",
-    "source_document_sha256": "d07f16f12e09c6ea2691e736088f09da5eace82c6a014c774c8a33e52804086d"
-  },
+  "schema_version": 1,
+  "release_line": "2.0",
   "release": {
     "name": "Source Reconstruction 2.0",
     "version": "2.0"

@@ -22,11 +22,12 @@ from scripts.validation.source_reconstruction import (
     audit_layout,
     audit_symbol_maps,
 )
+from scripts.validation import release_history
 
 
 ROOT = Path(__file__).resolve().parents[2]
 UNKNOWN_ID_RE = re.compile(r"^### ([A-Z]+-[0-9]+) - ", re.MULTILINE)
-CONTRACT_SCHEMA = "retrolarium.source_reconstruction_release_contract"
+MANIFEST_SCHEMA_VERSION = 1
 RELEASE_STATUSES = {"development", "tag-ready", "tagged"}
 REQUIREMENT_STATUSES = {
     "satisfied",
@@ -139,15 +140,10 @@ def validate_manifest_contract(
     project_root: Path, release: dict[str, Any], targets: set[str]
 ) -> list[str]:
     errors: list[str] = []
-    contract = release.get("contract", {})
-    expected_contract = {
-        "schema": CONTRACT_SCHEMA,
-        "version": 3,
-        "release_line": "1.0",
-    }
-    for key, expected in expected_contract.items():
-        if contract.get(key) != expected:
-            errors.append(f"contract {key} must be {expected!r}")
+    if release.get("schema_version") != MANIFEST_SCHEMA_VERSION:
+        errors.append(f"schema_version must be {MANIFEST_SCHEMA_VERSION!r}")
+    if release.get("release_line") != "1.0":
+        errors.append("release_line must be '1.0'")
 
     release_identity = release.get("release", {})
     if release_identity != {"name": "Source Reconstruction 1.0", "version": "1.0"}:
@@ -394,41 +390,15 @@ def validate_toolchain(project_root: Path, release: dict[str, Any]) -> list[str]
     return errors
 
 
-def validate_commit_history(project_root: Path, release: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
+def validate_commit_history(
+    project_root: Path,
+    release: dict[str, Any],
+    terminal: str = "HEAD",
+) -> list[str]:
     predecessor = release["predecessor"].get("commit")
-    revision_range = f"{predecessor}..HEAD" if predecessor else "HEAD"
-    result = subprocess.run(
-        ["git", "log", "--reverse", "--format=%H%x1f%B%x1e", revision_range],
-        cwd=project_root,
-        check=True,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
+    return release_history.validate_release_history(
+        project_root, predecessor, terminal=terminal
     )
-    expected_trailer = "Co-Authored-By: Codex <noreply@openai.com>"
-    for record in result.stdout.split("\x1e"):
-        record = record.strip()
-        if not record:
-            continue
-        commit, separator, message = record.partition("\x1f")
-        if not separator:
-            errors.append("cannot parse commit history record")
-            continue
-        lines = message.strip().splitlines()
-        subject = lines[0] if lines else ""
-        short = commit[:12]
-        if not subject or subject.endswith(".") or not subject.isascii():
-            errors.append(f"commit {short} has an invalid English subject")
-        if lines[-1:] != [expected_trailer]:
-            errors.append(f"commit {short} lacks the exact Codex co-author trailer")
-            body_lines = lines[2:]
-        else:
-            body_lines = lines[2:-2] if len(lines) >= 3 and lines[-2] == "" else lines[2:-1]
-        paragraphs = [part for part in "\n".join(body_lines).split("\n\n") if part.strip()]
-        if len(paragraphs) not in {2, 3}:
-            errors.append(f"commit {short} must have two or three body paragraphs")
-    return errors
 
 
 def validate_pre_tag(project_root: Path, release: dict[str, Any]) -> list[str]:
