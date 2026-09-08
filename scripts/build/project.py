@@ -456,6 +456,7 @@ def validate_config_layout(root: Path) -> None:
         "revision_profiles.json",
         "source_reconstruction_1_0.json",
         "source_reconstruction_2_0.json",
+        "source_reconstruction_2_1.json",
     }
     expected_directories = {"authoring", "debugger", "linker", "reconstruction"}
     actual_root_files = {path.name for path in config_root.iterdir() if path.is_file()}
@@ -555,8 +556,10 @@ def command_lint(_args: argparse.Namespace) -> None:
         "config/revision_profiles.json",
         "config/source_reconstruction_1_0.json",
         "config/source_reconstruction_2_0.json",
+        "config/source_reconstruction_2_1.json",
         "docs/development.md",
         "docs/source_reconstruction.md",
+        "docs/source_reconstruction_2_1.md",
         "docs/resolved_unknowns.md",
         "docs/verification.md",
         "mk/authoring.mk",

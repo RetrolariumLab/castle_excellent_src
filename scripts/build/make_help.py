@@ -66,6 +66,15 @@ TARGET_GROUPS = (
             ("source-2-tag-check", "validate the checked-out release tag"),
         ),
     ),
+    (
+        "Source 2.1 compatible release",
+        (
+            ("source-2-minor-audit", "reconcile the 2.1 compatible delta"),
+            ("source-2-minor-check", "run the accepted 2.0 gate and 2.1 delta"),
+            ("source-2-minor-pre-tag-check", "validate the clean 2.1 candidate"),
+            ("source-2-minor-tag-check", "validate the checked-out 2.1 tag"),
+        ),
+    ),
 )
 
 

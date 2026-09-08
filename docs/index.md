@@ -6,6 +6,8 @@ left as disconnected notes.
 
 ## Release contracts
 
+- [Source Reconstruction 2.1](source_reconstruction_2_1.md) — compatible
+  hardening scope under active development.
 - [Source Reconstruction contract](source_reconstruction.md) — enduring
   definition of a reconstructed source release.
 - [Source Reconstruction 2.0](source_reconstruction_2_0.md) — current
@@ -20,7 +22,6 @@ left as disconnected notes.
   and source regeneration.
 - [Verification](verification.md) — identity, runtime, debugger, and release
   gates.
-
 ## Engine reference
 
 - [Architecture](architecture.md) — conceptual runtime design.
@@ -45,5 +46,6 @@ left as disconnected notes.
 
 Machine-readable release ownership lives in
 `config/source_reconstruction_1_0.json` and
-`config/source_reconstruction_2_0.json`; prose documents explain those
-contracts but do not replace them.
+`config/source_reconstruction_2_0.json`. Active compatible-minor development is
+declared by `config/source_reconstruction_2_1.json`; prose documents explain
+those contracts but do not replace them.

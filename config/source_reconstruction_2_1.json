@@ -1,0 +1,413 @@
+{
+  "schema_version": 1,
+  "release_line": "2.x",
+  "release": {
+    "name": "Source Reconstruction 2.1",
+    "version": "2.1"
+  },
+  "release_kind": "compatible_minor",
+  "tag": "source-reconstruction-2.1",
+  "status": "development",
+  "predecessor": {
+    "manifest": "config/source_reconstruction_2_0.json",
+    "tag": "source-reconstruction-2.0",
+    "commit": "2a6cbf211125d8ad8302191eb8396f3ef210714d"
+  },
+  "delta_history": {
+    "from_exclusive": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
+    "through_inclusive": null,
+    "commit_count": 0,
+    "coverage_document": "docs/source_reconstruction_2_1.md"
+  },
+  "included_scope": [
+    "inherited-source-reconstruction-2.0-contract",
+    "castle-excellent-japan-hsp-05-byte-identical-profile",
+    "castlequest-usa-byte-identical-profile",
+    "profile-aware-level-music-graphics-authoring",
+    "project-release-metadata",
+    "repository-quality-hardening"
+  ],
+  "excluded_scope": [
+    {
+      "id": "additional-regional-or-platform-profiles",
+      "status": "unsupported",
+      "reason": "No additional verified Castle Excellent profiles are declared for the compatible 2.1 release."
+    },
+    {
+      "id": "expanded-rom-and-general-relocation",
+      "status": "planned",
+      "reason": "Systematic relocation remains outside the compatible Source 2.x architecture."
+    },
+    {
+      "id": "sibling-engine-reconstruction",
+      "status": "unsupported",
+      "reason": "The Castle and non-NES engines require a separate major architectural decision."
+    },
+    {
+      "id": "world-routing-studio",
+      "status": "not_applicable",
+      "reason": "The fixed 10 by 10 room topology has no independently stored world-route format."
+    }
+  ],
+  "delta": [
+    {
+      "id": "source-2.1-release-interface",
+      "kind": "release-metadata",
+      "summary": "Define the compatible Source Reconstruction 2.1 boundary with a self-contained project manifest and aggregate release commands.",
+      "evidence": [
+        "config/source_reconstruction_2_1.json",
+        "scripts/validation/source_2_minor_release_audit.py",
+        "tests/validation/test_source_2_minor_release_audit.py",
+        "docs/source_reconstruction_2_1.md"
+      ]
+    }
+  ],
+  "requirements": {
+    "source_2_baseline_inheritance": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "source-2-tag-check"
+        ],
+        "files": [
+          "config/source_reconstruction_2_0.json"
+        ],
+        "scenarios": [
+          "scenarios/source_1.json",
+          "scenarios/source_2_castlequest.json"
+        ],
+        "artifacts": [
+          "castle-excellent-japan-hsp-05-rom",
+          "castlequest-usa-rom"
+        ]
+      }
+    },
+    "project_release_metadata": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "source-2-minor-audit"
+        ],
+        "files": [
+          "config/source_reconstruction_2_1.json",
+          "scripts/validation/source_2_minor_release_audit.py",
+          "tests/validation/test_source_2_minor_release_audit.py",
+          "docs/source_reconstruction_2_1.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "history_and_public_command_audit": {
+      "status": "planned",
+      "evidence": {
+        "targets": [],
+        "files": [],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "repository_quality_hardening": {
+      "status": "planned",
+      "evidence": {
+        "targets": [],
+        "files": [],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "editor_interaction_evidence": {
+      "status": "planned",
+      "evidence": {
+        "targets": [],
+        "files": [],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "aggregate_source_2_minor_gate": {
+      "status": "planned",
+      "evidence": {
+        "targets": [],
+        "files": [],
+        "scenarios": [],
+        "artifacts": []
+      }
+    }
+  },
+  "profiles": [
+    {
+      "id": "castle-excellent-japan-hsp-05",
+      "status": "supported",
+      "artifact": "castle-excellent-japan-hsp-05-rom",
+      "identity": "byte-identical",
+      "profile_manifest": "config/revision_profiles.json"
+    },
+    {
+      "id": "castlequest-usa",
+      "status": "supported",
+      "artifact": "castlequest-usa-rom",
+      "identity": "byte-identical",
+      "profile_manifest": "config/revision_profiles.json"
+    }
+  ],
+  "runtime_coverage": [
+    {
+      "profile_id": "castle-excellent-japan-hsp-05",
+      "mode": "direct",
+      "manifest": "scenarios/source_1.json",
+      "scenarios": [
+        "boot-gameplay",
+        "title-demo",
+        "idle-timeout",
+        "room-transition",
+        "death-game-over",
+        "completion-ending",
+        "save-load-entry"
+      ]
+    },
+    {
+      "profile_id": "castlequest-usa",
+      "mode": "direct",
+      "manifest": "scenarios/source_2_castlequest.json",
+      "scenarios": [
+        "castlequest-startup-menu"
+      ]
+    }
+  ],
+  "profile_manifest": "config/revision_profiles.json",
+  "toolchain": {
+    "components": [
+      {
+        "id": "ca65",
+        "version": "V2.19 - Git 0fca835",
+        "source": "https://github.com/cc65/cc65",
+        "source_commit": "0fca835",
+        "binary": "bin/ca65.exe",
+        "binary_size": 721629,
+        "binary_sha256": "9109d7118ff070e78f031bee4eb776061e56b74e7c8f9f40c70fd6707ea0ac5a",
+        "provenance": "bundled",
+        "verification": "release-audit"
+      },
+      {
+        "id": "ld65",
+        "version": "V2.19 - Git 0fca835",
+        "source": "https://github.com/cc65/cc65",
+        "source_commit": "0fca835",
+        "binary": "bin/ld65.exe",
+        "binary_size": 575874,
+        "binary_sha256": "5f68367a135c578c88744e27ba0b1234604d87ef1ff6294b46fcb031ff984db4",
+        "provenance": "bundled",
+        "verification": "release-audit"
+      },
+      {
+        "id": "ghidra",
+        "version": "12.1.3",
+        "source": "https://github.com/NationalSecurityAgency/ghidra",
+        "source_commit": null,
+        "archive_sha256": "93a5d11a9ad510622acaaf908c556a7b9b764d338e78a7567f3689bf5081fd54",
+        "provenance": "external_unbundled",
+        "verification": "ghidra-status"
+      },
+      {
+        "id": "ghidranes",
+        "version": "v20260531",
+        "source": "https://github.com/kylewlacy/GhidraNes",
+        "source_commit": "4c41964",
+        "archive_sha256": "d73b5671ed12904fc8daeda65ca6910d7e441cca3e2d9d0a19389e7f08b9caf3",
+        "provenance": "external_unbundled",
+        "verification": "ghidra-status"
+      },
+      {
+        "id": "fceux",
+        "version": "oranguthang/fceux_automation",
+        "source": "https://github.com/oranguthang/fceux_automation",
+        "source_commit": "ec507d86c57acd8979547bc35e9627fb199fac9a",
+        "binary": "tools/fceux/fceux64.exe",
+        "binary_size": 5499904,
+        "binary_sha256": "97aadff4970e98a413377810a296c045fab717661dd8270f84d58190f43a232e",
+        "provenance": "external_unbundled",
+        "verification": "fceux-status"
+      }
+    ],
+    "hosts": [
+      {
+        "os": "Microsoft Windows 10.0.26200",
+        "architecture": "x64",
+        "shell": "Windows PowerShell 5.1.26100.9168",
+        "language_versions": {
+          "python": "3.14.6",
+          "java": "Temurin OpenJDK 21.0.11+10 LTS"
+        },
+        "supported_status": "supported"
+      }
+    ]
+  },
+  "aggregate_gates": {
+    "pre_tag": [
+      "make source-2-minor-pre-tag-check"
+    ],
+    "post_tag": [
+      "make source-2-minor-tag-check"
+    ]
+  },
+  "required_documents": [
+    "README.md",
+    "CONTRIBUTING.md",
+    "docs/index.md",
+    "docs/architecture.md",
+    "docs/development.md",
+    "docs/provenance.md",
+    "docs/ram_map.md",
+    "docs/roadmap.md",
+    "docs/source_layout.md",
+    "docs/source_reconstruction.md",
+    "docs/source_reconstruction_1_0.md",
+    "docs/source_reconstruction_2_0.md",
+    "docs/source_reconstruction_2_1.md",
+    "docs/revision_profiles.md",
+    "docs/content_authoring.md",
+    "docs/fixed_layout_variants.md",
+    "docs/data_formats.md",
+    "docs/verification.md",
+    "docs/subsystems.md",
+    "docs/unknowns.md",
+    "docs/resolved_unknowns.md"
+  ],
+  "layout_deviations": [
+    {
+      "rule_id": "provenance-subdirectory",
+      "actual_path": "docs/provenance.md",
+      "reason": "A single provenance ledger is sufficient for the two closely related supported profiles.",
+      "equivalent_control": "The document and machine-readable licensing/provenance records are mandatory release evidence."
+    },
+    {
+      "rule_id": "bundled-toolchain-directory",
+      "actual_path": "bin/ and tools/",
+      "reason": "Pinned build binaries, lock manifests, and Ghidra integration scripts have project-wide responsibility.",
+      "equivalent_control": "The inherited Source 2.0 toolchain manifest verifies provenance, versions, sizes, and cryptographic hashes before use."
+    }
+  ],
+  "resolved_layout_deviations": [
+    {
+      "rule_id": "scripts-run-launcher",
+      "resolution": "All Python tools are invoked through scripts/run.py with a categorized module name.",
+      "evidence": "tests/test_script_runner.py and every Python recipe in Makefile"
+    },
+    {
+      "rule_id": "scripts-responsibility-subdirectories",
+      "resolution": "Tools are split among authoring, build, runtime, validation, and workflow packages, with large validation families grouped by subsystem.",
+      "evidence": "docs/development.md and the scripts root boundary enforced by build.project lint"
+    }
+  ],
+  "licensing": [
+    {
+      "component": "project_tools_and_documentation",
+      "category": "project_authored_material",
+      "origin": "this repository",
+      "license_id_or_status": "license_not_granted",
+      "redistribution": "No project-wide license has been granted.",
+      "notes": "This status is independent from the reconstructed game source and bundled dependencies."
+    },
+    {
+      "component": "reconstructed_game_source",
+      "category": "reconstructed_game_source",
+      "origin": "Castle Excellent (Japan), HSP-05 and Castlequest (USA)",
+      "license_id_or_status": "license_not_granted",
+      "redistribution": "No license to the original game code or data is claimed.",
+      "notes": "Reconstruction and documentation do not grant rights in the original works."
+    },
+    {
+      "component": "bundled_cc65_binaries",
+      "category": "bundled_external_tools",
+      "origin": "cc65 revision 0fca835",
+      "license_id_or_status": "licensed",
+      "redistribution": "Permitted under the bundled zlib license.",
+      "notes": "See bin/cc65-LICENSE.txt."
+    },
+    {
+      "component": "ghidra_ghidranes_fceux",
+      "category": "external_tools",
+      "origin": "upstream projects named in toolchain.components",
+      "license_id_or_status": "external_unbundled",
+      "redistribution": "Not redistributed by this repository.",
+      "notes": "Installers verify pinned archives or local binaries before use."
+    },
+    {
+      "component": "reference_roms_and_extracted_assets",
+      "category": "private_user_supplied_inputs",
+      "origin": "legally obtained local Castle Excellent and Castlequest images",
+      "license_id_or_status": "private_user_supplied",
+      "redistribution": "Never tracked or published by this project.",
+      "notes": "Only hashes, sizes, profile metadata, and extraction recipes are committed."
+    }
+  ],
+  "provenance": {
+    "references": [
+      "docs/provenance.md",
+      "tools/disassembly.lock.json",
+      "tools/runtime.lock.json",
+      "config/revision_profiles.json",
+      "assets/manifest.json"
+    ],
+    "private_inputs_tracked": false,
+    "history_policy": {
+      "current_history_status": "development",
+      "predecessor_commit": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
+      "development_branch": "rewrite/source-2.1-modernization",
+      "reason": "Source 2.1 is developed as non-empty atomic commits after the immutable Source 2.0 release."
+    }
+  },
+  "artifacts": [
+    {
+      "id": "castle-excellent-japan-hsp-05-rom",
+      "profile": "castle-excellent-japan-hsp-05",
+      "build_target": "build",
+      "path": "build/native/castle_excellent.nes",
+      "size": 65552,
+      "sha1": "42f7975da9a68a74e141353eb6e2bdc676fc1f77",
+      "sha256": "fd6214cdc441070b9edab74b9c31ad16007bd0873e32c0c883de4544ca69f261",
+      "regions": {
+        "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+        "prg_sha256": "f59865b238497a552834c8d57adac7d670962f24bbc222488351bee9cb2c1d27",
+        "chr_sha256": "1c0fcb20ed0af3bdeceea2aed83967f43734627b3b6890a300b7808d3c30f1e5"
+      }
+    },
+    {
+      "id": "castlequest-usa-rom",
+      "profile": "castlequest-usa",
+      "build_target": "castlequest-check",
+      "path": "build/revisions/castlequest-usa/castlequest.nes",
+      "size": 65552,
+      "sha1": "600b0d2ae76722a62b42be02c0b0becd7ff0a178",
+      "sha256": "35815cd107289a8273fb46dd7c49247a8217ca4e2a7f235fef3aa54566d0ba8c",
+      "regions": {
+        "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+        "prg_sha256": "8d8ed56dc5f8fde68bb1aba20e3835e1399ddd4dbeef9125d595e001d5beef4a",
+        "chr_sha256": "8fd1d35cdd5b0d5364e744e56c54e8013adf5e2841edd2cedcf4e96a163e0ab6"
+      }
+    },
+    {
+      "id": "start-room-1-rom",
+      "profile": "castle-excellent-japan-hsp-05",
+      "build_target": "check-fixed-layout",
+      "path": "build/variants/start-room-1/castle_excellent.nes",
+      "size": 65552,
+      "sha1": "d748c191e110b64f2377945bdb0c9bd2e37dcbf8",
+      "sha256": "20f7104399478c6f7766a609b6e52bbaf07d3312b355ee88d72366f2191187fc"
+    }
+  ],
+  "release_commands": [
+    "format",
+    "lint",
+    "test",
+    "verify",
+    "trace",
+    "release-check",
+    "source-1-check",
+    "source-2-check",
+    "source-2-minor-check",
+    "source-2-minor-pre-tag-check",
+    "source-2-minor-tag-check"
+  ]
+}
