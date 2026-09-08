@@ -35,6 +35,11 @@ through `009cc2759ca82e6f20d573f86637fb2e94a76df4`. Later release-only commits m
 change only this document and `config/source_reconstruction_2_1.json`; the audit
 rejects any uncovered substantive path.
 
-The manifest remains `development` until the reconstructed history, complete
-aggregate gate, and final release boundary are accepted on the supported
-Windows x64 host.
+The manifest remains `development` for explicit owner review. A clean
+`make source-2-minor-check` completed on the supported Windows x64 host with 657
+unit tests, 10,489 regenerated Ghidra instructions, byte-identical builds for
+both supported profiles, seven Japanese runtime scenarios, the Castlequest
+runtime scenario, live debugger-symbol validation, zero-edit
+level/music/graphics round trips, editor workstation actions for both profiles,
+and the disposable public-command smoke. Branch promotion and tag validation
+remain separate owner-approved actions.

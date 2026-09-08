@@ -462,10 +462,10 @@
     ],
     "private_inputs_tracked": false,
     "history_policy": {
-      "current_history_status": "tag-ready",
+      "current_history_status": "development",
       "predecessor_commit": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
       "development_branch": "rewrite/source-2.1-modernization",
-      "reason": "Source 2.1 is developed as a sequence of non-empty atomic commits after the immutable Source 2.0 release."
+      "reason": "The rewritten Source 2.1 candidate passes its aggregate gate and awaits explicit owner approval before branch promotion and tag validation."
     }
   },
   "artifacts": [
