@@ -29,7 +29,8 @@ ROMLESS_TEST_MODULES := \
 	tests.validation.test_release_audit \
 	tests.validation.test_source_2_release_audit \
 	tests.validation.test_release_history \
-	tests.validation.test_source_2_minor_release_audit
+	tests.validation.test_source_2_minor_release_audit \
+	tests.validation.test_public_command_smoke
 
 LEVEL_AUTHORING := config/authoring/levels.json
 AUDIO_AUTHORING := config/authoring/audio.json
@@ -78,7 +79,7 @@ MAKE_FRAGMENTS := mk/authoring.mk mk/runtime.mk mk/validation.mk
 	reconstruction-audit build-toolchain-status release-audit source-1-check \
 	source-1-pre-tag-check source-1-tag-check source-2-audit \
 	source-2-authoring-check-profile source-2-check source-2-pre-tag-check \
-	source-2-tag-check source-2-minor-audit source-2-minor-check \
+	source-2-tag-check public-command-smoke source-2-minor-audit source-2-minor-check \
 	source-2-minor-pre-tag-check source-2-minor-tag-check \
 	ghidra-bootstrap ghidra-status ghidra-inspect \
 	ghidra-analyze disassemble disassembly-check fceux-bootstrap fceux-status \
@@ -239,8 +240,12 @@ source-2-tag-check:
 source-2-minor-audit:
 	$(RUN_TOOL) validation.source_2_minor_release_audit --project-root . --manifest "$(SOURCE_2_MINOR_MANIFEST)"
 
+public-command-smoke:
+	$(RUN_TOOL) validation.public_command_smoke --project-root . --target lint
+
 source-2-minor-check:
 	$(MAKE) source-2-check
+	$(MAKE) public-command-smoke
 	$(MAKE) source-2-minor-audit
 
 source-2-minor-pre-tag-check:
