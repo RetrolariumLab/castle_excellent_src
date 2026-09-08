@@ -84,13 +84,14 @@ capacity limits, preview behavior, and editor controls.
 ```bash
 make format           # normalize authored source, configuration, and docs
 make lint             # validate style, layout, links, manifests, and policy
+make scaffold-check   # lint and synthetic tests without private ROM assets
 make test             # regenerate Ghidra facts and run the Python suite
+make quality-check    # lint and the complete ROM-backed Python suite
 make check            # build, prove byte identity, and run static contracts
 make source-2-audit   # reconcile the Source 2.0 manifest and evidence
 make source-2-check   # run the complete two-profile release candidate gate
 ```
 
-`make quality-check` runs lint and tests without requiring a reference ROM.
 `make source-2-pre-tag-check` adds clean-tree, history, and tag-readiness
 requirements. The full gate model is documented in
 [Verification](docs/verification.md).
@@ -103,6 +104,7 @@ config/authoring/       level, music, and graphics contracts
 config/debugger/        symbol-resolved breakpoints and watches
 config/reconstruction/  symbols, operands, source layout, and code evidence
 docs/                   architecture, formats, workflows, and release policy
+content/workspace/      editable level, music, and graphics documents
 mk/                     authoring, runtime, and validation Make rules
 scripts/authoring/      headless codecs and visual studios
 scripts/build/          assembly, profiles, variants, and byte comparison

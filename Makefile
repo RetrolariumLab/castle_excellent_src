@@ -16,6 +16,17 @@ LEVEL_PLAYTEST_ROOM ?= 71
 LEVEL_PLAYTEST_X ?= 16
 LEVEL_PLAYTEST_Y ?= 152
 
+ROMLESS_TEST_MODULES := \
+	tests.test_script_runner \
+	tests.build.test_project \
+	tests.build.test_revision_profiles \
+	tests.build.test_verify_rom \
+	tests.build.test_fixed_layout_variant \
+	tests.workflow.test_generate_disassembly \
+	tests.workflow.test_run_ghidra \
+	tests.validation.test_release_audit \
+	tests.validation.test_source_2_release_audit
+
 LEVEL_AUTHORING := config/authoring/levels.json
 AUDIO_AUTHORING := config/authoring/audio.json
 GRAPHICS_AUTHORING := config/authoring/graphics.json
@@ -170,7 +181,8 @@ test: ghidra-analyze
 
 quality-check: lint test
 
-scaffold-check: quality-check
+scaffold-check: lint
+	$(PYTHON) -m unittest $(ROMLESS_TEST_MODULES) -v
 
 reconstruction-audit:
 	$(RUN_TOOL) validation.source_reconstruction --layout "$(SOURCE_LAYOUT)"

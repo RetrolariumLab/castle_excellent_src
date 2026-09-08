@@ -12,7 +12,9 @@ The public interface is the root Makefile:
 ```bash
 make format
 make lint
+make scaffold-check
 make test
+make quality-check
 make check
 ```
 
@@ -23,8 +25,12 @@ regenerates pinned Ghidra facts before running the Python unit suite. `make
 check` adds deterministic source regeneration, assembly, byte identity, and
 the subsystem contracts.
 
-Use `make quality-check` when the private reference ROM is unavailable. Release
-and profile gates are listed in [verification.md](verification.md).
+Use `make scaffold-check` when private ROM assets are unavailable; it combines
+the full lint policy with synthetic tests for repository structure, formats,
+profiles, disassembly generation, and release audits. `make quality-check`
+regenerates Ghidra facts from the Japanese reference ROM and runs the complete
+Python suite. Release and profile gates are listed in
+[verification.md](verification.md).
 
 The root file owns shared variables, build/profile rules, tool bootstrap, and
 release orchestration. Repetitive implementation rules are grouped in

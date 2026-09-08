@@ -477,6 +477,8 @@ def validate_config_layout(root: Path) -> None:
 
 def validate_documentation(root: Path) -> None:
     docs_root = root / "docs"
+    repository_root = root.resolve()
+    root_documents = (root / "README.md", root / "CONTRIBUTING.md")
     documents = {
         path.relative_to(docs_root).as_posix()
         for path in docs_root.rglob("*.md")
@@ -487,25 +489,37 @@ def validate_documentation(root: Path) -> None:
 
     link_pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
     indexed: list[str] = []
-    for source in sorted(docs_root.rglob("*.md")):
+    sources = [*root_documents, *sorted(docs_root.rglob("*.md"))]
+    for source in sources:
+        if not source.is_file():
+            raise ProjectError(
+                f"repository documentation not found: {source.relative_to(root)}"
+            )
         text = source.read_text(encoding="utf-8")
         for raw_target in link_pattern.findall(text):
             target = raw_target.split("#", 1)[0].strip()
-            if not target or "://" in target or target.startswith("mailto:"):
+            if not target or re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", target):
                 continue
             target_path = (source.parent / target).resolve()
             try:
-                relative = target_path.relative_to(docs_root.resolve()).as_posix()
+                target_path.relative_to(repository_root)
             except ValueError as exc:
                 raise ProjectError(
-                    f"documentation link escapes docs/: {source}: {raw_target}"
+                    f"documentation link escapes repository: {source}: {raw_target}"
                 ) from exc
             if not target_path.is_file():
                 raise ProjectError(
                     f"broken documentation link: {source}: {raw_target}"
                 )
-            if source == docs_root / "index.md" and relative.endswith(".md"):
-                indexed.append(relative)
+            if source == docs_root / "index.md":
+                try:
+                    relative = target_path.relative_to(docs_root.resolve()).as_posix()
+                except ValueError as exc:
+                    raise ProjectError(
+                        f"documentation index link escapes docs/: {raw_target}"
+                    ) from exc
+                if relative.endswith(".md"):
+                    indexed.append(relative)
 
     duplicates = sorted({path for path in indexed if indexed.count(path) > 1})
     expected = documents - {"index.md"}

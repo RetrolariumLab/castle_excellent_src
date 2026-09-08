@@ -18,6 +18,29 @@ class RepositoryLayoutTests(unittest.TestCase):
     def test_documentation_index_is_complete_and_links_resolve(self) -> None:
         project.validate_documentation(ROOT)
 
+    def test_root_documentation_links_are_validated(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            docs = root / "docs"
+            docs.mkdir()
+            (docs / "guide.md").write_text("# Guide\n", encoding="utf-8")
+            (docs / "index.md").write_text(
+                "# Documentation\n\n- [Guide](guide.md)\n", encoding="utf-8"
+            )
+            (root / "README.md").write_text(
+                "[Documentation](docs/index.md)\n", encoding="utf-8"
+            )
+            (root / "CONTRIBUTING.md").write_text(
+                "[Development](docs/guide.md)\n", encoding="utf-8"
+            )
+
+            project.validate_documentation(root)
+            (root / "README.md").write_text(
+                "[Missing](docs/missing.md)\n", encoding="utf-8"
+            )
+            with self.assertRaisesRegex(project.ProjectError, "broken documentation"):
+                project.validate_documentation(root)
+
 
 def sample_ines() -> bytes:
     header = b"NES\x1a" + bytes((2, 4, 0x31, 0)) + bytes(8)
