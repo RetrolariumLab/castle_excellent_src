@@ -14,6 +14,10 @@ class PublicCommandSmokeTests(unittest.TestCase):
         output = public_command_smoke.run_disposable_make(ROOT, "lint")
         self.assertIn("project structure, manifest, source contract", output)
 
+    def test_real_minor_audit_rejects_disposable_empty_commit(self) -> None:
+        output = public_command_smoke.run_disposable_empty_commit_rejection(ROOT)
+        self.assertIn("is empty relative to every parent", output)
+
 
 if __name__ == "__main__":
     unittest.main()

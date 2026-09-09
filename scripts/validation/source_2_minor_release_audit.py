@@ -215,6 +215,20 @@ def validate_delta_history(project_root: Path, release: dict[str, Any]) -> list[
     return errors
 
 
+def validate_candidate_history(
+    project_root: Path, release: dict[str, Any]
+) -> list[str]:
+    """Validate every commit after the predecessor through the candidate tip."""
+    predecessor = release.get("predecessor", {}).get("commit")
+    if not isinstance(predecessor, str) or not predecessor:
+        return ["candidate history has no predecessor commit"]
+    return release_history.validate_release_history(
+        project_root,
+        predecessor,
+        terminal=release_terminal(project_root, release),
+    )
+
+
 def validate_inheritance(
     project_root: Path, release: dict[str, Any]
 ) -> list[str]:
@@ -331,6 +345,7 @@ def validate_release(
     errors.extend(source_2.validate_artifacts(project_root, release))
     errors.extend(source_2.validate_repository_policy(project_root))
     errors.extend(validate_public_english_text(project_root))
+    errors.extend(validate_candidate_history(project_root, release))
     if require_clean and git_lines(project_root, "status", "--porcelain"):
         errors.append("release audit requires a clean worktree")
     if pre_tag:
