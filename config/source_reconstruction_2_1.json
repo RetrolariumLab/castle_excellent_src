@@ -7,7 +7,7 @@
   },
   "release_kind": "compatible_minor",
   "tag": "source-reconstruction-2.1",
-  "status": "development",
+  "status": "tag-ready",
   "predecessor": {
     "manifest": "config/source_reconstruction_2_0.json",
     "tag": "source-reconstruction-2.0",
@@ -15,8 +15,8 @@
   },
   "delta_history": {
     "from_exclusive": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
-    "through_inclusive": "268261bf6a23d65806160a01ea2d67a6d8e05af4",
-    "commit_count": 22,
+    "through_inclusive": "63e4d49a5ea8d37de928c62d35c4fd2c255ce31c",
+    "commit_count": 23,
     "coverage_document": "docs/source_reconstruction_2_1.md"
   },
   "included_scope": [
@@ -515,10 +515,10 @@
     ],
     "private_inputs_tracked": false,
     "history_policy": {
-      "current_history_status": "development",
+      "current_history_status": "tag-ready",
       "predecessor_commit": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
       "development_branch": "rewrite/source-2.1-modernization",
-      "reason": "The compatible Source 2.1 candidate remains in development while the location-independent formatting correction is committed and its exact history boundary is recorded."
+      "reason": "The compatible Source 2.1 candidate has a complete rewritten delta and an unused declared tag; branch promotion and tag creation remain explicit owner actions."
     }
   },
   "artifacts": [

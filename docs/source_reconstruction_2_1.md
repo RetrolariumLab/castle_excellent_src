@@ -36,17 +36,17 @@ Additional platforms, general relocation, expanded ROM architecture, sibling
 engines, and a different canonical preservation image remain outside Source
 2.x. They require a later major release or a separate architectural decision.
 
-The machine-readable delta covers 22 non-empty commits through
-`268261bf6a23d65806160a01ea2d67a6d8e05af4`. Later release-only commits may
+The machine-readable delta covers 23 non-empty commits through
+`63e4d49a5ea8d37de928c62d35c4fd2c255ce31c`. Later release-only commits may
 change only this document and `config/source_reconstruction_2_1.json`; the audit
 rejects any uncovered substantive path.
 
-The manifest remains `development` for explicit owner review. A clean
-`make source-2-minor-check` completed on the supported Windows x64 host with 663
+The manifest declares `tag-ready`; its designated pre-tag gate checks that state.
+A clean `make source-2-minor-check` completed on the supported Windows host with 663
 unit tests, 10,489 regenerated Ghidra instructions, byte-identical builds for
 both supported profiles, seven Japanese runtime scenarios, the Castlequest
 runtime scenario, live debugger-symbol validation, zero-edit
 level/music/graphics round trips, editor workstation actions for both profiles,
 and both disposable public-command paths, including propagated rejection of a
-synthetic empty commit. Branch promotion and tag validation remain separate
-owner-approved actions.
+synthetic empty commit. The gate also requires a clean candidate and unused tag;
+branch promotion and tag creation remain separate owner-approved actions.
