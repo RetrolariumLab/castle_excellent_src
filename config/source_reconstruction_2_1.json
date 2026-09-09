@@ -15,8 +15,8 @@
   },
   "delta_history": {
     "from_exclusive": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
-    "through_inclusive": "4fcd5fdfcd5c898c1ea8bf470f36ef092e46fd61",
-    "commit_count": 21,
+    "through_inclusive": "268261bf6a23d65806160a01ea2d67a6d8e05af4",
+    "commit_count": 22,
     "coverage_document": "docs/source_reconstruction_2_1.md"
   },
   "included_scope": [
@@ -105,6 +105,19 @@
         "scripts/authoring/level_studio_rendering.py",
         "scripts/validation/objects/runtime_object_dispatch_contract.py",
         "scripts/workflow/generate_disassembly_cli.py"
+      ]
+    },
+    {
+      "id": "location-independent-formatting",
+      "kind": "repository-tooling",
+      "summary": "Select formatting inputs from repository-relative paths so a parent directory cannot hide the project and source build packages remain distinct from generated build output.",
+      "evidence": [
+        "format",
+        "lint",
+        "scripts/validation/format_project.py",
+        "scripts/validation/public_command_smoke.py",
+        "tests/validation/test_public_command_smoke.py",
+        "tests/validation/test_format_project.py"
       ]
     },
     {
@@ -215,7 +228,9 @@
         "files": [
           "config/reconstruction/tool_layout.json",
           "scripts/build/atomic_io.py",
+          "scripts/validation/format_project.py",
           "scripts/validation/repository_policy.py",
+          "tests/validation/test_format_project.py",
           "docs/resolved_unknowns.md"
         ],
         "scenarios": [],
@@ -503,7 +518,7 @@
       "current_history_status": "development",
       "predecessor_commit": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
       "development_branch": "rewrite/source-2.1-modernization",
-      "reason": "The rewritten Source 2.1 candidate passes its aggregate gate and awaits explicit owner approval before branch promotion and tag validation."
+      "reason": "The compatible Source 2.1 candidate remains in development while the location-independent formatting correction is committed and its exact history boundary is recorded."
     }
   },
   "artifacts": [

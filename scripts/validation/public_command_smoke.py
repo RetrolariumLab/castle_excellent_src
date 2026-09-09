@@ -35,6 +35,7 @@ def _resolve_make(make_executable: str | None) -> str:
 
 
 def _clone_repository(project_root: Path, clone: Path) -> None:
+    clone.parent.mkdir(parents=True, exist_ok=True)
     result = subprocess.run(
         [
             "git",
@@ -77,7 +78,7 @@ def run_disposable_make(
 ) -> str:
     make = _resolve_make(make_executable)
     with tempfile.TemporaryDirectory(prefix="castle-public-command-") as directory:
-        clone = Path(directory) / "repository"
+        clone = Path(directory) / "build" / "repository"
         _clone_repository(project_root, clone)
         result = _run_make(clone, make, target)
         if result.returncode != 0:
@@ -109,7 +110,7 @@ def run_disposable_empty_commit_rejection(
     """Require the public release audit to reject a real empty Git commit."""
     make = _resolve_make(make_executable)
     with tempfile.TemporaryDirectory(prefix="castle-empty-history-") as directory:
-        clone = Path(directory) / "repository"
+        clone = Path(directory) / "build" / "repository"
         _clone_repository(project_root, clone)
         commit = subprocess.run(
             [

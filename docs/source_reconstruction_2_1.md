@@ -21,6 +21,8 @@ source, profile, runtime, and authoring architecture:
   repository fixtures;
 - add non-mutating Python syntax/static checks and one atomic writer for ROM,
   JSON, report, debugger, analysis, generated-source, and formatter output;
+- make formatting inventory independent of checkout parents while keeping source
+  build packages distinct from generated output;
 - strengthen workstation editor smokes around save, build, play, preview, and
   dirty-close behavior;
 - split build policy, Level Studio rendering, object-dispatch facts, and the
@@ -34,13 +36,13 @@ Additional platforms, general relocation, expanded ROM architecture, sibling
 engines, and a different canonical preservation image remain outside Source
 2.x. They require a later major release or a separate architectural decision.
 
-The machine-readable delta covers 21 non-empty commits through
-`4fcd5fdfcd5c898c1ea8bf470f36ef092e46fd61`. Later release-only commits may
+The machine-readable delta covers 22 non-empty commits through
+`268261bf6a23d65806160a01ea2d67a6d8e05af4`. Later release-only commits may
 change only this document and `config/source_reconstruction_2_1.json`; the audit
 rejects any uncovered substantive path.
 
 The manifest remains `development` for explicit owner review. A clean
-`make source-2-minor-check` completed on the supported Windows x64 host with 661
+`make source-2-minor-check` completed on the supported Windows x64 host with 663
 unit tests, 10,489 regenerated Ghidra instructions, byte-identical builds for
 both supported profiles, seven Japanese runtime scenarios, the Castlequest
 runtime scenario, live debugger-symbol validation, zero-edit
