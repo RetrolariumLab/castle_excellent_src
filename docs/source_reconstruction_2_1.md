@@ -34,13 +34,13 @@ Additional platforms, general relocation, expanded ROM architecture, sibling
 engines, and a different canonical preservation image remain outside Source
 2.x. They require a later major release or a separate architectural decision.
 
-The machine-readable delta covers 17 non-empty commits through
-`8e31ba8029183eb42d21b0eb7fa7a8a7fc474a55`. Later release-only commits may
+The machine-readable delta covers 19 non-empty commits through
+`880a702f2a73bb4bee1ab8df12793b11c25401f3`. Later release-only commits may
 change only this document and `config/source_reconstruction_2_1.json`; the audit
 rejects any uncovered substantive path.
 
 The manifest remains `development` for explicit owner review. A clean
-`make source-2-minor-check` completed on the supported Windows x64 host with 658
+`make source-2-minor-check` completed on the supported Windows x64 host with 661
 unit tests, 10,489 regenerated Ghidra instructions, byte-identical builds for
 both supported profiles, seven Japanese runtime scenarios, the Castlequest
 runtime scenario, live debugger-symbol validation, zero-edit
