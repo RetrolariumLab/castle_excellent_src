@@ -34,8 +34,8 @@ Additional platforms, general relocation, expanded ROM architecture, sibling
 engines, and a different canonical preservation image remain outside Source
 2.x. They require a later major release or a separate architectural decision.
 
-The machine-readable delta covers 19 non-empty commits through
-`880a702f2a73bb4bee1ab8df12793b11c25401f3`. Later release-only commits may
+The machine-readable delta covers 21 non-empty commits through
+`4fcd5fdfcd5c898c1ea8bf470f36ef092e46fd61`. Later release-only commits may
 change only this document and `config/source_reconstruction_2_1.json`; the audit
 rejects any uncovered substantive path.
 
