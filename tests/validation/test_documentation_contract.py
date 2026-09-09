@@ -114,6 +114,10 @@ class DocumentationContractTests(unittest.TestCase):
             with self.assertRaisesRegex(ProjectError, "count is stale"):
                 documentation_contract.validate_label_renames(root)
 
+            (root / "docs/label_renames.json").write_text("{}", encoding="utf-8")
+            with self.assertRaisesRegex(ProjectError, "must exist only"):
+                documentation_contract.validate_label_renames(root)
+
 
 if __name__ == "__main__":
     unittest.main()

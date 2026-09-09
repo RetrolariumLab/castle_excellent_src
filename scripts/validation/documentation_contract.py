@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import subprocess
 from typing import Any
 
 from scripts.build.project import ProjectError
@@ -118,12 +119,27 @@ def validate_documentation_review(root: Path) -> None:
 
 def validate_label_renames(root: Path) -> None:
     """Validate the sole address-keyed old-to-new label mapping definition."""
-    candidates = sorted(
-        path.relative_to(root).as_posix()
-        for base in (root / "config", root / "docs")
-        for path in base.rglob("label_renames.json")
-        if path.is_file()
+    tracked = subprocess.run(
+        ["git", "ls-files"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
     )
+    if tracked.returncode == 0:
+        candidates = sorted(
+            relative.replace("\\", "/")
+            for relative in tracked.stdout.splitlines()
+            if Path(relative).name == "label_renames.json"
+        )
+    else:
+        candidates = sorted(
+            path.relative_to(root).as_posix()
+            for base in (root / "config", root / "docs")
+            for path in base.rglob("label_renames.json")
+            if path.is_file()
+        )
     if candidates != [RENAME_PATH.as_posix()]:
         raise ProjectError(
             "label rename registry must exist only at "
