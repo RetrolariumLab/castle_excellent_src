@@ -7,7 +7,7 @@
   },
   "release_kind": "compatible_minor",
   "tag": "source-reconstruction-2.1",
-  "status": "tag-ready",
+  "status": "development",
   "predecessor": {
     "manifest": "config/source_reconstruction_2_0.json",
     "tag": "source-reconstruction-2.0",
@@ -15,8 +15,8 @@
   },
   "delta_history": {
     "from_exclusive": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
-    "through_inclusive": "63e4d49a5ea8d37de928c62d35c4fd2c255ce31c",
-    "commit_count": 23,
+    "through_inclusive": "d7ba5c0ff4824ff5b11a85ae8e7360115abefc39",
+    "commit_count": 24,
     "coverage_document": "docs/source_reconstruction_2_1.md"
   },
   "included_scope": [
@@ -118,6 +118,18 @@
         "scripts/validation/public_command_smoke.py",
         "tests/validation/test_public_command_smoke.py",
         "tests/validation/test_format_project.py"
+      ]
+    },
+    {
+      "id": "selected-build-toolchain-verification",
+      "kind": "repository-tooling",
+      "summary": "Verify the exact Make-selected assembler and linker binaries against the pinned identities before either executable can run.",
+      "evidence": [
+        "build-toolchain-status",
+        "Makefile",
+        "scripts/validation/release_audit.py",
+        "scripts/validation/public_command_smoke.py",
+        "tests/validation/test_public_command_smoke.py"
       ]
     },
     {
@@ -226,11 +238,15 @@
           "lint-python"
         ],
         "files": [
+          "Makefile",
           "config/reconstruction/tool_layout.json",
           "scripts/build/atomic_io.py",
           "scripts/validation/format_project.py",
+          "scripts/validation/release_audit.py",
           "scripts/validation/repository_policy.py",
+          "scripts/validation/public_command_smoke.py",
           "tests/validation/test_format_project.py",
+          "tests/validation/test_public_command_smoke.py",
           "docs/resolved_unknowns.md"
         ],
         "scenarios": [],
@@ -515,10 +531,10 @@
     ],
     "private_inputs_tracked": false,
     "history_policy": {
-      "current_history_status": "tag-ready",
+      "current_history_status": "development",
       "predecessor_commit": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
       "development_branch": "rewrite/source-2.1-modernization",
-      "reason": "The compatible Source 2.1 candidate has a complete rewritten delta and an unused declared tag; branch promotion and tag creation remain explicit owner actions."
+      "reason": "The compatible Source 2.1 candidate remains in development while selected build-tool verification is committed and its exact history boundary is recorded."
     }
   },
   "artifacts": [

@@ -202,7 +202,7 @@ reconstruction-audit:
 	$(RUN_TOOL) validation.source_reconstruction --layout "$(SOURCE_LAYOUT)"
 
 build-toolchain-status:
-	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --build-tools-only
+	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --build-tools-only --ca65 "$(CA65)" --ld65 "$(LD65)"
 
 release-audit:
 	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-clean

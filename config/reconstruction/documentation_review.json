@@ -116,7 +116,7 @@
     },
     {
       "path": "docs/source_reconstruction_2_1.md",
-      "lines": 52,
+      "lines": 54,
       "disposition": "retained",
       "audience": "reviewers of the active compatible-minor delta",
       "reason": "Owns the current 2.1 boundary without rewriting predecessor release documents."

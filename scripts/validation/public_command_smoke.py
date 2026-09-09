@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -58,10 +59,15 @@ def _clone_repository(project_root: Path, clone: Path) -> None:
         )
 
 
-def _run_make(clone: Path, make: str, target: str) -> subprocess.CompletedProcess[str]:
+def _run_make(
+    project_root: Path,
+    make: str,
+    target: str,
+    *arguments: str,
+) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [make, target],
-        cwd=clone,
+        [make, target, *arguments],
+        cwd=project_root,
         check=False,
         capture_output=True,
         text=True,
@@ -146,6 +152,53 @@ def run_disposable_empty_commit_rejection(
             raise PublicCommandSmokeError(
                 f"public command 'make {target}' failed without the empty-commit "
                 f"diagnostic:\n{output.strip()}"
+            )
+        return output
+
+
+def run_unpinned_toolchain_rejection(
+    project_root: Path,
+    *,
+    make_executable: str | None = None,
+) -> str:
+    """Require the public toolchain gate to reject an override before execution."""
+    make = _resolve_make(make_executable)
+    with tempfile.TemporaryDirectory(prefix="castle-toolchain-probe-") as directory:
+        root = Path(directory)
+        marker = root / "executed.txt"
+        if os.name == "nt":
+            probe = root / "unverified-ca65.cmd"
+            probe.write_text(
+                f'@echo off\r\necho executed>"{marker}"\r\necho ca65 V2.19\r\n',
+                encoding="utf-8",
+            )
+        else:
+            probe = root / "unverified-ca65"
+            probe.write_text(
+                f'#!/bin/sh\nprintf executed > "{marker}"\nprintf "ca65 V2.19\\n"\n',
+                encoding="utf-8",
+            )
+            probe.chmod(0o755)
+        result = _run_make(
+            project_root,
+            make,
+            "build-toolchain-status",
+            f"CA65={probe}",
+            "LD65=bin/ld65.exe",
+        )
+        output = result.stdout + result.stderr
+        if result.returncode == 0:
+            raise PublicCommandSmokeError(
+                "public toolchain gate accepted an unpinned assembler override"
+            )
+        if marker.exists():
+            raise PublicCommandSmokeError(
+                "public toolchain gate executed an unpinned assembler override"
+            )
+        if "selected toolchain binary SHA-256 mismatch: ca65" not in output:
+            raise PublicCommandSmokeError(
+                "public toolchain gate failed without the selected-binary diagnostic:\n"
+                + output.strip()
             )
         return output
 

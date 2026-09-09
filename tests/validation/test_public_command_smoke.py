@@ -19,6 +19,10 @@ class PublicCommandSmokeTests(unittest.TestCase):
         output = public_command_smoke.run_disposable_empty_commit_rejection(ROOT)
         self.assertIn("is empty relative to every parent", output)
 
+    def test_unpinned_toolchain_override_is_rejected_before_execution(self) -> None:
+        output = public_command_smoke.run_unpinned_toolchain_rejection(ROOT)
+        self.assertIn("selected toolchain binary SHA-256 mismatch: ca65", output)
+
 
 if __name__ == "__main__":
     unittest.main()

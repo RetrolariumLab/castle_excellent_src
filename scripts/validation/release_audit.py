@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
 from typing import Any
@@ -315,23 +316,45 @@ def validate_artifacts(project_root: Path, release: dict[str, Any]) -> list[str]
     return errors
 
 
-def validate_build_toolchain(project_root: Path, release: dict[str, Any]) -> list[str]:
+def resolve_selected_executable(project_root: Path, selected: str | Path) -> Path:
+    path = Path(selected)
+    if path.is_absolute():
+        return path.resolve()
+    project_path = (project_root / path).resolve()
+    if project_path.is_file():
+        return project_path
+    located = shutil.which(str(selected))
+    return Path(located).resolve() if located else project_path
+
+
+def validate_build_toolchain(
+    project_root: Path,
+    release: dict[str, Any],
+    selected_executables: dict[str, str | Path] | None = None,
+) -> list[str]:
     errors: list[str] = []
     components = release["toolchain"].get("components", [])
     by_id = {item["id"]: item for item in components}
+    selected_executables = selected_executables or {}
     for component_id in ("ca65", "ld65"):
         component = by_id.get(component_id)
         if component is None:
             errors.append(f"build toolchain component is missing: {component_id}")
             continue
-        path = project_root / component["binary"]
+        selected = selected_executables.get(component_id) or component["binary"]
+        path = resolve_selected_executable(project_root, selected)
         if not path.is_file():
-            errors.append(f"toolchain binary is missing: {component['binary']}")
+            errors.append(f"selected {component_id} executable is missing: {selected}")
             continue
+        valid_identity = True
         if path.stat().st_size != component["binary_size"]:
-            errors.append(f"toolchain binary size mismatch: {component_id}")
+            errors.append(f"selected toolchain binary size mismatch: {component_id}")
+            valid_identity = False
         if digest(path) != component["binary_sha256"]:
-            errors.append(f"toolchain binary SHA-256 mismatch: {component_id}")
+            errors.append(f"selected toolchain binary SHA-256 mismatch: {component_id}")
+            valid_identity = False
+        if not valid_identity:
+            continue
         actual = tool_version(path)
         if component["version"] not in actual:
             errors.append(f"unexpected {component_id} version: {actual!r}")
@@ -621,11 +644,17 @@ def main() -> int:
     parser.add_argument("--pre-tag", action="store_true")
     parser.add_argument("--require-clean", action="store_true")
     parser.add_argument("--build-tools-only", action="store_true")
+    parser.add_argument("--ca65")
+    parser.add_argument("--ld65")
     args = parser.parse_args()
     try:
         if args.build_tools_only:
             release = load_json(args.manifest.resolve())
-            errors = validate_build_toolchain(args.project_root.resolve(), release)
+            errors = validate_build_toolchain(
+                args.project_root.resolve(),
+                release,
+                {"ca65": args.ca65, "ld65": args.ld65},
+            )
         else:
             errors = validate_release(
                 args.project_root.resolve(),
