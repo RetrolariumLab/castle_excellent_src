@@ -15,8 +15,8 @@
   },
   "delta_history": {
     "from_exclusive": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
-    "through_inclusive": "009cc2759ca82e6f20d573f86637fb2e94a76df4",
-    "commit_count": 13,
+    "through_inclusive": "8e31ba8029183eb42d21b0eb7fa7a8a7fc474a55",
+    "commit_count": 17,
     "coverage_document": "docs/source_reconstruction_2_1.md"
   },
   "included_scope": [
@@ -64,10 +64,13 @@
     {
       "id": "git-object-history-audit",
       "kind": "release-evidence",
-      "summary": "Reject empty commits from their Git trees and validate the complete English message, paragraph, and attribution contract across the release delta.",
+      "summary": "Reject empty commits from their Git trees during every minor audit and validate the complete English message, paragraph, and attribution contract across the release delta.",
       "evidence": [
+        "source-2-minor-audit",
         "scripts/validation/release_history.py",
-        "tests/validation/test_release_history.py"
+        "scripts/validation/source_2_minor_release_audit.py",
+        "tests/validation/test_release_history.py",
+        "tests/validation/test_public_command_smoke.py"
       ]
     },
     {
@@ -83,7 +86,7 @@
     {
       "id": "disposable-public-command-smoke",
       "kind": "release-evidence",
-      "summary": "Run the real public lint command in a disposable tracked-only clone and reject failures or worktree mutations.",
+      "summary": "Run real public lint and minor-audit commands in disposable tracked-only clones, reject lint mutations, and prove that an empty-commit audit failure propagates through Make.",
       "evidence": [
         "public-command-smoke",
         "scripts/validation/public_command_smoke.py",
