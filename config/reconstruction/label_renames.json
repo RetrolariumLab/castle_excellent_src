@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "mapping": {
+    "scope": "all-symbols",
+    "join_key": "address",
+    "old_name_template": "PRG0:${address_hex}",
+    "address_conversion": "strip-0x-prefix-and-prefix-dollar",
+    "new_name_registry": "config/reconstruction/symbols.json",
+    "new_name_field": "name",
+    "expected_entries": 1232
+  },
+  "imported_aliases": [
+    {
+      "address": "0x8000",
+      "old_name": "FUN_PRG0__8000"
+    },
+    {
+      "address": "0x8225",
+      "old_name": "reset"
+    },
+    {
+      "address": "0x9583",
+      "old_name": "FUN_PRG0__9583"
+    },
+    {
+      "address": "0xC569",
+      "old_name": "vblank"
+    },
+    {
+      "address": "0xE830",
+      "old_name": "FUN_PRG0__e830"
+    },
+    {
+      "address": "0xEBE9",
+      "old_name": "FUN_PRG0__ebe9"
+    },
+    {
+      "address": "0xFE31",
+      "old_name": "FUN_PRG0__fe31"
+    }
+  ]
+}

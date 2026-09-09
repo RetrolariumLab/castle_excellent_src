@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "release": "2.1",
+  "documents": [
+    {
+      "path": "docs/architecture.md",
+      "lines": 573,
+      "disposition": "retained",
+      "audience": "readers learning runtime design and cross-subsystem flow",
+      "reason": "Explains conceptual behavior rather than the address-ordered inventory."
+    },
+    {
+      "path": "docs/content_authoring.md",
+      "lines": 233,
+      "disposition": "retained",
+      "audience": "authors using codecs, models, and visual studios",
+      "reason": "Owns the end-to-end editing workflow across supported formats."
+    },
+    {
+      "path": "docs/data_formats.md",
+      "lines": 487,
+      "disposition": "retained",
+      "audience": "developers changing binary format codecs",
+      "reason": "Defines binary structures and capacity contracts independently of editor usage."
+    },
+    {
+      "path": "docs/development.md",
+      "lines": 152,
+      "disposition": "retained",
+      "audience": "contributors changing source, tools, tests, and configuration",
+      "reason": "Provides the contributor workflow behind the shorter root quick start."
+    },
+    {
+      "path": "docs/disassembly_pipeline.md",
+      "lines": 99,
+      "disposition": "retained",
+      "audience": "researchers regenerating source from pinned analysis facts",
+      "reason": "The optional workstation research pipeline has a distinct toolchain and evidence boundary."
+    },
+    {
+      "path": "docs/fixed_layout_variants.md",
+      "lines": 25,
+      "disposition": "retained",
+      "audience": "authors producing bounded experimental ROM variants",
+      "reason": "The concise safety contract is independently linked from variant commands and metadata."
+    },
+    {
+      "path": "docs/index.md",
+      "lines": 62,
+      "disposition": "revised",
+      "audience": "all documentation readers",
+      "reason": "Remains the sole task-oriented entry point and now exposes corpus-review evidence."
+    },
+    {
+      "path": "docs/provenance.md",
+      "lines": 68,
+      "disposition": "revised",
+      "audience": "reviewers tracing cartridge, research, toolchain, and naming origins",
+      "reason": "Keeps legal and research provenance together and now links the canonical label registry."
+    },
+    {
+      "path": "docs/ram_map.md",
+      "lines": 320,
+      "disposition": "retained",
+      "audience": "developers reasoning about storage lifetimes and scratch reuse",
+      "reason": "The memory contract is too detailed and independently owned to fold into architecture."
+    },
+    {
+      "path": "docs/resolved_unknowns.md",
+      "lines": 818,
+      "disposition": "retained",
+      "audience": "reviewers consulting closed reverse-engineering evidence",
+      "reason": "The append-only resolved ledger has a registry map and a lifecycle distinct from open questions."
+    },
+    {
+      "path": "docs/revision_profiles.md",
+      "lines": 64,
+      "disposition": "retained",
+      "audience": "builders comparing supported regional profiles",
+      "reason": "Explains identity and shared-source decisions that are not variant authoring policy."
+    },
+    {
+      "path": "docs/roadmap.md",
+      "lines": 47,
+      "disposition": "retained",
+      "audience": "maintainers reviewing release history and deferred scope",
+      "reason": "Separates future work from documents that describe accepted behavior."
+    },
+    {
+      "path": "docs/source_layout.md",
+      "lines": 146,
+      "disposition": "revised",
+      "audience": "developers navigating modules and symbol ownership",
+      "reason": "Owns module and naming policy and now points to the canonical old-to-new mapping."
+    },
+    {
+      "path": "docs/source_reconstruction.md",
+      "lines": 115,
+      "disposition": "retained",
+      "audience": "reviewers learning the enduring public release guarantees",
+      "reason": "Defines project release discipline shared by the version-specific boundaries."
+    },
+    {
+      "path": "docs/source_reconstruction_1_0.md",
+      "lines": 27,
+      "disposition": "retained",
+      "audience": "reviewers of the accepted preservation baseline",
+      "reason": "Freezes the independently tagged 1.0 scope and evidence."
+    },
+    {
+      "path": "docs/source_reconstruction_2_0.md",
+      "lines": 102,
+      "disposition": "retained",
+      "audience": "reviewers of the accepted editable-source baseline",
+      "reason": "Freezes the independently tagged 2.0 scope and delta history."
+    },
+    {
+      "path": "docs/source_reconstruction_2_1.md",
+      "lines": 50,
+      "disposition": "retained",
+      "audience": "reviewers of the active compatible-minor delta",
+      "reason": "Owns the current 2.1 boundary without rewriting predecessor release documents."
+    },
+    {
+      "path": "docs/subsystems.md",
+      "lines": 547,
+      "disposition": "retained",
+      "audience": "researchers locating behavior by PRG address",
+      "reason": "The address-ordered evidence inventory complements rather than duplicates conceptual architecture."
+    },
+    {
+      "path": "docs/unknowns.md",
+      "lines": 13,
+      "disposition": "retained",
+      "audience": "reviewers tracking claims that remain unresolved",
+      "reason": "A short open registry prevents unresolved claims from being buried in the large resolved ledger."
+    },
+    {
+      "path": "docs/verification.md",
+      "lines": 132,
+      "disposition": "retained",
+      "audience": "builders and release reviewers running evidence gates",
+      "reason": "Provides the task-oriented verification command and failure-diagnostic guide."
+    }
+  ],
+  "removed_documents": [],
+  "reader_journeys": [
+    {
+      "id": "build-and-verify",
+      "paths": [
+        "docs/index.md",
+        "docs/development.md",
+        "docs/verification.md",
+        "docs/revision_profiles.md"
+      ]
+    },
+    {
+      "id": "understand-runtime-source",
+      "paths": [
+        "docs/index.md",
+        "docs/architecture.md",
+        "docs/source_layout.md",
+        "docs/subsystems.md",
+        "docs/ram_map.md"
+      ]
+    },
+    {
+      "id": "author-content",
+      "paths": [
+        "docs/index.md",
+        "docs/content_authoring.md",
+        "docs/data_formats.md",
+        "docs/fixed_layout_variants.md"
+      ]
+    },
+    {
+      "id": "review-release-provenance",
+      "paths": [
+        "docs/index.md",
+        "docs/source_reconstruction.md",
+        "docs/source_reconstruction_2_1.md",
+        "docs/provenance.md",
+        "docs/unknowns.md",
+        "docs/resolved_unknowns.md",
+        "docs/roadmap.md"
+      ]
+    }
+  ],
+  "repeated_prefixes": [
+    {
+      "prefix": "source",
+      "paths": [
+        "docs/source_layout.md",
+        "docs/source_reconstruction.md",
+        "docs/source_reconstruction_1_0.md",
+        "docs/source_reconstruction_2_0.md",
+        "docs/source_reconstruction_2_1.md"
+      ],
+      "decision": "retain",
+      "reason": "Source layout is a technical ownership guide, while the contract and three versioned boundaries have independent release lifecycles."
+    }
+  ]
+}

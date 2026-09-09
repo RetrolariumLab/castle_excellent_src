@@ -26,7 +26,9 @@ source, profile, runtime, and authoring architecture:
 - split build policy, Level Studio rendering, object-dispatch facts, and the
   disassembly CLI; machine-check the two remaining bounded GUI exceptions;
 - add navigation to the resolved-evidence ledger and record all remaining
-  layout deviations explicitly.
+  layout deviations explicitly;
+- inventory the complete documentation corpus and define one address-keyed
+  old-to-new label registry without duplicating the current symbol ledger.
 
 Additional platforms, general relocation, expanded ROM architecture, sibling
 engines, and a different canonical preservation image remain outside Source

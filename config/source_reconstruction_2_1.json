@@ -137,6 +137,20 @@
         "docs/development.md",
         "docs/verification.md"
       ]
+    },
+    {
+      "id": "documentation-corpus-and-label-provenance",
+      "kind": "documentation-and-provenance",
+      "summary": "Record the corpus-level documentation review and define the sole address-keyed old-to-new label mapping without duplicating the current symbol ledger.",
+      "evidence": [
+        "config/reconstruction/documentation_review.json",
+        "config/reconstruction/label_renames.json",
+        "scripts/validation/documentation_contract.py",
+        "tests/validation/test_documentation_contract.py",
+        "docs/index.md",
+        "docs/provenance.md",
+        "docs/source_layout.md"
+      ]
     }
   ],
   "requirements": {
@@ -203,6 +217,25 @@
           "scripts/build/atomic_io.py",
           "scripts/validation/repository_policy.py",
           "docs/resolved_unknowns.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "documentation_corpus_and_label_provenance": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "lint"
+        ],
+        "files": [
+          "config/reconstruction/documentation_review.json",
+          "config/reconstruction/label_renames.json",
+          "scripts/validation/documentation_contract.py",
+          "tests/validation/test_documentation_contract.py",
+          "docs/index.md",
+          "docs/provenance.md",
+          "docs/source_layout.md"
         ],
         "scenarios": [],
         "artifacts": []
@@ -457,6 +490,8 @@
   ],
   "provenance": {
     "references": [
+      "config/reconstruction/documentation_review.json",
+      "config/reconstruction/label_renames.json",
       "docs/provenance.md",
       "tools/disassembly.lock.json",
       "tools/runtime.lock.json",

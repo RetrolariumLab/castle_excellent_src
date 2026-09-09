@@ -107,7 +107,9 @@ complete routine map without maintaining a second 1,232-row appendix.
 CPU address is the stable join key between imported and reconstructed names.
 Headless Ghidra exports its original `symbol` and `function` columns to
 `build/ghidra/instructions.tsv`; the current name at the same address lives in
-the symbol ledger.
+the symbol ledger. The canonical
+[label rename registry](../config/reconstruction/label_renames.json) defines
+this address-keyed old-to-new join and retains notable imported aliases.
 
 | Address | Original Ghidra identity | Current source name |
 | ---: | --- | --- |

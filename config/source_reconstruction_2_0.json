@@ -300,6 +300,8 @@
           "reconstruction-audit"
         ],
         "files": [
+          "config/reconstruction/documentation_review.json",
+          "config/reconstruction/label_renames.json",
           "docs/source_layout.md",
           "docs/ram_map.md",
           "docs/subsystems.md",
@@ -659,6 +661,8 @@
   ],
   "provenance": {
     "references": [
+      "config/reconstruction/documentation_review.json",
+      "config/reconstruction/label_renames.json",
       "docs/provenance.md",
       "tools/disassembly.lock.json",
       "tools/runtime.lock.json",

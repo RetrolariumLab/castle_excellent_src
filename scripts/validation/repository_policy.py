@@ -16,6 +16,10 @@ from scripts.build.project import (
     load_prg_data_ranges,
     validate_code_data_separation,
 )
+from scripts.validation.documentation_contract import (
+    validate_documentation_review,
+    validate_label_renames,
+)
 from scripts.workflow.generate_disassembly import (
     load_memory_symbols,
     load_operand_overrides,
@@ -229,6 +233,8 @@ def command_lint(_args: argparse.Namespace) -> None:
         "config/fixed_layout_variants.json",
         "config/linker/cnrom.cfg",
         "config/reconstruction/memory_symbols.json",
+        "config/reconstruction/documentation_review.json",
+        "config/reconstruction/label_renames.json",
         "config/reconstruction/operand_overrides.json",
         "config/reconstruction/source_layout.json",
         "config/reconstruction/tool_layout.json",
@@ -359,6 +365,8 @@ def command_lint(_args: argparse.Namespace) -> None:
     validate_test_layout(ROOT)
     validate_config_layout(ROOT)
     validate_documentation(ROOT)
+    validate_documentation_review(ROOT)
+    validate_label_renames(ROOT)
     validate_tool_layout(ROOT)
     load_manifest(ROOT / "assets/manifest.json")
     memory_symbols = load_memory_symbols(ROOT / "config/reconstruction/memory_symbols.json")

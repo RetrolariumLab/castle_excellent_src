@@ -53,3 +53,16 @@ Exact archive names, sizes, URLs, and SHA-256 values are recorded in
 `tools/disassembly.lock.json`. Downloaded tools are ignored. The tracked Java
 scripts export analysis facts; the project-owned Python generator converts
 those facts and the private PRG into canonical ca65 source.
+
+## Label-name provenance
+
+CPU addresses are the stable identities for reconstructed PRG symbols. The
+[label rename registry](../config/reconstruction/label_renames.json) defines the
+old address-keyed namespace, joins it to the sole current-name ledger, and
+retains imported Ghidra aliases where they are useful to researchers. This
+keeps every old-to-new mapping mechanically recoverable without duplicating
+the 1,232 current names in documentation or a second symbol table.
+
+Semantic names describe evidence-backed behavior, not ownership of the
+original program. A name can be refined while its address identity remains
+stable; code relocation is a different operation and is outside this release.

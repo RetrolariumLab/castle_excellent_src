@@ -50,3 +50,13 @@ Machine-readable release ownership lives in
 `config/source_reconstruction_2_0.json`. Active compatible-minor development is
 declared by `config/source_reconstruction_2_1.json`; prose documents explain
 those contracts but do not replace them.
+
+## Corpus review
+
+The 2.1 review followed the build, architecture, source-layout, authoring,
+verification, and provenance journeys from this index. Every maintained page
+has a distinct audience or evidence lifecycle; no stale, duplicate, or orphaned
+page remains. The exact inventory, line counts, dispositions, reader journeys,
+and repeated-prefix decision are recorded in
+`config/reconstruction/documentation_review.json` and checked by repository
+lint.
