@@ -104,9 +104,10 @@ make source-2-minor-audit # reconcile the compatible Source 2.1 delta
 make source-2-minor-check # run accepted 2.0 first, then the complete 2.1 delta
 ```
 
-`make source-2-minor-pre-tag-check` adds clean-tree, history, branch, and
-tag-readiness requirements for 2.1. The full gate model is documented in
-[Verification](docs/verification.md).
+The ordinary Source 2.1 audit always validates every commit after the accepted
+2.0 predecessor and rejects empty Git objects. `make source-2-minor-pre-tag-check`
+adds clean-tree, branch, and tag-readiness requirements. The full gate model is
+documented in [Verification](docs/verification.md).
 
 ## Repository map
 
