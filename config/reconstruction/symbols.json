@@ -1005,235 +1005,235 @@
     },
     {
       "address": "0x89E1",
-      "name": "HandleLiftControlBlockHorizontalCollision",
+      "name": "HandlePulleyHorizontalCollision",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x89EF",
-      "name": "RouteLiftControlBlockPushMotion",
+      "name": "RoutePulleyPushMotion",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x89F4",
-      "name": "RestoreLiftControlBlockOffsetForLowering",
+      "name": "RestorePulleyOffsetForLowering",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x89F6",
-      "name": "LowerLinkedLift",
+      "name": "LowerDraggableLift",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8A15",
-      "name": "FindPrimaryLinkedLiftForLowering",
+      "name": "FindDraggableLiftTopForLowering",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8A17",
-      "name": "ScanPrimaryLinkedLiftForLowering",
+      "name": "ScanDraggableLiftTopForLowering",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8A27",
-      "name": "RememberPrimaryLinkedLiftForLowering",
+      "name": "RememberDraggableLiftTopForLowering",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8A2B",
-      "name": "ScanSecondaryLinkedLiftForLowering",
+      "name": "ScanDraggableLiftBottomForLowering",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8A3B",
-      "name": "ProbeLinkedLiftLoweringClearance",
+      "name": "ProbeDraggableLiftLoweringClearance",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8A52",
-      "name": "ProbeSecondaryLinkedLiftRightClearance",
+      "name": "ProbeDraggableLiftBottomRightClearance",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8A63",
-      "name": "ProbePrimaryLinkedLiftClearance",
+      "name": "ProbeDraggableLiftTopClearance",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8ABB",
-      "name": "LowerLinkedLiftObjectByStep",
+      "name": "LowerDraggableLiftObjectByStep",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8AC1",
-      "name": "ReturnFromLinkedLiftControl",
+      "name": "ReturnFromDraggableLiftControl",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8AC2",
-      "name": "RestoreLiftControlBlockOffsetForRaising",
+      "name": "RestorePulleyOffsetForRaising",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8AC4",
-      "name": "RaiseLinkedLift",
+      "name": "RaiseDraggableLift",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8ADB",
-      "name": "ScanPrimaryLinkedLiftForRaising",
+      "name": "ScanDraggableLiftTopForRaising",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8AEB",
-      "name": "ProbeLinkedLiftTrackAbove",
+      "name": "ProbeDraggableLiftTrackAbove",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8B00",
-      "name": "FindSecondaryLinkedLiftForRaising",
+      "name": "FindDraggableLiftBottomForRaising",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8B02",
-      "name": "ScanSecondaryLinkedLiftForRaising",
+      "name": "ScanDraggableLiftBottomForRaising",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8B12",
-      "name": "PrepareLinkedLiftRaising",
+      "name": "PrepareDraggableLiftRaising",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8B51",
-      "name": "RestartLinkedLiftOccupantClosure",
+      "name": "RestartDraggableLiftOccupantClosure",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8B59",
-      "name": "FindPendingLinkedLiftOccupant",
+      "name": "FindPendingDraggableLiftOccupant",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8B60",
-      "name": "AdvanceLinkedLiftOccupantScan",
+      "name": "AdvanceDraggableLiftOccupantScan",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8B6D",
-      "name": "ExpandLinkedLiftOccupantClosure",
+      "name": "ExpandDraggableLiftOccupantClosure",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8B8F",
-      "name": "ScanLinkedLiftOccupantOverlaps",
+      "name": "ScanDraggableLiftOccupantOverlaps",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8BA1",
-      "name": "AdvanceLinkedLiftOverlapScan",
+      "name": "AdvanceDraggableLiftOverlapScan",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8BA9",
-      "name": "FinishLinkedLiftOccupantExpansion",
+      "name": "FinishDraggableLiftOccupantExpansion",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8BB0",
-      "name": "ApplyRisingLinkedLiftMovement",
+      "name": "ApplyRisingDraggableLiftMovement",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8BB4",
-      "name": "MoveNextLinkedLiftOccupant",
+      "name": "MoveNextDraggableLiftOccupant",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8BEB",
-      "name": "CrushBlockedLinkedLiftOccupant",
+      "name": "CrushBlockedDraggableLiftOccupant",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8BF9",
-      "name": "AdvanceLinkedLiftMovement",
+      "name": "AdvanceDraggableLiftMovement",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C0F",
-      "name": "StoreRaisedLinkedLiftPlayerY",
+      "name": "StoreRaisedDraggableLiftPlayerY",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C11",
-      "name": "ReturnFromLinkedLiftUpdate",
+      "name": "ReturnFromDraggableLiftUpdate",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C12",
-      "name": "CollectInventoryRuntimeType90",
+      "name": "CollectDarkBlueKey",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C21",
-      "name": "CollectInventoryRuntimeType91",
+      "name": "CollectRedKey",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C30",
-      "name": "CollectInventoryRuntimeType92",
+      "name": "CollectPinkKey",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C3F",
-      "name": "CollectInventoryRuntimeType93",
+      "name": "CollectGreenKey",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C4E",
-      "name": "CollectInventoryRuntimeType94",
+      "name": "CollectBlueKey",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C5D",
-      "name": "CollectInventoryRuntimeType95",
+      "name": "CollectYellowKey",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -1263,67 +1263,67 @@
     },
     {
       "address": "0x8C80",
-      "name": "CollectRuntimeType83",
+      "name": "CollectOxygenTank",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C86",
-      "name": "ApplyRuntimeType83Collectible",
+      "name": "ApplyOxygenTankCollectible",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C95",
-      "name": "SetRuntimeType83Protection",
+      "name": "SetOxygenTankProtection",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8C9E",
-      "name": "CollectRuntimeType96",
+      "name": "CollectCastleMap",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8CA4",
-      "name": "ApplyRuntimeType96Collectible",
+      "name": "ApplyCastleMapCollectible",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8CB2",
-      "name": "CollectRuntimeType98",
+      "name": "CollectCross",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8CB8",
-      "name": "ApplyRuntimeType98Collectible",
+      "name": "ApplyCrossCollectible",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8CC2",
-      "name": "CollectRuntimeType99",
+      "name": "CollectRing",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8CC8",
-      "name": "ApplyRuntimeType99Collectible",
+      "name": "ApplyRingCollectible",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8CD2",
-      "name": "CollectRuntimeType9A",
+      "name": "CollectMoneyBag",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8CD8",
-      "name": "ApplyRuntimeType9ACollectible",
+      "name": "ApplyMoneyBagCollectible",
       "kind": "local",
       "confidence": "confirmed"
     },
@@ -1341,13 +1341,13 @@
     },
     {
       "address": "0x8CF2",
-      "name": "CollectRuntimeType97",
+      "name": "CollectPotion",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8CF8",
-      "name": "ApplyRuntimeType97Collectible",
+      "name": "ApplyPotionCollectible",
       "kind": "local",
       "confidence": "confirmed"
     },
@@ -1383,97 +1383,97 @@
     },
     {
       "address": "0x8D3D",
-      "name": "HandleRuntimeType9FPlayerCollision",
+      "name": "HandlePowerLightPlayerCollision",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D4A",
-      "name": "ReturnFromRuntimeType9FXMismatch",
+      "name": "ReturnFromPowerLightXMismatch",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D4B",
-      "name": "CheckRuntimeType9FAudio",
+      "name": "CheckPowerLightAudio",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D52",
-      "name": "RefreshRuntimeType9FInvulnerability",
+      "name": "RefreshPowerLightInvulnerability",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D56",
-      "name": "ReturnFromRuntimeType9FCollision",
+      "name": "ReturnFromPowerLightCollision",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D57",
-      "name": "HandleRuntimeType82PlayerCollision",
+      "name": "HandlePrincessPlayerCollision",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D5C",
-      "name": "CheckRuntimeType82PlayerProximity",
+      "name": "CheckPrincessPlayerProximity",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D64",
-      "name": "WaitForRuntimeType82Audio",
+      "name": "WaitForPrincessAudio",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D6A",
-      "name": "ExitCollisionDispatchForRuntimeType82",
+      "name": "ExitCollisionDispatchForPrincess",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D6F",
-      "name": "ReturnFromRuntimeType81Or82Collision",
+      "name": "ReturnFromFairyOrPrincessCollision",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D70",
-      "name": "HandleRuntimeType81PlayerCollision",
+      "name": "HandleFairyPlayerCollision",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D78",
-      "name": "WaitForRuntimeType81Audio",
+      "name": "WaitForFairyAudio",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D7E",
-      "name": "TransformRuntimeType81Object",
+      "name": "TransformFairyObject",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D8F",
-      "name": "CheckRuntimeType81CloneRoom",
+      "name": "CheckFairyCloneRoom",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8D95",
-      "name": "SpawnRuntimeType81Clone",
+      "name": "SpawnFairyClone",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0x8DAA",
-      "name": "ReturnFromRuntimeType81Collision",
+      "name": "ReturnFromFairyCollision",
       "kind": "local",
       "confidence": "confirmed"
     },
@@ -1863,7 +1863,7 @@
     },
     {
       "address": "0x9552",
-      "name": "IsRuntimeObjectType90To95",
+      "name": "IsKeyObjectType",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -1941,7 +1941,7 @@
     },
     {
       "address": "0x965C",
-      "name": "UpdateLiftControlBlock",
+      "name": "UpdatePulley",
       "kind": "routine",
       "confidence": "high"
     },
@@ -1953,7 +1953,7 @@
     },
     {
       "address": "0x9673",
-      "name": "ReturnFromLiftControlBlockUpdate",
+      "name": "ReturnFromPulleyUpdate",
       "kind": "local",
       "confidence": "confirmed"
     },
@@ -2043,97 +2043,97 @@
     },
     {
       "address": "0x9796",
-      "name": "UpdateSmallLift",
+      "name": "UpdateNarrowLift",
       "kind": "routine",
       "confidence": "high"
     },
     {
       "address": "0x97A0",
-      "name": "StepSmallLift",
+      "name": "StepNarrowLift",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x97A7",
-      "name": "MoveSmallLiftDown",
+      "name": "MoveNarrowLiftDown",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x97DE",
-      "name": "ReverseSmallLiftUp",
+      "name": "ReverseNarrowLiftUp",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x97E7",
-      "name": "ReverseSmallLiftDown",
+      "name": "ReverseNarrowLiftDown",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x980E",
-      "name": "MoveSmallLiftUp",
+      "name": "MoveNarrowLiftUp",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x985D",
-      "name": "MarkPlayerOnSmallLift",
+      "name": "MarkPlayerOnNarrowLift",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9862",
-      "name": "RaiseSmallLiftOccupants",
+      "name": "RaiseNarrowLiftOccupants",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9869",
-      "name": "UpdateLargeLift",
+      "name": "UpdateWideLift",
       "kind": "routine",
       "confidence": "high"
     },
     {
       "address": "0x9873",
-      "name": "StepLargeLift",
+      "name": "StepWideLift",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x987A",
-      "name": "MoveLargeLiftDown",
+      "name": "MoveWideLiftDown",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x98B9",
-      "name": "ReverseLargeLiftUp",
+      "name": "ReverseWideLiftUp",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x98C2",
-      "name": "ReverseLargeLiftDown",
+      "name": "ReverseWideLiftDown",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x98EC",
-      "name": "MoveLargeLiftUp",
+      "name": "MoveWideLiftUp",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9945",
-      "name": "MarkPlayerOnLargeLift",
+      "name": "MarkPlayerOnWideLift",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x994A",
-      "name": "RaiseLargeLiftOccupants",
+      "name": "RaiseWideLiftOccupants",
       "kind": "local",
       "confidence": "high"
     },
@@ -2253,85 +2253,85 @@
     },
     {
       "address": "0x9A37",
-      "name": "UpdateFlyingBlock",
+      "name": "UpdateFloatingPlatform",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0x9A3D",
-      "name": "MoveFlyingBlockRight",
+      "name": "MoveFloatingPlatformRight",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9A58",
-      "name": "StoreFlyingBlockRightContactX",
+      "name": "StoreFloatingPlatformRightContactX",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9A65",
-      "name": "ReturnFromFlyingBlockUpdate",
+      "name": "ReturnFromFloatingPlatformUpdate",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9A66",
-      "name": "TryReverseFlyingBlockLeft",
+      "name": "TryReverseFloatingPlatformLeft",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9A77",
-      "name": "StopFlyingBlock",
+      "name": "StopFloatingPlatform",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9A7E",
-      "name": "MoveFlyingBlockLeft",
+      "name": "MoveFloatingPlatformLeft",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9A9C",
-      "name": "TryReverseFlyingBlockRight",
+      "name": "TryReverseFloatingPlatformRight",
       "kind": "local",
       "confidence": "high"
     },
     {
       "address": "0x9AAD",
-      "name": "ProbeFlyingBlockRightTop",
+      "name": "ProbeFloatingPlatformRightTop",
       "kind": "routine",
       "confidence": "high"
     },
     {
       "address": "0x9ABC",
-      "name": "ProbeFlyingBlockRightBottom",
+      "name": "ProbeFloatingPlatformRightBottom",
       "kind": "routine",
       "confidence": "high"
     },
     {
       "address": "0x9ACF",
-      "name": "ProbeFlyingBlockLeftTop",
+      "name": "ProbeFloatingPlatformLeftTop",
       "kind": "routine",
       "confidence": "high"
     },
     {
       "address": "0x9ADE",
-      "name": "ProbeFlyingBlockLeftBottom",
+      "name": "ProbeFloatingPlatformLeftBottom",
       "kind": "routine",
       "confidence": "high"
     },
     {
       "address": "0x9AF1",
-      "name": "ValidateFlyingBlockProbePosition",
+      "name": "ValidateFloatingPlatformProbePosition",
       "kind": "routine",
       "confidence": "high"
     },
     {
       "address": "0x9AFF",
-      "name": "ReturnFromFlyingBlockProbe",
+      "name": "ReturnFromFloatingPlatformProbe",
       "kind": "local",
       "confidence": "high"
     },
@@ -2811,7 +2811,7 @@
     },
     {
       "address": "0xA01C",
-      "name": "UpdateRuntimeObjectType40",
+      "name": "UpdateDefeatEffect",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -2829,13 +2829,13 @@
     },
     {
       "address": "0xA033",
-      "name": "UpdateRuntimeObjectType41",
+      "name": "UpdateCollectedItemEffect",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xA03F",
-      "name": "TickRuntimeObjectType41Lifetime",
+      "name": "TickCollectedItemEffectLifetime",
       "kind": "local",
       "confidence": "confirmed"
     },
@@ -2859,19 +2859,19 @@
     },
     {
       "address": "0xA05E",
-      "name": "GetRuntimeObjectType84To89Filter",
+      "name": "GetEnemyTypeFilter",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xA067",
-      "name": "ReturnNonRuntimeObjectType84To89Filter",
+      "name": "ReturnNonEnemyTypeFilter",
       "kind": "local",
       "confidence": "confirmed"
     },
     {
       "address": "0xA06B",
-      "name": "RuntimeObjectType84To89FilterValues",
+      "name": "EnemyTypeFilterValues",
       "kind": "table",
       "confidence": "confirmed"
     },
@@ -4071,7 +4071,7 @@
     },
     {
       "address": "0xADE7",
-      "name": "DrawRuntimeObjectType01Sprite",
+      "name": "DrawFairySprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4089,7 +4089,7 @@
     },
     {
       "address": "0xAE08",
-      "name": "DrawRuntimeObjectType02Sprite",
+      "name": "DrawPrincessSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4101,13 +4101,13 @@
     },
     {
       "address": "0xAE12",
-      "name": "DrawRuntimeObjectType03Sprite",
+      "name": "DrawOxygenTankSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xAE19",
-      "name": "DrawRuntimeObjectType04Sprite",
+      "name": "DrawFighterSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4155,7 +4155,7 @@
     },
     {
       "address": "0xAE75",
-      "name": "DrawRuntimeObjectType05Sprite",
+      "name": "DrawBishopSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4191,7 +4191,7 @@
     },
     {
       "address": "0xAEBB",
-      "name": "DrawRuntimeObjectType06Sprite",
+      "name": "DrawDevilFlowerSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4239,7 +4239,7 @@
     },
     {
       "address": "0xAF1E",
-      "name": "DrawRuntimeObjectType07Sprite",
+      "name": "DrawKnightSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4275,7 +4275,7 @@
     },
     {
       "address": "0xAF6A",
-      "name": "DrawRuntimeObjectType08Sprite",
+      "name": "DrawWitchSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4311,7 +4311,7 @@
     },
     {
       "address": "0xAFB0",
-      "name": "DrawRuntimeObjectType09Sprite",
+      "name": "DrawFlameSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4347,37 +4347,37 @@
     },
     {
       "address": "0xAFF4",
-      "name": "DrawRuntimeObjectType10Sprite",
+      "name": "DrawJarSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xAFFB",
-      "name": "DrawRuntimeObjectType11Sprite",
+      "name": "DrawBrickSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB002",
-      "name": "DrawRuntimeObjectType12Sprite",
+      "name": "DrawBlockSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB009",
-      "name": "DrawRuntimeObjectType13Sprite",
+      "name": "DrawBarrelSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB010",
-      "name": "DrawRuntimeObjectType14Sprite",
+      "name": "DrawPulleySprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB017",
-      "name": "DrawRuntimeObjectType15Sprite",
+      "name": "DrawCandleSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4389,7 +4389,7 @@
     },
     {
       "address": "0xB02B",
-      "name": "DrawRuntimeObjectType16Sprite",
+      "name": "DrawDarkBlueKeySprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4401,61 +4401,61 @@
     },
     {
       "address": "0xB035",
-      "name": "DrawRuntimeObjectType17Sprite",
+      "name": "DrawRedKeySprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB03C",
-      "name": "DrawRuntimeObjectType18Sprite",
+      "name": "DrawPinkKeySprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB043",
-      "name": "DrawRuntimeObjectType19Sprite",
+      "name": "DrawGreenKeySprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB04A",
-      "name": "DrawRuntimeObjectType20Sprite",
+      "name": "DrawBlueKeySprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB051",
-      "name": "DrawRuntimeObjectType21Sprite",
+      "name": "DrawYellowKeySprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB058",
-      "name": "DrawRuntimeObjectType22Sprite",
+      "name": "DrawCastleMapSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB05F",
-      "name": "DrawRuntimeObjectType23Sprite",
+      "name": "DrawPotionSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB066",
-      "name": "DrawRuntimeObjectType24Sprite",
+      "name": "DrawCrossSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB06D",
-      "name": "DrawRuntimeObjectType25Sprite",
+      "name": "DrawRingSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB074",
-      "name": "DrawRuntimeObjectType26Sprite",
+      "name": "DrawMoneyBagSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4479,7 +4479,7 @@
     },
     {
       "address": "0xB090",
-      "name": "DrawRuntimeObjectType31Sprite",
+      "name": "DrawPowerLightSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4515,37 +4515,37 @@
     },
     {
       "address": "0xB0C9",
-      "name": "DrawRuntimeObjectType33Sprite",
+      "name": "DrawLiftSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB0D0",
-      "name": "DrawRuntimeObjectType34Sprite",
+      "name": "DrawWideLiftSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB0DA",
-      "name": "DrawRuntimeObjectType35Sprite",
+      "name": "DrawFloatingPlatformSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB0E1",
-      "name": "DrawRuntimeObjectType36Sprite",
+      "name": "DrawDraggableLiftTopSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB0E8",
-      "name": "DrawRuntimeObjectType37Sprite",
+      "name": "DrawDraggableLiftBottomSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
     {
       "address": "0xB0EF",
-      "name": "DrawRuntimeObjectType38Sprite",
+      "name": "DrawKnightArrowSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4569,7 +4569,7 @@
     },
     {
       "address": "0xB117",
-      "name": "DrawRuntimeObjectType40Sprite",
+      "name": "DrawDefeatEffectSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },
@@ -4587,7 +4587,7 @@
     },
     {
       "address": "0xB135",
-      "name": "DrawRuntimeObjectType41Sprite",
+      "name": "DrawCollectedItemEffectSprite",
       "kind": "routine",
       "confidence": "confirmed"
     },

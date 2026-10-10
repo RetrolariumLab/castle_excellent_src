@@ -23,7 +23,7 @@ EXPECTED_SEGMENT_OFFSETS = {
 EXPECTED_SOURCE_SYMBOLS = {
     "Reset": "src/system/famicom_platform.asm",
     "MainFrameLoop": "src/system/famicom_platform.asm",
-    "HandleLiftControlBlockHorizontalCollision": (
+    "HandlePulleyHorizontalCollision": (
         "src/game/objects/lifts/linked_control.asm"
     ),
     "UpdateRuntimeObjects": "src/game/runtime/frame_pipeline.asm",

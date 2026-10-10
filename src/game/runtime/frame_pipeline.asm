@@ -231,7 +231,7 @@ FinishRoomTransition:
     JSR EnableNmi
     JMP WaitForVblankAndEnableRendering
 
-IsRuntimeObjectType90To95:
+IsKeyObjectType:
     CMP #$90
     BCC ReturnRuntimeObjectTypeOutsideRange
     CMP #$96
@@ -310,12 +310,48 @@ AdvanceRuntimeObjectUpdate:
     RTS
 
 RuntimeObjectHandlerPointers:
-    .byte $A9, $A2, $C6, $9C, $A9, $A2, $A9, $A2, $D8, $9C, $00, $9B, $A9, $A2, $3B, $9C
-    .byte $CB, $9E, $65, $9D, $74, $96, $74, $96, $74, $96, $74, $96, $5C, $96, $74, $96
-    .byte $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2
-    .byte $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2, $A9, $A2
-    .byte $F3, $9F, $96, $97, $69, $98, $37, $9A, $A9, $A2, $A9, $A2, $74, $9F, $A9, $A2
-    .byte $1C, $A0, $33, $A0
+    .addr ReturnFromRuntimeObjectHandler  ; $80
+    .addr UpdateFairy  ; $81 Fairy
+    .addr ReturnFromRuntimeObjectHandler  ; $82 Princess
+    .addr ReturnFromRuntimeObjectHandler  ; $83 ItemOxygenTank
+    .addr UpdateFighter  ; $84 EnemyFighter
+    .addr UpdateWalkingEnemyPhysics  ; $85 EnemyBishop
+    .addr ReturnFromRuntimeObjectHandler  ; $86 EnemyDevilFlower
+    .addr UpdateKnight  ; $87 EnemyKnight
+    .addr UpdateWitch  ; $88 EnemyWitch
+    .addr UpdateFlame  ; $89 EnemyFlame
+    .addr UpdatePushableObjectPhysics  ; $8A ObjectJar
+    .addr UpdatePushableObjectPhysics  ; $8B ObjectBrick
+    .addr UpdatePushableObjectPhysics  ; $8C ObjectBlock
+    .addr UpdatePushableObjectPhysics  ; $8D ObjectBarrel
+    .addr UpdatePulley  ; $8E ObjectPulley
+    .addr UpdatePushableObjectPhysics  ; $8F ObjectCandle
+    .addr ReturnFromRuntimeObjectHandler  ; $90 ItemDarkBlueKey
+    .addr ReturnFromRuntimeObjectHandler  ; $91 ItemRedKey
+    .addr ReturnFromRuntimeObjectHandler  ; $92 ItemPinkKey
+    .addr ReturnFromRuntimeObjectHandler  ; $93 ItemGreenKey
+    .addr ReturnFromRuntimeObjectHandler  ; $94 ItemBlueKey
+    .addr ReturnFromRuntimeObjectHandler  ; $95 ItemYellowKey
+    .addr ReturnFromRuntimeObjectHandler  ; $96 ItemCastleMap
+    .addr ReturnFromRuntimeObjectHandler  ; $97 ItemPotion
+    .addr ReturnFromRuntimeObjectHandler  ; $98 ItemCross
+    .addr ReturnFromRuntimeObjectHandler  ; $99 ItemRing
+    .addr ReturnFromRuntimeObjectHandler  ; $9A ItemMoneyBag
+    .addr ReturnFromRuntimeObjectHandler  ; $9B
+    .addr ReturnFromRuntimeObjectHandler  ; $9C
+    .addr ReturnFromRuntimeObjectHandler  ; $9D
+    .addr ReturnFromRuntimeObjectHandler  ; $9E
+    .addr ReturnFromRuntimeObjectHandler  ; $9F ItemPowerLight
+    .addr UpdateWitchSummonCountdown  ; $A0 WitchSummon
+    .addr UpdateNarrowLift  ; $A1 ObjectLift
+    .addr UpdateWideLift  ; $A2 ObjectLiftWide
+    .addr UpdateFloatingPlatform  ; $A3 ObjectFloatingPlatform
+    .addr ReturnFromRuntimeObjectHandler  ; $A4 ObjectDraggableLiftTop
+    .addr ReturnFromRuntimeObjectHandler  ; $A5 ObjectDraggableLiftBottom
+    .addr UpdateKnightArrow  ; $A6 ObjectKnightArrow
+    .addr ReturnFromRuntimeObjectHandler  ; $A7
+    .addr UpdateDefeatEffect  ; $A8 EffectDefeat
+    .addr UpdateCollectedItemEffect  ; $A9 EffectCollectedItem
 
 TestPlayerAgainstObjectSpan:
     LDA ObjectSpanY

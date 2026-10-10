@@ -3,322 +3,322 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-HandleLiftControlBlockHorizontalCollision:
-    LDA #LinkedLiftMotionInactive
+HandlePulleyHorizontalCollision:
+    LDA #DraggableLiftMotionInactive
     STA PlayerObjectPushDirectionLatch
     JSR PushPlayerAndRuntimeObject
     LDA PlayerObjectPushDirectionLatch
-    BNE RouteLiftControlBlockPushMotion
+    BNE RoutePulleyPushMotion
     RTS
 
-RouteLiftControlBlockPushMotion:
-    BPL RestoreLiftControlBlockOffsetForLowering
-    JMP RestoreLiftControlBlockOffsetForRaising
+RoutePulleyPushMotion:
+    BPL RestorePulleyOffsetForLowering
+    JMP RestorePulleyOffsetForRaising
 
-RestoreLiftControlBlockOffsetForLowering:
+RestorePulleyOffsetForLowering:
     LDX CurrentObjectOffset
 
-LowerLinkedLift:
+LowerDraggableLift:
     LDY RuntimeObjectY,X
     DEY
     JSR GetRuntimeObjectXPlus7
     JSR PrepareRoomCellSampleAddress
-    LDY LinkedLiftControlCellColumn
-    LDA (LinkedLiftRoomCellPointerLo),Y
-    CMP #LinkedLiftControlCellFirst
+    LDY DraggableLiftControlCellColumn
+    LDA (DraggableLiftRoomCellPointerLo),Y
+    CMP #DraggableLiftControlCellFirst
     BCC ReturnPlayerObjectPush
-    CMP #LinkedLiftControlCellEnd
+    CMP #DraggableLiftControlCellEnd
     BCS ReturnPlayerObjectPush
     LDA PlayerObjectPushDirectionLatch
     BEQ ReturnPlayerObjectPush
-    BPL FindPrimaryLinkedLiftForLowering
-    JMP RestoreLiftControlBlockOffsetForRaising
+    BPL FindDraggableLiftTopForLowering
+    JMP RestorePulleyOffsetForRaising
 
-FindPrimaryLinkedLiftForLowering:
+FindDraggableLiftTopForLowering:
     LDX #LiftFirstObjectSlot
 
-ScanPrimaryLinkedLiftForLowering:
+ScanDraggableLiftTopForLowering:
     LDA RuntimeObjectRecords,X
-    CMP #PrimaryLinkedLiftType
-    BEQ RememberPrimaryLinkedLiftForLowering
+    CMP #DraggableLiftTopType
+    BEQ RememberDraggableLiftTopForLowering
     TXA
     CLC
     ADC #RuntimeObjectRecordSize
     TAX
     CPX #RuntimeObjectRecordBytes
-    BCC ScanPrimaryLinkedLiftForLowering
+    BCC ScanDraggableLiftTopForLowering
     RTS
 
-RememberPrimaryLinkedLiftForLowering:
-    STX PrimaryLinkedLiftOffset
+RememberDraggableLiftTopForLowering:
+    STX DraggableLiftTopOffset
     LDX #LiftFirstObjectSlot
 
-ScanSecondaryLinkedLiftForLowering:
+ScanDraggableLiftBottomForLowering:
     LDA RuntimeObjectRecords,X
-    CMP #SecondaryLinkedLiftType
-    BEQ ProbeLinkedLiftLoweringClearance
+    CMP #DraggableLiftBottomType
+    BEQ ProbeDraggableLiftLoweringClearance
     TXA
     CLC
     ADC #RuntimeObjectRecordSize
     TAX
     CPX #RuntimeObjectRecordBytes
-    BCC ScanSecondaryLinkedLiftForLowering
+    BCC ScanDraggableLiftBottomForLowering
     RTS
 
-ProbeLinkedLiftLoweringClearance:
-    STX SecondaryLinkedLiftOffset
+ProbeDraggableLiftLoweringClearance:
+    STX DraggableLiftBottomOffset
     LDA RuntimeObjectY,X
     CLC
-    ADC #SecondaryLinkedLiftClearanceYOffset
+    ADC #DraggableLiftBottomClearanceYOffset
     TAY
-    STY SecondaryLinkedLiftClearanceY
+    STY DraggableLiftBottomClearanceY
     JSR GetRuntimeObjectX
     JSR SampleNormalizedRoomCollisionCell
     CMP #EmptyRoomCell
-    BEQ ProbeSecondaryLinkedLiftRightClearance
-    JMP ReturnFromLinkedLiftControl
+    BEQ ProbeDraggableLiftBottomRightClearance
+    JMP ReturnFromDraggableLiftControl
 
-ProbeSecondaryLinkedLiftRightClearance:
-    LDY SecondaryLinkedLiftClearanceY
-    LDX SecondaryLinkedLiftOffset
+ProbeDraggableLiftBottomRightClearance:
+    LDY DraggableLiftBottomClearanceY
+    LDX DraggableLiftBottomOffset
     JSR GetRuntimeObjectXPlus15
     JSR SampleNormalizedRoomCollisionCell
     CMP #EmptyRoomCell
-    BEQ ProbePrimaryLinkedLiftClearance
-    JMP ReturnFromLinkedLiftControl
+    BEQ ProbeDraggableLiftTopClearance
+    JMP ReturnFromDraggableLiftControl
 
-ProbePrimaryLinkedLiftClearance:
-    LDX PrimaryLinkedLiftOffset
+ProbeDraggableLiftTopClearance:
+    LDX DraggableLiftTopOffset
     LDA RuntimeObjectY,X
     CLC
-    ADC #PrimaryLinkedLiftClearanceYOffset
+    ADC #DraggableLiftTopClearanceYOffset
     TAY
     JSR GetRuntimeObjectX
     JSR SampleNormalizedRoomCollisionCell
     CMP #EmptyRoomCell
-    BNE ReturnFromLinkedLiftControl
-    LDX PrimaryLinkedLiftOffset
+    BNE ReturnFromDraggableLiftControl
+    LDX DraggableLiftTopOffset
     LDA RuntimeObjectY,X
     CLC
-    ADC #PrimaryLinkedLiftClearanceYOffset
+    ADC #DraggableLiftTopClearanceYOffset
     TAY
     JSR GetRuntimeObjectXPlus15
     JSR SampleNormalizedRoomCollisionCell
     CMP #EmptyRoomCell
-    BNE ReturnFromLinkedLiftControl
-    LDY SecondaryLinkedLiftClearanceY
-    LDX SecondaryLinkedLiftOffset
+    BNE ReturnFromDraggableLiftControl
+    LDY DraggableLiftBottomClearanceY
+    LDX DraggableLiftBottomOffset
     JSR GetRuntimeObjectXPlus15
     JSR SampleNormalizedRoomCollisionCell
     CMP #EmptyRoomCell
-    BNE ReturnFromLinkedLiftControl
-    LDX PrimaryLinkedLiftOffset
+    BNE ReturnFromDraggableLiftControl
+    LDX DraggableLiftTopOffset
     LDY RuntimeObjectY,X
     INY
     JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
     JSR GetRoomCellPointer
     LDY #LiftCurrentCellOffset
-    LDA #LinkedLiftTrackCell
-    STA (LinkedLiftRoomCellPointerLo),Y
-    LDA LinkedLiftRoomCellPointerLo
-    STA LinkedLiftRoomCellUpdateAddressLo
-    LDA LinkedLiftRoomCellPointerHi
-    STA LinkedLiftRoomCellUpdateAddressHi
+    LDA #DraggableLiftTrackCell
+    STA (DraggableLiftRoomCellPointerLo),Y
+    LDA DraggableLiftRoomCellPointerLo
+    STA DraggableLiftRoomCellUpdateAddressLo
+    LDA DraggableLiftRoomCellPointerHi
+    STA DraggableLiftRoomCellUpdateAddressHi
     JSR RequestRoomCellRowUpdate
-    LDX PrimaryLinkedLiftOffset
-    JSR LowerLinkedLiftObjectByStep
-    LDX SecondaryLinkedLiftOffset
+    LDX DraggableLiftTopOffset
+    JSR LowerDraggableLiftObjectByStep
+    LDX DraggableLiftBottomOffset
 
-LowerLinkedLiftObjectByStep:
+LowerDraggableLiftObjectByStep:
     LDY RuntimeObjectY,X
     INY
     INY
     STY RuntimeObjectY,X
 
-ReturnFromLinkedLiftControl:
+ReturnFromDraggableLiftControl:
     RTS
 
-RestoreLiftControlBlockOffsetForRaising:
+RestorePulleyOffsetForRaising:
     LDX CurrentObjectOffset
 
-RaiseLinkedLift:
+RaiseDraggableLift:
     LDY RuntimeObjectY,X
     DEY
     JSR GetRuntimeObjectXPlus8
     JSR PrepareRoomCellSampleAddress
-    LDY LinkedLiftControlCellColumn
-    LDA (LinkedLiftRoomCellPointerLo),Y
-    CMP #LinkedLiftControlCellFirst
-    BCC ReturnFromLinkedLiftControl
-    CMP #LinkedLiftControlCellEnd
-    BCS ReturnFromLinkedLiftControl
+    LDY DraggableLiftControlCellColumn
+    LDA (DraggableLiftRoomCellPointerLo),Y
+    CMP #DraggableLiftControlCellFirst
+    BCC ReturnFromDraggableLiftControl
+    CMP #DraggableLiftControlCellEnd
+    BCS ReturnFromDraggableLiftControl
     LDX #LiftFirstObjectSlot
 
-ScanPrimaryLinkedLiftForRaising:
+ScanDraggableLiftTopForRaising:
     LDA RuntimeObjectRecords,X
-    CMP #PrimaryLinkedLiftType
-    BEQ ProbeLinkedLiftTrackAbove
+    CMP #DraggableLiftTopType
+    BEQ ProbeDraggableLiftTrackAbove
     TXA
     CLC
     ADC #RuntimeObjectRecordSize
     TAX
     CPX #RuntimeObjectRecordBytes
-    BCC ScanPrimaryLinkedLiftForRaising
+    BCC ScanDraggableLiftTopForRaising
     RTS
 
-ProbeLinkedLiftTrackAbove:
-    STX PrimaryLinkedLiftOffset
+ProbeDraggableLiftTrackAbove:
+    STX DraggableLiftTopOffset
     LDY RuntimeObjectY,X
     DEY
     DEY
     JSR GetRuntimeObjectX
     JSR PrepareRoomCellSampleAddress
-    LDY LinkedLiftControlCellColumn
-    LDA (LinkedLiftRoomCellPointerLo),Y
-    CMP #LinkedLiftTrackCell
-    BEQ FindSecondaryLinkedLiftForRaising
+    LDY DraggableLiftControlCellColumn
+    LDA (DraggableLiftRoomCellPointerLo),Y
+    CMP #DraggableLiftTrackCell
+    BEQ FindDraggableLiftBottomForRaising
     RTS
 
-FindSecondaryLinkedLiftForRaising:
+FindDraggableLiftBottomForRaising:
     LDX #LiftFirstObjectSlot
 
-ScanSecondaryLinkedLiftForRaising:
+ScanDraggableLiftBottomForRaising:
     LDA RuntimeObjectRecords,X
-    CMP #SecondaryLinkedLiftType
-    BEQ PrepareLinkedLiftRaising
+    CMP #DraggableLiftBottomType
+    BEQ PrepareDraggableLiftRaising
     TXA
     CLC
     ADC #RuntimeObjectRecordSize
     TAX
     CPX #RuntimeObjectRecordBytes
-    BCC ScanSecondaryLinkedLiftForRaising
+    BCC ScanDraggableLiftBottomForRaising
     RTS
 
-PrepareLinkedLiftRaising:
-    STX SecondaryLinkedLiftOffset
-    LDX PrimaryLinkedLiftOffset
+PrepareDraggableLiftRaising:
+    STX DraggableLiftBottomOffset
+    LDX DraggableLiftTopOffset
     LDA RuntimeObjectY,X
     CLC
-    ADC #LinkedLiftTrackEraseYOffset
+    ADC #DraggableLiftTrackEraseYOffset
     TAY
     JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
     JSR GetRoomCellPointer
     LDY #LiftCurrentCellOffset
     LDA #EmptyRoomCell
-    STA (LinkedLiftRoomCellPointerLo),Y
-    LDA LinkedLiftRoomCellPointerLo
-    STA LinkedLiftRoomCellUpdateAddressLo
-    LDA LinkedLiftRoomCellPointerHi
-    STA LinkedLiftRoomCellUpdateAddressHi
+    STA (DraggableLiftRoomCellPointerLo),Y
+    LDA DraggableLiftRoomCellPointerLo
+    STA DraggableLiftRoomCellUpdateAddressLo
+    LDA DraggableLiftRoomCellPointerHi
+    STA DraggableLiftRoomCellUpdateAddressHi
     JSR RequestRoomCellRowUpdate
     JSR ClearLiftOccupantFlags
-    LDX PrimaryLinkedLiftOffset
+    LDX DraggableLiftTopOffset
     JSR GetRuntimeObjectSlotIndex
     LDA #LiftOccupantPending
-    STA LinkedLiftOccupantFlags,Y
-    LDX SecondaryLinkedLiftOffset
+    STA DraggableLiftOccupantFlags,Y
+    LDX DraggableLiftBottomOffset
     JSR GetRuntimeObjectSlotIndex
     LDA #LiftOccupantPending
-    STA LinkedLiftOccupantFlags,Y
-    LDA #LinkedLiftOccupantWidth
-    STA LinkedLiftOccupantSpanWidth
+    STA DraggableLiftOccupantFlags,Y
+    LDA #DraggableLiftOccupantWidth
+    STA DraggableLiftOccupantSpanWidth
 
-RestartLinkedLiftOccupantClosure:
+RestartDraggableLiftOccupantClosure:
     LDA #LiftOccupantClear
-    STA LinkedLiftClosureExpansionCount
+    STA DraggableLiftClosureExpansionCount
     LDX #LiftFirstObjectSlot
-    STX LinkedLiftClosureScanIndex
+    STX DraggableLiftClosureScanIndex
 
-FindPendingLinkedLiftOccupant:
-    LDX LinkedLiftClosureScanIndex
-    LDA LinkedLiftOccupantFlags,X
-    BMI ExpandLinkedLiftOccupantClosure
+FindPendingDraggableLiftOccupant:
+    LDX DraggableLiftClosureScanIndex
+    LDA DraggableLiftOccupantFlags,X
+    BMI ExpandDraggableLiftOccupantClosure
 
-AdvanceLinkedLiftOccupantScan:
+AdvanceDraggableLiftOccupantScan:
     INX
     CPX #LiftObjectSlotCount
-    STX LinkedLiftClosureScanIndex
-    BCC FindPendingLinkedLiftOccupant
-    LDA LinkedLiftClosureExpansionCount
-    BNE RestartLinkedLiftOccupantClosure
-    BEQ ApplyRisingLinkedLiftMovement
+    STX DraggableLiftClosureScanIndex
+    BCC FindPendingDraggableLiftOccupant
+    LDA DraggableLiftClosureExpansionCount
+    BNE RestartDraggableLiftOccupantClosure
+    BEQ ApplyRisingDraggableLiftMovement
 
-ExpandLinkedLiftOccupantClosure:
+ExpandDraggableLiftOccupantClosure:
     LDA #LiftOccupantProcessed
-    STA LinkedLiftOccupantFlags,X
+    STA DraggableLiftOccupantFlags,X
     LDA RuntimeObjectOffsetByCount,X
     TAX
     LDA RuntimeObjectY,X
     SEC
-    SBC #LinkedLiftOccupantProbeYOffset
-    STA LinkedLiftOccupantSpanY
+    SBC #DraggableLiftOccupantProbeYOffset
+    STA DraggableLiftOccupantSpanY
     LDA RuntimeObjectXLo,X
-    STA LinkedLiftOccupantSpanXLo
+    STA DraggableLiftOccupantSpanXLo
     LDA RuntimeObjectXHi,X
-    STA LinkedLiftOccupantSpanXHi
+    STA DraggableLiftOccupantSpanXHi
     LDA RuntimeObjectRecords,X
     TAY
     LDA RuntimeObjectCollisionWidths - RuntimeObjectCollisionTypeFirst,Y
-    STA LinkedLiftOccupantSpanWidth
+    STA DraggableLiftOccupantSpanWidth
     LDX #LiftFirstObjectSlot
 
-ScanLinkedLiftOccupantOverlaps:
+ScanDraggableLiftOccupantOverlaps:
     JSR FindRuntimeObjectOverlappingSpan
-    BCS FinishLinkedLiftOccupantExpansion
+    BCS FinishDraggableLiftOccupantExpansion
     JSR GetRuntimeObjectSlotIndex
-    LDA LinkedLiftOccupantFlags,Y
-    BNE AdvanceLinkedLiftOverlapScan
+    LDA DraggableLiftOccupantFlags,Y
+    BNE AdvanceDraggableLiftOverlapScan
     LDA #LiftOccupantPending
-    STA LinkedLiftOccupantFlags,Y
+    STA DraggableLiftOccupantFlags,Y
 
-AdvanceLinkedLiftOverlapScan:
+AdvanceDraggableLiftOverlapScan:
     TXA
     CLC
     ADC #RuntimeObjectRecordSize
     TAX
-    JMP ScanLinkedLiftOccupantOverlaps
+    JMP ScanDraggableLiftOccupantOverlaps
 
-FinishLinkedLiftOccupantExpansion:
-    INC LinkedLiftClosureExpansionCount
-    LDX LinkedLiftClosureScanIndex
-    JMP AdvanceLinkedLiftOccupantScan
+FinishDraggableLiftOccupantExpansion:
+    INC DraggableLiftClosureExpansionCount
+    LDX DraggableLiftClosureScanIndex
+    JMP AdvanceDraggableLiftOccupantScan
 
-ApplyRisingLinkedLiftMovement:
+ApplyRisingDraggableLiftMovement:
     LDX #LiftFirstObjectSlot
-    STX LinkedLiftMovementSlotIndex
+    STX DraggableLiftMovementSlotIndex
 
-MoveNextLinkedLiftOccupant:
-    LDX LinkedLiftMovementSlotIndex
-    LDA LinkedLiftOccupantFlags,X
-    BEQ AdvanceLinkedLiftMovement
+MoveNextDraggableLiftOccupant:
+    LDX DraggableLiftMovementSlotIndex
+    LDA DraggableLiftOccupantFlags,X
+    BEQ AdvanceDraggableLiftMovement
     LDA RuntimeObjectOffsetByCount,X
     TAX
     LDA RuntimeObjectY,X
     SEC
-    SBC #LinkedLiftRaisingStep
-    BCC CrushBlockedLinkedLiftOccupant
+    SBC #DraggableLiftRaisingStep
+    BCC CrushBlockedDraggableLiftOccupant
     STA RuntimeObjectY,X
     TAY
     LDA RuntimeObjectRecords,X
-    CMP #PrimaryLinkedLiftType
-    BEQ AdvanceLinkedLiftMovement
+    CMP #DraggableLiftTopType
+    BEQ AdvanceDraggableLiftMovement
     JSR GetRuntimeObjectX
     JSR SampleRoomCollisionAtPixel
-    BCS CrushBlockedLinkedLiftOccupant
-    BMI CrushBlockedLinkedLiftOccupant
-    LDX LinkedLiftMovementSlotIndex
+    BCS CrushBlockedDraggableLiftOccupant
+    BMI CrushBlockedDraggableLiftOccupant
+    LDX DraggableLiftMovementSlotIndex
     LDA RuntimeObjectOffsetByCount,X
     TAX
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXPlus15
     JSR SampleRoomCollisionAtPixel
-    BMI CrushBlockedLinkedLiftOccupant
-    BCC AdvanceLinkedLiftMovement
+    BMI CrushBlockedDraggableLiftOccupant
+    BCC AdvanceDraggableLiftMovement
 
-CrushBlockedLinkedLiftOccupant:
-    LDX LinkedLiftMovementSlotIndex
+CrushBlockedDraggableLiftOccupant:
+    LDX DraggableLiftMovementSlotIndex
     LDA RuntimeObjectOffsetByCount,X
     TAX
     LDA #CrushedRuntimeObjectType
@@ -326,21 +326,21 @@ CrushBlockedLinkedLiftOccupant:
     LDA #DestroyedRuntimeObjectInitialState
     STA RuntimeObjectState,X
 
-AdvanceLinkedLiftMovement:
-    INC LinkedLiftMovementSlotIndex
-    LDA LinkedLiftMovementSlotIndex
+AdvanceDraggableLiftMovement:
+    INC DraggableLiftMovementSlotIndex
+    LDA DraggableLiftMovementSlotIndex
     CMP #LiftObjectSlotCount
-    BCC MoveNextLinkedLiftOccupant
-    LDA LinkedLiftPlayerOccupantFlag
-    BEQ ReturnFromLinkedLiftUpdate
+    BCC MoveNextDraggableLiftOccupant
+    LDA DraggableLiftPlayerOccupantFlag
+    BEQ ReturnFromDraggableLiftUpdate
     LDA PlayerY
     SEC
-    SBC #LinkedLiftRaisingStep
-    BCS StoreRaisedLinkedLiftPlayerY
-    LDA #LinkedLiftMinimumY
+    SBC #DraggableLiftRaisingStep
+    BCS StoreRaisedDraggableLiftPlayerY
+    LDA #DraggableLiftMinimumY
 
-StoreRaisedLinkedLiftPlayerY:
+StoreRaisedDraggableLiftPlayerY:
     STA PlayerY
 
-ReturnFromLinkedLiftUpdate:
+ReturnFromDraggableLiftUpdate:
     RTS

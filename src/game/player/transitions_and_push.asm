@@ -456,7 +456,7 @@ ProbePushedObjectFront:
 HandlePushedObjectFrontCollision:
     CMP #RuntimeObjectCollisionTypeFirst
     BCC ReturnBlockedPlayerObjectPush
-    JSR GetRuntimeObjectType84To89Filter
+    JSR GetEnemyTypeFilter
     BNE ReturnBlockedPlayerObjectPush
     LDX PushedObjectCollisionOffset
     LDA #PushDestroyedRuntimeType

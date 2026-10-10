@@ -15,6 +15,7 @@
 
 .include "memory/hardware.inc"
 .include "revisions/profile.inc"
+.include "memory/object_types.inc"
 .include "memory/ram.inc"
 
 .include "system/famicom_platform.asm"

@@ -3,20 +3,20 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-UpdateLiftControlBlock:
+UpdatePulley:
     LDA #PushableMotionInactive
     STA PushableHorizontalMotionLatch
     JSR UpdatePushableObjectPhysics
     LDX CurrentRuntimeObjectOffset
     LDA PushableHorizontalMotionLatch
-    BEQ ReturnFromLiftControlBlockUpdate
+    BEQ ReturnFromPulleyUpdate
     BPL LowerLiftAfterControlBlockMotion
-    JMP RaiseLinkedLift
+    JMP RaiseDraggableLift
 
 LowerLiftAfterControlBlockMotion:
-    JMP LowerLinkedLift
+    JMP LowerDraggableLift
 
-ReturnFromLiftControlBlockUpdate:
+ReturnFromPulleyUpdate:
     RTS
 
 UpdatePushableObjectPhysics:
@@ -165,7 +165,7 @@ ReturnFromPushableSupportCollision:
 
 TryCrushRuntimeObjectBelowPushable:
     LDA PushableSupportCollision
-    JSR GetRuntimeObjectType84To89Filter
+    JSR GetEnemyTypeFilter
     BEQ ValidatePushableCrushContact
     RTS
 
@@ -192,30 +192,30 @@ DestroyCurrentRuntimeObjectWithSound:
     LDX CurrentRuntimeObjectOffset
     JMP DestroyRuntimeObjectWithSound
 
-UpdateSmallLift:
+UpdateNarrowLift:
     LDA RoomFrameCounter
     AND #LiftUpdateFrameMask
     CMP #LiftUpdateFramePhase
-    BEQ StepSmallLift
+    BEQ StepNarrowLift
     RTS
 
-StepSmallLift:
+StepNarrowLift:
     LDA RuntimeObjectState,X
-    BPL MoveSmallLiftDown
-    JMP MoveSmallLiftUp
+    BPL MoveNarrowLiftDown
+    JMP MoveNarrowLiftUp
 
-MoveSmallLiftDown:
+MoveNarrowLiftDown:
     LDA RuntimeObjectY,X
     CMP #LiftMaximumY
-    BCS ReverseSmallLiftUp
+    BCS ReverseNarrowLiftUp
     TAY
     JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
     JSR GetRoomCellPointer
     LDY #LiftCellRowStride
     LDA (LiftRoomCellPointerLo),Y
-    CMP #SmallLiftShaftCell
-    BNE ReverseSmallLiftUp
+    CMP #NarrowLiftShaftCell
+    BNE ReverseNarrowLiftUp
     LDA #EmptyRoomCell
     STA (LiftRoomCellPointerLo),Y
     LDA #EmptyRoomCell
@@ -233,13 +233,13 @@ MoveSmallLiftDown:
     STA RuntimeObjectY,X
     RTS
 
-ReverseSmallLiftUp:
+ReverseNarrowLiftUp:
     LDX CurrentRuntimeObjectOffset
     LDA #LiftDirectionUp
     STA RuntimeObjectState,X
-    JMP UpdateSmallLift
+    JMP UpdateNarrowLift
 
-ReverseSmallLiftDown:
+ReverseNarrowLiftDown:
     LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectX
@@ -256,13 +256,13 @@ ReverseSmallLiftDown:
     LDX CurrentRuntimeObjectOffset
     LDA #LiftDirectionDown
     STA RuntimeObjectState,X
-    JMP UpdateSmallLift
+    JMP UpdateNarrowLift
 
-MoveSmallLiftUp:
+MoveNarrowLiftUp:
     JSR ClearLiftOccupantFlags
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
-    BEQ ReverseSmallLiftDown
+    BEQ ReverseNarrowLiftDown
     SEC
     SBC #LiftCellStep
     TAY
@@ -272,10 +272,10 @@ MoveSmallLiftUp:
     LDY #LiftCurrentCellOffset
     LDA (LiftRoomCellPointerLo),Y
     CMP #EmptyRoomCell
-    BNE ReverseSmallLiftDown
+    BNE ReverseNarrowLiftDown
     LDA #EmptyRoomCell
     STA (LiftRoomCellPointerLo),Y
-    LDA #SmallLiftShaftCell
+    LDA #NarrowLiftShaftCell
     LDY #LiftCellRowStride
     STA (LiftRoomCellPointerLo),Y
     LDA LiftRoomCellPointerLo
@@ -287,50 +287,50 @@ MoveSmallLiftUp:
     LDA RuntimeObjectY,X
     TAY
     DEY
-    STY SmallLiftOccupantSpanY
+    STY NarrowLiftOccupantSpanY
     LDA RuntimeObjectXLo,X
-    STA SmallLiftOccupantSpanXLo
+    STA NarrowLiftOccupantSpanXLo
     LDA RuntimeObjectXHi,X
-    STA SmallLiftOccupantSpanXHi
-    LDA #SmallLiftWidth
-    STA SmallLiftOccupantSpanWidth
+    STA NarrowLiftOccupantSpanXHi
+    LDA #NarrowLiftWidth
+    STA NarrowLiftOccupantSpanWidth
     JSR TestPlayerAgainstObjectSpan
-    BCC MarkPlayerOnSmallLift
-    JMP RaiseSmallLiftOccupants
+    BCC MarkPlayerOnNarrowLift
+    JMP RaiseNarrowLiftOccupants
 
-MarkPlayerOnSmallLift:
+MarkPlayerOnNarrowLift:
     LDA #LiftOccupantPending
     STA LiftPlayerOccupantFlag
 
-RaiseSmallLiftOccupants:
-    LDA #SmallLiftWidth
-    STA SmallLiftOccupantSpanWidth
+RaiseNarrowLiftOccupants:
+    LDA #NarrowLiftWidth
+    STA NarrowLiftOccupantSpanWidth
     JMP RaiseLiftAndOccupants
 
-UpdateLargeLift:
+UpdateWideLift:
     LDA RoomFrameCounter
     AND #LiftUpdateFrameMask
     CMP #LiftUpdateFramePhase
-    BEQ StepLargeLift
+    BEQ StepWideLift
     RTS
 
-StepLargeLift:
+StepWideLift:
     LDA RuntimeObjectState,X
-    BPL MoveLargeLiftDown
-    JMP MoveLargeLiftUp
+    BPL MoveWideLiftDown
+    JMP MoveWideLiftUp
 
-MoveLargeLiftDown:
+MoveWideLiftDown:
     LDA RuntimeObjectY,X
     CMP #LiftMaximumY
-    BCS ReverseLargeLiftUp
+    BCS ReverseWideLiftUp
     TAY
     JSR GetRuntimeObjectX
     JSR ConvertPixelPositionToTileCoordinates
     JSR GetRoomCellPointer
     LDY #LiftCellRowStride
     LDA (LiftRoomCellPointerLo),Y
-    CMP #LargeLiftLeftShaftCell
-    BNE ReverseLargeLiftUp
+    CMP #WideLiftLeftShaftCell
+    BNE ReverseWideLiftUp
     LDA #EmptyRoomCell
     STA (LiftRoomCellPointerLo),Y
     LDA #EmptyRoomCell
@@ -342,9 +342,9 @@ MoveLargeLiftDown:
     INY
     STA (LiftRoomCellPointerLo),Y
     LDA LiftRoomCellPointerLo
-    STA LargeLiftRoomCellUpdateAddressLo
+    STA WideLiftRoomCellUpdateAddressLo
     LDA LiftRoomCellPointerHi
-    STA LargeLiftRoomCellUpdateAddressHi
+    STA WideLiftRoomCellUpdateAddressHi
     JSR RequestRoomCellRowUpdates
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
@@ -353,13 +353,13 @@ MoveLargeLiftDown:
     STA RuntimeObjectY,X
     RTS
 
-ReverseLargeLiftUp:
+ReverseWideLiftUp:
     LDX CurrentRuntimeObjectOffset
     LDA #LiftDirectionUp
     STA RuntimeObjectState,X
-    JMP UpdateLargeLift
+    JMP UpdateWideLift
 
-ReverseLargeLiftDown:
+ReverseWideLiftDown:
     LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectX
@@ -371,20 +371,20 @@ ReverseLargeLiftDown:
     INY
     STA (LiftRoomCellPointerLo),Y
     LDA LiftRoomCellPointerLo
-    STA LargeLiftRoomCellUpdateAddressLo
+    STA WideLiftRoomCellUpdateAddressLo
     LDA LiftRoomCellPointerHi
-    STA LargeLiftRoomCellUpdateAddressHi
+    STA WideLiftRoomCellUpdateAddressHi
     JSR RequestRoomCellRowUpdates
     LDX CurrentRuntimeObjectOffset
     LDA #LiftDirectionDown
     STA RuntimeObjectState,X
-    JMP UpdateLargeLift
+    JMP UpdateWideLift
 
-MoveLargeLiftUp:
+MoveWideLiftUp:
     JSR ClearLiftOccupantFlags
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
-    BEQ ReverseLargeLiftDown
+    BEQ ReverseWideLiftDown
     SEC
     SBC #LiftCellStep
     TAY
@@ -394,22 +394,22 @@ MoveLargeLiftUp:
     LDY #LiftCurrentCellOffset
     LDA (LiftRoomCellPointerLo),Y
     CMP #EmptyRoomCell
-    BNE ReverseLargeLiftDown
+    BNE ReverseWideLiftDown
     LDA #EmptyRoomCell
     STA (LiftRoomCellPointerLo),Y
     LDA #EmptyRoomCell
     INY
     STA (LiftRoomCellPointerLo),Y
-    LDA #LargeLiftLeftShaftCell
+    LDA #WideLiftLeftShaftCell
     LDY #LiftCellRowStride
     STA (LiftRoomCellPointerLo),Y
-    LDA #LargeLiftRightShaftCell
+    LDA #WideLiftRightShaftCell
     INY
     STA (LiftRoomCellPointerLo),Y
     LDA LiftRoomCellPointerLo
-    STA LargeLiftRoomCellUpdateAddressLo
+    STA WideLiftRoomCellUpdateAddressLo
     LDA LiftRoomCellPointerHi
-    STA LargeLiftRoomCellUpdateAddressHi
+    STA WideLiftRoomCellUpdateAddressHi
     JSR RequestRoomCellRowUpdates
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
@@ -420,18 +420,18 @@ MoveLargeLiftUp:
     STA LiftOccupantSpanXLo
     LDA RuntimeObjectXHi,X
     STA LiftOccupantSpanXHi
-    LDA #LargeLiftWidth
+    LDA #WideLiftWidth
     STA LiftOccupantSpanWidth
     JSR TestPlayerAgainstObjectSpan
-    BCC MarkPlayerOnLargeLift
-    JMP RaiseLargeLiftOccupants
+    BCC MarkPlayerOnWideLift
+    JMP RaiseWideLiftOccupants
 
-MarkPlayerOnLargeLift:
+MarkPlayerOnWideLift:
     LDA #LiftOccupantPending
     STA LiftPlayerOccupantFlag
 
-RaiseLargeLiftOccupants:
-    LDA #LargeLiftWidth
+RaiseWideLiftOccupants:
+    LDA #WideLiftWidth
     STA LiftOccupantSpanWidth
 
 RaiseLiftAndOccupants:

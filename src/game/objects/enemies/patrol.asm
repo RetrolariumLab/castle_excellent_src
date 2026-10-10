@@ -3,129 +3,129 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-UpdateFlyingBlock:
+UpdateFloatingPlatform:
     STX CurrentObjectOffset
-    LDA RuntimeObjectFlyingBlockStopFlag,X
-    BNE ReturnFromFlyingBlockUpdate
+    LDA RuntimeObjectFloatingPlatformStopFlag,X
+    BNE ReturnFromFloatingPlatformUpdate
 
-MoveFlyingBlockRight:
+MoveFloatingPlatformRight:
     LDA RuntimeObjectState,X
-    BMI MoveFlyingBlockLeft
-    JSR ProbeFlyingBlockRightTop
-    BCS TryReverseFlyingBlockLeft
-    JSR ProbeFlyingBlockRightBottom
-    BCS TryReverseFlyingBlockLeft
+    BMI MoveFloatingPlatformLeft
+    JSR ProbeFloatingPlatformRightTop
+    BCS TryReverseFloatingPlatformLeft
+    JSR ProbeFloatingPlatformRightBottom
+    BCS TryReverseFloatingPlatformLeft
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectXLo,X
     CLC
-    ADC #FlyingBlockStep
+    ADC #FloatingPlatformStep
     STA RuntimeObjectXLo,X
-    BCC StoreFlyingBlockRightContactX
+    BCC StoreFloatingPlatformRightContactX
     INC RuntimeObjectXHi,X
 
-StoreFlyingBlockRightContactX:
+StoreFloatingPlatformRightContactX:
     LDA RuntimeObjectXLo,X
     CLC
-    ADC #FlyingBlockRightContactXOffset
-    STA FlyingBlockContactXLo
+    ADC #FloatingPlatformRightContactXOffset
+    STA FloatingPlatformContactXLo
     LDA RuntimeObjectXHi,X
-    ADC #FlyingBlockCoordinateCarry
-    STA FlyingBlockContactXHi
+    ADC #FloatingPlatformCoordinateCarry
+    STA FloatingPlatformContactXHi
 
-ReturnFromFlyingBlockUpdate:
+ReturnFromFloatingPlatformUpdate:
     RTS
 
-TryReverseFlyingBlockLeft:
-    JSR ProbeFlyingBlockLeftTop
-    BCS StopFlyingBlock
-    JSR ProbeFlyingBlockLeftBottom
-    BCS StopFlyingBlock
+TryReverseFloatingPlatformLeft:
+    JSR ProbeFloatingPlatformLeftTop
+    BCS StopFloatingPlatform
+    JSR ProbeFloatingPlatformLeftBottom
+    BCS StopFloatingPlatform
     LDX CurrentRuntimeObjectOffset
-    LDA #FlyingBlockDirectionLeft
+    LDA #FloatingPlatformDirectionLeft
     STA RuntimeObjectState,X
     RTS
 
-StopFlyingBlock:
+StopFloatingPlatform:
     LDX CurrentRuntimeObjectOffset
-    LDA #FlyingBlockStopped
-    STA RuntimeObjectFlyingBlockStopFlag,X
+    LDA #FloatingPlatformStopped
+    STA RuntimeObjectFloatingPlatformStopFlag,X
     RTS
 
-MoveFlyingBlockLeft:
-    JSR ProbeFlyingBlockLeftTop
-    BCS TryReverseFlyingBlockRight
-    JSR ProbeFlyingBlockLeftBottom
-    BCS TryReverseFlyingBlockRight
+MoveFloatingPlatformLeft:
+    JSR ProbeFloatingPlatformLeftTop
+    BCS TryReverseFloatingPlatformRight
+    JSR ProbeFloatingPlatformLeftBottom
+    BCS TryReverseFloatingPlatformRight
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectXLo,X
-    STA FlyingBlockContactXLo
+    STA FloatingPlatformContactXLo
     SEC
-    SBC #FlyingBlockStep
+    SBC #FloatingPlatformStep
     STA RuntimeObjectXLo,X
     LDA RuntimeObjectXHi,X
-    STA FlyingBlockContactXHi
-    SBC #FlyingBlockCoordinateBorrow
+    STA FloatingPlatformContactXHi
+    SBC #FloatingPlatformCoordinateBorrow
     STA RuntimeObjectXHi,X
     RTS
 
-TryReverseFlyingBlockRight:
-    JSR ProbeFlyingBlockRightTop
-    BCS StopFlyingBlock
-    JSR ProbeFlyingBlockRightBottom
-    BCS StopFlyingBlock
+TryReverseFloatingPlatformRight:
+    JSR ProbeFloatingPlatformRightTop
+    BCS StopFloatingPlatform
+    JSR ProbeFloatingPlatformRightBottom
+    BCS StopFloatingPlatform
     LDX CurrentRuntimeObjectOffset
-    LDA #FlyingBlockDirectionRight
+    LDA #FloatingPlatformDirectionRight
     STA RuntimeObjectState,X
     RTS
 
-ProbeFlyingBlockRightTop:
+ProbeFloatingPlatformRightTop:
     LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXPlus17
-    JSR ValidateFlyingBlockProbePosition
-    BCS ReturnFromFlyingBlockUpdate
+    JSR ValidateFloatingPlatformProbePosition
+    BCS ReturnFromFloatingPlatformUpdate
     JMP SampleNormalizedRoomCollisionCell
 
-ProbeFlyingBlockRightBottom:
+ProbeFloatingPlatformRightBottom:
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
-    ADC #FlyingBlockBottomProbeYOffset
+    ADC #FloatingPlatformBottomProbeYOffset
     TAY
     JSR GetRuntimeObjectXPlus17
-    JSR ValidateFlyingBlockProbePosition
-    BCS ReturnFromFlyingBlockUpdate
+    JSR ValidateFloatingPlatformProbePosition
+    BCS ReturnFromFloatingPlatformUpdate
     JMP SampleNormalizedRoomCollisionCell
 
-ProbeFlyingBlockLeftTop:
+ProbeFloatingPlatformLeftTop:
     LDX CurrentRuntimeObjectOffset
     LDY RuntimeObjectY,X
     JSR GetRuntimeObjectXMinus2
-    JSR ValidateFlyingBlockProbePosition
-    BCS ReturnFromFlyingBlockProbe
+    JSR ValidateFloatingPlatformProbePosition
+    BCS ReturnFromFloatingPlatformProbe
     JMP SampleNormalizedRoomCollisionCell
 
-ProbeFlyingBlockLeftBottom:
+ProbeFloatingPlatformLeftBottom:
     LDX CurrentRuntimeObjectOffset
     LDA RuntimeObjectY,X
     CLC
-    ADC #FlyingBlockBottomProbeYOffset
+    ADC #FloatingPlatformBottomProbeYOffset
     TAY
     JSR GetRuntimeObjectXMinus2
-    JSR ValidateFlyingBlockProbePosition
-    BCS ReturnFromFlyingBlockProbe
+    JSR ValidateFloatingPlatformProbePosition
+    BCS ReturnFromFloatingPlatformProbe
     JMP SampleNormalizedRoomCollisionCell
 
-ValidateFlyingBlockProbePosition:
-    CPY #FlyingBlockWorldYEnd
-    BCS ReturnFromFlyingBlockProbe
-    CMP #FlyingBlockWorldRightPage
-    BCC ReturnFromFlyingBlockProbe
-    CMP #FlyingBlockWorldBeyondRightPage
-    BCS ReturnFromFlyingBlockProbe
-    CPX #FlyingBlockWorldRightLimitLo
+ValidateFloatingPlatformProbePosition:
+    CPY #FloatingPlatformWorldYEnd
+    BCS ReturnFromFloatingPlatformProbe
+    CMP #FloatingPlatformWorldRightPage
+    BCC ReturnFromFloatingPlatformProbe
+    CMP #FloatingPlatformWorldBeyondRightPage
+    BCS ReturnFromFloatingPlatformProbe
+    CPX #FloatingPlatformWorldRightLimitLo
 
-ReturnFromFlyingBlockProbe:
+ReturnFromFloatingPlatformProbe:
     RTS
 
 UpdateWalkingEnemyPhysics:

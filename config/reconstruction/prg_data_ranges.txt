@@ -15,7 +15,7 @@ data 94A5 94AB UnreferencedSingleRowIndexShimBytes
 data 94BC 94C2 UnreferencedAdjacentRowIndexShimBytes
 table 95BF 9612 RuntimeObjectHandlerPointers
 table A00D A01B WitchSummonedEnemyTypes
-table A06B A090 RuntimeObjectType84To89FilterValues
+table A06B A090 EnemyTypeFilterValues
 table A09E A0C3 RuntimeObjectSolidFlags
 data A2AA A2B0 UnreferencedNmiTaskIndexFromYBytes
 table A41B A41E SlowRoomCellAnimationFrames

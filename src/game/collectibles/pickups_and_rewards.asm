@@ -3,7 +3,7 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-CollectInventoryRuntimeType90:
+CollectDarkBlueKey:
     JSR IsCurrentObjectNearPlayer
     BCS ReturnFromInventoryCollectible
     INC InventoryCollectibleCounts + $01
@@ -11,7 +11,7 @@ CollectInventoryRuntimeType90:
     JSR AddPlayerScore
     JMP FinalizeInventoryCollectible
 
-CollectInventoryRuntimeType91:
+CollectRedKey:
     JSR IsCurrentObjectNearPlayer
     BCS ReturnFromInventoryCollectible
     INC InventoryCollectibleCounts
@@ -19,7 +19,7 @@ CollectInventoryRuntimeType91:
     JSR AddPlayerScore
     JMP FinalizeInventoryCollectible
 
-CollectInventoryRuntimeType92:
+CollectPinkKey:
     JSR IsCurrentObjectNearPlayer
     BCS ReturnFromInventoryCollectible
     INC InventoryCollectibleCounts + $04
@@ -27,7 +27,7 @@ CollectInventoryRuntimeType92:
     JSR AddPlayerScore
     JMP FinalizeInventoryCollectible
 
-CollectInventoryRuntimeType93:
+CollectGreenKey:
     JSR IsCurrentObjectNearPlayer
     BCS ReturnFromInventoryCollectible
     INC InventoryCollectibleCounts + $03
@@ -35,7 +35,7 @@ CollectInventoryRuntimeType93:
     JSR AddPlayerScore
     JMP FinalizeInventoryCollectible
 
-CollectInventoryRuntimeType94:
+CollectBlueKey:
     JSR IsCurrentObjectNearPlayer
     BCS ReturnFromInventoryCollectible
     INC InventoryCollectibleCounts + $05
@@ -43,7 +43,7 @@ CollectInventoryRuntimeType94:
     JSR AddPlayerScore
     JMP FinalizeInventoryCollectible
 
-CollectInventoryRuntimeType95:
+CollectYellowKey:
     JSR IsCurrentObjectNearPlayer
     BCS ReturnFromInventoryCollectible
     INC InventoryCollectibleCounts + $02
@@ -68,66 +68,66 @@ ReturnFromInventoryCollectible:
 UnreferencedRuntimeObjectClearTailBytes:
     .byte $A6, $41, $4C, $24, $A0
 
-CollectRuntimeType83:
+CollectOxygenTank:
     JSR IsCurrentObjectNearPlayer
-    BCC ApplyRuntimeType83Collectible
+    BCC ApplyOxygenTankCollectible
     RTS
 
-ApplyRuntimeType83Collectible:
-    INC RuntimeType83ScreenState
+ApplyOxygenTankCollectible:
+    INC OxygenTankScreenState
     LDA #CollectibleScore100
     JSR AddPlayerScore
     LDA CollectibleHazardProtectionCountdown
-    BNE SetRuntimeType83Protection
+    BNE SetOxygenTankProtection
     JSR LoadAudioTrackSet1
 
-SetRuntimeType83Protection:
-    LDA #RuntimeType83ProtectionDuration
+SetOxygenTankProtection:
+    LDA #OxygenTankProtectionDuration
     STA CollectibleHazardProtectionCountdown
     LDA #CollectedObjectState9
     JMP TransformCollectedRuntimeObject
 
-CollectRuntimeType96:
+CollectCastleMap:
     JSR IsCurrentObjectNearPlayer
-    BCC ApplyRuntimeType96Collectible
+    BCC ApplyCastleMapCollectible
     RTS
 
-ApplyRuntimeType96Collectible:
-    LDA #RuntimeType96EffectSet
-    STA RuntimeType96EffectLatch
+ApplyCastleMapCollectible:
+    LDA #CastleMapAvailableValue
+    STA CastleMapAvailable
     LDA #CollectibleScore100
     JSR AddPlayerScore
     LDA #CollectedObjectState9
     JMP TransformCollectedRuntimeObject
 
-CollectRuntimeType98:
+CollectCross:
     JSR IsCurrentObjectNearPlayer
-    BCC ApplyRuntimeType98Collectible
+    BCC ApplyCrossCollectible
     RTS
 
-ApplyRuntimeType98Collectible:
+ApplyCrossCollectible:
     LDA #CollectibleScore20
     JSR AddPlayerScore
     LDA #CollectedObjectState6
     JMP TransformCollectedRuntimeObject
 
-CollectRuntimeType99:
+CollectRing:
     JSR IsCurrentObjectNearPlayer
-    BCC ApplyRuntimeType99Collectible
+    BCC ApplyRingCollectible
     RTS
 
-ApplyRuntimeType99Collectible:
+ApplyRingCollectible:
     LDA #CollectibleScore40
     JSR AddPlayerScore
     LDA #CollectedObjectState7
     JMP TransformCollectedRuntimeObject
 
-CollectRuntimeType9A:
+CollectMoneyBag:
     JSR IsCurrentObjectNearPlayer
-    BCC ApplyRuntimeType9ACollectible
+    BCC ApplyMoneyBagCollectible
     RTS
 
-ApplyRuntimeType9ACollectible:
+ApplyMoneyBagCollectible:
     LDA #CollectibleScore80
     JSR AddPlayerScore
     LDA #CollectedObjectState8
@@ -144,12 +144,12 @@ ApplyRuntimeType9BCollectible:
     LDA #CollectedObjectState9
     JMP TransformCollectedRuntimeObject
 
-CollectRuntimeType97:
+CollectPotion:
     JSR IsCurrentObjectNearPlayer
-    BCC ApplyRuntimeType97Collectible
+    BCC ApplyPotionCollectible
     RTS
 
-ApplyRuntimeType97Collectible:
+ApplyPotionCollectible:
     LDA #CollectibleScore100
     JSR AddPlayerScore
     INC PlayerLives
@@ -196,89 +196,89 @@ ComputePlayerScoreThousands:
     STA ScoreDivisionDivisorLo
     JMP DivideUnsigned16
 
-HandleRuntimeType9FPlayerCollision:
+HandlePowerLightPlayerCollision:
     LDA RoomFrameCounter
-    BPL ReturnFromRuntimeType9FCollision
+    BPL ReturnFromPowerLightCollision
     LDX CurrentObjectOffset
     LDA RuntimeObjectXLo,X
     CMP PlayerXLo
-    BEQ CheckRuntimeType9FAudio
+    BEQ CheckPowerLightAudio
 
-ReturnFromRuntimeType9FXMismatch:
+ReturnFromPowerLightXMismatch:
     RTS
 
-CheckRuntimeType9FAudio:
-    LDA RuntimeType9FInvulnerabilityCountdown
-    BNE RefreshRuntimeType9FInvulnerability
+CheckPowerLightAudio:
+    LDA PowerLightInvulnerabilityCountdown
+    BNE RefreshPowerLightInvulnerability
     JSR LoadAudioTrackSet3
 
-RefreshRuntimeType9FInvulnerability:
-    LDA #RuntimeType9FInvulnerabilityDuration
-    STA RuntimeType9FInvulnerabilityCountdown
+RefreshPowerLightInvulnerability:
+    LDA #PowerLightInvulnerabilityDuration
+    STA PowerLightInvulnerabilityCountdown
 
-ReturnFromRuntimeType9FCollision:
+ReturnFromPowerLightCollision:
     RTS
 
-HandleRuntimeType82PlayerCollision:
+HandlePrincessPlayerCollision:
     LDA GameOverActive
-    BNE ReturnFromRuntimeType81Or82Collision
+    BNE ReturnFromFairyOrPrincessCollision
 
-CheckRuntimeType82PlayerProximity:
+CheckPrincessPlayerProximity:
     JSR IsCurrentObjectNearPlayer
-    BCS ReturnFromRuntimeType81Or82Collision
+    BCS ReturnFromFairyOrPrincessCollision
     JSR LoadAudioTrackSet4
 
-WaitForRuntimeType82Audio:
+WaitForPrincessAudio:
     LDA AudioStreamPointerLo
     ORA AudioStreamPointerHi
-    BNE WaitForRuntimeType82Audio
+    BNE WaitForPrincessAudio
 
-ExitCollisionDispatchForRuntimeType82:
+ExitCollisionDispatchForPrincess:
     PLA
     PLA
     JMP RunType82CompletionSequence
 
-ReturnFromRuntimeType81Or82Collision:
+ReturnFromFairyOrPrincessCollision:
     RTS
 
-HandleRuntimeType81PlayerCollision:
+HandleFairyPlayerCollision:
     JSR IsCurrentObjectNearPlayer
-    BCS ReturnFromRuntimeType81Or82Collision
+    BCS ReturnFromFairyOrPrincessCollision
     JSR LoadAudioTrackSet7
 
-WaitForRuntimeType81Audio:
+WaitForFairyAudio:
     LDA AudioStreamPointerLo
     ORA AudioStreamPointerHi
-    BNE WaitForRuntimeType81Audio
+    BNE WaitForFairyAudio
 
-TransformRuntimeType81Object:
+TransformFairyObject:
     LDX CurrentObjectOffset
-    LDA #RuntimeType81ReplacementType
+    LDA #FairyReplacementType
     STA RuntimeObjectRecords,X
     LDA RuntimeObjectXLo,X
     SEC
-    SBC #RuntimeType81HorizontalShift
+    SBC #FairyHorizontalShift
     STA RuntimeObjectXLo,X
-    BCS CheckRuntimeType81CloneRoom
+    BCS CheckFairyCloneRoom
     DEC RuntimeObjectXHi,X
 
-CheckRuntimeType81CloneRoom:
+CheckFairyCloneRoom:
     LDA CurrentRoomNumber
-    CMP #RuntimeType81CloneRoom
-    BNE ReturnFromRuntimeType81Collision
+    CMP #FairyCloneRoom
+    BNE ReturnFromFairyCollision
 
-SpawnRuntimeType81Clone:
-    LDA #RuntimeType81ReplacementType
-    STA RuntimeType81CloneType
+SpawnFairyClone:
+    LDA #FairyReplacementType
+    STA FairyCloneType
     LDA RuntimeObjectXLo,X
     SEC
-    SBC #RuntimeType81HorizontalShift
-    STA RuntimeType81CloneXLo
+    SBC #FairyHorizontalShift
+    STA FairyCloneXLo
     LDA RuntimeObjectXHi,X
     SBC #$00
-    STA RuntimeType81CloneXHi
+    STA FairyCloneXHi
     LDA RuntimeObjectY,X
-    STA RuntimeType81CloneY
+    STA FairyCloneY
 
-ReturnFromRuntimeType81Collision:
+ReturnFromFairyCollision:
     RTS

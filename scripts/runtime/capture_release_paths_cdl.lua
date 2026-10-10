@@ -23,7 +23,7 @@ local scenarios = {
     },
     ["completion-ending"] = {
         required = {
-            "HandleRuntimeType82PlayerCollision",
+            "HandlePrincessPlayerCollision",
             "RunType82CompletionSequence",
         },
     },

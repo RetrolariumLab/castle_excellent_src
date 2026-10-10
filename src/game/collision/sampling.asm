@@ -25,20 +25,20 @@ ReturnNonAnimatedCollisionCell:
     CLC
     RTS
 
-GetRuntimeObjectType84To89Filter:
+GetEnemyTypeFilter:
     TAY
     PHP
-    BPL ReturnNonRuntimeObjectType84To89Filter
+    BPL ReturnNonEnemyTypeFilter
     PLP
-    LDA RuntimeObjectType84To89FilterValues - RuntimeObjectCollisionTypeFirst,Y
+    LDA EnemyTypeFilterValues - RuntimeObjectCollisionTypeFirst,Y
     RTS
 
-ReturnNonRuntimeObjectType84To89Filter:
+ReturnNonEnemyTypeFilter:
     PLP
     LDA #$FF
     RTS
 
-RuntimeObjectType84To89FilterValues:
+EnemyTypeFilterValues:
     .byte $FF, $FF, $FF, $FF, $00, $00, $00, $00, $00, $00, $FF, $FF, $FF, $FF, $FF, $FF
     .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
     .byte $FF, $FF, $FF, $FF, $FF, $FF

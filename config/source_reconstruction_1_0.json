@@ -545,7 +545,7 @@
         "metadata": "build/runtime/completion-ending.txt",
         "report": "build/runtime/completion-ending.json",
         "required_hooks": [
-          "HandleRuntimeType82PlayerCollision",
+          "HandlePrincessPlayerCollision",
           "RunType82CompletionSequence"
         ]
       },

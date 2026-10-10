@@ -446,10 +446,10 @@ StoreWitchSummonedEnemyDirection:
 WitchSummonedEnemyTypes:
     .byte $84, $85, $85, $87, $87, $84, $84, $84, $84, $87, $84, $85, $84, $85, $84
 
-UpdateRuntimeObjectType40:
+UpdateDefeatEffect:
     INC RuntimeObjectState,X
     LDA RuntimeObjectState,X
-    CMP #RuntimeObjectType40StateLimit
+    CMP #DefeatEffectStateLimit
     BCC ReturnFromTransientObjectUpdate
 
 ClearCurrentRuntimeObject:
@@ -464,15 +464,15 @@ ClearCurrentRuntimeObject:
 ReturnFromTransientObjectUpdate:
     RTS
 
-UpdateRuntimeObjectType41:
+UpdateCollectedItemEffect:
     LDA RoomFrameCounter
     LSR A
-    BCC TickRuntimeObjectType41Lifetime
+    BCC TickCollectedItemEffectLifetime
     LDA RuntimeObjectY,X
-    BEQ TickRuntimeObjectType41Lifetime
+    BEQ TickCollectedItemEffectLifetime
     DEC RuntimeObjectY,X
 
-TickRuntimeObjectType41Lifetime:
+TickCollectedItemEffectLifetime:
     DEC RuntimeObjectCollectedLifetime,X
     BEQ ClearCurrentRuntimeObject
     RTS

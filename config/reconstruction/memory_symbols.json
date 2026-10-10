@@ -1525,7 +1525,7 @@
     },
     {
       "address": "0x07CD",
-      "name": "RuntimeType83ScreenState",
+      "name": "OxygenTankScreenState",
       "start": "0x8C80",
       "end": "0x8CF2"
     },
@@ -1573,31 +1573,31 @@
     },
     {
       "address": "0x000E",
-      "name": "RuntimeType9FInvulnerabilityCountdown",
+      "name": "PowerLightInvulnerabilityCountdown",
       "start": "0x8D3D",
       "end": "0x8D57"
     },
     {
       "address": "0x00D4",
-      "name": "RuntimeType81CloneType",
+      "name": "FairyCloneType",
       "start": "0x8D70",
       "end": "0x8DAB"
     },
     {
       "address": "0x00D5",
-      "name": "RuntimeType81CloneXLo",
+      "name": "FairyCloneXLo",
       "start": "0x8D70",
       "end": "0x8DAB"
     },
     {
       "address": "0x00D6",
-      "name": "RuntimeType81CloneXHi",
+      "name": "FairyCloneXHi",
       "start": "0x8D70",
       "end": "0x8DAB"
     },
     {
       "address": "0x00D7",
-      "name": "RuntimeType81CloneY",
+      "name": "FairyCloneY",
       "start": "0x8D70",
       "end": "0x8DAB"
     },
@@ -1645,7 +1645,7 @@
     },
     {
       "address": "0x000F",
-      "name": "RuntimeType96EffectLatch",
+      "name": "CastleMapAvailable",
       "start": "0x8C80",
       "end": "0x8CF2"
     },
@@ -2343,104 +2343,104 @@
     },
     {
       "address": "0x001C",
-      "name": "SecondaryLinkedLiftClearanceY",
+      "name": "DraggableLiftBottomClearanceY",
       "start": "0x8A3B",
       "end": "0x8ABB"
     },
     {
       "address": "0x001E",
-      "name": "PrimaryLinkedLiftOffset",
+      "name": "DraggableLiftTopOffset",
       "start": "0x8A27",
       "end": "0x8C12"
     },
     {
       "address": "0x001F",
-      "name": "SecondaryLinkedLiftOffset",
+      "name": "DraggableLiftBottomOffset",
       "start": "0x8A3B",
       "end": "0x8C12"
     },
     {
       "address": "0x0029",
-      "name": "LinkedLiftControlCellColumn",
+      "name": "DraggableLiftControlCellColumn",
       "start": "0x89F6",
       "end": "0x8B12"
     },
     {
       "address": "0x002B",
-      "name": "LinkedLiftRoomCellPointerLo",
+      "name": "DraggableLiftRoomCellPointerLo",
       "start": "0x89F6",
       "end": "0x8B51"
     },
     {
       "address": "0x002C",
-      "name": "LinkedLiftRoomCellPointerHi",
+      "name": "DraggableLiftRoomCellPointerHi",
       "start": "0x89F6",
       "end": "0x8B51"
     },
     {
       "address": "0x0044",
-      "name": "LinkedLiftRoomCellUpdateAddressLo",
+      "name": "DraggableLiftRoomCellUpdateAddressLo",
       "start": "0x8A63",
       "end": "0x8B51"
     },
     {
       "address": "0x0045",
-      "name": "LinkedLiftRoomCellUpdateAddressHi",
+      "name": "DraggableLiftRoomCellUpdateAddressHi",
       "start": "0x8A63",
       "end": "0x8B51"
     },
     {
       "address": "0x0044",
-      "name": "LinkedLiftOccupantSpanXLo",
+      "name": "DraggableLiftOccupantSpanXLo",
       "start": "0x8B51",
       "end": "0x8BB0"
     },
     {
       "address": "0x0045",
-      "name": "LinkedLiftOccupantSpanXHi",
+      "name": "DraggableLiftOccupantSpanXHi",
       "start": "0x8B51",
       "end": "0x8BB0"
     },
     {
       "address": "0x0046",
-      "name": "LinkedLiftOccupantSpanY",
+      "name": "DraggableLiftOccupantSpanY",
       "start": "0x8B51",
       "end": "0x8BB0"
     },
     {
       "address": "0x0047",
-      "name": "LinkedLiftOccupantSpanWidth",
+      "name": "DraggableLiftOccupantSpanWidth",
       "start": "0x8B12",
       "end": "0x8BB0"
     },
     {
       "address": "0x0016",
-      "name": "LinkedLiftClosureExpansionCount",
+      "name": "DraggableLiftClosureExpansionCount",
       "start": "0x8B51",
       "end": "0x8BB0"
     },
     {
       "address": "0x0017",
-      "name": "LinkedLiftClosureScanIndex",
+      "name": "DraggableLiftClosureScanIndex",
       "start": "0x8B51",
       "end": "0x8BB0"
     },
     {
       "address": "0x0016",
-      "name": "LinkedLiftMovementSlotIndex",
+      "name": "DraggableLiftMovementSlotIndex",
       "start": "0x8BB0",
       "end": "0x8C12"
     },
     {
       "address": "0x07AB",
-      "name": "LinkedLiftOccupantFlags",
+      "name": "DraggableLiftOccupantFlags",
       "size": 25,
       "start": "0x8B12",
       "end": "0x8C12"
     },
     {
       "address": "0x07C3",
-      "name": "LinkedLiftPlayerOccupantFlag",
+      "name": "DraggableLiftPlayerOccupantFlag",
       "start": "0x8B12",
       "end": "0x8C12"
     },
@@ -2536,37 +2536,37 @@
     },
     {
       "address": "0x0044",
-      "name": "SmallLiftOccupantSpanXLo",
+      "name": "NarrowLiftOccupantSpanXLo",
       "start": "0x9847",
       "end": "0x9869"
     },
     {
       "address": "0x0045",
-      "name": "SmallLiftOccupantSpanXHi",
+      "name": "NarrowLiftOccupantSpanXHi",
       "start": "0x9847",
       "end": "0x9869"
     },
     {
       "address": "0x0046",
-      "name": "SmallLiftOccupantSpanY",
+      "name": "NarrowLiftOccupantSpanY",
       "start": "0x9847",
       "end": "0x9869"
     },
     {
       "address": "0x0047",
-      "name": "SmallLiftOccupantSpanWidth",
+      "name": "NarrowLiftOccupantSpanWidth",
       "start": "0x9847",
       "end": "0x9869"
     },
     {
       "address": "0x0044",
-      "name": "LargeLiftRoomCellUpdateAddressLo",
+      "name": "WideLiftRoomCellUpdateAddressLo",
       "start": "0x9869",
       "end": "0x992F"
     },
     {
       "address": "0x0045",
-      "name": "LargeLiftRoomCellUpdateAddressHi",
+      "name": "WideLiftRoomCellUpdateAddressHi",
       "start": "0x9869",
       "end": "0x992F"
     },
@@ -2627,13 +2627,13 @@
     },
     {
       "address": "0x0044",
-      "name": "FlyingBlockContactXLo",
+      "name": "FloatingPlatformContactXLo",
       "start": "0x9A37",
       "end": "0x9AAD"
     },
     {
       "address": "0x0045",
-      "name": "FlyingBlockContactXHi",
+      "name": "FloatingPlatformContactXHi",
       "start": "0x9A37",
       "end": "0x9AAD"
     },

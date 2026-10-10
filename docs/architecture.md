@@ -310,7 +310,7 @@ implements an indirect subroutine call by pushing `$95B2`, one byte before
 `RTS` therefore lands at `$95B3` and continues with the next six-byte record.
 
 Handler entries for runtime types `$8A-$8D/$8F` converge on
-`UpdatePushableObjectPhysics`; type `$8E` enters through `UpdateLiftControlBlock`
+`UpdatePushableObjectPhysics`; type `$8E` enters through `UpdatePulley`
 and then calls the same routine. Three samples at Y+17 decide support. With no
 support, the object falls two pixels until Y reaches `$A0`. The two animated
 cell families carry a supported object two pixels in opposite directions after

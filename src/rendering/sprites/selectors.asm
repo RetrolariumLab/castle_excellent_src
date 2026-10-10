@@ -3,7 +3,7 @@
 ; Generated deterministically from pinned Ghidra/GhidraNes facts
 ; Keep byte-identical through make verify
 
-DrawRuntimeObjectType01Sprite:
+DrawFairySprite:
     LDA RoomFrameCounter
     LSR A
     AND #$03
@@ -24,7 +24,7 @@ DrawType01MiddleFrame:
     LDY #$98
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType02Sprite:
+DrawPrincessSprite:
     LDX #$B5
     LDY #$AC
 
@@ -32,12 +32,12 @@ DrawTwoObjectSpritesAndAdvance:
     JSR DrawTwoObjectSprites
     JMP AdvanceFrameSpriteObject
 
-DrawRuntimeObjectType03Sprite:
+DrawOxygenTankSprite:
     LDX #$B5
     LDY #$BC
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType04Sprite:
+DrawFighterSprite:
     LDA RuntimeObjectState,X
     BMI SelectType04NegativeStateSprite
     LDA RuntimeObjectFighterJumpCountdown,X
@@ -97,7 +97,7 @@ DrawType04NegativeMiddleFrame:
     LDY #$06
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType05Sprite:
+DrawBishopSprite:
     LDA RuntimeObjectState,X
     BMI SelectType05NegativeStateAnimation
     LDA FrameCounter
@@ -143,7 +143,7 @@ DrawType05NegativeMiddleFrame:
     LDY #$26
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType06Sprite:
+DrawDevilFlowerSprite:
     LDA RoomFrameCounter
     LSR A
     LSR A
@@ -207,7 +207,7 @@ DrawType06EvenCycleFrame:
     LDY #$40
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType07Sprite:
+DrawKnightSprite:
     LDA RuntimeObjectState,X
     BMI SelectType07NegativeStateAnimation
     LDA FrameCounter
@@ -257,7 +257,7 @@ DrawType07NegativeMiddleFrame:
     LDY #$54
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType08Sprite:
+DrawWitchSprite:
     LDA RuntimeObjectState,X
     BMI SelectType08NegativeStateAnimation
     LDA FrameCounter
@@ -303,7 +303,7 @@ DrawType08NegativeMiddleFrame:
     LDY #$70
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType09Sprite:
+DrawFlameSprite:
     LDA RuntimeObjectState,X
     BPL SelectType09PositiveStateAnimation
     LDA FrameCounter
@@ -346,32 +346,32 @@ DrawType09PositiveMiddleFrame:
     LDY #$80
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType10Sprite:
+DrawJarSprite:
     LDX #$B5
     LDY #$C0
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType11Sprite:
+DrawBrickSprite:
     LDX #$B5
     LDY #$C4
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType12Sprite:
+DrawBlockSprite:
     LDX #$B5
     LDY #$C8
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType13Sprite:
+DrawBarrelSprite:
     LDX #$B5
     LDY #$CC
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType14Sprite:
+DrawPulleySprite:
     LDX #$B5
     LDY #$D0
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType15Sprite:
+DrawCandleSprite:
     LDA FrameCounter
     AND #$08
     BNE DrawType15AlternateFrame
@@ -384,7 +384,7 @@ DrawType15AlternateFrame:
     LDY #$D8
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType16Sprite:
+DrawDarkBlueKeySprite:
     LDX #$B5
     LDY #$B0
 
@@ -392,52 +392,52 @@ DrawOneObjectSpriteAndAdvance:
     JSR DrawOneObjectSprite
     JMP AdvanceFrameSpriteObject
 
-DrawRuntimeObjectType17Sprite:
+DrawRedKeySprite:
     LDX #$B5
     LDY #$B2
     JMP DrawOneObjectSpriteAndAdvance
 
-DrawRuntimeObjectType18Sprite:
+DrawPinkKeySprite:
     LDX #$B5
     LDY #$B4
     JMP DrawOneObjectSpriteAndAdvance
 
-DrawRuntimeObjectType19Sprite:
+DrawGreenKeySprite:
     LDX #$B5
     LDY #$B6
     JMP DrawOneObjectSpriteAndAdvance
 
-DrawRuntimeObjectType20Sprite:
+DrawBlueKeySprite:
     LDX #$B5
     LDY #$B8
     JMP DrawOneObjectSpriteAndAdvance
 
-DrawRuntimeObjectType21Sprite:
+DrawYellowKeySprite:
     LDX #$B5
     LDY #$BA
     JMP DrawOneObjectSpriteAndAdvance
 
-DrawRuntimeObjectType22Sprite:
+DrawCastleMapSprite:
     LDX #$B5
     LDY #$DC
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType23Sprite:
+DrawPotionSprite:
     LDX #$B5
     LDY #$E0
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType24Sprite:
+DrawCrossSprite:
     LDX #$B5
     LDY #$E4
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType25Sprite:
+DrawRingSprite:
     LDX #$B5
     LDY #$E8
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType26Sprite:
+DrawMoneyBagSprite:
     LDX #$B5
     LDY #$EC
     JMP DrawTwoObjectSpritesAndAdvance
@@ -457,7 +457,7 @@ DrawRuntimeObjectType29Or30Sprite:
     LDY #$FC
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType31Sprite:
+DrawPowerLightSprite:
     LDA RoomFrameCounter
     BMI SelectType31RoomFrameParity
     JMP AdvanceFrameSpriteObject
@@ -494,33 +494,33 @@ DrawWitchSummonModulo3Frame2:
     LDY #$04
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType33Sprite:
+DrawLiftSprite:
     LDX #$B6
     LDY #$18
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType34Sprite:
+DrawWideLiftSprite:
     LDX #$B6
     LDY #$10
     JSR DrawFourObjectSprites
     JMP AdvanceFrameSpriteObject
 
-DrawRuntimeObjectType35Sprite:
+DrawFloatingPlatformSprite:
     LDX #$B6
     LDY #$20
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType36Sprite:
+DrawDraggableLiftTopSprite:
     LDX #$B6
     LDY #$24
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType37Sprite:
+DrawDraggableLiftBottomSprite:
     LDX #$B6
     LDY #$28
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType38Sprite:
+DrawKnightArrowSprite:
     LDA RuntimeObjectY,X
     SEC
     SBC #$0B
@@ -547,7 +547,7 @@ RestoreType38ObjectY:
 DrawRuntimeObjectType39Sprite:
     JMP AdvanceFrameSpriteObject
 
-DrawRuntimeObjectType40Sprite:
+DrawDefeatEffectSprite:
     LDA RuntimeObjectState,X
     LSR A
     BNE SelectType40StatePair1OrLater
@@ -567,7 +567,7 @@ DrawType40LaterStateFrame:
     LDY #$38
     JMP DrawTwoObjectSpritesAndAdvance
 
-DrawRuntimeObjectType41Sprite:
+DrawCollectedItemEffectSprite:
     LDA RuntimeObjectState,X
     CMP #$01
     BNE SelectType41State2

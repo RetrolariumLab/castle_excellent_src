@@ -223,7 +223,7 @@ ScanRoomCellObjectMarkers:
     BNE CheckCellObjectMarker4D
     LDA #$53
     STA (RoomCellScanPointerLo),Y
-    LDA #$A1
+    LDA #RuntimeTypeObjectLift
     JSR SpawnRoomCellObject
     JMP AdvanceRoomCellMarkerScan
 
@@ -232,7 +232,7 @@ CheckCellObjectMarker4D:
     BNE CheckCellObjectMarker51
     LDA #$53
     STA (RoomCellScanPointerLo),Y
-    LDA #$A2
+    LDA #RuntimeTypeObjectLiftWide
     JSR SpawnRoomCellObject
     JMP AdvanceRoomCellMarkerScan
 
@@ -241,7 +241,7 @@ CheckCellObjectMarker51:
     BNE CheckCellObjectMarker49
     LDA #$53
     STA (RoomCellScanPointerLo),Y
-    LDA #$A3
+    LDA #RuntimeTypeObjectFloatingPlatform
     JSR SpawnRoomCellObject
     JMP AdvanceRoomCellMarkerScan
 
@@ -250,7 +250,7 @@ CheckCellObjectMarker49:
     BNE CheckCellObjectMarker4A
     LDA #$53
     STA (RoomCellScanPointerLo),Y
-    LDA #$A4
+    LDA #RuntimeTypeObjectDraggableLiftTop
     JSR SpawnRoomCellObject
     JMP AdvanceRoomCellMarkerScan
 
@@ -259,7 +259,7 @@ CheckCellObjectMarker4A:
     BNE AdvanceRoomCellMarkerScan
     LDA #$53
     STA (RoomCellScanPointerLo),Y
-    LDA #$A5
+    LDA #RuntimeTypeObjectDraggableLiftBottom
     JSR SpawnRoomCellObject
     JMP AdvanceRoomCellMarkerScan
 
@@ -324,7 +324,7 @@ ScaleCellObjectCoordinates:
     STA RuntimeObjectY,X
     LDA SpawnedCellObjectType
     STA RuntimeObjectRecords,X
-    CMP #$A3
+    CMP #RuntimeTypeObjectFloatingPlatform
     BNE AdvanceCellObjectRecord
     LDA #$FF
     STA RuntimeObjectState,X

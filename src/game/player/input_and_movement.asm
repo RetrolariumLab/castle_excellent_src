@@ -527,15 +527,15 @@ TestNextPlayerActionObject:
     LDA PlayerActionDeltaXHi
     BNE AdvancePlayerActionObjectScan
     LDA RuntimeObjectRecords,X
-    CMP #$85
+    CMP #RuntimeTypeEnemyBishop
     BEQ RememberPlayerInputAndReturn
-    CMP #$89
+    CMP #RuntimeTypeEnemyFlame
     BEQ RememberPlayerInputAndReturn
-    CMP #$86
+    CMP #RuntimeTypeEnemyDevilFlower
     BEQ RememberPlayerInputAndReturn
     STX PlayerActionScratch
     TYA
-    JSR GetRuntimeObjectType84To89Filter
+    JSR GetEnemyTypeFilter
     BNE RememberPlayerInputAndReturn
     LDA #PlayerDestroyedRuntimeType
     LDX PlayerActionScratch

@@ -161,7 +161,6 @@ def load_memory_symbols(path: Path) -> list[MemorySymbol]:
     if document.get("schema_version") != 1 or not isinstance(document.get("symbols"), list):
         raise DisassemblyError("unsupported memory-symbol schema")
     result: list[MemorySymbol] = []
-    names: set[str] = set()
     for item in document["symbols"]:
         if not isinstance(item, dict):
             raise DisassemblyError("invalid memory-symbol entry")
@@ -178,7 +177,8 @@ def load_memory_symbols(path: Path) -> list[MemorySymbol]:
             raise DisassemblyError(f"invalid size for memory symbol {name}: {size}")
         if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name):
             raise DisassemblyError(f"invalid ca65 memory symbol name: {name!r}")
-        if name.lower() in names:
+        # A name may cover one address in several code ranges, never two addresses.
+        if any(e.name.lower() == name.lower() and (e.address, e.size) != (address, size) for e in result):
             raise DisassemblyError(f"duplicate memory symbol name: {name}")
         for existing in result:
             if existing.address == address and max(existing.start, start) < min(existing.end, end):
@@ -187,7 +187,6 @@ def load_memory_symbols(path: Path) -> list[MemorySymbol]:
                     f"{existing.name} and {name}"
                 )
         result.append(MemorySymbol(address, name, start, end, size))
-        names.add(name.lower())
     return result
 
 

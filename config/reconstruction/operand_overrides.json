@@ -124,7 +124,7 @@
     {
       "instruction": "0x8C95",
       "expected": "#$28",
-      "operand": "#RuntimeType83ProtectionDuration",
+      "operand": "#OxygenTankProtectionDuration",
       "evidence": "runtime type $83 installs 40 hazard-protection ticks"
     },
     {
@@ -136,8 +136,8 @@
     {
       "instruction": "0x8CA4",
       "expected": "#$FF",
-      "operand": "#RuntimeType96EffectSet",
-      "evidence": "runtime type $96 sets its dedicated effect latch"
+      "operand": "#CastleMapAvailableValue",
+      "evidence": "castle-map item $96 makes the Select map available"
     },
     {
       "instruction": "0x8CA8",
@@ -226,37 +226,37 @@
     {
       "instruction": "0x8D52",
       "expected": "#$28",
-      "operand": "#RuntimeType9FInvulnerabilityDuration",
+      "operand": "#PowerLightInvulnerabilityDuration",
       "evidence": "matching type $9F collision refreshes invulnerability to 40 ticks"
     },
     {
       "instruction": "0x8D80",
       "expected": "#$91",
-      "operand": "#RuntimeType81ReplacementType",
+      "operand": "#FairyReplacementType",
       "evidence": "type $81 collision transforms the current object into runtime type $91"
     },
     {
       "instruction": "0x8D87",
       "expected": "#$10",
-      "operand": "#RuntimeType81HorizontalShift",
+      "operand": "#FairyHorizontalShift",
       "evidence": "the transformed current object moves one 16-pixel cell left"
     },
     {
       "instruction": "0x8D91",
       "expected": "#$59",
-      "operand": "#RuntimeType81CloneRoom",
+      "operand": "#FairyCloneRoom",
       "evidence": "only one-based room $59 creates the additional type-$91 record"
     },
     {
       "instruction": "0x8D95",
       "expected": "#$91",
-      "operand": "#RuntimeType81ReplacementType",
+      "operand": "#FairyReplacementType",
       "evidence": "the extra record uses the same runtime type $91"
     },
     {
       "instruction": "0x8D9C",
       "expected": "#$10",
-      "operand": "#RuntimeType81HorizontalShift",
+      "operand": "#FairyHorizontalShift",
       "evidence": "the clone is placed one further 16-pixel cell left"
     },
     {
@@ -526,7 +526,7 @@
     {
       "instruction": "0xA020",
       "expected": "#$0F",
-      "operand": "#RuntimeObjectType40StateLimit",
+      "operand": "#DefeatEffectStateLimit",
       "evidence": "type index 40 is cleared when its incremented state reaches 15"
     },
     {
@@ -556,7 +556,7 @@
     {
       "instruction": "0xA063",
       "expected": "a:$9FEB,Y",
-      "operand": "RuntimeObjectType84To89FilterValues - RuntimeObjectCollisionTypeFirst,Y",
+      "operand": "EnemyTypeFilterValues - RuntimeObjectCollisionTypeFirst,Y",
       "evidence": "negative runtime types index the physical $A06B table through an address biased by $80"
     },
     {
@@ -4048,19 +4048,19 @@
     {
       "instruction": "0x89E1",
       "expected": "#$00",
-      "operand": "#LinkedLiftMotionInactive",
+      "operand": "#DraggableLiftMotionInactive",
       "evidence": "the horizontal collision wrapper clears the shared push result before moving the control block"
     },
     {
       "instruction": "0x8A03",
       "expected": "#$41",
-      "operand": "#LinkedLiftControlCellFirst",
+      "operand": "#DraggableLiftControlCellFirst",
       "evidence": "only the three control-track cell identities can operate the linked lift"
     },
     {
       "instruction": "0x8A07",
       "expected": "#$44",
-      "operand": "#LinkedLiftControlCellEnd",
+      "operand": "#DraggableLiftControlCellEnd",
       "evidence": "the linked-lift control-track interval ends before cell $44"
     },
     {
@@ -4072,7 +4072,7 @@
     {
       "instruction": "0x8A19",
       "expected": "#$A4",
-      "operand": "#PrimaryLinkedLiftType",
+      "operand": "#DraggableLiftTopType",
       "evidence": "room-cell marker $49 creates the primary half of every linked-lift pair"
     },
     {
@@ -4096,7 +4096,7 @@
     {
       "instruction": "0x8A2D",
       "expected": "#$A5",
-      "operand": "#SecondaryLinkedLiftType",
+      "operand": "#DraggableLiftBottomType",
       "evidence": "room-cell marker $4A creates the secondary half of every linked-lift pair"
     },
     {
@@ -4114,7 +4114,7 @@
     {
       "instruction": "0x8A40",
       "expected": "#$09",
-      "operand": "#SecondaryLinkedLiftClearanceYOffset",
+      "operand": "#DraggableLiftBottomClearanceYOffset",
       "evidence": "lowering probes the row immediately below the eight-pixel secondary lift"
     },
     {
@@ -4132,7 +4132,7 @@
     {
       "instruction": "0x8A68",
       "expected": "#$0A",
-      "operand": "#PrimaryLinkedLiftClearanceYOffset",
+      "operand": "#DraggableLiftTopClearanceYOffset",
       "evidence": "the primary lift uses its two-pixel vertical bias when probing below"
     },
     {
@@ -4144,7 +4144,7 @@
     {
       "instruction": "0x8A7A",
       "expected": "#$0A",
-      "operand": "#PrimaryLinkedLiftClearanceYOffset",
+      "operand": "#DraggableLiftTopClearanceYOffset",
       "evidence": "the primary lift right-edge probe shares the two-pixel bias"
     },
     {
@@ -4168,19 +4168,19 @@
     {
       "instruction": "0x8AA5",
       "expected": "#$52",
-      "operand": "#LinkedLiftTrackCell",
+      "operand": "#DraggableLiftTrackCell",
       "evidence": "lowering extends the primary lift track behind the moving sprite"
     },
     {
       "instruction": "0x8AD1",
       "expected": "#$41",
-      "operand": "#LinkedLiftControlCellFirst",
+      "operand": "#DraggableLiftControlCellFirst",
       "evidence": "raising uses the same three-cell control-track interval"
     },
     {
       "instruction": "0x8AD5",
       "expected": "#$44",
-      "operand": "#LinkedLiftControlCellEnd",
+      "operand": "#DraggableLiftControlCellEnd",
       "evidence": "raising rejects control cells at or beyond $44"
     },
     {
@@ -4192,7 +4192,7 @@
     {
       "instruction": "0x8ADD",
       "expected": "#$A4",
-      "operand": "#PrimaryLinkedLiftType",
+      "operand": "#DraggableLiftTopType",
       "evidence": "the raising path locates the primary linked-lift half"
     },
     {
@@ -4210,7 +4210,7 @@
     {
       "instruction": "0x8AFB",
       "expected": "#$52",
-      "operand": "#LinkedLiftTrackCell",
+      "operand": "#DraggableLiftTrackCell",
       "evidence": "raising requires an existing track cell above the primary lift"
     },
     {
@@ -4222,7 +4222,7 @@
     {
       "instruction": "0x8B04",
       "expected": "#$A5",
-      "operand": "#SecondaryLinkedLiftType",
+      "operand": "#DraggableLiftBottomType",
       "evidence": "the raising path locates the secondary linked-lift half"
     },
     {
@@ -4240,7 +4240,7 @@
     {
       "instruction": "0x8B19",
       "expected": "#$06",
-      "operand": "#LinkedLiftTrackEraseYOffset",
+      "operand": "#DraggableLiftTrackEraseYOffset",
       "evidence": "raising erases the track cell exposed below the primary lift"
     },
     {
@@ -4270,7 +4270,7 @@
     {
       "instruction": "0x8B4D",
       "expected": "#$10",
-      "operand": "#LinkedLiftOccupantWidth",
+      "operand": "#DraggableLiftOccupantWidth",
       "evidence": "each linked-lift half contributes a sixteen-pixel support span"
     },
     {
@@ -4300,7 +4300,7 @@
     {
       "instruction": "0x8B79",
       "expected": "#$08",
-      "operand": "#LinkedLiftOccupantProbeYOffset",
+      "operand": "#DraggableLiftOccupantProbeYOffset",
       "evidence": "overlap expansion probes one object height above each occupant"
     },
     {
@@ -4330,13 +4330,13 @@
     {
       "instruction": "0x8BC2",
       "expected": "#$02",
-      "operand": "#LinkedLiftRaisingStep",
+      "operand": "#DraggableLiftRaisingStep",
       "evidence": "the linked lift raises every transitive occupant by two pixels"
     },
     {
       "instruction": "0x8BCB",
       "expected": "#$A4",
-      "operand": "#PrimaryLinkedLiftType",
+      "operand": "#DraggableLiftTopType",
       "evidence": "the primary lift skips ceiling probes after its own movement"
     },
     {
@@ -4360,13 +4360,13 @@
     {
       "instruction": "0x8C09",
       "expected": "#$02",
-      "operand": "#LinkedLiftRaisingStep",
+      "operand": "#DraggableLiftRaisingStep",
       "evidence": "a player marked on the linked lift rises by the same two-pixel step"
     },
     {
       "instruction": "0x8C0D",
       "expected": "#$00",
-      "operand": "#LinkedLiftMinimumY",
+      "operand": "#DraggableLiftMinimumY",
       "evidence": "linked-lift player movement clamps an underflow to the top of the playfield"
     },
     {
@@ -4492,7 +4492,7 @@
     {
       "instruction": "0x97BB",
       "expected": "#$4C",
-      "operand": "#SmallLiftShaftCell",
+      "operand": "#NarrowLiftShaftCell",
       "evidence": "small lifts descend only through their one-cell shaft marker"
     },
     {
@@ -4570,7 +4570,7 @@
     {
       "instruction": "0x9830",
       "expected": "#$4C",
-      "operand": "#SmallLiftShaftCell",
+      "operand": "#NarrowLiftShaftCell",
       "evidence": "a rising small lift restores its shaft marker below"
     },
     {
@@ -4582,7 +4582,7 @@
     {
       "instruction": "0x9851",
       "expected": "#$10",
-      "operand": "#SmallLiftWidth",
+      "operand": "#NarrowLiftWidth",
       "evidence": "the small lift player-contact span is sixteen pixels wide"
     },
     {
@@ -4594,7 +4594,7 @@
     {
       "instruction": "0x9862",
       "expected": "#$10",
-      "operand": "#SmallLiftWidth",
+      "operand": "#NarrowLiftWidth",
       "evidence": "small-lift occupant propagation uses a sixteen-pixel support span"
     },
     {
@@ -4624,7 +4624,7 @@
     {
       "instruction": "0x988E",
       "expected": "#$4F",
-      "operand": "#LargeLiftLeftShaftCell",
+      "operand": "#WideLiftLeftShaftCell",
       "evidence": "large lifts descend through the left half of the paired shaft marker"
     },
     {
@@ -4714,7 +4714,7 @@
     {
       "instruction": "0x9913",
       "expected": "#$4F",
-      "operand": "#LargeLiftLeftShaftCell",
+      "operand": "#WideLiftLeftShaftCell",
       "evidence": "a rising large lift restores the left shaft-marker half"
     },
     {
@@ -4726,13 +4726,13 @@
     {
       "instruction": "0x9919",
       "expected": "#$50",
-      "operand": "#LargeLiftRightShaftCell",
+      "operand": "#WideLiftRightShaftCell",
       "evidence": "a rising large lift restores the right shaft-marker half"
     },
     {
       "instruction": "0x9939",
       "expected": "#$20",
-      "operand": "#LargeLiftWidth",
+      "operand": "#WideLiftWidth",
       "evidence": "the large lift player-contact span is thirty-two pixels wide"
     },
     {
@@ -4744,7 +4744,7 @@
     {
       "instruction": "0x994A",
       "expected": "#$20",
-      "operand": "#LargeLiftWidth",
+      "operand": "#WideLiftWidth",
       "evidence": "large-lift occupant propagation uses a thirty-two-pixel support span"
     },
     {
@@ -4894,85 +4894,85 @@
     {
       "instruction": "0x9A50",
       "expected": "#$02",
-      "operand": "#FlyingBlockStep",
+      "operand": "#FloatingPlatformStep",
       "evidence": "an unobstructed flying block moves two pixels right"
     },
     {
       "instruction": "0x9A5B",
       "expected": "#$05",
-      "operand": "#FlyingBlockRightContactXOffset",
+      "operand": "#FloatingPlatformRightContactXOffset",
       "evidence": "rightward motion exports a contact coordinate five pixels past the new origin"
     },
     {
       "instruction": "0x9A61",
       "expected": "#$00",
-      "operand": "#FlyingBlockCoordinateCarry",
+      "operand": "#FloatingPlatformCoordinateCarry",
       "evidence": "carry from the contact-offset addition extends into the high X byte"
     },
     {
       "instruction": "0x9A72",
       "expected": "#$FF",
-      "operand": "#FlyingBlockDirectionLeft",
+      "operand": "#FloatingPlatformDirectionLeft",
       "evidence": "a blocked right edge reverses the flying block toward the left"
     },
     {
       "instruction": "0x9A79",
       "expected": "#$FF",
-      "operand": "#FlyingBlockStopped",
+      "operand": "#FloatingPlatformStopped",
       "evidence": "a block trapped on both sides latches its stopped flag"
     },
     {
       "instruction": "0x9A8F",
       "expected": "#$02",
-      "operand": "#FlyingBlockStep",
+      "operand": "#FloatingPlatformStep",
       "evidence": "an unobstructed flying block moves two pixels left"
     },
     {
       "instruction": "0x9A97",
       "expected": "#$00",
-      "operand": "#FlyingBlockCoordinateBorrow",
+      "operand": "#FloatingPlatformCoordinateBorrow",
       "evidence": "borrow from leftward motion extends into the high X byte"
     },
     {
       "instruction": "0x9AA8",
       "expected": "#$00",
-      "operand": "#FlyingBlockDirectionRight",
+      "operand": "#FloatingPlatformDirectionRight",
       "evidence": "a blocked left edge reverses the flying block toward the right"
     },
     {
       "instruction": "0x9AC1",
       "expected": "#$07",
-      "operand": "#FlyingBlockBottomProbeYOffset",
+      "operand": "#FloatingPlatformBottomProbeYOffset",
       "evidence": "the lower right probe samples the eight-pixel block's bottom edge"
     },
     {
       "instruction": "0x9AE3",
       "expected": "#$07",
-      "operand": "#FlyingBlockBottomProbeYOffset",
+      "operand": "#FloatingPlatformBottomProbeYOffset",
       "evidence": "the lower left probe samples the eight-pixel block's bottom edge"
     },
     {
       "instruction": "0x9AF1",
       "expected": "#$A0",
-      "operand": "#FlyingBlockWorldYEnd",
+      "operand": "#FloatingPlatformWorldYEnd",
       "evidence": "probe coordinates at or below Y $A0 are outside the playfield"
     },
     {
       "instruction": "0x9AF5",
       "expected": "#$01",
-      "operand": "#FlyingBlockWorldRightPage",
+      "operand": "#FloatingPlatformWorldRightPage",
       "evidence": "page zero is entirely within the horizontal playfield"
     },
     {
       "instruction": "0x9AF9",
       "expected": "#$02",
-      "operand": "#FlyingBlockWorldBeyondRightPage",
+      "operand": "#FloatingPlatformWorldBeyondRightPage",
       "evidence": "coordinates on page two or above are outside the playfield"
     },
     {
       "instruction": "0x9AFD",
       "expected": "#$40",
-      "operand": "#FlyingBlockWorldRightLimitLo",
+      "operand": "#FloatingPlatformWorldRightLimitLo",
       "evidence": "page-one coordinates must remain below world X $0140"
     },
     {
@@ -5572,13 +5572,13 @@
     {
       "instruction": "0x9A39",
       "expected": "$4F,X",
-      "operand": "RuntimeObjectFlyingBlockStopFlag,X",
+      "operand": "RuntimeObjectFloatingPlatformStopFlag,X",
       "evidence": "flying-block update treats record field +5 as its permanent stopped latch"
     },
     {
       "instruction": "0x9A7B",
       "expected": "$4F,X",
-      "operand": "RuntimeObjectFlyingBlockStopFlag,X",
+      "operand": "RuntimeObjectFloatingPlatformStopFlag,X",
       "evidence": "a trapped flying block sets its record field +5 stopped latch"
     },
     {

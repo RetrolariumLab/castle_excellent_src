@@ -7,7 +7,7 @@ from scripts.validation.objects import runtime_type9f_collision
 ROOT = Path(__file__).resolve().parents[3]
 
 
-class RuntimeType9FCollisionTests(unittest.TestCase):
+class PowerLightCollisionTests(unittest.TestCase):
     def test_positive_frame_phase_is_inactive(self) -> None:
         result = runtime_type9f_collision.collide_runtime_type9f(0x7F, 1, 1, 0)
         self.assertFalse(result.refreshed)
@@ -28,7 +28,7 @@ class RuntimeType9FCollisionTests(unittest.TestCase):
         self.assertFalse(result.load_audio_track_set_3)
 
     def test_rejects_values_outside_machine_width(self) -> None:
-        with self.assertRaises(runtime_type9f_collision.RuntimeType9FError):
+        with self.assertRaises(runtime_type9f_collision.PowerLightError):
             runtime_type9f_collision.collide_runtime_type9f(0x100, 0, 0, 0)
 
     def test_reference_rom_and_exhaustive_contracts(self) -> None:

@@ -26,7 +26,7 @@ EXPECTED_ROUTINE_BYTES = bytes.fromhex(
 )
 
 
-class RuntimeType9FError(ValueError):
+class PowerLightError(ValueError):
     pass
 
 
@@ -39,7 +39,7 @@ class CollisionResult:
 
 def _require_byte(value: int, name: str) -> None:
     if not 0 <= value <= 0xFF:
-        raise RuntimeType9FError(f"{name} outside 0-255: {value}")
+        raise PowerLightError(f"{name} outside 0-255: {value}")
 
 
 def collide_runtime_type9f(
@@ -66,13 +66,13 @@ def collide_runtime_type9f(
 
 def extract_prg(image: bytes) -> bytes:
     if len(image) < 16 or image[:4] != b"NES\x1a":
-        raise RuntimeType9FError("expected an iNES image")
+        raise PowerLightError("expected an iNES image")
     trainer_size = 512 if image[6] & 0x04 else 0
     prg_size = image[4] * 16_384
     start = 16 + trainer_size
     end = start + prg_size
     if prg_size != PRG_SIZE or end > len(image):
-        raise RuntimeType9FError("expected a complete 32 KiB PRG region")
+        raise PowerLightError("expected a complete 32 KiB PRG region")
     return image[start:end]
 
 
@@ -88,18 +88,18 @@ def _handler_entry(runtime_type: int) -> int:
 def validate_rom_contract(prg: bytes) -> dict[str, object]:
     start = ROUTINE_CPU - PRG_BASE
     if prg[start:start + len(EXPECTED_ROUTINE_BYTES)] != EXPECTED_ROUTINE_BYTES:
-        raise RuntimeType9FError("runtime type $9F handler bytes changed")
+        raise PowerLightError("runtime type $9F handler bytes changed")
     handler_entry = _handler_entry(RUNTIME_TYPE)
     if _read_word(prg, handler_entry) != ROUTINE_CPU:
-        raise RuntimeType9FError("runtime type $9F collision pointer changed")
+        raise PowerLightError("runtime type $9F collision pointer changed")
     next_entry = _handler_entry(NEXT_RUNTIME_TYPE)
     if _read_word(prg, next_entry) != NEXT_HANDLER_CPU:
-        raise RuntimeType9FError("next collision-handler boundary changed")
+        raise PowerLightError("next collision-handler boundary changed")
     audio_call = bytes(
         (0x20, LOAD_AUDIO_TRACK_SET_3_CPU & 0xFF, LOAD_AUDIO_TRACK_SET_3_CPU >> 8)
     )
     if EXPECTED_ROUTINE_BYTES.count(audio_call) != 1:
-        raise RuntimeType9FError("audio call topology changed")
+        raise PowerLightError("audio call topology changed")
     return {
         "routine_range": [ROUTINE_CPU, ROUTINE_END - 1],
         "routine_bytes": len(EXPECTED_ROUTINE_BYTES),
@@ -114,18 +114,18 @@ def validate_exhaustive_contract() -> dict[str, int]:
     for room_frame in range(0x100):
         result = collide_runtime_type9f(room_frame, 0x55, 0x55, 7)
         if result.refreshed != (room_frame >= 0x80):
-            raise RuntimeType9FError("frame-phase guard mismatch")
+            raise PowerLightError("frame-phase guard mismatch")
         cases += 1
     for object_x in range(0x100):
         for player_x in range(0x100):
             result = collide_runtime_type9f(0x80, object_x, player_x, 7)
             if result.refreshed != (object_x == player_x):
-                raise RuntimeType9FError("X equality guard mismatch")
+                raise PowerLightError("X equality guard mismatch")
             cases += 1
     for countdown in range(0x100):
         result = collide_runtime_type9f(0xFF, 1, 1, countdown)
         if result != CollisionResult(INVULNERABILITY_DURATION, countdown == 0, True):
-            raise RuntimeType9FError("countdown refresh/audio guard mismatch")
+            raise PowerLightError("countdown refresh/audio guard mismatch")
         cases += 1
     return {"state_cases": cases, "frame_domain": 0x100, "x_pair_domain": 0x10000}
 
@@ -144,7 +144,7 @@ def main() -> int:
             "first_match": asdict(collide_runtime_type9f(0x80, 1, 1, 0)),
             "active_match": asdict(collide_runtime_type9f(0xFF, 1, 1, 7)),
         }
-    except (OSError, RuntimeType9FError) as exc:
+    except (OSError, PowerLightError) as exc:
         print(f"[FAIL] {exc}", file=sys.stderr)
         return 1
     if args.validate:

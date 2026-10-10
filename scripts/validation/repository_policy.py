@@ -437,12 +437,12 @@ def command_lint(_args: argparse.Namespace) -> None:
             "ReturnPlayerObjectPush:",
         ),
         "src/game/objects/lifts/linked_control.asm": (
-            "HandleLiftControlBlockHorizontalCollision:",
-            "ReturnFromLinkedLiftUpdate:",
+            "HandlePulleyHorizontalCollision:",
+            "ReturnFromDraggableLiftUpdate:",
         ),
         "src/game/collectibles/pickups_and_rewards.asm": (
-            "CollectInventoryRuntimeType90:",
-            "ReturnFromRuntimeType81Collision:",
+            "CollectDarkBlueKey:",
+            "ReturnFromFairyCollision:",
         ),
         "src/game/collision/player_pipeline.asm": (
             "HandleAnimatedPlayerHazard:",
@@ -453,16 +453,16 @@ def command_lint(_args: argparse.Namespace) -> None:
             "ReturnPlayerOutsideObjectSpan:",
         ),
         "src/game/objects/lifts/movement.asm": (
-            "UpdateLiftControlBlock:",
+            "UpdatePulley:",
             "ClearNextLiftOccupantFlag:",
         ),
         "src/game/objects/enemies/patrol.asm": (
-            "UpdateFlyingBlock:",
+            "UpdateFloatingPlatform:",
             "ReturnFromFighterUpdate:",
         ),
         "src/game/objects/enemies/special.asm": (
             "UpdateFlame:",
-            "TickRuntimeObjectType41Lifetime:",
+            "TickCollectedItemEffectLifetime:",
         ),
         "src/game/collision/sampling.asm": (
             "ClassifyAnimatedCollisionCell:",
@@ -485,7 +485,7 @@ def command_lint(_args: argparse.Namespace) -> None:
             "DrawPlayerLeftActionSprite:",
         ),
         "src/rendering/sprites/selectors.asm": (
-            "DrawRuntimeObjectType01Sprite:",
+            "DrawFairySprite:",
             "FinishType41Sprite:",
         ),
         "src/rendering/sprites/metasprites.asm": (
