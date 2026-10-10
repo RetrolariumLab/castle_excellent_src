@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts.authoring import frame_sprites
+from scripts.validation import frame_sprites
 
 
 class FrameSpriteTests(unittest.TestCase):

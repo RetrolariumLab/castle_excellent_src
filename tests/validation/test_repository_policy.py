@@ -27,14 +27,14 @@ class ToolLayoutTests(unittest.TestCase):
     def test_declared_oversized_tool_is_bounded_and_explained(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            scripts = root / "scripts" / "authoring"
+            scripts = root / "scripts" / "build"
             scripts.mkdir(parents=True)
-            source = scripts / "studio.py"
+            source = scripts / "large_tool.py"
             source.write_text("one\ntwo\nthree\nfour\n", encoding="utf-8")
             self.make_contract(
                 root,
                 {
-                    "path": "scripts/authoring/studio.py",
+                    "path": "scripts/build/large_tool.py",
                     "lines": 4,
                     "maximum": 5,
                     "reason": "cohesive GUI controller",
@@ -45,15 +45,15 @@ class ToolLayoutTests(unittest.TestCase):
     def test_stale_line_count_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            scripts = root / "scripts" / "authoring"
+            scripts = root / "scripts" / "build"
             scripts.mkdir(parents=True)
-            (scripts / "studio.py").write_text(
+            (scripts / "large_tool.py").write_text(
                 "one\ntwo\nthree\nfour\n", encoding="utf-8"
             )
             self.make_contract(
                 root,
                 {
-                    "path": "scripts/authoring/studio.py",
+                    "path": "scripts/build/large_tool.py",
                     "lines": 5,
                     "maximum": 5,
                     "reason": "cohesive GUI controller",

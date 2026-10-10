@@ -4,7 +4,7 @@ import unittest
 
 
 
-from scripts.authoring import audio_data
+from scripts.validation import audio_data
 class MmlTests(unittest.TestCase):
     def test_accepts_interpreter_command_grammar(self) -> None:
         counts = audio_data.validate_mml_text(b"t5vfo4l8c+4.r8", 0xBBE7)

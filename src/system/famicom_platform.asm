@@ -483,6 +483,7 @@ PowerOnSignature:
 .include "../game/objects/lifts/linked_control.asm"
 .include "../game/collectibles/pickups_and_rewards.asm"
 .include "../game/collision/player_pipeline.asm"
+.include "../game/collision/handlers.asm"
 .include "../game/runtime/frame_pipeline.asm"
 .include "../game/objects/lifts/movement.asm"
 .include "../game/objects/enemies/patrol.asm"

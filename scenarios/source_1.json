@@ -90,7 +90,7 @@
       "start_condition": "first UpdatePlayerCollisionState after the main frame loop",
       "expected_result": "collision with runtime type 0x82 enters the terminal completion sequence",
       "required_hooks": [
-        "HandleRuntimeType82PlayerCollision",
+        "HandlePrincessPlayerCollision",
         "RunType82CompletionSequence"
       ],
       "controlled_patches": [

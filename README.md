@@ -1,7 +1,7 @@
 # Castle Excellent NES source reconstruction
 
-A byte-identical ca65 reconstruction and content-authoring workspace for
-**Castle Excellent** (`HSP-05`) on Famicom and **Castlequest** on NES. The
+A byte-identical ca65 reconstruction of **Castle Excellent** (`HSP-05`) on
+Famicom and **Castlequest** on NES, edited in Retrolarium Studio. The
 repository rebuilds both supported revisions from shared PRG source, isolates
 private ROM-derived assets, and validates reconstructed behavior with static,
 format, debugger, and emulator evidence.
@@ -24,6 +24,10 @@ preserves the 2.0 ROM, profile, runtime, and editor contracts while adding
 self-contained release metadata, object-level history auditing, disposable
 public command smoke, Python source policy, atomic output writes, bounded tool
 modules, and complete workstation editor interactions.
+
+Source Reconstruction 3.0 moves editing to Retrolarium: `castle_excellent.rlj`
+opens both revisions in the studio, the Level, Sound, and Graphics studios
+are retired, and `make studio-check` proves each revision with the kit.
 
 The game uses CNROM mapper 3: one fixed 32 KiB PRG at `$8000-$FFFF` and four
 switchable 8 KiB CHR banks. CPU code is not bank-switched; CHR banks 2 and 3
@@ -59,34 +63,11 @@ make verify-profile REVISION_PROFILE=castlequest-usa
 Profile identities and expected local inputs are declared in
 `config/revision_profiles.json`.
 
-## Content editors
+## Editing
 
-Open a studio for either supported revision:
-
-```bash
-make level-studio REVISION_PROFILE=castle-excellent-japan-hsp-05
-make sound-studio REVISION_PROFILE=castle-excellent-japan-hsp-05
-make graphics-studio REVISION_PROFILE=castle-excellent-japan-hsp-05
-```
-
-Use `REVISION_PROFILE=castlequest-usa` for the USA release. Each studio writes
-an ignored workspace and delegates serialization to its validated headless
-codec. Common non-GUI commands are:
-
-```bash
-make roundtrip-levels REVISION_PROFILE=castlequest-usa
-make build-levels REVISION_PROFILE=castlequest-usa
-make smoke-level-playtest REVISION_PROFILE=castlequest-usa
-
-make roundtrip-music REVISION_PROFILE=castlequest-usa
-make build-music REVISION_PROFILE=castlequest-usa
-
-make roundtrip-graphics REVISION_PROFILE=castlequest-usa
-make build-graphics REVISION_PROFILE=castlequest-usa
-```
-
-See [Content authoring](docs/content_authoring.md) for workspace formats,
-capacity limits, preview behavior, and editor controls.
+Open `castle_excellent.rlj` in Retrolarium Studio. It asks which revision to
+edit, takes its ROM and keeps the edits in the ignored `hack/<revision>/`; see
+[editing in Retrolarium](docs/retrolarium.md).
 
 ## Verification and release gates
 
@@ -98,9 +79,10 @@ make scaffold-check   # lint and synthetic tests without private ROM assets
 make test             # regenerate Ghidra facts and run the Python suite
 make quality-check    # lint and the complete ROM-backed Python suite
 make check            # build, prove byte identity, and run static contracts
-make source-2-audit   # reconcile the Source 2.0 manifest and evidence
+make source-2-audit   # reconcile the Source 2.0 manifest at its tag
 make source-2-check   # run the complete two-profile release candidate gate
-make source-2-minor-audit # reconcile the compatible Source 2.1 delta
+make source-2-minor-audit # reconcile the Source 2.1 delta at its tag
+make studio-check     # open and rebuild every revision with the kit
 make source-2-minor-check # run accepted 2.0 first, then the complete 2.1 delta
 ```
 
@@ -113,13 +95,10 @@ documented in [Verification](docs/verification.md).
 
 ```text
 assets/                 reference manifests and ignored extracted assets
-config/authoring/       level, music, and graphics contracts
 config/debugger/        symbol-resolved breakpoints and watches
 config/reconstruction/  symbols, operands, source layout, and code evidence
 docs/                   architecture, formats, workflows, and release policy
-content/workspace/      editable level, music, and graphics documents
-mk/                     authoring, runtime, and validation Make rules
-scripts/authoring/      headless codecs and visual studios
+mk/                     runtime and validation Make rules
 scripts/build/          assembly, profiles, variants, and byte comparison
 scripts/runtime/        emulator capture, playtesting, and live validation
 scripts/validation/     release and subsystem contracts

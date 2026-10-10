@@ -45,3 +45,15 @@ The following work is intentionally outside the current tag:
 
 Each item requires its own declared scope, evidence, and release gate. None is
 implied by the Source 2.0 tag-ready status.
+
+## Source Reconstruction 3.0 — editing in Retrolarium
+
+Retrolarium Studio edits both revisions from `castle_excellent.rlj`: rooms and
+objects, the castle map, room cells, graphics, palettes, animations, screens,
+text, music, sound effects and the title demo. The Level, Sound, and Graphics
+studios, their workspace documents, room playtest and workstation smokes are
+retired; the room, audio, frame-sprite and metasprite codecs the validators use
+move to `scripts/validation/`. The 2.0 and 2.1 manifest audits run at their
+tags, and `make studio-check` proves both revisions with the kit. The 3.0
+manifest pins the kit once Retrolarium publishes its tags; see
+[editing in Retrolarium](retrolarium.md).

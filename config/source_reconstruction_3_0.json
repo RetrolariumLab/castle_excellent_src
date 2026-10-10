@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "release_line": "3.0",
+  "release": {
+    "name": "Source Reconstruction 3.0",
+    "version": "3.0"
+  },
+  "release_kind": "retrolarium",
+  "tag": "source-reconstruction-3.0",
+  "status": "development",
+  "predecessor": {
+    "manifest": "config/source_reconstruction_2_1.json",
+    "tag": "source-reconstruction-2.1",
+    "commit": "7a04b408f5a275652ffd19ee3e0bd6f5b2e2a418"
+  },
+  "delta_history": {
+    "from_exclusive": "7a04b408f5a275652ffd19ee3e0bd6f5b2e2a418",
+    "through_inclusive": "release-commit",
+    "commits": [
+      {
+        "commit": "d71b16b528b20e7b6b614d71fcda567ec774628e",
+        "subject": "Retrolarium Studio descriptor"
+      },
+      {
+        "commit": "89965f03029a14d15a8b88a35380a058bf432592",
+        "subject": "Retrolarium descriptor: castle-excellent identifiers"
+      },
+      {
+        "commit": "fc66a57adeb141b6e0509b4fe2674cfbe209bd73",
+        "subject": "Retrolarium descriptor: views come from the kit"
+      },
+      {
+        "commit": "17f26b21cb5ea1d740966600877156061745fd77",
+        "subject": "Community object names and annotated handler tables"
+      },
+      {
+        "commit": "1c99d133d084d9a4fee7e29e250cc87a4d1fcbe2",
+        "subject": "Source Reconstruction 3.0: editing moves to Retrolarium"
+      },
+      {
+        "commit": "f128add193037a1a7237f8a5bad475768aa9e13f",
+        "subject": "Regenerate the annotated sources and split the collision module"
+      },
+      {
+        "commit": "27b0b91ab1b9270cb99f0eac660e1bac2930d664",
+        "subject": "Run the profile build's assemblers by absolute path"
+      }
+    ]
+  },
+  "included_scope": [
+    "inherited-source-reconstruction-2.1-contract",
+    "retrolarium-descriptor",
+    "kit-owned-editing",
+    "studio-check"
+  ],
+  "excluded_scope": [
+    {
+      "id": "additional-regional-or-platform-profiles",
+      "status": "unsupported",
+      "reason": "No additional verified Castle Excellent profiles are declared for the compatible 2.1 release."
+    },
+    {
+      "id": "expanded-rom-and-general-relocation",
+      "status": "planned",
+      "reason": "Systematic relocation remains outside the compatible Source 2.x architecture."
+    },
+    {
+      "id": "sibling-engine-reconstruction",
+      "status": "unsupported",
+      "reason": "The Castle and non-NES engines require a separate major architectural decision."
+    },
+    {
+      "id": "world-routing-studio",
+      "status": "not_applicable",
+      "reason": "The fixed 10 by 10 room topology has no independently stored world-route format."
+    }
+  ],
+  "delta": [
+    {
+      "id": "retrolarium-descriptor",
+      "kind": "tooling",
+      "summary": "castle_excellent.rlj names the game, its kit profile castle-excellent.v1, the revisions it builds and its asset split; the studio views come from the kit's profile."
+    },
+    {
+      "id": "editing-moves-to-retrolarium",
+      "kind": "tooling",
+      "summary": "The editors, their models, the workspace composer, the UI smokes and their tests, Make targets and documentation are removed; editing happens in Retrolarium Studio over hack/<revision>/ (docs/retrolarium.md)."
+    },
+    {
+      "id": "studio-check",
+      "kind": "validation",
+      "summary": "make studio-check: in a throwaway copy the kit prepares, validates and rebuilds every revision with no edits, byte for byte."
+    },
+    {
+      "id": "tag-bound-2x-audits",
+      "kind": "validation",
+      "summary": "The 2.x manifests describe their tags' trees, so their audits run at the tag in a disposable clone; the functional 2.x gate stays on HEAD."
+    },
+    {
+      "id": "community-names",
+      "kind": "source",
+      "summary": "Community object names and annotated handler tables, recorded as source_replacements in config/reconstruction/source_layout.json so make disassemble reproduces them; the collision module splits at $903F into collision/handlers.asm."
+    },
+    {
+      "id": "absolute-tool-paths",
+      "kind": "tooling",
+      "summary": "The profile build runs ca65 and ld65 by absolute path."
+    }
+  ],
+  "retrolarium": {
+    "descriptor": "castle_excellent.rlj",
+    "profile": "castle-excellent.v1",
+    "kit": {
+      "version": null,
+      "commit": null
+    },
+    "studio_min_version": null,
+    "revisions": [
+      "castle-excellent-japan-hsp-05",
+      "castlequest-usa"
+    ],
+    "removed_authoring": [
+      {
+        "path": "scripts/authoring/editor_workstation_smoke.py",
+        "replaced_by": "studio tests and live checks in Retrolarium"
+      },
+      {
+        "path": "scripts/authoring/graphics_editor.py",
+        "replaced_by": "Graphics, Palettes and Animations & Mappings views"
+      },
+      {
+        "path": "scripts/authoring/graphics_studio.py",
+        "replaced_by": "Graphics, Palettes and Animations & Mappings views"
+      },
+      {
+        "path": "scripts/authoring/graphics_studio_model.py",
+        "replaced_by": "Graphics, Palettes and Animations & Mappings views"
+      },
+      {
+        "path": "scripts/authoring/level_editor.py",
+        "replaced_by": "Rooms & Objects and Room Cells views"
+      },
+      {
+        "path": "scripts/authoring/level_studio.py",
+        "replaced_by": "Rooms & Objects and Room Cells views"
+      },
+      {
+        "path": "scripts/authoring/level_studio_model.py",
+        "replaced_by": "Rooms & Objects and Room Cells views"
+      },
+      {
+        "path": "scripts/authoring/level_studio_rendering.py",
+        "replaced_by": "Rooms & Objects and Room Cells views"
+      },
+      {
+        "path": "scripts/authoring/music_editor.py",
+        "replaced_by": "Music & Sounds view"
+      },
+      {
+        "path": "scripts/authoring/sound_studio.py",
+        "replaced_by": "Music & Sounds and SFX Parameters views"
+      },
+      {
+        "path": "scripts/authoring/sound_studio_model.py",
+        "replaced_by": "Music & Sounds and SFX Parameters views"
+      },
+      {
+        "path": "scripts/runtime/level_playtest.lua",
+        "replaced_by": "the studio's Play (MAME playtest)"
+      },
+      {
+        "path": "scripts/runtime/level_playtest.py",
+        "replaced_by": "the studio's Play (MAME playtest)"
+      }
+    ]
+  },
+  "profiles": [
+    {
+      "id": "castle-excellent-japan-hsp-05",
+      "status": "supported",
+      "artifact": "castle-excellent-japan-hsp-05-rom",
+      "identity": "byte-identical",
+      "profile_manifest": "config/revision_profiles.json"
+    },
+    {
+      "id": "castlequest-usa",
+      "status": "supported",
+      "artifact": "castlequest-usa-rom",
+      "identity": "byte-identical",
+      "profile_manifest": "config/revision_profiles.json"
+    }
+  ],
+  "runtime_coverage": [
+    {
+      "profile_id": "castle-excellent-japan-hsp-05",
+      "mode": "direct",
+      "manifest": "scenarios/source_1.json",
+      "scenarios": [
+        "boot-gameplay",
+        "title-demo",
+        "idle-timeout",
+        "room-transition",
+        "death-game-over",
+        "completion-ending",
+        "save-load-entry"
+      ]
+    },
+    {
+      "profile_id": "castlequest-usa",
+      "mode": "direct",
+      "manifest": "scenarios/source_2_castlequest.json",
+      "scenarios": [
+        "castlequest-startup-menu"
+      ]
+    }
+  ],
+  "profile_manifest": "config/revision_profiles.json",
+  "toolchain": {
+    "components": [
+      {
+        "id": "ca65",
+        "version": "V2.19 - Git 0fca835",
+        "source": "https://github.com/cc65/cc65",
+        "source_commit": "0fca835",
+        "binary": "bin/ca65.exe",
+        "binary_size": 721629,
+        "binary_sha256": "9109d7118ff070e78f031bee4eb776061e56b74e7c8f9f40c70fd6707ea0ac5a",
+        "provenance": "bundled",
+        "verification": "release-audit"
+      },
+      {
+        "id": "ld65",
+        "version": "V2.19 - Git 0fca835",
+        "source": "https://github.com/cc65/cc65",
+        "source_commit": "0fca835",
+        "binary": "bin/ld65.exe",
+        "binary_size": 575874,
+        "binary_sha256": "5f68367a135c578c88744e27ba0b1234604d87ef1ff6294b46fcb031ff984db4",
+        "provenance": "bundled",
+        "verification": "release-audit"
+      },
+      {
+        "id": "ghidra",
+        "version": "12.1.3",
+        "source": "https://github.com/NationalSecurityAgency/ghidra",
+        "source_commit": null,
+        "archive_sha256": "93a5d11a9ad510622acaaf908c556a7b9b764d338e78a7567f3689bf5081fd54",
+        "provenance": "external_unbundled",
+        "verification": "ghidra-status"
+      },
+      {
+        "id": "ghidranes",
+        "version": "v20260531",
+        "source": "https://github.com/kylewlacy/GhidraNes",
+        "source_commit": "4c41964",
+        "archive_sha256": "d73b5671ed12904fc8daeda65ca6910d7e441cca3e2d9d0a19389e7f08b9caf3",
+        "provenance": "external_unbundled",
+        "verification": "ghidra-status"
+      },
+      {
+        "id": "fceux",
+        "version": "oranguthang/fceux_automation",
+        "source": "https://github.com/oranguthang/fceux_automation",
+        "source_commit": "ec507d86c57acd8979547bc35e9627fb199fac9a",
+        "binary": "tools/fceux/fceux64.exe",
+        "binary_size": 5499904,
+        "binary_sha256": "97aadff4970e98a413377810a296c045fab717661dd8270f84d58190f43a232e",
+        "provenance": "external_unbundled",
+        "verification": "fceux-status"
+      }
+    ],
+    "hosts": [
+      {
+        "os": "Microsoft Windows 10.0.26200",
+        "architecture": "x64",
+        "shell": "Windows PowerShell 5.1.26100.9168",
+        "language_versions": {
+          "python": "3.14.6",
+          "java": "Temurin OpenJDK 21.0.11+10 LTS"
+        },
+        "supported_status": "supported"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "id": "castle-excellent-japan-hsp-05-rom",
+      "profile": "castle-excellent-japan-hsp-05",
+      "build_target": "build",
+      "path": "build/native/castle_excellent.nes",
+      "size": 65552,
+      "sha1": "42f7975da9a68a74e141353eb6e2bdc676fc1f77",
+      "sha256": "fd6214cdc441070b9edab74b9c31ad16007bd0873e32c0c883de4544ca69f261",
+      "regions": {
+        "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+        "prg_sha256": "f59865b238497a552834c8d57adac7d670962f24bbc222488351bee9cb2c1d27",
+        "chr_sha256": "1c0fcb20ed0af3bdeceea2aed83967f43734627b3b6890a300b7808d3c30f1e5"
+      }
+    },
+    {
+      "id": "castlequest-usa-rom",
+      "profile": "castlequest-usa",
+      "build_target": "castlequest-check",
+      "path": "build/revisions/castlequest-usa/castlequest.nes",
+      "size": 65552,
+      "sha1": "600b0d2ae76722a62b42be02c0b0becd7ff0a178",
+      "sha256": "35815cd107289a8273fb46dd7c49247a8217ca4e2a7f235fef3aa54566d0ba8c",
+      "regions": {
+        "header_sha256": "b7b833c7f04f2331855fa96d3a341a38186e9c4e90fd91943103871f9197f3bc",
+        "prg_sha256": "8d8ed56dc5f8fde68bb1aba20e3835e1399ddd4dbeef9125d595e001d5beef4a",
+        "chr_sha256": "8fd1d35cdd5b0d5364e744e56c54e8013adf5e2841edd2cedcf4e96a163e0ab6"
+      }
+    },
+    {
+      "id": "start-room-1-rom",
+      "profile": "castle-excellent-japan-hsp-05",
+      "build_target": "check-fixed-layout",
+      "path": "build/variants/start-room-1/castle_excellent.nes",
+      "size": 65552,
+      "sha1": "d748c191e110b64f2377945bdb0c9bd2e37dcbf8",
+      "sha256": "20f7104399478c6f7766a609b6e52bbaf07d3312b355ee88d72366f2191187fc"
+    }
+  ],
+  "layout_deviations": [
+    {
+      "rule_id": "provenance-subdirectory",
+      "actual_path": "docs/provenance.md",
+      "reason": "A single provenance ledger is sufficient for the two closely related supported profiles.",
+      "equivalent_control": "The document and machine-readable licensing/provenance records are mandatory release evidence."
+    },
+    {
+      "rule_id": "bundled-toolchain-directory",
+      "actual_path": "bin/ and tools/",
+      "reason": "Pinned build binaries, lock manifests, and Ghidra integration scripts have project-wide responsibility.",
+      "equivalent_control": "The inherited Source 2.0 toolchain manifest verifies provenance, versions, sizes, and cryptographic hashes before use."
+    }
+  ],
+  "licensing": [
+    {
+      "component": "project_tools_and_documentation",
+      "category": "project_authored_material",
+      "origin": "this repository",
+      "license_id_or_status": "license_not_granted",
+      "redistribution": "No project-wide license has been granted.",
+      "notes": "This status is independent from the reconstructed game source and bundled dependencies."
+    },
+    {
+      "component": "reconstructed_game_source",
+      "category": "reconstructed_game_source",
+      "origin": "Castle Excellent (Japan), HSP-05 and Castlequest (USA)",
+      "license_id_or_status": "license_not_granted",
+      "redistribution": "No license to the original game code or data is claimed.",
+      "notes": "Reconstruction and documentation do not grant rights in the original works."
+    },
+    {
+      "component": "bundled_cc65_binaries",
+      "category": "bundled_external_tools",
+      "origin": "cc65 revision 0fca835",
+      "license_id_or_status": "licensed",
+      "redistribution": "Permitted under the bundled zlib license.",
+      "notes": "See bin/cc65-LICENSE.txt."
+    },
+    {
+      "component": "ghidra_ghidranes_fceux",
+      "category": "external_tools",
+      "origin": "upstream projects named in toolchain.components",
+      "license_id_or_status": "external_unbundled",
+      "redistribution": "Not redistributed by this repository.",
+      "notes": "Installers verify pinned archives or local binaries before use."
+    },
+    {
+      "component": "reference_roms_and_extracted_assets",
+      "category": "private_user_supplied_inputs",
+      "origin": "legally obtained local Castle Excellent and Castlequest images",
+      "license_id_or_status": "private_user_supplied",
+      "redistribution": "Never tracked or published by this project.",
+      "notes": "Only hashes, sizes, profile metadata, and extraction recipes are committed."
+    }
+  ],
+  "provenance": {
+    "references": [
+      "config/reconstruction/documentation_review.json",
+      "config/reconstruction/label_renames.json",
+      "docs/provenance.md",
+      "tools/disassembly.lock.json",
+      "tools/runtime.lock.json",
+      "config/revision_profiles.json",
+      "assets/manifest.json"
+    ],
+    "private_inputs_tracked": false,
+    "history_policy": {
+      "current_history_status": "tag-ready",
+      "predecessor_commit": "2a6cbf211125d8ad8302191eb8396f3ef210714d",
+      "development_branch": "rewrite/source-2.1-modernization",
+      "reason": "The compatible Source 2.1 candidate has a complete rewritten delta and an unused declared tag; branch promotion and tag creation remain explicit owner actions."
+    }
+  },
+  "aggregate_gates": {
+    "development": [
+      "make source-3-check"
+    ],
+    "pre_tag": [
+      "make source-3-check"
+    ],
+    "post_tag": [
+      "make source-3-audit"
+    ]
+  },
+  "functional_gate": "make source-2-minor-check"
+}

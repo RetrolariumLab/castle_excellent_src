@@ -4,18 +4,5 @@
     "minimum": 300,
     "maximum": 700
   },
-  "size_exceptions": [
-    {
-      "path": "scripts/authoring/graphics_studio.py",
-      "lines": 810,
-      "maximum": 900,
-      "reason": "The Tk graphics view/controller keeps one cohesive canvas, palette, editing, preview, and lifecycle surface while all CHR serialization remains in graphics_editor.py."
-    },
-    {
-      "path": "scripts/authoring/level_studio.py",
-      "lines": 738,
-      "maximum": 900,
-      "reason": "The Tk level controller keeps room edits, overview navigation, save/build/play actions, and dirty-close lifecycle together after its 242-line rendering surface was extracted."
-    }
-  ]
+  "size_exceptions": []
 }

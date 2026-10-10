@@ -18,16 +18,6 @@ class PublicCommandSmokeError(RuntimeError):
     """A disposable public command did not complete successfully."""
 
 
-VALID_EMPTY_COMMIT_MESSAGE = """Exercise empty-commit rejection
-
-Create a synthetic release-history boundary without changing its tracked tree.
-
-Verify that the public audit propagates the object-level validation failure.
-
-Co-Authored-By: Codex <noreply@openai.com>
-"""
-
-
 def _resolve_make(make_executable: str | None) -> str:
     make = make_executable or shutil.which("make")
     if not make:
@@ -107,50 +97,30 @@ def run_disposable_make(
         return result.stdout
 
 
-def run_disposable_empty_commit_rejection(
+def run_disposable_missing_tag_rejection(
     project_root: Path,
     target: str = "source-2-minor-audit",
+    tag: str = "source-reconstruction-2.1",
     *,
     make_executable: str | None = None,
 ) -> str:
-    """Require the public release audit to reject a real empty Git commit."""
+    """Require the tag-bound release audit to fail when its tag is missing."""
     make = _resolve_make(make_executable)
-    with tempfile.TemporaryDirectory(prefix="castle-empty-history-") as directory:
+    with tempfile.TemporaryDirectory(prefix="castle-missing-tag-") as directory:
         clone = Path(directory) / "build" / "repository"
         _clone_repository(project_root, clone)
-        commit = subprocess.run(
-            [
-                "git",
-                "-c",
-                "user.name=Daniel Oranguthang",
-                "-c",
-                "user.email=75395800+oranguthang@users.noreply.github.com",
-                "commit",
-                "--quiet",
-                "--allow-empty",
-                "--message",
-                VALID_EMPTY_COMMIT_MESSAGE,
-            ],
-            cwd=clone,
-            check=False,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
+        subprocess.run(
+            ["git", "tag", "-d", tag], cwd=clone, check=True, capture_output=True
         )
-        if commit.returncode != 0:
-            raise PublicCommandSmokeError(
-                f"cannot create synthetic empty commit: {commit.stderr.strip()}"
-            )
         result = _run_make(clone, make, target)
         output = result.stdout + result.stderr
         if result.returncode == 0:
             raise PublicCommandSmokeError(
-                f"public command 'make {target}' accepted an empty commit"
+                f"public command 'make {target}' ran without its tag"
             )
-        if "is empty relative to every parent" not in output:
+        if f"cannot check out {tag}" not in output:
             raise PublicCommandSmokeError(
-                f"public command 'make {target}' failed without the empty-commit "
+                f"public command 'make {target}' failed without the missing-tag "
                 f"diagnostic:\n{output.strip()}"
             )
         return output

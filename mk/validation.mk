@@ -8,8 +8,8 @@ $(2): $(4)
 	$$(RUN_TOOL) $(3)$(if $(5), $(5)) --validate
 endef
 
-$(eval $(call DEFINE_VALIDATION_PAIR,rooms,validate-rooms,authoring.room_data,$(ROM),--image "$(ROM)"))
-$(eval $(call DEFINE_VALIDATION_PAIR,audio,validate-audio,authoring.audio_data,$(ROM),--image "$(ROM)"))
+$(eval $(call DEFINE_VALIDATION_PAIR,rooms,validate-rooms,validation.room_data,$(ROM),--image "$(ROM)"))
+$(eval $(call DEFINE_VALIDATION_PAIR,audio,validate-audio,validation.audio_data,$(ROM),--image "$(ROM)"))
 $(eval $(call DEFINE_VALIDATION_PAIR,screen-data,validate-screen-data,validation.rooms.room_screen_data,$(ROM),--image "$(ROM)"))
 $(eval $(call DEFINE_VALIDATION_PAIR,startup-state,validate-startup,validation.gameplay.startup_state,$(ROM),--image "$(ROM)"))
 $(eval $(call DEFINE_VALIDATION_PAIR,nmi-state,validate-nmi,validation.system.nmi_scheduler,$(ROM),--image "$(ROM)"))
@@ -70,8 +70,8 @@ $(eval $(call DEFINE_VALIDATION_PAIR,object-player-proximity,validate-object-pla
 $(eval $(call DEFINE_VALIDATION_PAIR,pause-input-state,validate-pause-input,validation.gameplay.pause_input,$(ROM),--image "$(ROM)"))
 $(eval $(call DEFINE_VALIDATION_PAIR,collision-table-state,validate-collision-tables,validation.collision.collision_tables,$(ROM),--image "$(ROM)"))
 $(eval $(call DEFINE_VALIDATION_PAIR,collision-handler-tables,validate-collision-handler-tables,validation.player.player_movement_collision_tables,ghidra-analyze $(ROM),--image "$(ROM)" --facts "$(GHIDRA_FACTS)"))
-$(eval $(call DEFINE_VALIDATION_PAIR,frame-sprite-state,validate-frame-sprites,authoring.frame_sprites,$(ROM),--image "$(ROM)"))
-$(eval $(call DEFINE_VALIDATION_PAIR,metasprite-state,validate-metasprites,authoring.metasprites,$(ROM),--image "$(ROM)"))
+$(eval $(call DEFINE_VALIDATION_PAIR,frame-sprite-state,validate-frame-sprites,validation.frame_sprites,$(ROM),--image "$(ROM)"))
+$(eval $(call DEFINE_VALIDATION_PAIR,metasprite-state,validate-metasprites,validation.metasprites,$(ROM),--image "$(ROM)"))
 $(eval $(call DEFINE_VALIDATION_PAIR,object-catalog,validate-object-catalog,validation.objects.object_catalog,$(ROM),--image "$(ROM)"))
 
 .PHONY: validate-input static-release-check

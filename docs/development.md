@@ -39,7 +39,7 @@ Python suite. Release and profile gates are listed in
 
 The root file owns shared variables, build/profile rules, tool bootstrap, and
 release orchestration. Repetitive implementation rules are grouped in
-`mk/authoring.mk`, `mk/runtime.mk`, and `mk/validation.mk`. These are internal
+`mk/runtime.mk` and `mk/validation.mk`. These are internal
 includes, not alternative command interfaces.
 
 ## Naming and evidence
@@ -87,7 +87,6 @@ comments while retaining explanatory text.
 
 The tracked `config/` tree contains only authored inputs and release contracts:
 
-- `authoring/` defines level, audio, and graphics workspaces;
 - `debugger/` defines symbol-resolved breakpoints and watches;
 - `linker/` owns ca65/ld65 memory layouts;
 - `reconstruction/` owns symbols, operands, source layout, analyzer
@@ -113,29 +112,27 @@ Windows, Linux, in tests, and from Make:
 
 ```text
 python scripts/run.py --list
-python scripts/run.py authoring.level_studio --help
 python scripts/run.py build.revision_profiles --help
 python scripts/run.py validation.player.player_input_movement --help
 ```
 
 Tools are grouped by responsibility:
 
-- `authoring/` contains level, graphics, and music editors, codecs, and
-  presentation models;
 - `build/` owns ROM splitting, assembly, revision profiles, fixed-layout
   variants, and byte comparison;
 - `runtime/` owns emulator installation, deterministic capture, debugger
-  validation, revision smoke tests, and level playtesting;
-- `validation/` owns formatting, audits, source checks, and executable
-  reconstruction contracts, with large families grouped by subsystem;
+  validation, and revision smoke tests;
+- `validation/` owns formatting, audits, source checks, the room, audio,
+  frame-sprite and metasprite codecs, and executable reconstruction
+  contracts, with large families grouped by subsystem;
 - `workflow/` owns Ghidra installation, headless analysis, and deterministic
   disassembly regeneration.
 
-Python support modules target 300-700 physical lines. Oversized GUI controllers
-are bounded at 900 lines and listed with exact current counts and reasons in
+Python support modules target 300-700 physical lines. A larger module must be
+listed with its exact line count and reason in
 `config/reconstruction/tool_layout.json`; lint rejects undeclared, stale, or
-over-limit exceptions. Level Studio rendering and disassembly CLI ownership are
-already split from their engines rather than justified as mixed modules.
+over-limit exceptions. Editing is Retrolarium's; see
+[editing in Retrolarium](retrolarium.md).
 
 Only `scripts/run.py` and package metadata may live directly under `scripts/`.
 The `tests/` tree mirrors the package layout. For example:

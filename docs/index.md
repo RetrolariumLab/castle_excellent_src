@@ -31,8 +31,7 @@ left as disconnected notes.
   original-name provenance.
 - [RAM map](ram_map.md) — storage lifetimes and shared scratch contracts.
 - [Data formats](data_formats.md) — binary formats and round-trip status.
-- [Content authoring](content_authoring.md) — headless codecs and visual
-  studios.
+- [Editing in Retrolarium](retrolarium.md) — how the game is edited.
 
 ## Project policy and evidence
 

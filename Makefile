@@ -33,9 +33,6 @@ ROMLESS_TEST_MODULES := \
 	tests.validation.test_public_command_smoke \
 	tests.validation.test_python_source
 
-LEVEL_AUTHORING := config/authoring/levels.json
-AUDIO_AUTHORING := config/authoring/audio.json
-GRAPHICS_AUTHORING := config/authoring/graphics.json
 SYMBOLS := config/reconstruction/symbols.json
 MEMORY_SYMBOLS := config/reconstruction/memory_symbols.json
 OPERAND_OVERRIDES := config/reconstruction/operand_overrides.json
@@ -60,7 +57,6 @@ DEBUG_RUNTIME_RESULT := $(BUILD_DIR)/debug_symbols_runtime.txt
 GHIDRA_FACTS := build/ghidra/instructions.tsv
 FCEUX := tools/fceux/fceux64.exe
 
-LEVEL_PLAYTEST_RESULT := build/authoring/$(REVISION_PROFILE)/level_playtest.txt
 FIXED_LAYOUT_RESULT := build/variants/$(FIXED_LAYOUT_VARIANT)/runtime.txt
 CASTLEQUEST_RUNTIME_RESULT := build/revisions/castlequest-usa/runtime.txt
 VERIFY_ROM := $(RUN_TOOL) build.verify_rom
@@ -68,7 +64,7 @@ VERIFY_ROM := $(RUN_TOOL) build.verify_rom
 SOURCE_FILES := $(sort $(wildcard \
 	src/*.asm src/*/*.asm src/*/*/*.asm src/*/*/*/*.asm \
 	src/*.inc src/*/*.inc src/*/*/*.inc src/*/*/*/*.inc))
-MAKE_FRAGMENTS := mk/authoring.mk mk/runtime.mk mk/validation.mk
+MAKE_FRAGMENTS := mk/runtime.mk mk/validation.mk
 
 .PHONY: all help build clean split inspect rom-info rom-info-reference \
 	rom-info-built verify verify-reference verify-built verify-header \
@@ -79,7 +75,7 @@ MAKE_FRAGMENTS := mk/authoring.mk mk/runtime.mk mk/validation.mk
 	lint-source lint-python lint-project lint test quality-check scaffold-check \
 	reconstruction-audit build-toolchain-status release-audit source-1-check \
 	source-1-pre-tag-check source-1-tag-check source-2-audit \
-	source-2-authoring-check-profile source-2-check source-2-pre-tag-check \
+	source-2-check source-2-pre-tag-check studio-check source-3-audit source-3-check \
 	source-2-tag-check public-command-smoke source-2-minor-audit source-2-minor-check \
 	source-2-minor-pre-tag-check source-2-minor-tag-check \
 	ghidra-bootstrap ghidra-status ghidra-inspect \
@@ -218,49 +214,72 @@ source-1-tag-check:
 	$(MAKE) release-check
 	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-tag
 
-source-2-audit:
-	$(RUN_TOOL) validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)"
+# The 2.0 and 2.1 manifests describe the trees tagged source-reconstruction-2.0
+# and -2.1 (with the studios 3.0 retired), so their audits run there, by the
+# tag's own targets and tools, in a disposable clone.
+SOURCE_2_TAG ?= source-reconstruction-2.0
+SOURCE_2_MINOR_TAG ?= source-reconstruction-2.1
+# The audits hash the built ROMs and the emulator, which no clone tracks.
+SOURCE_2_PRIVATE = --with build/native/castle_excellent.nes \
+	--with build/revisions/castlequest-usa/castlequest.nes \
+	--with build/variants/start-room-1/castle_excellent.nes --with tools/fceux/fceux64.exe
+SOURCE_2_AT_TAG = $(RUN_TOOL) validation.tag_audit --tag "$(SOURCE_2_TAG)" $(SOURCE_2_PRIVATE) --
+SOURCE_2_MINOR_AT_TAG = $(RUN_TOOL) validation.tag_audit --tag "$(SOURCE_2_MINOR_TAG)" $(SOURCE_2_PRIVATE) --
 
-source-2-authoring-check-profile: editor-quality-check-profile
+source-2-audit:
+	$(SOURCE_2_AT_TAG) "$(MAKE)" source-2-audit
 
 source-2-check:
 	$(MAKE) source-1-check
 	$(MAKE) castlequest-runtime
 	$(MAKE) check-fixed-layout
-	$(MAKE) source-2-authoring-check-profile REVISION_PROFILE=castle-excellent-japan-hsp-05
-	$(MAKE) source-2-authoring-check-profile REVISION_PROFILE=castlequest-usa
-	$(MAKE) smoke-baseline-level-playtest REVISION_PROFILE=castle-excellent-japan-hsp-05
-	$(MAKE) smoke-baseline-level-playtest REVISION_PROFILE=castlequest-usa
 	$(MAKE) source-2-audit
 
 source-2-pre-tag-check:
 	$(MAKE) source-2-check
-	$(RUN_TOOL) validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)" --pre-tag
+	$(SOURCE_2_AT_TAG) scripts/run.py validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)" --pre-tag
 
 source-2-tag-check:
 	$(MAKE) source-2-check
-	$(RUN_TOOL) validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)" --require-tag
+	$(SOURCE_2_AT_TAG) scripts/run.py validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)" --require-tag
 
 source-2-minor-audit:
-	$(RUN_TOOL) validation.source_2_minor_release_audit --project-root . --manifest "$(SOURCE_2_MINOR_MANIFEST)"
+	$(SOURCE_2_MINOR_AT_TAG) "$(MAKE)" source-2-minor-audit
 
 public-command-smoke:
 	$(RUN_TOOL) validation.public_command_smoke --project-root . --target lint
 
 source-2-minor-check:
 	$(MAKE) source-2-check
-	$(MAKE) editor-ui-smoke-profile REVISION_PROFILE=castle-excellent-japan-hsp-05
-	$(MAKE) editor-ui-smoke-profile REVISION_PROFILE=castlequest-usa
 	$(MAKE) public-command-smoke
 	$(MAKE) source-2-minor-audit
 
 source-2-minor-pre-tag-check:
 	$(MAKE) source-2-minor-check
-	$(RUN_TOOL) validation.source_2_minor_release_audit --project-root . --manifest "$(SOURCE_2_MINOR_MANIFEST)" --pre-tag
+	$(SOURCE_2_MINOR_AT_TAG) scripts/run.py validation.source_2_minor_release_audit --project-root . --manifest "$(SOURCE_2_MINOR_MANIFEST)" --pre-tag
 
 source-2-minor-tag-check:
 	$(MAKE) source-2-minor-check
-	$(RUN_TOOL) validation.source_2_minor_release_audit --project-root . --manifest "$(SOURCE_2_MINOR_MANIFEST)" --require-tag
+	$(SOURCE_2_MINOR_AT_TAG) scripts/run.py validation.source_2_minor_release_audit --project-root . --manifest "$(SOURCE_2_MINOR_MANIFEST)" --require-tag
+
+# Retrolarium: every revision of castle_excellent.rlj opens in the kit and
+# builds back to its ROM, in a throwaway copy of the repository.
+RLTOOL ?= rltool
+
+studio-check:
+	$(RLTOOL) studio check castle_excellent.rlj
+
+# Source Reconstruction 3.0, in development until Retrolarium is tagged: the
+# source-2-minor-check gate, then studio-check with the manifest's
+# Retrolarium section checked against the descriptor and the running kit.
+SOURCE_3_MANIFEST ?= config/source_reconstruction_3_0.json
+
+source-3-audit:
+	$(RLTOOL) studio check castle_excellent.rlj --release $(SOURCE_3_MANIFEST)
+
+source-3-check:
+	$(MAKE) source-2-minor-check
+	$(MAKE) source-3-audit
 
 ghidra-bootstrap:
 	$(RUN_TOOL) workflow.bootstrap_ghidra install

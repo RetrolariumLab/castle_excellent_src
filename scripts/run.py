@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 SCRIPT_ROOT = Path(__file__).resolve().parent
-PUBLIC_CATEGORIES = {"authoring", "build", "runtime", "validation", "workflow"}
+PUBLIC_CATEGORIES = {"build", "runtime", "validation", "workflow"}
 
 
 def available_tools() -> list[str]:

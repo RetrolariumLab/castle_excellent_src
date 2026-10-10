@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts.authoring import metasprites
+from scripts.validation import metasprites
 
 
 class MetaspriteTests(unittest.TestCase):

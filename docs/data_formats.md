@@ -74,7 +74,7 @@ output byte, one or more ASCII $30/$31 code bytes, $00
 ```
 
 An `$FF` entry marker terminates the candidate table. The original routine
-compares candidates in table order. `scripts/authoring/room_data.py` first proves that
+compares candidates in table order. `scripts/validation/room_data.py` first proves that
 the recovered table is prefix-free, then uses an equivalent direct lookup.
 
 The independent decoder reaches exactly 400 output cells for all 100 rooms.
@@ -459,7 +459,7 @@ with `$00`, then a little-endian restart pointer; `$0000` stops the channel.
 
 There are 21 consecutive streams containing 1,511 command bytes. Twenty stream
 starts are referenced by the track table; `$BE17` is structurally valid but is
-not selected by those eight records. `scripts/authoring/audio_data.py` checks the grammar,
+not selected by those eight records. `scripts/validation/audio_data.py` checks the grammar,
 all pointers and terminators, restart targets, and gap-free coverage of the
 complete range.
 

@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import sys
 
-from scripts.authoring.room_data import extract_rom
+from scripts.validation.room_data import extract_rom
 
 
 PRG_BASE = 0x8000

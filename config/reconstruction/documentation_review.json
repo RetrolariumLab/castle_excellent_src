@@ -10,11 +10,11 @@
       "reason": "Explains conceptual behavior rather than the address-ordered inventory."
     },
     {
-      "path": "docs/content_authoring.md",
-      "lines": 233,
+      "path": "docs/retrolarium.md",
+      "lines": 50,
       "disposition": "retained",
-      "audience": "authors using codecs, models, and visual studios",
-      "reason": "Owns the end-to-end editing workflow across supported formats."
+      "audience": "people editing the game",
+      "reason": "Owns how the game is opened and edited in Retrolarium Studio and how the repository is checked with the kit."
     },
     {
       "path": "docs/data_formats.md",
@@ -25,7 +25,7 @@
     },
     {
       "path": "docs/development.md",
-      "lines": 152,
+      "lines": 149,
       "disposition": "retained",
       "audience": "contributors changing source, tools, tests, and configuration",
       "reason": "Provides the contributor workflow behind the shorter root quick start."
@@ -46,7 +46,7 @@
     },
     {
       "path": "docs/index.md",
-      "lines": 62,
+      "lines": 61,
       "disposition": "revised",
       "audience": "all documentation readers",
       "reason": "Remains the sole task-oriented entry point and now exposes corpus-review evidence."
@@ -81,14 +81,14 @@
     },
     {
       "path": "docs/roadmap.md",
-      "lines": 47,
+      "lines": 59,
       "disposition": "retained",
       "audience": "maintainers reviewing release history and deferred scope",
       "reason": "Separates future work from documents that describe accepted behavior."
     },
     {
       "path": "docs/source_layout.md",
-      "lines": 146,
+      "lines": 147,
       "disposition": "revised",
       "audience": "developers navigating modules and symbol ownership",
       "reason": "Owns module and naming policy and now points to the canonical old-to-new mapping."
@@ -168,7 +168,7 @@
       "id": "author-content",
       "paths": [
         "docs/index.md",
-        "docs/content_authoring.md",
+        "docs/retrolarium.md",
         "docs/data_formats.md",
         "docs/fixed_layout_variants.md"
       ]

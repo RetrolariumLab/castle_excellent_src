@@ -4,7 +4,7 @@ import unittest
 
 
 
-from scripts.authoring import room_data
+from scripts.validation import room_data
 def put_cpu(prg: bytearray, address: int, data: bytes) -> None:
     offset = room_data.cpu_offset(address)
     prg[offset:offset + len(data)] = data

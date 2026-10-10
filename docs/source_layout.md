@@ -5,13 +5,14 @@ modules own every byte from `$8000` through `$FFFF` exactly once.
 
 | Module | CPU span | Lines | Responsibility |
 | --- | --- | ---: | --- |
-| `src/system/famicom_platform.asm` | `$8000-$82CD` | 511 | Famicom platform transport, PPU, and startup |
+| `src/system/famicom_platform.asm` | `$8000-$82CD` | 512 | Famicom platform transport, PPU, and startup |
 | `src/game/player/input_and_movement.asm` | `$82CE-$8679` | 559 | Player input and movement |
 | `src/game/player/transitions_and_push.asm` | `$867A-$89E0` | 521 | Player room transitions and object pushing |
 | `src/game/objects/lifts/linked_control.asm` | `$89E1-$8C11` | 346 | Linked lift control |
 | `src/game/collectibles/pickups_and_rewards.asm` | `$8C12-$8DAA` | 284 | Collectible collision, inventory, and rewards |
-| `src/game/collision/player_pipeline.asm` | `$8DAB-$93F5` | 386 | Player collision pipeline |
-| `src/game/runtime/frame_pipeline.asm` | `$93F6-$965B` | 364 | Player transition and object frame pipeline |
+| `src/game/collision/player_pipeline.asm` | `$8DAB-$903E` | 383 | Player collision sampling and downward handlers |
+| `src/game/collision/handlers.asm` | `$903F-$93F5` | 494 | Upward, horizontal, and shared collision handlers and the per-frame update |
+| `src/game/runtime/frame_pipeline.asm` | `$93F6-$965B` | 400 | Player transition and object frame pipeline |
 | `src/game/objects/lifts/movement.asm` | `$965C-$9A36` | 587 | Pushable and lift movement |
 | `src/game/objects/enemies/patrol.asm` | `$9A37-$9D64` | 504 | Platform and walking enemy patrol behaviors |
 | `src/game/objects/enemies/special.asm` | `$9D65-$A043` | 478 | Special enemy behaviors and transient lifecycle |

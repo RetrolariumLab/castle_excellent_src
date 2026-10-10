@@ -767,7 +767,7 @@ active registry in `docs/unknowns.md`.
   explicit lengths, and dotted lengths; `$00` is followed by a little-endian
   restart address or `$0000`
 - Evidence: static consumers in `$B895-$BB15`, exact-ROM validation by
-  `scripts/authoring/audio_data.py`, and FCEUX CDL data reads with no executions in the
+  `scripts/validation/audio_data.py`, and FCEUX CDL data reads with no executions in the
   stream range
 
 ### AUDIO-002 - textual MML interpreter boundaries and behavior

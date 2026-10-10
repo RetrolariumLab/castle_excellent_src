@@ -1,1 +1,1 @@
-"""Repository-local build, authoring, validation, and research tools."""
+"""Repository-local build, runtime, validation, and research tools."""

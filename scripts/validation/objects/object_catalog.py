@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 import sys
 
-from scripts.authoring import frame_sprites, room_data
+from scripts.validation import frame_sprites, room_data
 from scripts.validation.collision import collision_tables
 from scripts.validation.objects import runtime_object_dispatch
 

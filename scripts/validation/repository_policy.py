@@ -99,8 +99,9 @@ def validate_config_layout(root: Path) -> None:
         "source_reconstruction_1_0.json",
         "source_reconstruction_2_0.json",
         "source_reconstruction_2_1.json",
+        "source_reconstruction_3_0.json",
     }
-    expected_directories = {"authoring", "debugger", "linker", "reconstruction"}
+    expected_directories = {"debugger", "linker", "reconstruction"}
     actual_root_files = {path.name for path in config_root.iterdir() if path.is_file()}
     actual_directories = {path.name for path in config_root.iterdir() if path.is_dir()}
     if actual_root_files != expected_root_files:
@@ -225,9 +226,6 @@ def command_lint(_args: argparse.Namespace) -> None:
         "README.md",
         "Makefile",
         "assets/manifest.json",
-        "config/authoring/audio.json",
-        "config/authoring/graphics.json",
-        "config/authoring/levels.json",
         "config/debugger/breakpoints.json",
         "config/debugger/watches.json",
         "config/fixed_layout_variants.json",
@@ -247,12 +245,12 @@ def command_lint(_args: argparse.Namespace) -> None:
         "config/source_reconstruction_1_0.json",
         "config/source_reconstruction_2_0.json",
         "config/source_reconstruction_2_1.json",
+        "config/source_reconstruction_3_0.json",
         "docs/development.md",
         "docs/source_reconstruction.md",
         "docs/source_reconstruction_2_1.md",
         "docs/resolved_unknowns.md",
         "docs/verification.md",
-        "mk/authoring.mk",
         "mk/runtime.mk",
         "mk/validation.mk",
         "tools/disassembly.lock.json",
@@ -260,7 +258,6 @@ def command_lint(_args: argparse.Namespace) -> None:
         "src/main.asm",
         "src/graphics/chr.asm",
         "scripts/run.py",
-        "scripts/authoring/__init__.py",
         "scripts/build/__init__.py",
         "scripts/runtime/__init__.py",
         "scripts/validation/__init__.py",
@@ -336,12 +333,12 @@ def command_lint(_args: argparse.Namespace) -> None:
         "scripts/validation/gameplay/pause_input.py",
         "scripts/validation/collision/collision_tables.py",
         "scripts/validation/player/player_movement_collision_tables.py",
-        "scripts/authoring/frame_sprites.py",
-        "scripts/authoring/metasprites.py",
+        "scripts/validation/frame_sprites.py",
+        "scripts/validation/metasprites.py",
         "scripts/validation/objects/object_catalog.py",
-        "scripts/authoring/room_data.py",
+        "scripts/validation/room_data.py",
         "scripts/validation/rooms/room_screen_data.py",
-        "scripts/authoring/audio_data.py",
+        "scripts/validation/audio_data.py",
         "tools/ghidra_scripts/ApplyCodeEvidence.java",
         "tools/ghidra_scripts/ClearFalseInstructions.java",
         "tools/ghidra_scripts/ClearKnownData.java",
@@ -446,6 +443,10 @@ def command_lint(_args: argparse.Namespace) -> None:
         ),
         "src/game/collision/player_pipeline.asm": (
             "HandleAnimatedPlayerHazard:",
+            "PlayerDownwardRoomCellCollisionHandlerPointers:",
+        ),
+        "src/game/collision/handlers.asm": (
+            "PlayerUpwardRoomCellCollisionHandlerPointers:",
             "ReturnFromPlayerCollisionUpdate:",
         ),
         "src/game/runtime/frame_pipeline.asm": (

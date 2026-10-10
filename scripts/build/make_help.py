@@ -37,13 +37,11 @@ TARGET_GROUPS = (
         ),
     ),
     (
-        "Content authoring",
+        "Retrolarium",
         (
-            ("level-studio", "open the room and castle-map editor"),
-            ("sound-studio", "open the track editor and preview player"),
-            ("graphics-studio", "open the CHR graphics editor"),
-            ("editor-quality-check", "validate both authoring profiles"),
-            ("editor-ui-smoke-profile", "smoke-test all visual editors"),
+            ("studio-check", "open and rebuild every castle_excellent.rlj revision with the kit"),
+            ("source-3-audit", "studio-check plus the Source 3.0 manifest against the kit"),
+            ("source-3-check", "the Source 2.1 gate, then source-3-audit"),
         ),
     ),
     (

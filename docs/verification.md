@@ -48,15 +48,15 @@ payload, full image, and extracted CHR.
 | `source-1-check` | compatibility alias for `release-check` |
 | `source-1-pre-tag-check` | full gate plus `tag-ready` status, clean tree, absent local/remote future tag, and release-history policy |
 | `source-1-tag-check` | full gate plus clean tree and an annotated `source-reconstruction-1.0` tag peeled to `HEAD` |
-| `source-2-audit` | reconcile the 2.0 manifest with its pinned predecessor, revision profiles, requirement evidence, artifacts, runtime declarations, and repository policy |
-| `source-2-authoring-check-profile` | verify one revision and run deterministic level, music, and graphics round trips plus all three Studio model checks |
-| `source-2-check` | run the complete 1.0 gate, Castlequest runtime, fixed-layout proof, authoring checks and baseline room playtests for both revisions, then audit the 2.0 manifest |
+| `source-2-audit` | reconcile the 2.0 manifest with its pinned predecessor, revision profiles, requirement evidence, artifacts, runtime declarations, and repository policy, in a checkout of the `source-reconstruction-2.0` tag |
+| `source-2-check` | run the complete 1.0 gate, Castlequest runtime, and fixed-layout proof, then audit the 2.0 manifest at its tag |
 | `source-2-pre-tag-check` | full 2.0 gate plus `tag-ready` metadata, clean tree, absent local/remote future tag, and commit-history policy |
 | `source-2-tag-check` | full 2.0 gate plus clean tree and an annotated `source-reconstruction-2.0` tag peeled to `HEAD` |
-| `source-2-minor-audit` | reconcile the compatible 2.1 project manifest, immutable 2.0 predecessor, complete delta, inherited release evidence, and every Git commit through the current candidate |
+| `source-2-minor-audit` | reconcile the compatible 2.1 project manifest, immutable 2.0 predecessor, complete delta, and inherited release evidence, in a checkout of the `source-reconstruction-2.1` tag |
 | `source-2-minor-check` | run the accepted complete 2.0 gate first, then the compatible 2.1 hardening and release audit |
 | `source-2-minor-pre-tag-check` | full 2.1 gate plus clean-tree, branch, status, and absent-tag requirements |
 | `source-2-minor-tag-check` | full 2.1 gate plus an annotated `source-reconstruction-2.1` tag peeled to `HEAD` |
+| `studio-check` | the Retrolarium kit's check of `castle_excellent.rlj`: both revisions prepared, validated and rebuilt unedited in a throwaway copy |
 
 Focused region targets compare only their named output region. For example,
 `verify-prg` can prove that the source-only PRG reconstruction is correct while
