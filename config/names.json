@@ -1,0 +1,656 @@
+{
+  "schema": "retrolarium.names",
+  "schema_version": 1,
+  "description": "The names inside Castle Excellent, in English, and the lists that carry them, for Retrolarium Studio and Kit; Retrolarium keeps none of them.",
+  "names": {
+    "objects": {
+      "0x81": "Fairy",
+      "0x84": "Fighter",
+      "0x85": "Bishop",
+      "0x87": "Knight",
+      "0x88": "Witch",
+      "0x89": "Flame",
+      "0x8E": "Lift control block",
+      "0xA0": "Witch summon",
+      "0xA1": "Small lift",
+      "0xA2": "Large lift",
+      "0xA3": "Flying block",
+      "0xA4": "Linked lift (left)",
+      "0xA5": "Linked lift (right)",
+      "0xA6": "Knight arrow",
+      "0xA8": "Vanishing object",
+      "0xA9": "Collected item"
+    }
+  },
+  "catalogs": {
+    "animations": [
+      {
+        "id": "player:walk-right",
+        "label": "Walk right",
+        "group": "player",
+        "frames": [
+          {
+            "first": 0
+          },
+          {
+            "first": 2
+          },
+          {
+            "first": 4
+          },
+          {
+            "first": 2
+          }
+        ]
+      },
+      {
+        "id": "player:walk-left",
+        "label": "Walk left",
+        "group": "player",
+        "frames": [
+          {
+            "first": 10
+          },
+          {
+            "first": 12
+          },
+          {
+            "first": 14
+          },
+          {
+            "first": 12
+          }
+        ]
+      },
+      {
+        "id": "player:stand",
+        "label": "Standing",
+        "group": "player",
+        "frames": [
+          {
+            "first": 6
+          }
+        ]
+      },
+      {
+        "id": "player:jump",
+        "label": "Jump",
+        "group": "player",
+        "frames": [
+          {
+            "first": 16
+          }
+        ]
+      },
+      {
+        "id": "player:jump-right",
+        "label": "Jump right",
+        "group": "player",
+        "frames": [
+          {
+            "first": 8
+          }
+        ]
+      },
+      {
+        "id": "player:jump-left",
+        "label": "Jump left",
+        "group": "player",
+        "frames": [
+          {
+            "first": 18
+          }
+        ]
+      },
+      {
+        "id": "player:attack-right",
+        "label": "Attack right",
+        "group": "player",
+        "frames": [
+          {
+            "first": 20,
+            "weapon": true
+          }
+        ]
+      },
+      {
+        "id": "player:attack-left",
+        "label": "Attack left",
+        "group": "player",
+        "frames": [
+          {
+            "first": 22,
+            "weapon": true,
+            "flipped": true
+          }
+        ]
+      },
+      {
+        "id": "player:transition",
+        "label": "Room transition",
+        "group": "player",
+        "frames": [
+          {
+            "first": 24,
+            "ticks": 4
+          },
+          {
+            "first": 26,
+            "ticks": 4
+          },
+          {
+            "first": 28,
+            "ticks": 4
+          },
+          {
+            "first": 30,
+            "ticks": 4
+          }
+        ]
+      },
+      {
+        "type": 129,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 111
+          },
+          {
+            "first": 113
+          },
+          {
+            "first": 115
+          }
+        ]
+      },
+      {
+        "type": 132,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 32
+          },
+          {
+            "first": 34
+          },
+          {
+            "first": 36
+          },
+          {
+            "first": 38
+          },
+          {
+            "first": 40
+          },
+          {
+            "first": 42
+          },
+          {
+            "first": 44
+          },
+          {
+            "first": 46
+          }
+        ]
+      },
+      {
+        "type": 133,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 48
+          },
+          {
+            "first": 50
+          },
+          {
+            "first": 52
+          },
+          {
+            "first": 54
+          },
+          {
+            "first": 56
+          },
+          {
+            "first": 58
+          }
+        ]
+      },
+      {
+        "type": 134,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 60,
+            "sprites": 1
+          },
+          {
+            "first": 61
+          },
+          {
+            "first": 63
+          },
+          {
+            "first": 65
+          },
+          {
+            "first": 67
+          },
+          {
+            "first": 69
+          }
+        ]
+      },
+      {
+        "type": 135,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 71
+          },
+          {
+            "first": 73
+          },
+          {
+            "first": 75
+          },
+          {
+            "first": 77
+          },
+          {
+            "first": 79
+          },
+          {
+            "first": 81
+          }
+        ]
+      },
+      {
+        "type": 136,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 83
+          },
+          {
+            "first": 85
+          },
+          {
+            "first": 87
+          },
+          {
+            "first": 91
+          },
+          {
+            "first": 93
+          },
+          {
+            "first": 95
+          }
+        ]
+      },
+      {
+        "type": 137,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 99
+          },
+          {
+            "first": 101
+          },
+          {
+            "first": 103
+          },
+          {
+            "first": 105
+          },
+          {
+            "first": 107
+          },
+          {
+            "first": 109
+          }
+        ]
+      },
+      {
+        "type": 160,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 163
+          },
+          {
+            "first": 165
+          },
+          {
+            "first": 167
+          }
+        ]
+      },
+      {
+        "type": 166,
+        "group": "enemies",
+        "frames": [
+          {
+            "first": 187,
+            "sprites": 1
+          },
+          {
+            "first": 188,
+            "sprites": 1
+          }
+        ]
+      },
+      {
+        "type": 130,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 123
+          }
+        ]
+      },
+      {
+        "type": 131,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 131
+          }
+        ]
+      },
+      {
+        "type": 138,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 133
+          }
+        ]
+      },
+      {
+        "type": 139,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 135
+          }
+        ]
+      },
+      {
+        "type": 140,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 137
+          }
+        ]
+      },
+      {
+        "type": 141,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 139
+          }
+        ]
+      },
+      {
+        "type": 142,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 141
+          }
+        ]
+      },
+      {
+        "type": 143,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 143
+          },
+          {
+            "first": 145
+          }
+        ]
+      },
+      {
+        "type": 144,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 125,
+            "sprites": 1
+          }
+        ]
+      },
+      {
+        "type": 145,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 126,
+            "sprites": 1
+          }
+        ]
+      },
+      {
+        "type": 146,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 127,
+            "sprites": 1
+          }
+        ]
+      },
+      {
+        "type": 147,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 128,
+            "sprites": 1
+          }
+        ]
+      },
+      {
+        "type": 148,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 129,
+            "sprites": 1
+          }
+        ]
+      },
+      {
+        "type": 149,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 130,
+            "sprites": 1
+          }
+        ]
+      },
+      {
+        "type": 150,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 147
+          }
+        ]
+      },
+      {
+        "type": 151,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 149
+          }
+        ]
+      },
+      {
+        "type": 152,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 151
+          }
+        ]
+      },
+      {
+        "type": 153,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 153
+          }
+        ]
+      },
+      {
+        "type": 154,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 155
+          }
+        ]
+      },
+      {
+        "type": 155,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 157
+          }
+        ]
+      },
+      {
+        "type": 156,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 159
+          }
+        ]
+      },
+      {
+        "type": 157,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 163
+          }
+        ]
+      },
+      {
+        "type": 158,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 163
+          }
+        ]
+      },
+      {
+        "type": 159,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 169
+          },
+          {
+            "first": 171
+          }
+        ]
+      },
+      {
+        "type": 161,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 177
+          }
+        ]
+      },
+      {
+        "type": 162,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 173,
+            "sprites": 4
+          }
+        ]
+      },
+      {
+        "type": 163,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 181
+          }
+        ]
+      },
+      {
+        "type": 164,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 183
+          }
+        ]
+      },
+      {
+        "type": 165,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 185
+          }
+        ]
+      },
+      {
+        "type": 168,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 189
+          },
+          {
+            "first": 191
+          },
+          {
+            "first": 193
+          }
+        ]
+      },
+      {
+        "type": 169,
+        "group": "objects",
+        "frames": [
+          {
+            "first": 195
+          },
+          {
+            "first": 197
+          },
+          {
+            "first": 199
+          },
+          {
+            "first": 201
+          }
+        ]
+      }
+    ]
+  },
+  "guard": []
+}

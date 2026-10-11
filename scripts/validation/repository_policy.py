@@ -95,7 +95,9 @@ def validate_config_layout(root: Path) -> None:
     config_root = root / "config"
     expected_root_files = {
         "fixed_layout_variants.json",
+        "game_profile.json",
         "lint.json",
+        "names.json",
         "revision_profiles.json",
         "source_reconstruction_1_0.json",
         "source_reconstruction_2_0.json",

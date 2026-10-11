@@ -11,7 +11,7 @@
     },
     {
       "path": "docs/retrolarium.md",
-      "lines": 50,
+      "lines": 64,
       "disposition": "retained",
       "audience": "people editing the game",
       "reason": "Owns how the game is opened and edited in Retrolarium Studio and how the repository is checked with the kit."

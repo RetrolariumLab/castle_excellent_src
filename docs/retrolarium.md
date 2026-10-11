@@ -30,6 +30,20 @@ names the revisions and the asset split. The studio offers:
 Capacities stay those of the original layout: each table keeps its place and
 size, and the studio refuses an edit that would not fit.
 
+## The game's names and tables
+
+Retrolarium keeps nothing taken from the game; this repository gives it what it
+needs. `config/names.json` holds the game's own names (its object types) in
+English, and the lists that carry them (the player and object animations with
+their frames). The studio and the kit read it when a project opens and show the
+names as they are, untranslated; without it they show numbers instead. Its
+`guard` list names what Retrolarium's own repositories must never contain.
+
+`config/game_profile.json` is the game's Retrolarium profile: its revisions with
+their hashes and, for each resource, where it lies in each revision's image and
+which codec reads it. The kit reads it when it opens `castle_excellent.rlj` or a
+project made from it; Retrolarium keeps no copy.
+
 ## Checking the repository
 
 `make studio-check` runs `rltool studio check castle_excellent.rlj`. In a
