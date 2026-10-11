@@ -4,7 +4,6 @@ import unittest
 
 
 
-from scripts.validation import format_project
 from scripts.workflow import generate_disassembly as disasm
 class FormattingTests(unittest.TestCase):
     def test_revision_overlay_preserves_baseline_and_exposes_replacement(self) -> None:
@@ -53,13 +52,6 @@ class FormattingTests(unittest.TestCase):
             ),
             "Data:\n    .incbin RevisionDataAsset\n",
         )
-
-    def test_normalizes_line_endings_and_trailing_space(self) -> None:
-        self.assertEqual(format_project.normalize_text("one  \r\ntwo\t \r\n"), "one\ntwo\n")
-
-    def test_normalization_is_idempotent(self) -> None:
-        text = "one\n\ntwo\n"
-        self.assertEqual(format_project.normalize_text(text), text)
 
 
 class InstructionFormattingTests(unittest.TestCase):

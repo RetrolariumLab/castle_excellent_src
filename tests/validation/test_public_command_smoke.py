@@ -12,7 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 class PublicCommandSmokeTests(unittest.TestCase):
     def test_real_lint_target_passes_in_disposable_clone(self) -> None:
         output = public_command_smoke.run_disposable_make(ROOT, "lint")
-        self.assertIn("317 text files satisfy the formatting contract", output)
+        self.assertIn("[OK] ca65 style:", output)
+        self.assertRegex(output, r"\[OK\] text format: checked \d+ file\(s\)")
         self.assertIn("project structure, manifest, source contract", output)
 
     def test_real_minor_audit_needs_its_tag(self) -> None:

@@ -154,7 +154,6 @@ def run_unpinned_toolchain_rejection(
             make,
             "build-toolchain-status",
             f"CA65={probe}",
-            "LD65=bin/ld65.exe",
         )
         output = result.stdout + result.stderr
         if result.returncode == 0:

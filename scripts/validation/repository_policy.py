@@ -95,6 +95,7 @@ def validate_config_layout(root: Path) -> None:
     config_root = root / "config"
     expected_root_files = {
         "fixed_layout_variants.json",
+        "lint.json",
         "revision_profiles.json",
         "source_reconstruction_1_0.json",
         "source_reconstruction_2_0.json",
@@ -262,9 +263,8 @@ def command_lint(_args: argparse.Namespace) -> None:
         "scripts/runtime/__init__.py",
         "scripts/validation/__init__.py",
         "scripts/workflow/__init__.py",
-        "scripts/validation/asm_style.py",
+        "config/lint.json",
         "scripts/build/verify_rom.py",
-        "scripts/validation/format_project.py",
         "scripts/workflow/generate_disassembly.py",
         "scripts/workflow/run_ghidra.py",
         "scripts/runtime/bootstrap_fceux.py",

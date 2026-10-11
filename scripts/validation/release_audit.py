@@ -24,6 +24,7 @@ from scripts.validation.source_reconstruction import (
     audit_symbol_maps,
 )
 from scripts.validation import release_history
+from scripts.build.kit_tools import kit_tool_path
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -317,6 +318,8 @@ def validate_artifacts(project_root: Path, release: dict[str, Any]) -> list[str]
 
 
 def resolve_selected_executable(project_root: Path, selected: str | Path) -> Path:
+    if isinstance(selected, str) and selected.startswith("kit:"):
+        return kit_tool_path(selected[4:])
     path = Path(selected)
     if path.is_absolute():
         return path.resolve()
@@ -361,8 +364,9 @@ def validate_build_toolchain(
     return errors
 
 
-def validate_toolchain(project_root: Path, release: dict[str, Any]) -> list[str]:
-    errors = validate_build_toolchain(project_root, release)
+def validate_toolchain(project_root: Path, release: dict[str, Any], build_tools=None) -> list[str]:
+    # build_tools: (manifest, selected executables) for the kit's assemblers
+    errors = validate_build_toolchain(project_root, *(build_tools or (release,)))
     components = release["toolchain"].get("components", [])
     ids = [item.get("id") for item in components]
     if set(ids) != {"ca65", "ld65", "ghidra", "ghidranes", "fceux"}:
@@ -504,6 +508,7 @@ def validate_release(
     require_tag: bool = False,
     pre_tag: bool = False,
     require_clean: bool = False,
+    build_tools: tuple[dict[str, Any], dict[str, str | Path]] | None = None,
 ) -> list[str]:
     release = load_json(manifest_path)
     assets = load_json(project_root / "assets" / "manifest.json")
@@ -512,7 +517,7 @@ def validate_release(
     errors.extend(validate_reference_contract(release, assets))
     errors.extend(validate_scenario_manifest(project_root, release))
     errors.extend(validate_artifacts(project_root, release))
-    errors.extend(validate_toolchain(project_root, release))
+    errors.extend(validate_toolchain(project_root, release, build_tools))
 
     try:
         module_count, semantic_bytes, total_bytes = audit_layout(
@@ -646,8 +651,11 @@ def main() -> int:
     parser.add_argument("--build-tools-only", action="store_true")
     parser.add_argument("--ca65")
     parser.add_argument("--ld65")
+    parser.add_argument("--build-tools-manifest", type=Path)  # pins ca65/ld65, not bin/
     args = parser.parse_args()
     try:
+        build_tools = args.build_tools_manifest and (
+            load_json(args.build_tools_manifest.resolve()), {"ca65": args.ca65, "ld65": args.ld65})
         if args.build_tools_only:
             release = load_json(args.manifest.resolve())
             errors = validate_build_toolchain(
@@ -662,6 +670,7 @@ def main() -> int:
                 args.require_tag,
                 args.pre_tag,
                 args.require_clean,
+                build_tools,
             )
     except (OSError, KeyError, TypeError, ValueError, subprocess.CalledProcessError) as exc:
         print(f"[ERROR] {exc}", file=sys.stderr)

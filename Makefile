@@ -1,11 +1,17 @@
 PYTHON ?= python
 RUN_TOOL := $(PYTHON) scripts/run.py
-CA65 ?= bin/ca65.exe
-LD65 ?= bin/ld65.exe
+# cc65 from Retrolarium Kit (RLTOOL, default rltool), asked once per run; the
+# recipes' shell needs forward slashes.
+RLTOOL ?= rltool
+export RLTOOL
+CA65 ?= $(eval CA65 := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path nes ca65)))$(CA65)
+LD65 ?= $(eval LD65 := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path nes ld65)))$(LD65)
 
 REFERENCE_ROM ?= Castle Excellent (J).nes
 MANIFEST := assets/manifest.json
 SOURCE_1_MANIFEST := config/source_reconstruction_1_0.json
+# The build tools' current contract (the kit's cc65).
+BUILD_TOOLS_MANIFEST := config/source_reconstruction_3_0.json
 SOURCE_2_MANIFEST := config/source_reconstruction_2_0.json
 SOURCE_2_MINOR_MANIFEST := config/source_reconstruction_2_1.json
 REVISION_MANIFEST := config/revision_profiles.json
@@ -165,18 +171,19 @@ symbols: $(ROM)
 validate-symbols: fceux-bootstrap symbols
 	$(RUN_TOOL) runtime.validate_debug_runtime --fceux "$(FCEUX)" --rom "$(ROM)" --lua scripts/runtime/validate_debug_symbols.lua --result "$(DEBUG_RUNTIME_RESULT)"
 
+# House style (config/lint.json) from Retrolarium Kit: the ca65 sources and
+# the text contract.
 format:
-	$(RUN_TOOL) validation.asm_style --fix src
-	$(RUN_TOOL) validation.format_project write
+	$(RLTOOL) lint --fix
 	$(MAKE) lint
 
 format-check: lint-asm
 
 lint-asm:
-	$(RUN_TOOL) validation.asm_style src
+	$(RLTOOL) lint --only assembly
 
 lint-source:
-	$(RUN_TOOL) validation.format_project check
+	$(RLTOOL) lint --only text
 	$(RUN_TOOL) build.project lint
 
 lint-python:
@@ -198,21 +205,26 @@ reconstruction-audit:
 	$(RUN_TOOL) validation.source_reconstruction --layout "$(SOURCE_LAYOUT)"
 
 build-toolchain-status:
-	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --build-tools-only --ca65 "$(CA65)" --ld65 "$(LD65)"
+	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(BUILD_TOOLS_MANIFEST)" --build-tools-only --ca65 "$(CA65)" --ld65 "$(LD65)"
+
+# The 1.0 audit runs on HEAD, where the assemblers come from the kit: they are
+# checked against the build-tools manifest, not the 1.0 release's bin/.
+SOURCE_1_AUDIT = $(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" \
+	--build-tools-manifest "$(BUILD_TOOLS_MANIFEST)" --ca65 "$(CA65)" --ld65 "$(LD65)"
 
 release-audit:
-	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-clean
+	$(SOURCE_1_AUDIT) --require-clean
 
 source-1-check:
 	$(MAKE) release-check
 
 source-1-pre-tag-check:
 	$(MAKE) release-check
-	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --pre-tag
+	$(SOURCE_1_AUDIT) --pre-tag
 
 source-1-tag-check:
 	$(MAKE) release-check
-	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" --require-tag
+	$(SOURCE_1_AUDIT) --require-tag
 
 # The 2.0 and 2.1 manifests describe the trees tagged source-reconstruction-2.0
 # and -2.1 (with the studios 3.0 retired), so their audits run there, by the

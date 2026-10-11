@@ -23,9 +23,10 @@ make check
 profile selectors. The complete lower-level Python tool catalog is available
 through `python scripts/run.py --list`.
 
-`make format` normalizes tracked authored text. `make lint` checks formatting,
-assembly style, repository boundaries, manifest schemas, source ownership,
-debugger configuration, binary policy, and evidence registries. `make test`
+`make format` normalizes tracked authored text with Retrolarium Kit's shared
+linter (`rltool lint`, configured by `config/lint.json`). `make lint` checks
+formatting, assembly style, repository boundaries, manifest schemas, source
+ownership, debugger configuration, binary policy, and evidence registries. `make test`
 regenerates pinned Ghidra facts before running the Python unit suite. `make
 check` adds deterministic source regeneration, assembly, byte identity, and
 the subsystem contracts.

@@ -105,6 +105,16 @@
       "id": "absolute-tool-paths",
       "kind": "tooling",
       "summary": "The profile build runs ca65 and ld65 by absolute path."
+    },
+    {
+      "id": "kit-toolchain",
+      "kind": "toolchain",
+      "summary": "The repository no longer carries ca65 and ld65: CA65 and LD65 default to the cc65 Retrolarium Kit builds and ships (the same 2.19 0fca835), and build-toolchain-status checks them against this manifest's toolchain by size, SHA-256 and version; bin/ is gone."
+    },
+    {
+      "id": "shared-linter",
+      "kind": "tooling",
+      "summary": "make lint and make format run Retrolarium Kit's shared linter (rltool lint) over config/lint.json: the ca65 style for src and the text contract with two-space JSON; asm_style.py, format_project.py and their tests move to the kit. build.project lint and the Python source policy stay here."
     }
   ],
   "retrolarium": {
@@ -222,10 +232,11 @@
         "version": "V2.19 - Git 0fca835",
         "source": "https://github.com/cc65/cc65",
         "source_commit": "0fca835",
-        "binary": "bin/ca65.exe",
-        "binary_size": 721629,
-        "binary_sha256": "9109d7118ff070e78f031bee4eb776061e56b74e7c8f9f40c70fd6707ea0ac5a",
-        "provenance": "bundled",
+        "binary": "kit:nes/ca65",
+        "kit_release": "2026.10.11",
+        "binary_size": 323584,
+        "binary_sha256": "779a2a266f038cfeea4cdb3cd2cf5bbef4b602bb43560c3fd9f1b45d7bc5c776",
+        "provenance": "retrolarium-kit",
         "verification": "release-audit"
       },
       {
@@ -233,10 +244,11 @@
         "version": "V2.19 - Git 0fca835",
         "source": "https://github.com/cc65/cc65",
         "source_commit": "0fca835",
-        "binary": "bin/ld65.exe",
-        "binary_size": 575874,
-        "binary_sha256": "5f68367a135c578c88744e27ba0b1234604d87ef1ff6294b46fcb031ff984db4",
-        "provenance": "bundled",
+        "binary": "kit:nes/ld65",
+        "kit_release": "2026.10.11",
+        "binary_size": 202240,
+        "binary_sha256": "06720e9200c9a2a53e049413888a6a55ee023b0801a598d4b6143caae8466813",
+        "provenance": "retrolarium-kit",
         "verification": "release-audit"
       },
       {
@@ -358,7 +370,7 @@
       "origin": "cc65 revision 0fca835",
       "license_id_or_status": "licensed",
       "redistribution": "Permitted under the bundled zlib license.",
-      "notes": "See bin/cc65-LICENSE.txt."
+      "notes": "Built and shipped by Retrolarium Kit with its notice; the 3.0 toolchain pins the binaries."
     },
     {
       "component": "ghidra_ghidranes_fceux",

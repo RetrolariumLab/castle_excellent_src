@@ -192,8 +192,12 @@ def command_build(args: argparse.Namespace) -> None:
     output = resolve_project_path(str(profile["output_rom"]))
     output.parent.mkdir(parents=True, exist_ok=True)
     object_path = output.with_suffix(".o")
+    # Windows does not search a relative program path against cwd, so run the
+    # selected tools by their absolute paths.
+    ca65 = str((ROOT / args.ca65).resolve())
+    ld65 = str((ROOT / args.ld65).resolve())
     ca65_command = [
-        args.ca65,
+        ca65,
         "--debug-info",
         "-g",
         "-o",
@@ -207,7 +211,7 @@ def command_build(args: argparse.Namespace) -> None:
     subprocess.run(ca65_command, cwd=ROOT, check=True)
     subprocess.run(
         [
-            args.ld65,
+            ld65,
             "-C",
             str(resolve_project_path(str(profile["linker_config"]))),
             "-o",
@@ -261,8 +265,9 @@ def build_parser() -> argparse.ArgumentParser:
     split.set_defaults(handler=command_split)
 
     build = subparsers.add_parser("build", help="build a declared revision profile")
-    build.add_argument("--ca65", default="bin/ca65.exe")
-    build.add_argument("--ld65", default="bin/ld65.exe")
+    # The Makefile passes the kit's cc65 (or CA65 and LD65 as given).
+    build.add_argument("--ca65", required=True)
+    build.add_argument("--ld65", required=True)
     build.set_defaults(handler=command_build)
 
     verify = subparsers.add_parser("verify", help="verify profile identity byte for byte")
