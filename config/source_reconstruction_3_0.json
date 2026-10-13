@@ -7,7 +7,7 @@
   },
   "release_kind": "retrolarium",
   "tag": "source-reconstruction-3.0",
-  "status": "development",
+  "status": "tag-ready",
   "predecessor": {
     "manifest": "config/source_reconstruction_2_1.json",
     "tag": "source-reconstruction-2.1",
@@ -18,32 +18,28 @@
     "through_inclusive": "release-commit",
     "commits": [
       {
-        "commit": "d71b16b528b20e7b6b614d71fcda567ec774628e",
-        "subject": "Retrolarium Studio descriptor"
-      },
-      {
-        "commit": "89965f03029a14d15a8b88a35380a058bf432592",
-        "subject": "Retrolarium descriptor: castle-excellent identifiers"
-      },
-      {
-        "commit": "fc66a57adeb141b6e0509b4fe2674cfbe209bd73",
-        "subject": "Retrolarium descriptor: views come from the kit"
-      },
-      {
-        "commit": "17f26b21cb5ea1d740966600877156061745fd77",
+        "commit": "972b5d36a1a571f2a5a138d6aec44bf0dea0d46f",
         "subject": "Community object names and annotated handler tables"
       },
       {
-        "commit": "1c99d133d084d9a4fee7e29e250cc87a4d1fcbe2",
+        "commit": "82a0b3acb7412d85e369ee9c46f88a8418650d16",
         "subject": "Source Reconstruction 3.0: editing moves to Retrolarium"
       },
       {
-        "commit": "f128add193037a1a7237f8a5bad475768aa9e13f",
-        "subject": "Regenerate the annotated sources and split the collision module"
+        "commit": "4b05229925ca1021a8ad3ae409bff62ac83cfc8e",
+        "subject": "Build and lint with Retrolarium Kit"
       },
       {
-        "commit": "27b0b91ab1b9270cb99f0eac660e1bac2930d664",
-        "subject": "Run the profile build's assemblers by absolute path"
+        "commit": "aaea8e69577e70da4fbf190b88fa89af7dade2d1",
+        "subject": "The game's names, profile and tables for Retrolarium"
+      },
+      {
+        "commit": "a13bc992753938cf9c19acbc0dd296907fbdbc62",
+        "subject": "README: a trademark notice"
+      },
+      {
+        "commit": "1572c0d69fc913980f690a9004b1fd1bb1cecab3",
+        "subject": "Symbolic pointers from the gameplay-hacks branch"
       }
     ]
   },
@@ -79,7 +75,7 @@
     {
       "id": "retrolarium-descriptor",
       "kind": "tooling",
-      "summary": "castle_excellent.rlj names the game, its kit profile castle-excellent.v1, the revisions it builds and its asset split; the studio views come from the kit's profile."
+      "summary": "castle_excellent.rlj names the game, its profile castle-excellent.v1, the revisions it builds and its asset split; the studio views come from the kit."
     },
     {
       "id": "editing-moves-to-retrolarium",
@@ -120,16 +116,26 @@
       "id": "game-names",
       "kind": "tooling",
       "summary": "config/names.json keeps the game's own names, in English, and the lists that carry them; Retrolarium Studio and Kit read them when a project opens and keep none themselves. Its guard list names what Retrolarium's repositories must never contain."
+    },
+    {
+      "id": "game-profile",
+      "kind": "tooling",
+      "summary": "config/game_profile.json is the game's Retrolarium profile: its revisions with their hashes and where each resource lies in each image. Retrolarium Kit reads it when it opens the repository and keeps no copy."
+    },
+    {
+      "id": "symbolic-pointers",
+      "kind": "source",
+      "summary": "The audio track and stream loop pointers, the NMI task handler tables, the object sprite handler table and the sprite selectors' frame pointers are symbolic, so the PRG can move; PrgStart and PrgTileTablesAddress pad the tail up to the fixed tile tables, and RELOCATION_TEST_SHIFT tries a moved layout. The reference bytes do not change."
     }
   ],
   "retrolarium": {
     "descriptor": "castle_excellent.rlj",
     "profile": "castle-excellent.v1",
     "kit": {
-      "version": null,
-      "commit": null
+      "version": "0.5.0",
+      "commit": "53622768fae796d01e38622199c2d35563333a70"
     },
-    "studio_min_version": null,
+    "studio_min_version": "0.1.0",
     "revisions": [
       "castle-excellent-japan-hsp-05",
       "castlequest-usa"
