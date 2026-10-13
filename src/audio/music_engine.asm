@@ -59,28 +59,52 @@ LoadAudioTrackSetByOffset:
     RTS
 
 AudioTrackTable:
-    .byte $E7, $BB, $3F, $BC, $EE, $BC, $BF, $BB
+    .addr MusicMmlData
+    .addr Track0Pulse2MusicStream
+    .addr Track0TriangleMusicStream
+    .byte $BF, $BB
 
 AudioTrackSet1Record:
-    .byte $4F, $BD, $80, $BD, $B9, $BD, $BF, $BB
+    .addr Track1Pulse1MusicStream
+    .addr Track1Pulse2MusicStream
+    .addr Track1TriangleMusicStream
+    .byte $BF, $BB
 
 AudioTrackSet2Record:
-    .byte $F4, $BD, $F4, $BD, $38, $BE, $A9, $A9
+    .addr Track2PulseMusicStream
+    .addr Track2PulseMusicStream
+    .addr Track2TriangleMusicStream
+    .byte $A9, $A9
 
 AudioTrackSet3Record:
-    .byte $5D, $BE, $BC, $BE, $1B, $BF, $2F, $2B
+    .addr Track3Pulse1MusicStream
+    .addr Track3Pulse2MusicStream
+    .addr Track3TriangleMusicStream
+    .byte $2F, $2B
 
 AudioTrackSet4Record:
-    .byte $92, $BF, $FB, $BF, $5D, $C0, $3F, $3B
+    .addr Track4Pulse1MusicStream
+    .addr Track4Pulse2MusicStream
+    .addr Track4TriangleMusicStream
+    .byte $3F, $3B
 
 AudioTrackSet5Record:
-    .byte $A1, $C0, $DE, $C0, $17, $C1, $3F, $BB
+    .addr Track5Pulse1MusicStream
+    .addr Track5Pulse2MusicStream
+    .addr Track5TriangleMusicStream
+    .byte $3F, $BB
 
 AudioTrackSet6Record:
-    .byte $00, $00, $58, $C1, $58, $C1, $02, $02
+    .word $0000
+    .addr SharedTrack6And7MusicStream
+    .addr SharedTrack6And7MusicStream
+    .byte $02, $02
 
 AudioTrackSet7Record:
-    .byte $58, $C1, $85, $C1, $C2, $C1, $7F, $7F
+    .addr SharedTrack6And7MusicStream
+    .addr Track7Pulse2MusicStream
+    .addr Track7TriangleMusicStream
+    .byte $7F, $7F
 
 StopAudioStreams:
     LDA #$00
@@ -483,7 +507,8 @@ MusicMmlData:
     .byte $67, $63, $65, $67, $65, $66, $64, $63, $38, $72, $38, $6F, $36, $63, $6F, $35
     .byte $62, $61, $67, $61, $67, $67, $67, $67, $66, $66, $66, $66, $65, $67, $72, $38
     .byte $6F, $36, $63, $6F, $35, $62, $61, $67, $61, $67, $67, $67, $67, $66, $65, $64
-    .byte $63, $65, $63, $72, $38, $00, $E7, $BB
+    .byte $63, $65, $63, $72, $38, $00
+    .addr MusicMmlData
 
 Track0Pulse2MusicStream:
     .byte $76, $39, $6C, $40, $6F, $34, $65, $67, $63, $67, $6F, $35, $63, $6F, $34, $67
@@ -496,7 +521,8 @@ Track0Pulse2MusicStream:
     .byte $63, $67, $64, $67, $63, $67, $65, $67, $63, $67, $65, $67, $66, $62, $64, $62
     .byte $66, $62, $64, $66, $65, $67, $63, $67, $65, $67, $63, $67, $65, $67, $64, $67
     .byte $63, $67, $64, $67, $63, $67, $65, $67, $63, $67, $64, $67, $64, $67, $65, $67
-    .byte $64, $67, $65, $67, $63, $67, $6F, $35, $63, $38, $72, $38, $00, $3F, $BC
+    .byte $64, $67, $65, $67, $63, $67, $6F, $35, $63, $38, $72, $38, $00
+    .addr Track0Pulse2MusicStream
 
 Track0TriangleMusicStream:
     .byte $6C, $38, $6F, $34, $63, $6F, $33, $67, $65, $67, $64, $66, $67, $62, $6F, $34
@@ -504,26 +530,28 @@ Track0TriangleMusicStream:
     .byte $65, $67, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67, $65, $67, $67, $62
     .byte $6F, $34, $63, $38, $72, $38, $6F, $33, $67, $67, $66, $65, $66, $65, $65, $65
     .byte $65, $64, $64, $64, $64, $63, $65, $72, $38, $67, $67, $66, $65, $66, $65, $65
-    .byte $65, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67, $63, $72, $38, $00, $EE
-    .byte $BC
+    .byte $65, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67, $63, $72, $38, $00
+    .addr Track0TriangleMusicStream
 
 Track1Pulse1MusicStream:
     .byte $74, $30, $6C, $38, $6F, $35, $63, $34, $65, $63, $64, $6F, $34, $67, $67, $34
     .byte $6F, $35, $63, $34, $65, $63, $64, $67, $67, $34, $63, $34, $65, $63, $64, $6F
-    .byte $34, $67, $67, $34, $6F, $35, $63, $34, $65, $63, $64, $65, $63, $34, $00, $4F
-    .byte $BD
+    .byte $34, $67, $67, $34, $6F, $35, $63, $34, $65, $63, $64, $65, $63, $34, $00
+    .addr Track1Pulse1MusicStream
 
 Track1Pulse2MusicStream:
     .byte $6C, $38, $76, $64, $6F, $34, $65, $67, $6F, $35, $63, $6F, $34, $67, $64, $67
     .byte $62, $67, $65, $67, $6F, $35, $63, $6F, $34, $67, $66, $67, $62, $67, $65, $67
     .byte $6F, $35, $63, $6F, $34, $67, $64, $67, $62, $67, $65, $67, $6F, $35, $63, $6F
-    .byte $34, $67, $66, $67, $65, $34, $00, $80, $BD
+    .byte $34, $67, $66, $67, $65, $34, $00
+    .addr Track1Pulse2MusicStream
 
 Track1TriangleMusicStream:
     .byte $6C, $38, $6F, $34, $63, $6F, $33, $67, $63, $65, $66, $67, $64, $62, $6F, $34
     .byte $63, $6F, $33, $65, $67, $6F, $34, $63, $6F, $33, $62, $67, $66, $64, $63, $67
     .byte $65, $67, $66, $67, $61, $62, $6F, $34, $63, $6F, $33, $65, $67, $6F, $34, $63
-    .byte $6F, $33, $62, $67, $6F, $34, $63, $34, $00, $B9, $BD
+    .byte $6F, $33, $62, $67, $6F, $34, $63, $34, $00
+    .addr Track1TriangleMusicStream
 
 Track2PulseMusicStream:
     .byte $74, $32, $6C, $38, $6F, $35, $63, $2E, $63, $40, $64, $2E, $64, $40, $65, $2E
@@ -546,7 +574,8 @@ Track3Pulse1MusicStream:
     .byte $61, $66, $67, $62, $6F, $35, $65, $64, $72, $32, $63, $34, $65, $63, $6F, $34
     .byte $62, $2D, $34, $6F, $35, $64, $6F, $34, $62, $2D, $6F, $35, $63, $34, $65, $63
     .byte $64, $67, $67, $34, $63, $34, $65, $63, $6F, $34, $62, $2D, $34, $6F, $35, $64
-    .byte $6F, $34, $62, $2D, $6F, $35, $63, $65, $61, $67, $72, $32, $00, $5D, $BE
+    .byte $6F, $34, $62, $2D, $6F, $35, $63, $65, $61, $67, $72, $32, $00
+    .addr Track3Pulse1MusicStream
 
 Track3Pulse2MusicStream:
     .byte $6C, $38, $6F, $33, $62, $34, $6F, $34, $64, $6F, $33, $62, $61, $34, $6F, $34
@@ -554,7 +583,8 @@ Track3Pulse2MusicStream:
     .byte $33, $61, $61, $34, $62, $34, $6F, $34, $64, $6F, $33, $62, $61, $34, $6F, $34
     .byte $63, $6F, $33, $61, $62, $6F, $34, $64, $61, $67, $72, $32, $65, $34, $67, $65
     .byte $64, $34, $66, $64, $65, $34, $67, $65, $67, $64, $64, $34, $65, $34, $67, $65
-    .byte $64, $34, $66, $64, $65, $67, $6F, $35, $64, $63, $72, $32, $00, $BC, $BE
+    .byte $64, $34, $66, $64, $65, $67, $6F, $35, $64, $63, $72, $32, $00
+    .addr Track3Pulse2MusicStream
 
 Track3TriangleMusicStream:
     .byte $6C, $38, $6F, $33, $67, $34, $64, $67, $66, $34, $63, $66, $67, $34, $64, $67
@@ -564,7 +594,8 @@ Track3TriangleMusicStream:
     .byte $63, $34, $6F, $33, $67, $6F, $34, $63, $6F, $33, $62, $2D, $34, $66, $62, $2D
     .byte $6F, $34, $63, $34, $6F, $33, $67, $6F, $34, $63, $6F, $33, $62, $2D, $34, $66
     .byte $62, $2D, $6F, $34, $63, $6F, $33, $67, $6F, $34, $66, $65, $72, $38, $6F, $32
-    .byte $63, $72, $38, $63, $00, $1B, $BF
+    .byte $63, $72, $38, $63, $00
+    .addr Track3TriangleMusicStream
 
 Track4Pulse1MusicStream:
     .byte $74, $35, $76, $66, $6C, $40, $6F, $34, $67, $38, $61, $67, $66, $2B, $67, $6F

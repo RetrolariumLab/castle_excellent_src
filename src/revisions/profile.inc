@@ -18,3 +18,12 @@ InitialPlayerLives = 3
 SubCommandSelectionCount = 5
 SubCommandLastSelection = 4
 .endif
+
+; Fixed PRG landmarks used to keep the tail tables and vectors in place
+PrgBaseAddress = $8000
+PrgTileTablesAddress = $FF30
+
+; Relocation probe: insert this many bytes at the start of PRG (0 = reference)
+.ifndef RELOCATION_TEST_SHIFT
+RELOCATION_TEST_SHIFT = 0
+.endif

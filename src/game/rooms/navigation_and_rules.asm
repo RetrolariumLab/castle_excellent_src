@@ -269,34 +269,210 @@ RememberPauseButtons:
     RTS
 
 PlayerCollisionFlagsByRoomCellHalf:
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $01, $01, $00
-    .byte $01, $01, $01, $01, $00, $01, $00, $00, $01, $00, $00, $00, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $80, $80
-    .byte $80, $80, $80, $80, $80, $80, $80, $80, $80, $80, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $00, $00, $01, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00
-    .byte $00, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $00, $00, $00, $00
+; Left and right eight-pixel halves per cell: $01 solid, $80 touch-only, $00 empty
+    .byte $01, $01  ; cell $00
+    .byte $01, $01  ; cell $01
+    .byte $01, $01  ; cell $02
+    .byte $01, $01  ; cell $03
+    .byte $01, $01  ; cell $04
+    .byte $01, $01  ; cell $05
+    .byte $00, $01  ; cell $06
+    .byte $01, $00  ; cell $07
+    .byte $01, $01  ; cell $08
+    .byte $01, $01  ; cell $09
+    .byte $00, $01  ; cell $0A
+    .byte $00, $00  ; cell $0B
+    .byte $01, $00  ; cell $0C
+    .byte $00, $00  ; cell $0D
+    .byte $01, $01  ; cell $0E
+    .byte $01, $01  ; cell $0F
+    .byte $01, $01  ; cell $10
+    .byte $01, $01  ; cell $11
+    .byte $01, $01  ; cell $12
+    .byte $01, $01  ; cell $13
+    .byte $01, $01  ; cell $14
+    .byte $00, $00  ; cell $15
+    .byte $00, $00  ; cell $16
+    .byte $00, $00  ; cell $17
+    .byte $01, $01  ; cell $18
+    .byte $01, $01  ; cell $19
+    .byte $01, $01  ; cell $1A
+    .byte $01, $01  ; cell $1B
+    .byte $01, $01  ; cell $1C
+    .byte $01, $01  ; cell $1D
+    .byte $01, $01  ; cell $1E
+    .byte $01, $01  ; cell $1F
+    .byte $01, $01  ; cell $20
+    .byte $01, $01  ; cell $21
+    .byte $01, $01  ; cell $22
+    .byte $01, $01  ; cell $23
+    .byte $01, $01  ; cell $24
+    .byte $01, $01  ; cell $25
+    .byte $01, $01  ; cell $26
+    .byte $01, $01  ; cell $27
+    .byte $01, $01  ; cell $28
+    .byte $01, $01  ; cell $29
+    .byte $01, $01  ; cell $2A
+    .byte $01, $01  ; cell $2B
+    .byte $01, $01  ; cell $2C
+    .byte $01, $01  ; cell $2D
+    .byte $01, $01  ; cell $2E
+    .byte $80, $80  ; cell $2F
+    .byte $80, $80  ; cell $30
+    .byte $80, $80  ; cell $31
+    .byte $80, $80  ; cell $32
+    .byte $80, $80  ; cell $33
+    .byte $80, $80  ; cell $34
+    .byte $01, $01  ; cell $35
+    .byte $01, $01  ; cell $36
+    .byte $01, $01  ; cell $37
+    .byte $01, $01  ; cell $38
+    .byte $01, $01  ; cell $39
+    .byte $01, $01  ; cell $3A
+    .byte $01, $01  ; cell $3B
+    .byte $01, $01  ; cell $3C
+    .byte $01, $01  ; cell $3D
+    .byte $01, $01  ; cell $3E
+    .byte $01, $01  ; cell $3F
+    .byte $01, $01  ; cell $40
+    .byte $01, $00  ; cell $41
+    .byte $00, $01  ; cell $42
+    .byte $00, $00  ; cell $43
+    .byte $01, $01  ; cell $44
+    .byte $01, $01  ; cell $45
+    .byte $01, $01  ; cell $46
+    .byte $01, $01  ; cell $47
+    .byte $01, $01  ; cell $48
+    .byte $01, $01  ; cell $49
+    .byte $01, $01  ; cell $4A
+    .byte $01, $01  ; cell $4B
+    .byte $01, $01  ; cell $4C
+    .byte $01, $01  ; cell $4D
+    .byte $01, $01  ; cell $4E
+    .byte $00, $00  ; cell $4F
+    .byte $00, $00  ; cell $50
+    .byte $01, $01  ; cell $51
+    .byte $00, $00  ; cell $52
+    .byte $00, $00  ; cell $53
+    .byte $00, $00  ; cell $54
+    .byte $00, $00  ; cell $55
+    .byte $01, $01  ; cell $56
+    .byte $01, $01  ; cell $57
+    .byte $01, $01  ; cell $58
+    .byte $01, $01  ; cell $59
+    .byte $01, $01  ; cell $5A
+    .byte $01, $01  ; cell $5B
+    .byte $01, $01  ; cell $5C
+    .byte $01, $01  ; cell $5D
+    .byte $01, $01  ; cell $5E
+    .byte $01, $01  ; cell $5F
+    .byte $01, $01  ; cell $60
+    .byte $01, $01  ; cell $61
+    .byte $00, $00  ; cell $62
+    .byte $00, $00  ; cell $63
 
 ObjectCollisionFlagsByRoomCellHalf:
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $01, $01, $00
-    .byte $01, $01, $01, $01, $00, $01, $00, $01, $01, $00, $01, $00, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $81, $81
-    .byte $81, $81, $81, $81, $81, $81, $81, $81, $81, $81, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $00, $00, $01, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $00, $00, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-    .byte $01, $01, $01, $01, $01, $01, $01, $01
+; Left and right eight-pixel halves per cell for runtime objects; $00 is empty
+    .byte $01, $01  ; cell $00
+    .byte $01, $01  ; cell $01
+    .byte $01, $01  ; cell $02
+    .byte $01, $01  ; cell $03
+    .byte $01, $01  ; cell $04
+    .byte $01, $01  ; cell $05
+    .byte $00, $01  ; cell $06
+    .byte $01, $00  ; cell $07
+    .byte $01, $01  ; cell $08
+    .byte $01, $01  ; cell $09
+    .byte $00, $01  ; cell $0A
+    .byte $00, $01  ; cell $0B
+    .byte $01, $00  ; cell $0C
+    .byte $01, $00  ; cell $0D
+    .byte $01, $01  ; cell $0E
+    .byte $01, $01  ; cell $0F
+    .byte $01, $01  ; cell $10
+    .byte $01, $01  ; cell $11
+    .byte $00, $00  ; cell $12
+    .byte $00, $00  ; cell $13
+    .byte $00, $00  ; cell $14
+    .byte $00, $00  ; cell $15
+    .byte $00, $00  ; cell $16
+    .byte $00, $00  ; cell $17
+    .byte $01, $01  ; cell $18
+    .byte $01, $01  ; cell $19
+    .byte $01, $01  ; cell $1A
+    .byte $01, $01  ; cell $1B
+    .byte $01, $01  ; cell $1C
+    .byte $01, $01  ; cell $1D
+    .byte $01, $01  ; cell $1E
+    .byte $01, $01  ; cell $1F
+    .byte $01, $01  ; cell $20
+    .byte $01, $01  ; cell $21
+    .byte $01, $01  ; cell $22
+    .byte $01, $01  ; cell $23
+    .byte $01, $01  ; cell $24
+    .byte $01, $01  ; cell $25
+    .byte $01, $01  ; cell $26
+    .byte $01, $01  ; cell $27
+    .byte $01, $01  ; cell $28
+    .byte $01, $01  ; cell $29
+    .byte $01, $01  ; cell $2A
+    .byte $01, $01  ; cell $2B
+    .byte $01, $01  ; cell $2C
+    .byte $01, $01  ; cell $2D
+    .byte $01, $01  ; cell $2E
+    .byte $81, $81  ; cell $2F
+    .byte $81, $81  ; cell $30
+    .byte $81, $81  ; cell $31
+    .byte $81, $81  ; cell $32
+    .byte $81, $81  ; cell $33
+    .byte $81, $81  ; cell $34
+    .byte $01, $01  ; cell $35
+    .byte $01, $01  ; cell $36
+    .byte $01, $01  ; cell $37
+    .byte $01, $01  ; cell $38
+    .byte $01, $01  ; cell $39
+    .byte $01, $01  ; cell $3A
+    .byte $01, $01  ; cell $3B
+    .byte $01, $01  ; cell $3C
+    .byte $01, $01  ; cell $3D
+    .byte $01, $01  ; cell $3E
+    .byte $01, $01  ; cell $3F
+    .byte $01, $01  ; cell $40
+    .byte $01, $00  ; cell $41
+    .byte $00, $01  ; cell $42
+    .byte $00, $00  ; cell $43
+    .byte $01, $01  ; cell $44
+    .byte $01, $01  ; cell $45
+    .byte $01, $01  ; cell $46
+    .byte $01, $01  ; cell $47
+    .byte $01, $01  ; cell $48
+    .byte $01, $01  ; cell $49
+    .byte $01, $01  ; cell $4A
+    .byte $01, $01  ; cell $4B
+    .byte $01, $01  ; cell $4C
+    .byte $01, $01  ; cell $4D
+    .byte $01, $01  ; cell $4E
+    .byte $01, $01  ; cell $4F
+    .byte $01, $01  ; cell $50
+    .byte $01, $01  ; cell $51
+    .byte $00, $00  ; cell $52
+    .byte $00, $00  ; cell $53
+    .byte $01, $01  ; cell $54
+    .byte $01, $01  ; cell $55
+    .byte $01, $01  ; cell $56
+    .byte $01, $01  ; cell $57
+    .byte $01, $01  ; cell $58
+    .byte $01, $01  ; cell $59
+    .byte $01, $01  ; cell $5A
+    .byte $01, $01  ; cell $5B
+    .byte $01, $01  ; cell $5C
+    .byte $01, $01  ; cell $5D
+    .byte $01, $01  ; cell $5E
+    .byte $01, $01  ; cell $5F
+    .byte $01, $01  ; cell $60
+    .byte $01, $01  ; cell $61
+    .byte $01, $01  ; cell $62
+    .byte $01, $01  ; cell $63
 
 RuntimeObjectCollisionWidths:
     .byte $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10

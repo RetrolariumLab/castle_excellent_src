@@ -40,6 +40,25 @@
         "../ui/title_and_subcommands.asm",
         "../game/persistence_and_endings.asm",
         "../system/prg_tail.asm"
+      ],
+      "source_replacements": [
+        {
+          "start": "0x8000",
+          "end": "0x8002",
+          "baseline": [
+            "DelayLongPulseHalf:",
+            "    LDX #$91"
+          ],
+          "replacement": [
+            "PrgStart:",
+            ".if RELOCATION_TEST_SHIFT",
+            "; Relocation probe: shift every routine and table before the PRG tail",
+            "    .res RELOCATION_TEST_SHIFT, $EA",
+            ".endif",
+            "DelayLongPulseHalf:",
+            "    LDX #$91"
+          ]
+        }
       ]
     },
     {
@@ -916,26 +935,2179 @@
       "path": "src/game/rooms/navigation_and_rules.asm",
       "start": "0xA7DB",
       "end": "0xAC13",
-      "title": "Room navigation and player interaction rules"
+      "title": "Room navigation and player interaction rules",
+      "source_replacements": [
+        {
+          "start": "0xA95A",
+          "end": "0xAA22",
+          "baseline": [
+            "PlayerCollisionFlagsByRoomCellHalf:",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $01, $01, $00",
+            "    .byte $01, $01, $01, $01, $00, $01, $00, $00, $01, $00, $00, $00, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $80, $80",
+            "    .byte $80, $80, $80, $80, $80, $80, $80, $80, $80, $80, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $00, $00, $01, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $00",
+            "    .byte $00, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $00, $00, $00, $00"
+          ],
+          "replacement": [
+            "PlayerCollisionFlagsByRoomCellHalf:",
+            "; Left and right eight-pixel halves per cell: $01 solid, $80 touch-only, $00 empty",
+            "    .byte $01, $01  ; cell $00",
+            "    .byte $01, $01  ; cell $01",
+            "    .byte $01, $01  ; cell $02",
+            "    .byte $01, $01  ; cell $03",
+            "    .byte $01, $01  ; cell $04",
+            "    .byte $01, $01  ; cell $05",
+            "    .byte $00, $01  ; cell $06",
+            "    .byte $01, $00  ; cell $07",
+            "    .byte $01, $01  ; cell $08",
+            "    .byte $01, $01  ; cell $09",
+            "    .byte $00, $01  ; cell $0A",
+            "    .byte $00, $00  ; cell $0B",
+            "    .byte $01, $00  ; cell $0C",
+            "    .byte $00, $00  ; cell $0D",
+            "    .byte $01, $01  ; cell $0E",
+            "    .byte $01, $01  ; cell $0F",
+            "    .byte $01, $01  ; cell $10",
+            "    .byte $01, $01  ; cell $11",
+            "    .byte $01, $01  ; cell $12",
+            "    .byte $01, $01  ; cell $13",
+            "    .byte $01, $01  ; cell $14",
+            "    .byte $00, $00  ; cell $15",
+            "    .byte $00, $00  ; cell $16",
+            "    .byte $00, $00  ; cell $17",
+            "    .byte $01, $01  ; cell $18",
+            "    .byte $01, $01  ; cell $19",
+            "    .byte $01, $01  ; cell $1A",
+            "    .byte $01, $01  ; cell $1B",
+            "    .byte $01, $01  ; cell $1C",
+            "    .byte $01, $01  ; cell $1D",
+            "    .byte $01, $01  ; cell $1E",
+            "    .byte $01, $01  ; cell $1F",
+            "    .byte $01, $01  ; cell $20",
+            "    .byte $01, $01  ; cell $21",
+            "    .byte $01, $01  ; cell $22",
+            "    .byte $01, $01  ; cell $23",
+            "    .byte $01, $01  ; cell $24",
+            "    .byte $01, $01  ; cell $25",
+            "    .byte $01, $01  ; cell $26",
+            "    .byte $01, $01  ; cell $27",
+            "    .byte $01, $01  ; cell $28",
+            "    .byte $01, $01  ; cell $29",
+            "    .byte $01, $01  ; cell $2A",
+            "    .byte $01, $01  ; cell $2B",
+            "    .byte $01, $01  ; cell $2C",
+            "    .byte $01, $01  ; cell $2D",
+            "    .byte $01, $01  ; cell $2E",
+            "    .byte $80, $80  ; cell $2F",
+            "    .byte $80, $80  ; cell $30",
+            "    .byte $80, $80  ; cell $31",
+            "    .byte $80, $80  ; cell $32",
+            "    .byte $80, $80  ; cell $33",
+            "    .byte $80, $80  ; cell $34",
+            "    .byte $01, $01  ; cell $35",
+            "    .byte $01, $01  ; cell $36",
+            "    .byte $01, $01  ; cell $37",
+            "    .byte $01, $01  ; cell $38",
+            "    .byte $01, $01  ; cell $39",
+            "    .byte $01, $01  ; cell $3A",
+            "    .byte $01, $01  ; cell $3B",
+            "    .byte $01, $01  ; cell $3C",
+            "    .byte $01, $01  ; cell $3D",
+            "    .byte $01, $01  ; cell $3E",
+            "    .byte $01, $01  ; cell $3F",
+            "    .byte $01, $01  ; cell $40",
+            "    .byte $01, $00  ; cell $41",
+            "    .byte $00, $01  ; cell $42",
+            "    .byte $00, $00  ; cell $43",
+            "    .byte $01, $01  ; cell $44",
+            "    .byte $01, $01  ; cell $45",
+            "    .byte $01, $01  ; cell $46",
+            "    .byte $01, $01  ; cell $47",
+            "    .byte $01, $01  ; cell $48",
+            "    .byte $01, $01  ; cell $49",
+            "    .byte $01, $01  ; cell $4A",
+            "    .byte $01, $01  ; cell $4B",
+            "    .byte $01, $01  ; cell $4C",
+            "    .byte $01, $01  ; cell $4D",
+            "    .byte $01, $01  ; cell $4E",
+            "    .byte $00, $00  ; cell $4F",
+            "    .byte $00, $00  ; cell $50",
+            "    .byte $01, $01  ; cell $51",
+            "    .byte $00, $00  ; cell $52",
+            "    .byte $00, $00  ; cell $53",
+            "    .byte $00, $00  ; cell $54",
+            "    .byte $00, $00  ; cell $55",
+            "    .byte $01, $01  ; cell $56",
+            "    .byte $01, $01  ; cell $57",
+            "    .byte $01, $01  ; cell $58",
+            "    .byte $01, $01  ; cell $59",
+            "    .byte $01, $01  ; cell $5A",
+            "    .byte $01, $01  ; cell $5B",
+            "    .byte $01, $01  ; cell $5C",
+            "    .byte $01, $01  ; cell $5D",
+            "    .byte $01, $01  ; cell $5E",
+            "    .byte $01, $01  ; cell $5F",
+            "    .byte $01, $01  ; cell $60",
+            "    .byte $01, $01  ; cell $61",
+            "    .byte $00, $00  ; cell $62",
+            "    .byte $00, $00  ; cell $63"
+          ]
+        },
+        {
+          "start": "0xAA22",
+          "end": "0xAAEA",
+          "baseline": [
+            "ObjectCollisionFlagsByRoomCellHalf:",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $00, $01, $01, $00",
+            "    .byte $01, $01, $01, $01, $00, $01, $00, $01, $01, $00, $01, $00, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $81, $81",
+            "    .byte $81, $81, $81, $81, $81, $81, $81, $81, $81, $81, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $00, $00, $01, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $00, $00, $00, $00, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01",
+            "    .byte $01, $01, $01, $01, $01, $01, $01, $01"
+          ],
+          "replacement": [
+            "ObjectCollisionFlagsByRoomCellHalf:",
+            "; Left and right eight-pixel halves per cell for runtime objects; $00 is empty",
+            "    .byte $01, $01  ; cell $00",
+            "    .byte $01, $01  ; cell $01",
+            "    .byte $01, $01  ; cell $02",
+            "    .byte $01, $01  ; cell $03",
+            "    .byte $01, $01  ; cell $04",
+            "    .byte $01, $01  ; cell $05",
+            "    .byte $00, $01  ; cell $06",
+            "    .byte $01, $00  ; cell $07",
+            "    .byte $01, $01  ; cell $08",
+            "    .byte $01, $01  ; cell $09",
+            "    .byte $00, $01  ; cell $0A",
+            "    .byte $00, $01  ; cell $0B",
+            "    .byte $01, $00  ; cell $0C",
+            "    .byte $01, $00  ; cell $0D",
+            "    .byte $01, $01  ; cell $0E",
+            "    .byte $01, $01  ; cell $0F",
+            "    .byte $01, $01  ; cell $10",
+            "    .byte $01, $01  ; cell $11",
+            "    .byte $00, $00  ; cell $12",
+            "    .byte $00, $00  ; cell $13",
+            "    .byte $00, $00  ; cell $14",
+            "    .byte $00, $00  ; cell $15",
+            "    .byte $00, $00  ; cell $16",
+            "    .byte $00, $00  ; cell $17",
+            "    .byte $01, $01  ; cell $18",
+            "    .byte $01, $01  ; cell $19",
+            "    .byte $01, $01  ; cell $1A",
+            "    .byte $01, $01  ; cell $1B",
+            "    .byte $01, $01  ; cell $1C",
+            "    .byte $01, $01  ; cell $1D",
+            "    .byte $01, $01  ; cell $1E",
+            "    .byte $01, $01  ; cell $1F",
+            "    .byte $01, $01  ; cell $20",
+            "    .byte $01, $01  ; cell $21",
+            "    .byte $01, $01  ; cell $22",
+            "    .byte $01, $01  ; cell $23",
+            "    .byte $01, $01  ; cell $24",
+            "    .byte $01, $01  ; cell $25",
+            "    .byte $01, $01  ; cell $26",
+            "    .byte $01, $01  ; cell $27",
+            "    .byte $01, $01  ; cell $28",
+            "    .byte $01, $01  ; cell $29",
+            "    .byte $01, $01  ; cell $2A",
+            "    .byte $01, $01  ; cell $2B",
+            "    .byte $01, $01  ; cell $2C",
+            "    .byte $01, $01  ; cell $2D",
+            "    .byte $01, $01  ; cell $2E",
+            "    .byte $81, $81  ; cell $2F",
+            "    .byte $81, $81  ; cell $30",
+            "    .byte $81, $81  ; cell $31",
+            "    .byte $81, $81  ; cell $32",
+            "    .byte $81, $81  ; cell $33",
+            "    .byte $81, $81  ; cell $34",
+            "    .byte $01, $01  ; cell $35",
+            "    .byte $01, $01  ; cell $36",
+            "    .byte $01, $01  ; cell $37",
+            "    .byte $01, $01  ; cell $38",
+            "    .byte $01, $01  ; cell $39",
+            "    .byte $01, $01  ; cell $3A",
+            "    .byte $01, $01  ; cell $3B",
+            "    .byte $01, $01  ; cell $3C",
+            "    .byte $01, $01  ; cell $3D",
+            "    .byte $01, $01  ; cell $3E",
+            "    .byte $01, $01  ; cell $3F",
+            "    .byte $01, $01  ; cell $40",
+            "    .byte $01, $00  ; cell $41",
+            "    .byte $00, $01  ; cell $42",
+            "    .byte $00, $00  ; cell $43",
+            "    .byte $01, $01  ; cell $44",
+            "    .byte $01, $01  ; cell $45",
+            "    .byte $01, $01  ; cell $46",
+            "    .byte $01, $01  ; cell $47",
+            "    .byte $01, $01  ; cell $48",
+            "    .byte $01, $01  ; cell $49",
+            "    .byte $01, $01  ; cell $4A",
+            "    .byte $01, $01  ; cell $4B",
+            "    .byte $01, $01  ; cell $4C",
+            "    .byte $01, $01  ; cell $4D",
+            "    .byte $01, $01  ; cell $4E",
+            "    .byte $01, $01  ; cell $4F",
+            "    .byte $01, $01  ; cell $50",
+            "    .byte $01, $01  ; cell $51",
+            "    .byte $00, $00  ; cell $52",
+            "    .byte $00, $00  ; cell $53",
+            "    .byte $01, $01  ; cell $54",
+            "    .byte $01, $01  ; cell $55",
+            "    .byte $01, $01  ; cell $56",
+            "    .byte $01, $01  ; cell $57",
+            "    .byte $01, $01  ; cell $58",
+            "    .byte $01, $01  ; cell $59",
+            "    .byte $01, $01  ; cell $5A",
+            "    .byte $01, $01  ; cell $5B",
+            "    .byte $01, $01  ; cell $5C",
+            "    .byte $01, $01  ; cell $5D",
+            "    .byte $01, $01  ; cell $5E",
+            "    .byte $01, $01  ; cell $5F",
+            "    .byte $01, $01  ; cell $60",
+            "    .byte $01, $01  ; cell $61",
+            "    .byte $01, $01  ; cell $62",
+            "    .byte $01, $01  ; cell $63"
+          ]
+        }
+      ]
     },
     {
       "path": "src/rendering/sprites/frame.asm",
       "start": "0xAC13",
       "end": "0xADE7",
       "title": "Frame sprite construction",
-      "size_exception": "The bounded frame-sprite builder is a cohesive 237-line subsystem."
+      "size_exception": "The bounded frame-sprite builder is a cohesive 237-line subsystem.",
+      "source_replacements": [
+        {
+          "start": "0xAD91",
+          "end": "0xADE7",
+          "baseline": [
+            "ObjectSpriteHandlerPointers = * + 2  ; overlapping entry $AD93",
+            "    STA OamStagingBuffer + $0A",
+            "    RTS",
+            "    .byte $E7, $AD, $08, $AE, $12, $AE, $19, $AE, $75, $AE, $BB, $AE, $1E, $AF, $6A, $AF",
+            "    .byte $B0, $AF, $F4, $AF, $FB, $AF, $02, $B0, $09, $B0, $10, $B0, $17, $B0, $2B, $B0",
+            "    .byte $35, $B0, $3C, $B0, $43, $B0, $4A, $B0, $51, $B0, $58, $B0, $5F, $B0, $66, $B0",
+            "    .byte $6D, $B0, $74, $B0, $7B, $B0, $82, $B0, $89, $B0, $89, $B0, $90, $B0, $AC, $B0",
+            "    .byte $C9, $B0, $D0, $B0, $DA, $B0, $E1, $B0, $E8, $B0, $EF, $B0, $14, $B1, $17, $B1",
+            "    .byte $35, $B1"
+          ],
+          "replacement": [
+            "ObjectSpriteHandlerPointers = * + 2  ; overlapping entry $AD93",
+            "    STA OamStagingBuffer + $0A",
+            "    RTS",
+            "; Entries for types $81-$A9; entry 0 overlaps the STA operand above and is never used",
+            "    .addr DrawFairySprite  ; $81 Fairy",
+            "    .addr DrawPrincessSprite  ; $82 Princess",
+            "    .addr DrawOxygenTankSprite  ; $83 ItemOxygenTank",
+            "    .addr DrawFighterSprite  ; $84 EnemyFighter",
+            "    .addr DrawBishopSprite  ; $85 EnemyBishop",
+            "    .addr DrawDevilFlowerSprite  ; $86 EnemyDevilFlower",
+            "    .addr DrawKnightSprite  ; $87 EnemyKnight",
+            "    .addr DrawWitchSprite  ; $88 EnemyWitch",
+            "    .addr DrawFlameSprite  ; $89 EnemyFlame",
+            "    .addr DrawJarSprite  ; $8A ObjectJar",
+            "    .addr DrawBrickSprite  ; $8B ObjectBrick",
+            "    .addr DrawBlockSprite  ; $8C ObjectBlock",
+            "    .addr DrawBarrelSprite  ; $8D ObjectBarrel",
+            "    .addr DrawPulleySprite  ; $8E ObjectPulley",
+            "    .addr DrawCandleSprite  ; $8F ObjectCandle",
+            "    .addr DrawDarkBlueKeySprite  ; $90 ItemDarkBlueKey",
+            "    .addr DrawRedKeySprite  ; $91 ItemRedKey",
+            "    .addr DrawPinkKeySprite  ; $92 ItemPinkKey",
+            "    .addr DrawGreenKeySprite  ; $93 ItemGreenKey",
+            "    .addr DrawBlueKeySprite  ; $94 ItemBlueKey",
+            "    .addr DrawYellowKeySprite  ; $95 ItemYellowKey",
+            "    .addr DrawCastleMapSprite  ; $96 ItemCastleMap",
+            "    .addr DrawPotionSprite  ; $97 ItemPotion",
+            "    .addr DrawCrossSprite  ; $98 ItemCross",
+            "    .addr DrawRingSprite  ; $99 ItemRing",
+            "    .addr DrawMoneyBagSprite  ; $9A ItemMoneyBag",
+            "    .addr DrawRuntimeObjectType27Sprite  ; $9B",
+            "    .addr DrawRuntimeObjectType28Sprite  ; $9C",
+            "    .addr DrawRuntimeObjectType29Or30Sprite  ; $9D",
+            "    .addr DrawRuntimeObjectType29Or30Sprite  ; $9E",
+            "    .addr DrawPowerLightSprite  ; $9F ItemPowerLight",
+            "    .addr DrawWitchSummonSprite  ; $A0 WitchSummon",
+            "    .addr DrawLiftSprite  ; $A1 ObjectLift",
+            "    .addr DrawWideLiftSprite  ; $A2 ObjectLiftWide",
+            "    .addr DrawFloatingPlatformSprite  ; $A3 ObjectFloatingPlatform",
+            "    .addr DrawDraggableLiftTopSprite  ; $A4 ObjectDraggableLiftTop",
+            "    .addr DrawDraggableLiftBottomSprite  ; $A5 ObjectDraggableLiftBottom",
+            "    .addr DrawKnightArrowSprite  ; $A6 ObjectKnightArrow",
+            "    .addr DrawRuntimeObjectType39Sprite  ; $A7",
+            "    .addr DrawDefeatEffectSprite  ; $A8 EffectDefeat",
+            "    .addr DrawCollectedItemEffectSprite  ; $A9 EffectCollectedItem"
+          ]
+        }
+      ]
     },
     {
       "path": "src/rendering/sprites/selectors.asm",
       "start": "0xADE7",
       "end": "0xB1D6",
-      "title": "Object sprite selectors"
+      "title": "Object sprite selectors",
+      "source_replacements": [
+        {
+          "start": "0xADE7",
+          "end": "0xADF6",
+          "baseline": [
+            "DrawFairySprite:",
+            "    LDA RoomFrameCounter",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType01Frame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$94",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawFairySprite:",
+            "    LDA RoomFrameCounter",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType01Frame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $9E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $9E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xADF6",
+          "end": "0xAE01",
+          "baseline": [
+            "SelectType01Frame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType01MiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$9C",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType01Frame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType01MiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $A6)",
+            "    LDY #<(ObjectSpriteFrameRecords + $A6)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE01",
+          "end": "0xAE08",
+          "baseline": [
+            "DrawType01MiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$98",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType01MiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $A2)",
+            "    LDY #<(ObjectSpriteFrameRecords + $A2)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE08",
+          "end": "0xAE0C",
+          "baseline": [
+            "DrawPrincessSprite:",
+            "    LDX #$B5",
+            "    LDY #$AC"
+          ],
+          "replacement": [
+            "DrawPrincessSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $B6)",
+            "    LDY #<(ObjectSpriteFrameRecords + $B6)"
+          ]
+        },
+        {
+          "start": "0xAE12",
+          "end": "0xAE19",
+          "baseline": [
+            "DrawOxygenTankSprite:",
+            "    LDX #$B5",
+            "    LDY #$BC",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawOxygenTankSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $C6)",
+            "    LDY #<(ObjectSpriteFrameRecords + $C6)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE19",
+          "end": "0xAE28",
+          "baseline": [
+            "DrawFighterSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BMI SelectType04NegativeStateSprite",
+            "    LDA RuntimeObjectFighterJumpCountdown,X",
+            "    BEQ SelectType04PositiveStateAnimation",
+            "    LDX #$B5",
+            "    LDY #$0E",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawFighterSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BMI SelectType04NegativeStateSprite",
+            "    LDA RuntimeObjectFighterJumpCountdown,X",
+            "    BEQ SelectType04PositiveStateAnimation",
+            "    LDX #>(ObjectSpriteFrameRecords + $18)",
+            "    LDY #<(ObjectSpriteFrameRecords + $18)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE28",
+          "end": "0xAE37",
+          "baseline": [
+            "SelectType04PositiveStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType04PositiveFrame2OrMiddle",
+            "    LDX #$B4",
+            "    LDY #$F6",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType04PositiveStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType04PositiveFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords)",
+            "    LDY #<(ObjectSpriteFrameRecords)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE37",
+          "end": "0xAE42",
+          "baseline": [
+            "SelectType04PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType04PositiveMiddleFrame",
+            "    LDX #$B4",
+            "    LDY #$FE",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType04PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType04PositiveMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $08)",
+            "    LDY #<(ObjectSpriteFrameRecords + $08)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE42",
+          "end": "0xAE49",
+          "baseline": [
+            "DrawType04PositiveMiddleFrame:",
+            "    LDX #$B4",
+            "    LDY #$FA",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType04PositiveMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $04)",
+            "    LDY #<(ObjectSpriteFrameRecords + $04)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE49",
+          "end": "0xAE54",
+          "baseline": [
+            "SelectType04NegativeStateSprite:",
+            "    LDA RuntimeObjectFighterJumpCountdown,X",
+            "    BEQ SelectType04NegativeStateAnimation",
+            "    LDX #$B5",
+            "    LDY #$12",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType04NegativeStateSprite:",
+            "    LDA RuntimeObjectFighterJumpCountdown,X",
+            "    BEQ SelectType04NegativeStateAnimation",
+            "    LDX #>(ObjectSpriteFrameRecords + $1C)",
+            "    LDY #<(ObjectSpriteFrameRecords + $1C)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE54",
+          "end": "0xAE63",
+          "baseline": [
+            "SelectType04NegativeStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType04NegativeFrame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$02",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType04NegativeStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType04NegativeFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $0C)",
+            "    LDY #<(ObjectSpriteFrameRecords + $0C)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE63",
+          "end": "0xAE6E",
+          "baseline": [
+            "SelectType04NegativeFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType04NegativeMiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$0A",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType04NegativeFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType04NegativeMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $14)",
+            "    LDY #<(ObjectSpriteFrameRecords + $14)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE6E",
+          "end": "0xAE75",
+          "baseline": [
+            "DrawType04NegativeMiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$06",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType04NegativeMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $10)",
+            "    LDY #<(ObjectSpriteFrameRecords + $10)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE75",
+          "end": "0xAE88",
+          "baseline": [
+            "DrawBishopSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BMI SelectType05NegativeStateAnimation",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType05PositiveFrame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$16",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawBishopSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BMI SelectType05NegativeStateAnimation",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType05PositiveFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $20)",
+            "    LDY #<(ObjectSpriteFrameRecords + $20)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE88",
+          "end": "0xAE93",
+          "baseline": [
+            "SelectType05PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType05PositiveMiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$1E",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType05PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType05PositiveMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $28)",
+            "    LDY #<(ObjectSpriteFrameRecords + $28)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE93",
+          "end": "0xAE9A",
+          "baseline": [
+            "DrawType05PositiveMiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$1A",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType05PositiveMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $24)",
+            "    LDY #<(ObjectSpriteFrameRecords + $24)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAE9A",
+          "end": "0xAEA9",
+          "baseline": [
+            "SelectType05NegativeStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType05NegativeFrame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$22",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType05NegativeStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType05NegativeFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $2C)",
+            "    LDY #<(ObjectSpriteFrameRecords + $2C)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAEA9",
+          "end": "0xAEB4",
+          "baseline": [
+            "SelectType05NegativeFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType05NegativeMiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$2A",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType05NegativeFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType05NegativeMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $34)",
+            "    LDY #<(ObjectSpriteFrameRecords + $34)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAEB4",
+          "end": "0xAEBB",
+          "baseline": [
+            "DrawType05NegativeMiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$26",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType05NegativeMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $30)",
+            "    LDY #<(ObjectSpriteFrameRecords + $30)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAEBB",
+          "end": "0xAEDE",
+          "baseline": [
+            "DrawDevilFlowerSprite:",
+            "    LDA RoomFrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    LSR A",
+            "    LSR A",
+            "    CMP #$08",
+            "    BCS SelectType06LateRoomPhase",
+            "    LDA RuntimeObjectXLo,X",
+            "    ORA #$04",
+            "    STA RuntimeObjectXLo,X",
+            "    LDX #$B5",
+            "    LDY #$2E",
+            "    JSR DrawOneObjectSprite",
+            "    LDX CurrentObjectOffset",
+            "    LDA RuntimeObjectXLo,X",
+            "    AND #$F8",
+            "    STA RuntimeObjectXLo,X",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "DrawDevilFlowerSprite:",
+            "    LDA RoomFrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    LSR A",
+            "    LSR A",
+            "    CMP #$08",
+            "    BCS SelectType06LateRoomPhase",
+            "    LDA RuntimeObjectXLo,X",
+            "    ORA #$04",
+            "    STA RuntimeObjectXLo,X",
+            "    LDX #>(ObjectSpriteFrameRecords + $38)",
+            "    LDY #<(ObjectSpriteFrameRecords + $38)",
+            "    JSR DrawOneObjectSprite",
+            "    LDX CurrentObjectOffset",
+            "    LDA RuntimeObjectXLo,X",
+            "    AND #$F8",
+            "    STA RuntimeObjectXLo,X",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xAEE6",
+          "end": "0xAEED",
+          "baseline": [
+            "DrawType06OuterTransitionFrame:",
+            "    LDX #$B5",
+            "    LDY #$30",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType06OuterTransitionFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $3A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $3A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAEF5",
+          "end": "0xAEFC",
+          "baseline": [
+            "DrawType06InnerTransitionFrame:",
+            "    LDX #$B5",
+            "    LDY #$34",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType06InnerTransitionFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $3E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $3E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAEFC",
+          "end": "0xAF0C",
+          "baseline": [
+            "SelectType06CycleFrame:",
+            "    LDA RoomFrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType06AlternatingFrame",
+            "    LDX #$B5",
+            "    LDY #$38",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType06CycleFrame:",
+            "    LDA RoomFrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType06AlternatingFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $42)",
+            "    LDY #<(ObjectSpriteFrameRecords + $42)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF0C",
+          "end": "0xAF17",
+          "baseline": [
+            "SelectType06AlternatingFrame:",
+            "    AND #$01",
+            "    BEQ DrawType06EvenCycleFrame",
+            "    LDX #$B5",
+            "    LDY #$3C",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType06AlternatingFrame:",
+            "    AND #$01",
+            "    BEQ DrawType06EvenCycleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $46)",
+            "    LDY #<(ObjectSpriteFrameRecords + $46)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF17",
+          "end": "0xAF1E",
+          "baseline": [
+            "DrawType06EvenCycleFrame:",
+            "    LDX #$B5",
+            "    LDY #$40",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType06EvenCycleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $4A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $4A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF1E",
+          "end": "0xAF34",
+          "baseline": [
+            "DrawKnightSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BMI SelectType07NegativeStateAnimation",
+            "    LDA FrameCounter",
+            "    CLC",
+            "    ADC RuntimeObjectKnightArrowCooldown,X",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType07PositiveFrame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$44",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawKnightSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BMI SelectType07NegativeStateAnimation",
+            "    LDA FrameCounter",
+            "    CLC",
+            "    ADC RuntimeObjectKnightArrowCooldown,X",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType07PositiveFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $4E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $4E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF34",
+          "end": "0xAF3F",
+          "baseline": [
+            "SelectType07PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType07PositiveMiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$4C",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType07PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType07PositiveMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $56)",
+            "    LDY #<(ObjectSpriteFrameRecords + $56)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF3F",
+          "end": "0xAF46",
+          "baseline": [
+            "DrawType07PositiveMiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$48",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType07PositiveMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $52)",
+            "    LDY #<(ObjectSpriteFrameRecords + $52)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF46",
+          "end": "0xAF58",
+          "baseline": [
+            "SelectType07NegativeStateAnimation:",
+            "    LDA FrameCounter",
+            "    CLC",
+            "    ADC RuntimeObjectKnightArrowCooldown,X",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType07NegativeFrame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$50",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType07NegativeStateAnimation:",
+            "    LDA FrameCounter",
+            "    CLC",
+            "    ADC RuntimeObjectKnightArrowCooldown,X",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType07NegativeFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $5A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $5A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF58",
+          "end": "0xAF63",
+          "baseline": [
+            "SelectType07NegativeFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType07NegativeMiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$58",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType07NegativeFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType07NegativeMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $62)",
+            "    LDY #<(ObjectSpriteFrameRecords + $62)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF63",
+          "end": "0xAF6A",
+          "baseline": [
+            "DrawType07NegativeMiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$54",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType07NegativeMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $5E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $5E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF6A",
+          "end": "0xAF7D",
+          "baseline": [
+            "DrawWitchSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BMI SelectType08NegativeStateAnimation",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType08PositiveFrame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$5C",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawWitchSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BMI SelectType08NegativeStateAnimation",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType08PositiveFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $66)",
+            "    LDY #<(ObjectSpriteFrameRecords + $66)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF7D",
+          "end": "0xAF88",
+          "baseline": [
+            "SelectType08PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType08PositiveMiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$64",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType08PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType08PositiveMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $6E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $6E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF88",
+          "end": "0xAF8F",
+          "baseline": [
+            "DrawType08PositiveMiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$60",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType08PositiveMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $6A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $6A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF8F",
+          "end": "0xAF9E",
+          "baseline": [
+            "SelectType08NegativeStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType08NegativeFrame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$6C",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType08NegativeStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType08NegativeFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $76)",
+            "    LDY #<(ObjectSpriteFrameRecords + $76)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAF9E",
+          "end": "0xAFA9",
+          "baseline": [
+            "SelectType08NegativeFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType08NegativeMiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$74",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType08NegativeFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType08NegativeMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $7E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $7E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAFA9",
+          "end": "0xAFB0",
+          "baseline": [
+            "DrawType08NegativeMiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$70",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType08NegativeMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $7A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $7A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAFB0",
+          "end": "0xAFC3",
+          "baseline": [
+            "DrawFlameSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BPL SelectType09PositiveStateAnimation",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE DrawType09NegativeNonzeroFrame",
+            "    LDX #$B5",
+            "    LDY #$88",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawFlameSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    BPL SelectType09PositiveStateAnimation",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE DrawType09NegativeNonzeroFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $92)",
+            "    LDY #<(ObjectSpriteFrameRecords + $92)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAFC3",
+          "end": "0xAFCC",
+          "baseline": [
+            "DrawType09NegativeNonzeroFrame:",
+            "    CMP #$02",
+            "    LDX #$B5",
+            "    LDY #$90",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType09NegativeNonzeroFrame:",
+            "    CMP #$02",
+            "    LDX #>(ObjectSpriteFrameRecords + $9A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $9A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAFD3",
+          "end": "0xAFE2",
+          "baseline": [
+            "SelectType09PositiveStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType09PositiveFrame2OrMiddle",
+            "    LDX #$B5",
+            "    LDY #$7C",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType09PositiveStateAnimation:",
+            "    LDA FrameCounter",
+            "    LSR A",
+            "    LSR A",
+            "    AND #$03",
+            "    BNE SelectType09PositiveFrame2OrMiddle",
+            "    LDX #>(ObjectSpriteFrameRecords + $86)",
+            "    LDY #<(ObjectSpriteFrameRecords + $86)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAFE2",
+          "end": "0xAFED",
+          "baseline": [
+            "SelectType09PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType09PositiveMiddleFrame",
+            "    LDX #$B5",
+            "    LDY #$84",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType09PositiveFrame2OrMiddle:",
+            "    CMP #$02",
+            "    BNE DrawType09PositiveMiddleFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $8E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $8E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAFED",
+          "end": "0xAFF4",
+          "baseline": [
+            "DrawType09PositiveMiddleFrame:",
+            "    LDX #$B5",
+            "    LDY #$80",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType09PositiveMiddleFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $8A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $8A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAFF4",
+          "end": "0xAFFB",
+          "baseline": [
+            "DrawJarSprite:",
+            "    LDX #$B5",
+            "    LDY #$C0",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawJarSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $CA)",
+            "    LDY #<(ObjectSpriteFrameRecords + $CA)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xAFFB",
+          "end": "0xB002",
+          "baseline": [
+            "DrawBrickSprite:",
+            "    LDX #$B5",
+            "    LDY #$C4",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawBrickSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $CE)",
+            "    LDY #<(ObjectSpriteFrameRecords + $CE)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB002",
+          "end": "0xB009",
+          "baseline": [
+            "DrawBlockSprite:",
+            "    LDX #$B5",
+            "    LDY #$C8",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawBlockSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $D2)",
+            "    LDY #<(ObjectSpriteFrameRecords + $D2)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB009",
+          "end": "0xB010",
+          "baseline": [
+            "DrawBarrelSprite:",
+            "    LDX #$B5",
+            "    LDY #$CC",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawBarrelSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $D6)",
+            "    LDY #<(ObjectSpriteFrameRecords + $D6)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB010",
+          "end": "0xB017",
+          "baseline": [
+            "DrawPulleySprite:",
+            "    LDX #$B5",
+            "    LDY #$D0",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawPulleySprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $DA)",
+            "    LDY #<(ObjectSpriteFrameRecords + $DA)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB017",
+          "end": "0xB024",
+          "baseline": [
+            "DrawCandleSprite:",
+            "    LDA FrameCounter",
+            "    AND #$08",
+            "    BNE DrawType15AlternateFrame",
+            "    LDX #$B5",
+            "    LDY #$D4",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawCandleSprite:",
+            "    LDA FrameCounter",
+            "    AND #$08",
+            "    BNE DrawType15AlternateFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $DE)",
+            "    LDY #<(ObjectSpriteFrameRecords + $DE)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB024",
+          "end": "0xB02B",
+          "baseline": [
+            "DrawType15AlternateFrame:",
+            "    LDX #$B5",
+            "    LDY #$D8",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType15AlternateFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $E2)",
+            "    LDY #<(ObjectSpriteFrameRecords + $E2)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB02B",
+          "end": "0xB02F",
+          "baseline": [
+            "DrawDarkBlueKeySprite:",
+            "    LDX #$B5",
+            "    LDY #$B0"
+          ],
+          "replacement": [
+            "DrawDarkBlueKeySprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $BA)",
+            "    LDY #<(ObjectSpriteFrameRecords + $BA)"
+          ]
+        },
+        {
+          "start": "0xB035",
+          "end": "0xB03C",
+          "baseline": [
+            "DrawRedKeySprite:",
+            "    LDX #$B5",
+            "    LDY #$B2",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ],
+          "replacement": [
+            "DrawRedKeySprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $BC)",
+            "    LDY #<(ObjectSpriteFrameRecords + $BC)",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB03C",
+          "end": "0xB043",
+          "baseline": [
+            "DrawPinkKeySprite:",
+            "    LDX #$B5",
+            "    LDY #$B4",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ],
+          "replacement": [
+            "DrawPinkKeySprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $BE)",
+            "    LDY #<(ObjectSpriteFrameRecords + $BE)",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB043",
+          "end": "0xB04A",
+          "baseline": [
+            "DrawGreenKeySprite:",
+            "    LDX #$B5",
+            "    LDY #$B6",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ],
+          "replacement": [
+            "DrawGreenKeySprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $C0)",
+            "    LDY #<(ObjectSpriteFrameRecords + $C0)",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB04A",
+          "end": "0xB051",
+          "baseline": [
+            "DrawBlueKeySprite:",
+            "    LDX #$B5",
+            "    LDY #$B8",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ],
+          "replacement": [
+            "DrawBlueKeySprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $C2)",
+            "    LDY #<(ObjectSpriteFrameRecords + $C2)",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB051",
+          "end": "0xB058",
+          "baseline": [
+            "DrawYellowKeySprite:",
+            "    LDX #$B5",
+            "    LDY #$BA",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ],
+          "replacement": [
+            "DrawYellowKeySprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $C4)",
+            "    LDY #<(ObjectSpriteFrameRecords + $C4)",
+            "    JMP DrawOneObjectSpriteAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB058",
+          "end": "0xB05F",
+          "baseline": [
+            "DrawCastleMapSprite:",
+            "    LDX #$B5",
+            "    LDY #$DC",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawCastleMapSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $E6)",
+            "    LDY #<(ObjectSpriteFrameRecords + $E6)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB05F",
+          "end": "0xB066",
+          "baseline": [
+            "DrawPotionSprite:",
+            "    LDX #$B5",
+            "    LDY #$E0",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawPotionSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $EA)",
+            "    LDY #<(ObjectSpriteFrameRecords + $EA)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB066",
+          "end": "0xB06D",
+          "baseline": [
+            "DrawCrossSprite:",
+            "    LDX #$B5",
+            "    LDY #$E4",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawCrossSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $EE)",
+            "    LDY #<(ObjectSpriteFrameRecords + $EE)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB06D",
+          "end": "0xB074",
+          "baseline": [
+            "DrawRingSprite:",
+            "    LDX #$B5",
+            "    LDY #$E8",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawRingSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $F2)",
+            "    LDY #<(ObjectSpriteFrameRecords + $F2)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB074",
+          "end": "0xB07B",
+          "baseline": [
+            "DrawMoneyBagSprite:",
+            "    LDX #$B5",
+            "    LDY #$EC",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawMoneyBagSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $F6)",
+            "    LDY #<(ObjectSpriteFrameRecords + $F6)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB07B",
+          "end": "0xB082",
+          "baseline": [
+            "DrawRuntimeObjectType27Sprite:",
+            "    LDX #$B5",
+            "    LDY #$F0",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawRuntimeObjectType27Sprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $FA)",
+            "    LDY #<(ObjectSpriteFrameRecords + $FA)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB082",
+          "end": "0xB089",
+          "baseline": [
+            "DrawRuntimeObjectType28Sprite:",
+            "    LDX #$B5",
+            "    LDY #$F4",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawRuntimeObjectType28Sprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $FE)",
+            "    LDY #<(ObjectSpriteFrameRecords + $FE)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB089",
+          "end": "0xB090",
+          "baseline": [
+            "DrawRuntimeObjectType29Or30Sprite:",
+            "    LDX #$B5",
+            "    LDY #$FC",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawRuntimeObjectType29Or30Sprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $106)",
+            "    LDY #<(ObjectSpriteFrameRecords + $106)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB098",
+          "end": "0xB0A5",
+          "baseline": [
+            "SelectType31RoomFrameParity:",
+            "    LDA RoomFrameCounter",
+            "    LSR A",
+            "    BCC DrawType31EvenRoomFrame",
+            "    LDX #$B6",
+            "    LDY #$08",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType31RoomFrameParity:",
+            "    LDA RoomFrameCounter",
+            "    LSR A",
+            "    BCC DrawType31EvenRoomFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $112)",
+            "    LDY #<(ObjectSpriteFrameRecords + $112)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0A5",
+          "end": "0xB0AC",
+          "baseline": [
+            "DrawType31EvenRoomFrame:",
+            "    LDX #$B6",
+            "    LDY #$0C",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType31EvenRoomFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $116)",
+            "    LDY #<(ObjectSpriteFrameRecords + $116)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0AC",
+          "end": "0xB0B8",
+          "baseline": [
+            "DrawWitchSummonSprite:",
+            "    LDX FrameCounterModulo3A",
+            "    BNE SelectWitchSummonModulo3Frame1Or2",
+            "    LDX #$B5",
+            "    LDY #$FC",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawWitchSummonSprite:",
+            "    LDX FrameCounterModulo3A",
+            "    BNE SelectWitchSummonModulo3Frame1Or2",
+            "    LDX #>(ObjectSpriteFrameRecords + $106)",
+            "    LDY #<(ObjectSpriteFrameRecords + $106)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0B8",
+          "end": "0xB0C2",
+          "baseline": [
+            "SelectWitchSummonModulo3Frame1Or2:",
+            "    DEX",
+            "    BNE DrawWitchSummonModulo3Frame2",
+            "    LDX #$B6",
+            "    LDY #$00",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectWitchSummonModulo3Frame1Or2:",
+            "    DEX",
+            "    BNE DrawWitchSummonModulo3Frame2",
+            "    LDX #>(ObjectSpriteFrameRecords + $10A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $10A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0C2",
+          "end": "0xB0C9",
+          "baseline": [
+            "DrawWitchSummonModulo3Frame2:",
+            "    LDX #$B6",
+            "    LDY #$04",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawWitchSummonModulo3Frame2:",
+            "    LDX #>(ObjectSpriteFrameRecords + $10E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $10E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0C9",
+          "end": "0xB0D0",
+          "baseline": [
+            "DrawLiftSprite:",
+            "    LDX #$B6",
+            "    LDY #$18",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawLiftSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $122)",
+            "    LDY #<(ObjectSpriteFrameRecords + $122)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0D0",
+          "end": "0xB0DA",
+          "baseline": [
+            "DrawWideLiftSprite:",
+            "    LDX #$B6",
+            "    LDY #$10",
+            "    JSR DrawFourObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "DrawWideLiftSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $11A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $11A)",
+            "    JSR DrawFourObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB0DA",
+          "end": "0xB0E1",
+          "baseline": [
+            "DrawFloatingPlatformSprite:",
+            "    LDX #$B6",
+            "    LDY #$20",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawFloatingPlatformSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $12A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $12A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0E1",
+          "end": "0xB0E8",
+          "baseline": [
+            "DrawDraggableLiftTopSprite:",
+            "    LDX #$B6",
+            "    LDY #$24",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawDraggableLiftTopSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $12E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $12E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0E8",
+          "end": "0xB0EF",
+          "baseline": [
+            "DrawDraggableLiftBottomSprite:",
+            "    LDX #$B6",
+            "    LDY #$28",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawDraggableLiftBottomSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $132)",
+            "    LDY #<(ObjectSpriteFrameRecords + $132)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB0EF",
+          "end": "0xB104",
+          "baseline": [
+            "DrawKnightArrowSprite:",
+            "    LDA RuntimeObjectY,X",
+            "    SEC",
+            "    SBC #$0B",
+            "    STA RuntimeObjectY,X",
+            "    LDA RuntimeObjectState,X",
+            "    BMI DrawType38NegativeStateSprite",
+            "    LDX #$B6",
+            "    LDY #$2E",
+            "    JSR DrawOneObjectSprite",
+            "    JMP RestoreType38ObjectY"
+          ],
+          "replacement": [
+            "DrawKnightArrowSprite:",
+            "    LDA RuntimeObjectY,X",
+            "    SEC",
+            "    SBC #$0B",
+            "    STA RuntimeObjectY,X",
+            "    LDA RuntimeObjectState,X",
+            "    BMI DrawType38NegativeStateSprite",
+            "    LDX #>(ObjectSpriteFrameRecords + $138)",
+            "    LDY #<(ObjectSpriteFrameRecords + $138)",
+            "    JSR DrawOneObjectSprite",
+            "    JMP RestoreType38ObjectY"
+          ]
+        },
+        {
+          "start": "0xB104",
+          "end": "0xB10B",
+          "baseline": [
+            "DrawType38NegativeStateSprite:",
+            "    LDX #$B6",
+            "    LDY #$2C",
+            "    JSR DrawOneObjectSprite"
+          ],
+          "replacement": [
+            "DrawType38NegativeStateSprite:",
+            "    LDX #>(ObjectSpriteFrameRecords + $136)",
+            "    LDY #<(ObjectSpriteFrameRecords + $136)",
+            "    JSR DrawOneObjectSprite"
+          ]
+        },
+        {
+          "start": "0xB117",
+          "end": "0xB123",
+          "baseline": [
+            "DrawDefeatEffectSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    LSR A",
+            "    BNE SelectType40StatePair1OrLater",
+            "    LDX #$B6",
+            "    LDY #$30",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawDefeatEffectSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    LSR A",
+            "    BNE SelectType40StatePair1OrLater",
+            "    LDX #>(ObjectSpriteFrameRecords + $13A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $13A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB123",
+          "end": "0xB12E",
+          "baseline": [
+            "SelectType40StatePair1OrLater:",
+            "    CMP #$01",
+            "    BNE DrawType40LaterStateFrame",
+            "    LDX #$B6",
+            "    LDY #$34",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType40StatePair1OrLater:",
+            "    CMP #$01",
+            "    BNE DrawType40LaterStateFrame",
+            "    LDX #>(ObjectSpriteFrameRecords + $13E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $13E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB12E",
+          "end": "0xB135",
+          "baseline": [
+            "DrawType40LaterStateFrame:",
+            "    LDX #$B6",
+            "    LDY #$38",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "DrawType40LaterStateFrame:",
+            "    LDX #>(ObjectSpriteFrameRecords + $142)",
+            "    LDY #<(ObjectSpriteFrameRecords + $142)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB135",
+          "end": "0xB145",
+          "baseline": [
+            "DrawCollectedItemEffectSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    CMP #$01",
+            "    BNE SelectType41State2",
+            "    LDX #$B6",
+            "    LDY #$3C",
+            "    JSR DrawOneObjectSprite",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "DrawCollectedItemEffectSprite:",
+            "    LDA RuntimeObjectState,X",
+            "    CMP #$01",
+            "    BNE SelectType41State2",
+            "    LDX #>(ObjectSpriteFrameRecords + $146)",
+            "    LDY #<(ObjectSpriteFrameRecords + $146)",
+            "    JSR DrawOneObjectSprite",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB145",
+          "end": "0xB153",
+          "baseline": [
+            "SelectType41State2:",
+            "    CMP #$02",
+            "    BNE SelectType41State3",
+            "    LDX #$B6",
+            "    LDY #$40",
+            "    JSR DrawOneObjectSprite",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "SelectType41State2:",
+            "    CMP #$02",
+            "    BNE SelectType41State3",
+            "    LDX #>(ObjectSpriteFrameRecords + $14A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $14A)",
+            "    JSR DrawOneObjectSprite",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB153",
+          "end": "0xB161",
+          "baseline": [
+            "SelectType41State3:",
+            "    CMP #$03",
+            "    BNE SelectType41State4",
+            "    LDX #$B6",
+            "    LDY #$44",
+            "    JSR DrawOneObjectSprite",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "SelectType41State3:",
+            "    CMP #$03",
+            "    BNE SelectType41State4",
+            "    LDX #>(ObjectSpriteFrameRecords + $14E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $14E)",
+            "    JSR DrawOneObjectSprite",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB161",
+          "end": "0xB16F",
+          "baseline": [
+            "SelectType41State4:",
+            "    CMP #$04",
+            "    BNE SelectType41CompactState5",
+            "    LDX #$B6",
+            "    LDY #$48",
+            "    JSR DrawOneObjectSprite",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "SelectType41State4:",
+            "    CMP #$04",
+            "    BNE SelectType41CompactState5",
+            "    LDX #>(ObjectSpriteFrameRecords + $152)",
+            "    LDY #<(ObjectSpriteFrameRecords + $152)",
+            "    JSR DrawOneObjectSprite",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB16F",
+          "end": "0xB17D",
+          "baseline": [
+            "SelectType41CompactState5:",
+            "    CMP #$05",
+            "    BNE SelectType41CompactState6",
+            "    LDX #$B6",
+            "    LDY #$3C",
+            "    JSR DrawTwoCompactObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "SelectType41CompactState5:",
+            "    CMP #$05",
+            "    BNE SelectType41CompactState6",
+            "    LDX #>(ObjectSpriteFrameRecords + $146)",
+            "    LDY #<(ObjectSpriteFrameRecords + $146)",
+            "    JSR DrawTwoCompactObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB17D",
+          "end": "0xB18B",
+          "baseline": [
+            "SelectType41CompactState6:",
+            "    CMP #$06",
+            "    BNE SelectType41CompactState7",
+            "    LDX #$B6",
+            "    LDY #$40",
+            "    JSR DrawTwoCompactObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "SelectType41CompactState6:",
+            "    CMP #$06",
+            "    BNE SelectType41CompactState7",
+            "    LDX #>(ObjectSpriteFrameRecords + $14A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $14A)",
+            "    JSR DrawTwoCompactObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB18B",
+          "end": "0xB199",
+          "baseline": [
+            "SelectType41CompactState7:",
+            "    CMP #$07",
+            "    BNE SelectType41CompactState8",
+            "    LDX #$B6",
+            "    LDY #$44",
+            "    JSR DrawTwoCompactObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "SelectType41CompactState7:",
+            "    CMP #$07",
+            "    BNE SelectType41CompactState8",
+            "    LDX #>(ObjectSpriteFrameRecords + $14E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $14E)",
+            "    JSR DrawTwoCompactObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB199",
+          "end": "0xB1A7",
+          "baseline": [
+            "SelectType41CompactState8:",
+            "    CMP #$08",
+            "    BNE SelectType41WideState9",
+            "    LDX #$B6",
+            "    LDY #$48",
+            "    JSR DrawTwoCompactObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ],
+          "replacement": [
+            "SelectType41CompactState8:",
+            "    CMP #$08",
+            "    BNE SelectType41WideState9",
+            "    LDX #>(ObjectSpriteFrameRecords + $152)",
+            "    LDY #<(ObjectSpriteFrameRecords + $152)",
+            "    JSR DrawTwoCompactObjectSprites",
+            "    JMP AdvanceFrameSpriteObject"
+          ]
+        },
+        {
+          "start": "0xB1A7",
+          "end": "0xB1B2",
+          "baseline": [
+            "SelectType41WideState9:",
+            "    CMP #$09",
+            "    BNE SelectType41WideState10",
+            "    LDX #$B6",
+            "    LDY #$3C",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType41WideState9:",
+            "    CMP #$09",
+            "    BNE SelectType41WideState10",
+            "    LDX #>(ObjectSpriteFrameRecords + $146)",
+            "    LDY #<(ObjectSpriteFrameRecords + $146)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB1B2",
+          "end": "0xB1BD",
+          "baseline": [
+            "SelectType41WideState10:",
+            "    CMP #$0A",
+            "    BNE SelectType41WideState11",
+            "    LDX #$B6",
+            "    LDY #$40",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType41WideState10:",
+            "    CMP #$0A",
+            "    BNE SelectType41WideState11",
+            "    LDX #>(ObjectSpriteFrameRecords + $14A)",
+            "    LDY #<(ObjectSpriteFrameRecords + $14A)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB1BD",
+          "end": "0xB1C8",
+          "baseline": [
+            "SelectType41WideState11:",
+            "    CMP #$0B",
+            "    BNE SelectType41WideState12",
+            "    LDX #$B6",
+            "    LDY #$44",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ],
+          "replacement": [
+            "SelectType41WideState11:",
+            "    CMP #$0B",
+            "    BNE SelectType41WideState12",
+            "    LDX #>(ObjectSpriteFrameRecords + $14E)",
+            "    LDY #<(ObjectSpriteFrameRecords + $14E)",
+            "    JMP DrawTwoObjectSpritesAndAdvance"
+          ]
+        },
+        {
+          "start": "0xB1C8",
+          "end": "0xB1D3",
+          "baseline": [
+            "SelectType41WideState12:",
+            "    CMP #$0C",
+            "    BNE FinishType41Sprite",
+            "    LDX #$B6",
+            "    LDY #$48",
+            "    JSR DrawTwoObjectSprites"
+          ],
+          "replacement": [
+            "SelectType41WideState12:",
+            "    CMP #$0C",
+            "    BNE FinishType41Sprite",
+            "    LDX #>(ObjectSpriteFrameRecords + $152)",
+            "    LDY #<(ObjectSpriteFrameRecords + $152)",
+            "    JSR DrawTwoObjectSprites"
+          ]
+        }
+      ]
     },
     {
       "path": "src/rendering/sprites/metasprites.asm",
       "start": "0xB1D6",
       "end": "0xB64C",
-      "title": "Object metasprites and descriptor data"
+      "title": "Object metasprites and descriptor data",
+      "source_replacements": [
+        {
+          "start": "0xB4F2",
+          "end": "0xB64C",
+          "baseline": [
+            "PlayerTransitionMetasprite3:",
+            "    .byte $8A, $02, $8C, $02, $00, $01, $02, $01, $04, $01, $06, $01, $08, $01, $0A, $01",
+            "    .byte $02, $41, $00, $41, $06, $41, $04, $41, $0A, $41, $08, $41, $A8, $01, $AA, $01",
+            "    .byte $AA, $41, $A8, $41, $24, $02, $26, $02, $28, $02, $2A, $02, $2C, $02, $2E, $02",
+            "    .byte $26, $42, $24, $42, $2A, $42, $28, $42, $2E, $42, $2C, $42, $30, $02, $32, $02",
+            "    .byte $32, $42, $34, $02, $34, $42, $36, $02, $36, $42, $38, $02, $38, $42, $3A, $02",
+            "    .byte $3A, $42, $18, $03, $1A, $03, $1C, $03, $1E, $03, $20, $03, $22, $03, $1A, $43",
+            "    .byte $18, $43, $1E, $43, $1C, $43, $22, $43, $20, $43, $0C, $00, $0E, $00, $10, $00",
+            "    .byte $12, $00, $14, $00, $16, $00, $AC, $00, $AE, $00, $0E, $40, $0C, $40, $12, $40",
+            "    .byte $10, $40, $16, $40, $14, $40, $AE, $40, $AC, $40, $48, $01, $4A, $01, $4C, $01",
+            "    .byte $4E, $01, $50, $01, $52, $01, $4A, $41, $48, $41, $4E, $41, $4C, $41, $52, $41",
+            "    .byte $50, $41, $54, $02, $56, $02, $58, $02, $5A, $02, $5C, $02, $5E, $02, $56, $42",
+            "    .byte $54, $42, $5A, $42, $58, $42, $5E, $42, $5C, $42, $F6, $02, $F8, $02, $D8, $00",
+            "    .byte $D8, $01, $D8, $02, $DA, $02, $DA, $00, $DA, $01, $82, $00, $82, $40, $6C, $01",
+            "    .byte $6C, $41, $74, $01, $76, $01, $70, $03, $72, $03, $6E, $01, $6E, $C1, $7C, $03",
+            "    .byte $7E, $03, $60, $01, $62, $01, $78, $01, $7A, $01, $64, $00, $66, $00, $68, $00",
+            "    .byte $6A, $00, $D0, $00, $D0, $40, $D2, $01, $D2, $41, $CC, $01, $CE, $01, $68, $00",
+            "    .byte $6A, $00, $68, $00, $6A, $00, $68, $00, $6A, $00, $B4, $03, $B6, $03, $B8, $03",
+            "    .byte $BA, $03, $BC, $03, $BE, $03, $FE, $01, $FE, $41, $FE, $41, $FE, $01, $84, $00",
+            "    .byte $86, $00, $D6, $00, $F2, $00, $88, $00, $D4, $00, $8A, $03, $8C, $00, $8E, $03",
+            "    .byte $8E, $43, $E2, $00, $E2, $40, $E4, $00, $E4, $40, $C8, $03, $C8, $43, $DC, $01",
+            "    .byte $DC, $41, $DE, $01, $DE, $41, $E0, $01, $E0, $41, $E8, $00, $E6, $00, $EA, $00",
+            "    .byte $E6, $00, $EC, $00, $E6, $00, $EE, $00, $E6, $00"
+          ],
+          "replacement": [
+            "PlayerTransitionMetasprite3:",
+            "    .byte $8A, $02, $8C, $02",
+            "; Object sprite frame records; the Draw*Sprite selectors pass their addresses in X:Y",
+            "ObjectSpriteFrameRecords:",
+            "    .byte $00, $01, $02, $01, $04, $01, $06, $01, $08, $01, $0A, $01, $02, $41, $00, $41",
+            "    .byte $06, $41, $04, $41, $0A, $41, $08, $41, $A8, $01, $AA, $01, $AA, $41, $A8, $41",
+            "    .byte $24, $02, $26, $02, $28, $02, $2A, $02, $2C, $02, $2E, $02, $26, $42, $24, $42",
+            "    .byte $2A, $42, $28, $42, $2E, $42, $2C, $42, $30, $02, $32, $02, $32, $42, $34, $02",
+            "    .byte $34, $42, $36, $02, $36, $42, $38, $02, $38, $42, $3A, $02, $3A, $42, $18, $03",
+            "    .byte $1A, $03, $1C, $03, $1E, $03, $20, $03, $22, $03, $1A, $43, $18, $43, $1E, $43",
+            "    .byte $1C, $43, $22, $43, $20, $43, $0C, $00, $0E, $00, $10, $00, $12, $00, $14, $00",
+            "    .byte $16, $00, $AC, $00, $AE, $00, $0E, $40, $0C, $40, $12, $40, $10, $40, $16, $40",
+            "    .byte $14, $40, $AE, $40, $AC, $40, $48, $01, $4A, $01, $4C, $01, $4E, $01, $50, $01",
+            "    .byte $52, $01, $4A, $41, $48, $41, $4E, $41, $4C, $41, $52, $41, $50, $41, $54, $02",
+            "    .byte $56, $02, $58, $02, $5A, $02, $5C, $02, $5E, $02, $56, $42, $54, $42, $5A, $42",
+            "    .byte $58, $42, $5E, $42, $5C, $42, $F6, $02, $F8, $02, $D8, $00, $D8, $01, $D8, $02",
+            "    .byte $DA, $02, $DA, $00, $DA, $01, $82, $00, $82, $40, $6C, $01, $6C, $41, $74, $01",
+            "    .byte $76, $01, $70, $03, $72, $03, $6E, $01, $6E, $C1, $7C, $03, $7E, $03, $60, $01",
+            "    .byte $62, $01, $78, $01, $7A, $01, $64, $00, $66, $00, $68, $00, $6A, $00, $D0, $00",
+            "    .byte $D0, $40, $D2, $01, $D2, $41, $CC, $01, $CE, $01, $68, $00, $6A, $00, $68, $00",
+            "    .byte $6A, $00, $68, $00, $6A, $00, $B4, $03, $B6, $03, $B8, $03, $BA, $03, $BC, $03",
+            "    .byte $BE, $03, $FE, $01, $FE, $41, $FE, $41, $FE, $01, $84, $00, $86, $00, $D6, $00",
+            "    .byte $F2, $00, $88, $00, $D4, $00, $8A, $03, $8C, $00, $8E, $03, $8E, $43, $E2, $00",
+            "    .byte $E2, $40, $E4, $00, $E4, $40, $C8, $03, $C8, $43, $DC, $01, $DC, $41, $DE, $01",
+            "    .byte $DE, $41, $E0, $01, $E0, $41, $E8, $00, $E6, $00, $EA, $00, $E6, $00, $EC, $00",
+            "    .byte $E6, $00, $EE, $00, $E6, $00"
+          ]
+        }
+      ]
     },
     {
       "path": "src/rendering/scenes.asm",
@@ -948,7 +3120,338 @@
       "path": "src/audio/music_engine.asm",
       "start": "0xB875",
       "end": "0xC20D",
-      "title": "Music selection, stream engine, tables, and MML data"
+      "title": "Music selection, stream engine, tables, and MML data",
+      "source_replacements": [
+        {
+          "start": "0xB8C6",
+          "end": "0xB8CE",
+          "baseline": [
+            "AudioTrackTable:",
+            "    .byte $E7, $BB, $3F, $BC, $EE, $BC, $BF, $BB"
+          ],
+          "replacement": [
+            "AudioTrackTable:",
+            "    .addr MusicMmlData",
+            "    .addr Track0Pulse2MusicStream",
+            "    .addr Track0TriangleMusicStream",
+            "    .byte $BF, $BB"
+          ]
+        },
+        {
+          "start": "0xB8CE",
+          "end": "0xB8D6",
+          "baseline": [
+            "AudioTrackSet1Record:",
+            "    .byte $4F, $BD, $80, $BD, $B9, $BD, $BF, $BB"
+          ],
+          "replacement": [
+            "AudioTrackSet1Record:",
+            "    .addr Track1Pulse1MusicStream",
+            "    .addr Track1Pulse2MusicStream",
+            "    .addr Track1TriangleMusicStream",
+            "    .byte $BF, $BB"
+          ]
+        },
+        {
+          "start": "0xB8D6",
+          "end": "0xB8DE",
+          "baseline": [
+            "AudioTrackSet2Record:",
+            "    .byte $F4, $BD, $F4, $BD, $38, $BE, $A9, $A9"
+          ],
+          "replacement": [
+            "AudioTrackSet2Record:",
+            "    .addr Track2PulseMusicStream",
+            "    .addr Track2PulseMusicStream",
+            "    .addr Track2TriangleMusicStream",
+            "    .byte $A9, $A9"
+          ]
+        },
+        {
+          "start": "0xB8DE",
+          "end": "0xB8E6",
+          "baseline": [
+            "AudioTrackSet3Record:",
+            "    .byte $5D, $BE, $BC, $BE, $1B, $BF, $2F, $2B"
+          ],
+          "replacement": [
+            "AudioTrackSet3Record:",
+            "    .addr Track3Pulse1MusicStream",
+            "    .addr Track3Pulse2MusicStream",
+            "    .addr Track3TriangleMusicStream",
+            "    .byte $2F, $2B"
+          ]
+        },
+        {
+          "start": "0xB8E6",
+          "end": "0xB8EE",
+          "baseline": [
+            "AudioTrackSet4Record:",
+            "    .byte $92, $BF, $FB, $BF, $5D, $C0, $3F, $3B"
+          ],
+          "replacement": [
+            "AudioTrackSet4Record:",
+            "    .addr Track4Pulse1MusicStream",
+            "    .addr Track4Pulse2MusicStream",
+            "    .addr Track4TriangleMusicStream",
+            "    .byte $3F, $3B"
+          ]
+        },
+        {
+          "start": "0xB8EE",
+          "end": "0xB8F6",
+          "baseline": [
+            "AudioTrackSet5Record:",
+            "    .byte $A1, $C0, $DE, $C0, $17, $C1, $3F, $BB"
+          ],
+          "replacement": [
+            "AudioTrackSet5Record:",
+            "    .addr Track5Pulse1MusicStream",
+            "    .addr Track5Pulse2MusicStream",
+            "    .addr Track5TriangleMusicStream",
+            "    .byte $3F, $BB"
+          ]
+        },
+        {
+          "start": "0xB8F6",
+          "end": "0xB8FE",
+          "baseline": [
+            "AudioTrackSet6Record:",
+            "    .byte $00, $00, $58, $C1, $58, $C1, $02, $02"
+          ],
+          "replacement": [
+            "AudioTrackSet6Record:",
+            "    .word $0000",
+            "    .addr SharedTrack6And7MusicStream",
+            "    .addr SharedTrack6And7MusicStream",
+            "    .byte $02, $02"
+          ]
+        },
+        {
+          "start": "0xB8FE",
+          "end": "0xB906",
+          "baseline": [
+            "AudioTrackSet7Record:",
+            "    .byte $58, $C1, $85, $C1, $C2, $C1, $7F, $7F"
+          ],
+          "replacement": [
+            "AudioTrackSet7Record:",
+            "    .addr SharedTrack6And7MusicStream",
+            "    .addr Track7Pulse2MusicStream",
+            "    .addr Track7TriangleMusicStream",
+            "    .byte $7F, $7F"
+          ]
+        },
+        {
+          "start": "0xBBE7",
+          "end": "0xBC3F",
+          "baseline": [
+            "MusicMmlData:",
+            "    .byte $74, $35, $76, $39, $6C, $38, $6F, $34, $63, $65, $67, $65, $66, $64, $67, $67",
+            "    .byte $63, $65, $67, $65, $66, $64, $67, $72, $38, $63, $65, $67, $65, $66, $64, $67",
+            "    .byte $67, $63, $65, $67, $65, $66, $64, $63, $38, $72, $38, $6F, $36, $63, $6F, $35",
+            "    .byte $62, $61, $67, $61, $67, $67, $67, $67, $66, $66, $66, $66, $65, $67, $72, $38",
+            "    .byte $6F, $36, $63, $6F, $35, $62, $61, $67, $61, $67, $67, $67, $67, $66, $65, $64",
+            "    .byte $63, $65, $63, $72, $38, $00, $E7, $BB"
+          ],
+          "replacement": [
+            "MusicMmlData:",
+            "    .byte $74, $35, $76, $39, $6C, $38, $6F, $34, $63, $65, $67, $65, $66, $64, $67, $67",
+            "    .byte $63, $65, $67, $65, $66, $64, $67, $72, $38, $63, $65, $67, $65, $66, $64, $67",
+            "    .byte $67, $63, $65, $67, $65, $66, $64, $63, $38, $72, $38, $6F, $36, $63, $6F, $35",
+            "    .byte $62, $61, $67, $61, $67, $67, $67, $67, $66, $66, $66, $66, $65, $67, $72, $38",
+            "    .byte $6F, $36, $63, $6F, $35, $62, $61, $67, $61, $67, $67, $67, $67, $66, $65, $64",
+            "    .byte $63, $65, $63, $72, $38, $00",
+            "    .addr MusicMmlData"
+          ]
+        },
+        {
+          "start": "0xBC3F",
+          "end": "0xBCEE",
+          "baseline": [
+            "Track0Pulse2MusicStream:",
+            "    .byte $76, $39, $6C, $40, $6F, $34, $65, $67, $63, $67, $6F, $35, $63, $6F, $34, $67",
+            "    .byte $6F, $35, $65, $63, $64, $63, $6F, $34, $62, $61, $67, $66, $65, $64, $65, $67",
+            "    .byte $63, $67, $6F, $35, $63, $6F, $34, $67, $6F, $35, $65, $63, $64, $63, $6F, $34",
+            "    .byte $62, $61, $67, $38, $72, $38, $65, $67, $63, $67, $6F, $35, $63, $6F, $34, $67",
+            "    .byte $6F, $35, $65, $63, $64, $63, $6F, $34, $62, $61, $67, $66, $65, $64, $65, $67",
+            "    .byte $63, $67, $6F, $35, $63, $6F, $34, $67, $6F, $35, $65, $63, $64, $6F, $34, $67",
+            "    .byte $61, $62, $6F, $35, $63, $38, $72, $38, $6F, $34, $63, $67, $65, $67, $64, $67",
+            "    .byte $63, $67, $64, $67, $63, $67, $65, $67, $63, $67, $65, $67, $66, $62, $64, $62",
+            "    .byte $66, $62, $64, $66, $65, $67, $63, $67, $65, $67, $63, $67, $65, $67, $64, $67",
+            "    .byte $63, $67, $64, $67, $63, $67, $65, $67, $63, $67, $64, $67, $64, $67, $65, $67",
+            "    .byte $64, $67, $65, $67, $63, $67, $6F, $35, $63, $38, $72, $38, $00, $3F, $BC"
+          ],
+          "replacement": [
+            "Track0Pulse2MusicStream:",
+            "    .byte $76, $39, $6C, $40, $6F, $34, $65, $67, $63, $67, $6F, $35, $63, $6F, $34, $67",
+            "    .byte $6F, $35, $65, $63, $64, $63, $6F, $34, $62, $61, $67, $66, $65, $64, $65, $67",
+            "    .byte $63, $67, $6F, $35, $63, $6F, $34, $67, $6F, $35, $65, $63, $64, $63, $6F, $34",
+            "    .byte $62, $61, $67, $38, $72, $38, $65, $67, $63, $67, $6F, $35, $63, $6F, $34, $67",
+            "    .byte $6F, $35, $65, $63, $64, $63, $6F, $34, $62, $61, $67, $66, $65, $64, $65, $67",
+            "    .byte $63, $67, $6F, $35, $63, $6F, $34, $67, $6F, $35, $65, $63, $64, $6F, $34, $67",
+            "    .byte $61, $62, $6F, $35, $63, $38, $72, $38, $6F, $34, $63, $67, $65, $67, $64, $67",
+            "    .byte $63, $67, $64, $67, $63, $67, $65, $67, $63, $67, $65, $67, $66, $62, $64, $62",
+            "    .byte $66, $62, $64, $66, $65, $67, $63, $67, $65, $67, $63, $67, $65, $67, $64, $67",
+            "    .byte $63, $67, $64, $67, $63, $67, $65, $67, $63, $67, $64, $67, $64, $67, $65, $67",
+            "    .byte $64, $67, $65, $67, $63, $67, $6F, $35, $63, $38, $72, $38, $00",
+            "    .addr Track0Pulse2MusicStream"
+          ]
+        },
+        {
+          "start": "0xBCEE",
+          "end": "0xBD4F",
+          "baseline": [
+            "Track0TriangleMusicStream:",
+            "    .byte $6C, $38, $6F, $34, $63, $6F, $33, $67, $65, $67, $64, $66, $67, $62, $6F, $34",
+            "    .byte $63, $6F, $33, $67, $65, $67, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67",
+            "    .byte $65, $67, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67, $65, $67, $67, $62",
+            "    .byte $6F, $34, $63, $38, $72, $38, $6F, $33, $67, $67, $66, $65, $66, $65, $65, $65",
+            "    .byte $65, $64, $64, $64, $64, $63, $65, $72, $38, $67, $67, $66, $65, $66, $65, $65",
+            "    .byte $65, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67, $63, $72, $38, $00, $EE",
+            "    .byte $BC"
+          ],
+          "replacement": [
+            "Track0TriangleMusicStream:",
+            "    .byte $6C, $38, $6F, $34, $63, $6F, $33, $67, $65, $67, $64, $66, $67, $62, $6F, $34",
+            "    .byte $63, $6F, $33, $67, $65, $67, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67",
+            "    .byte $65, $67, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67, $65, $67, $67, $62",
+            "    .byte $6F, $34, $63, $38, $72, $38, $6F, $33, $67, $67, $66, $65, $66, $65, $65, $65",
+            "    .byte $65, $64, $64, $64, $64, $63, $65, $72, $38, $67, $67, $66, $65, $66, $65, $65",
+            "    .byte $65, $64, $66, $67, $62, $6F, $34, $63, $6F, $33, $67, $63, $72, $38, $00",
+            "    .addr Track0TriangleMusicStream"
+          ]
+        },
+        {
+          "start": "0xBD4F",
+          "end": "0xBD80",
+          "baseline": [
+            "Track1Pulse1MusicStream:",
+            "    .byte $74, $30, $6C, $38, $6F, $35, $63, $34, $65, $63, $64, $6F, $34, $67, $67, $34",
+            "    .byte $6F, $35, $63, $34, $65, $63, $64, $67, $67, $34, $63, $34, $65, $63, $64, $6F",
+            "    .byte $34, $67, $67, $34, $6F, $35, $63, $34, $65, $63, $64, $65, $63, $34, $00, $4F",
+            "    .byte $BD"
+          ],
+          "replacement": [
+            "Track1Pulse1MusicStream:",
+            "    .byte $74, $30, $6C, $38, $6F, $35, $63, $34, $65, $63, $64, $6F, $34, $67, $67, $34",
+            "    .byte $6F, $35, $63, $34, $65, $63, $64, $67, $67, $34, $63, $34, $65, $63, $64, $6F",
+            "    .byte $34, $67, $67, $34, $6F, $35, $63, $34, $65, $63, $64, $65, $63, $34, $00",
+            "    .addr Track1Pulse1MusicStream"
+          ]
+        },
+        {
+          "start": "0xBD80",
+          "end": "0xBDB9",
+          "baseline": [
+            "Track1Pulse2MusicStream:",
+            "    .byte $6C, $38, $76, $64, $6F, $34, $65, $67, $6F, $35, $63, $6F, $34, $67, $64, $67",
+            "    .byte $62, $67, $65, $67, $6F, $35, $63, $6F, $34, $67, $66, $67, $62, $67, $65, $67",
+            "    .byte $6F, $35, $63, $6F, $34, $67, $64, $67, $62, $67, $65, $67, $6F, $35, $63, $6F",
+            "    .byte $34, $67, $66, $67, $65, $34, $00, $80, $BD"
+          ],
+          "replacement": [
+            "Track1Pulse2MusicStream:",
+            "    .byte $6C, $38, $76, $64, $6F, $34, $65, $67, $6F, $35, $63, $6F, $34, $67, $64, $67",
+            "    .byte $62, $67, $65, $67, $6F, $35, $63, $6F, $34, $67, $66, $67, $62, $67, $65, $67",
+            "    .byte $6F, $35, $63, $6F, $34, $67, $64, $67, $62, $67, $65, $67, $6F, $35, $63, $6F",
+            "    .byte $34, $67, $66, $67, $65, $34, $00",
+            "    .addr Track1Pulse2MusicStream"
+          ]
+        },
+        {
+          "start": "0xBDB9",
+          "end": "0xBDF4",
+          "baseline": [
+            "Track1TriangleMusicStream:",
+            "    .byte $6C, $38, $6F, $34, $63, $6F, $33, $67, $63, $65, $66, $67, $64, $62, $6F, $34",
+            "    .byte $63, $6F, $33, $65, $67, $6F, $34, $63, $6F, $33, $62, $67, $66, $64, $63, $67",
+            "    .byte $65, $67, $66, $67, $61, $62, $6F, $34, $63, $6F, $33, $65, $67, $6F, $34, $63",
+            "    .byte $6F, $33, $62, $67, $6F, $34, $63, $34, $00, $B9, $BD"
+          ],
+          "replacement": [
+            "Track1TriangleMusicStream:",
+            "    .byte $6C, $38, $6F, $34, $63, $6F, $33, $67, $63, $65, $66, $67, $64, $62, $6F, $34",
+            "    .byte $63, $6F, $33, $65, $67, $6F, $34, $63, $6F, $33, $62, $67, $66, $64, $63, $67",
+            "    .byte $65, $67, $66, $67, $61, $62, $6F, $34, $63, $6F, $33, $65, $67, $6F, $34, $63",
+            "    .byte $6F, $33, $62, $67, $6F, $34, $63, $34, $00",
+            "    .addr Track1TriangleMusicStream"
+          ]
+        },
+        {
+          "start": "0xBE5D",
+          "end": "0xBEBC",
+          "baseline": [
+            "Track3Pulse1MusicStream:",
+            "    .byte $74, $32, $6C, $38, $6F, $34, $67, $34, $62, $67, $66, $34, $61, $66, $67, $34",
+            "    .byte $62, $67, $61, $6F, $35, $64, $64, $34, $6F, $34, $67, $34, $62, $67, $66, $34",
+            "    .byte $61, $66, $67, $62, $6F, $35, $65, $64, $72, $32, $63, $34, $65, $63, $6F, $34",
+            "    .byte $62, $2D, $34, $6F, $35, $64, $6F, $34, $62, $2D, $6F, $35, $63, $34, $65, $63",
+            "    .byte $64, $67, $67, $34, $63, $34, $65, $63, $6F, $34, $62, $2D, $34, $6F, $35, $64",
+            "    .byte $6F, $34, $62, $2D, $6F, $35, $63, $65, $61, $67, $72, $32, $00, $5D, $BE"
+          ],
+          "replacement": [
+            "Track3Pulse1MusicStream:",
+            "    .byte $74, $32, $6C, $38, $6F, $34, $67, $34, $62, $67, $66, $34, $61, $66, $67, $34",
+            "    .byte $62, $67, $61, $6F, $35, $64, $64, $34, $6F, $34, $67, $34, $62, $67, $66, $34",
+            "    .byte $61, $66, $67, $62, $6F, $35, $65, $64, $72, $32, $63, $34, $65, $63, $6F, $34",
+            "    .byte $62, $2D, $34, $6F, $35, $64, $6F, $34, $62, $2D, $6F, $35, $63, $34, $65, $63",
+            "    .byte $64, $67, $67, $34, $63, $34, $65, $63, $6F, $34, $62, $2D, $34, $6F, $35, $64",
+            "    .byte $6F, $34, $62, $2D, $6F, $35, $63, $65, $61, $67, $72, $32, $00",
+            "    .addr Track3Pulse1MusicStream"
+          ]
+        },
+        {
+          "start": "0xBEBC",
+          "end": "0xBF1B",
+          "baseline": [
+            "Track3Pulse2MusicStream:",
+            "    .byte $6C, $38, $6F, $33, $62, $34, $6F, $34, $64, $6F, $33, $62, $61, $34, $6F, $34",
+            "    .byte $63, $6F, $33, $61, $62, $34, $6F, $34, $64, $6F, $33, $62, $6F, $34, $64, $6F",
+            "    .byte $33, $61, $61, $34, $62, $34, $6F, $34, $64, $6F, $33, $62, $61, $34, $6F, $34",
+            "    .byte $63, $6F, $33, $61, $62, $6F, $34, $64, $61, $67, $72, $32, $65, $34, $67, $65",
+            "    .byte $64, $34, $66, $64, $65, $34, $67, $65, $67, $64, $64, $34, $65, $34, $67, $65",
+            "    .byte $64, $34, $66, $64, $65, $67, $6F, $35, $64, $63, $72, $32, $00, $BC, $BE"
+          ],
+          "replacement": [
+            "Track3Pulse2MusicStream:",
+            "    .byte $6C, $38, $6F, $33, $62, $34, $6F, $34, $64, $6F, $33, $62, $61, $34, $6F, $34",
+            "    .byte $63, $6F, $33, $61, $62, $34, $6F, $34, $64, $6F, $33, $62, $6F, $34, $64, $6F",
+            "    .byte $33, $61, $61, $34, $62, $34, $6F, $34, $64, $6F, $33, $62, $61, $34, $6F, $34",
+            "    .byte $63, $6F, $33, $61, $62, $6F, $34, $64, $61, $67, $72, $32, $65, $34, $67, $65",
+            "    .byte $64, $34, $66, $64, $65, $34, $67, $65, $67, $64, $64, $34, $65, $34, $67, $65",
+            "    .byte $64, $34, $66, $64, $65, $67, $6F, $35, $64, $63, $72, $32, $00",
+            "    .addr Track3Pulse2MusicStream"
+          ]
+        },
+        {
+          "start": "0xBF1B",
+          "end": "0xBF92",
+          "baseline": [
+            "Track3TriangleMusicStream:",
+            "    .byte $6C, $38, $6F, $33, $67, $34, $64, $67, $66, $34, $63, $66, $67, $34, $64, $67",
+            "    .byte $66, $34, $64, $66, $67, $34, $64, $67, $66, $34, $63, $66, $67, $64, $6F, $34",
+            "    .byte $63, $6F, $33, $62, $72, $38, $6F, $32, $67, $72, $38, $67, $6F, $34, $63, $34",
+            "    .byte $6F, $33, $67, $6F, $34, $63, $6F, $33, $62, $2D, $34, $66, $62, $2D, $6F, $34",
+            "    .byte $63, $34, $6F, $33, $67, $6F, $34, $63, $6F, $33, $62, $2D, $34, $66, $62, $2D",
+            "    .byte $6F, $34, $63, $34, $6F, $33, $67, $6F, $34, $63, $6F, $33, $62, $2D, $34, $66",
+            "    .byte $62, $2D, $6F, $34, $63, $6F, $33, $67, $6F, $34, $66, $65, $72, $38, $6F, $32",
+            "    .byte $63, $72, $38, $63, $00, $1B, $BF"
+          ],
+          "replacement": [
+            "Track3TriangleMusicStream:",
+            "    .byte $6C, $38, $6F, $33, $67, $34, $64, $67, $66, $34, $63, $66, $67, $34, $64, $67",
+            "    .byte $66, $34, $64, $66, $67, $34, $64, $67, $66, $34, $63, $66, $67, $64, $6F, $34",
+            "    .byte $63, $6F, $33, $62, $72, $38, $6F, $32, $67, $72, $38, $67, $6F, $34, $63, $34",
+            "    .byte $6F, $33, $67, $6F, $34, $63, $6F, $33, $62, $2D, $34, $66, $62, $2D, $6F, $34",
+            "    .byte $63, $34, $6F, $33, $67, $6F, $34, $63, $6F, $33, $62, $2D, $34, $66, $62, $2D",
+            "    .byte $6F, $34, $63, $34, $6F, $33, $67, $6F, $34, $63, $6F, $33, $62, $2D, $34, $66",
+            "    .byte $62, $2D, $6F, $34, $63, $6F, $33, $67, $6F, $34, $66, $65, $72, $38, $6F, $32",
+            "    .byte $63, $72, $38, $63, $00",
+            "    .addr Track3TriangleMusicStream"
+          ]
+        }
+      ]
     },
     {
       "path": "src/audio/sound_effects.asm",
@@ -973,6 +3476,76 @@
           "replacement": [
             "TitlePaletteData:",
             "    .incbin RevisionTitlePaletteAsset"
+          ]
+        },
+        {
+          "start": "0xC88E",
+          "end": "0xC8A5",
+          "baseline": [
+            "NmiTaskHandlerHighBytes:",
+            "    .byte $C8, $C8, $C9, $CB, $CC, $CD, $CF, $D0, $D1, $D2, $D4, $D5, $D6, $D7, $D9, $DA",
+            "    .byte $DB, $DC, $DE, $DF, $E0, $E1, $E3"
+          ],
+          "replacement": [
+            "NmiTaskHandlerHighBytes:",
+            "    .byte >UploadStatusTiles  ; task $00",
+            "    .byte >UploadRoomCellRow00  ; task $01",
+            "    .byte >UploadRoomCellRow01  ; task $02",
+            "    .byte >UploadRoomCellRow02  ; task $03",
+            "    .byte >UploadRoomCellRow03  ; task $04",
+            "    .byte >UploadRoomCellRow04  ; task $05",
+            "    .byte >UploadRoomCellRow05  ; task $06",
+            "    .byte >UploadRoomCellRow06  ; task $07",
+            "    .byte >UploadRoomCellRow07  ; task $08",
+            "    .byte >UploadRoomCellRow08  ; task $09",
+            "    .byte >UploadRoomCellRow09  ; task $0A",
+            "    .byte >UploadRoomCellRow10  ; task $0B",
+            "    .byte >UploadRoomCellRow11  ; task $0C",
+            "    .byte >UploadRoomCellRow12  ; task $0D",
+            "    .byte >UploadRoomCellRow13  ; task $0E",
+            "    .byte >UploadRoomCellRow14  ; task $0F",
+            "    .byte >UploadRoomCellRow15  ; task $10",
+            "    .byte >UploadRoomCellRow16  ; task $11",
+            "    .byte >UploadRoomCellRow17  ; task $12",
+            "    .byte >UploadRoomCellRow18  ; task $13",
+            "    .byte >UploadRoomCellRow19  ; task $14",
+            "    .byte >UploadLeftRoomAttributesTask  ; task $15",
+            "    .byte >UploadRightRoomAttributesTask  ; task $16"
+          ]
+        },
+        {
+          "start": "0xC8A5",
+          "end": "0xC8BC",
+          "baseline": [
+            "NmiTaskHandlerLowBytes:",
+            "    .byte $04, $BC, $FF, $42, $85, $C8, $0B, $4E, $91, $D4, $17, $5A, $9D, $E0, $23, $66",
+            "    .byte $A9, $EC, $2F, $72, $B5, $F8, $58"
+          ],
+          "replacement": [
+            "NmiTaskHandlerLowBytes:",
+            "    .byte <UploadStatusTiles  ; task $00",
+            "    .byte <UploadRoomCellRow00  ; task $01",
+            "    .byte <UploadRoomCellRow01  ; task $02",
+            "    .byte <UploadRoomCellRow02  ; task $03",
+            "    .byte <UploadRoomCellRow03  ; task $04",
+            "    .byte <UploadRoomCellRow04  ; task $05",
+            "    .byte <UploadRoomCellRow05  ; task $06",
+            "    .byte <UploadRoomCellRow06  ; task $07",
+            "    .byte <UploadRoomCellRow07  ; task $08",
+            "    .byte <UploadRoomCellRow08  ; task $09",
+            "    .byte <UploadRoomCellRow09  ; task $0A",
+            "    .byte <UploadRoomCellRow10  ; task $0B",
+            "    .byte <UploadRoomCellRow11  ; task $0C",
+            "    .byte <UploadRoomCellRow12  ; task $0D",
+            "    .byte <UploadRoomCellRow13  ; task $0E",
+            "    .byte <UploadRoomCellRow14  ; task $0F",
+            "    .byte <UploadRoomCellRow15  ; task $10",
+            "    .byte <UploadRoomCellRow16  ; task $11",
+            "    .byte <UploadRoomCellRow17  ; task $12",
+            "    .byte <UploadRoomCellRow18  ; task $13",
+            "    .byte <UploadRoomCellRow19  ; task $14",
+            "    .byte <UploadLeftRoomAttributesTask  ; task $15",
+            "    .byte <UploadRightRoomAttributesTask  ; task $16"
           ]
         }
       ]
@@ -1223,7 +3796,28 @@
       "start": "0xFEE8",
       "end": "0x10000",
       "title": "Fixed PRG tail, room tile tables, and interrupt vectors",
-      "size_exception": "The short fixed-layout tail must remain adjacent to the vectors at the end of PRG."
+      "size_exception": "The short fixed-layout tail must remain adjacent to the vectors at the end of PRG.",
+      "source_replacements": [
+        {
+          "start": "0xFEE8",
+          "end": "0xFF30",
+          "baseline": [
+            "PaddingBeforeTileTables:",
+            "    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF",
+            "    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF",
+            "    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF",
+            "    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF",
+            "    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF"
+          ],
+          "replacement": [
+            "PaddingBeforeTileTables:",
+            "; Pad with $FF up to the fixed tile tables at PrgTileTablesAddress; the",
+            "; original padding is $48 bytes, and a negative count fails the build when the",
+            "; code before it grows past the space",
+            "    .res PrgStart + (PrgTileTablesAddress - PrgBaseAddress) - *, $FF"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -4,11 +4,10 @@
 ; Keep byte-identical through make verify
 
 PaddingBeforeTileTables:
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
+; Pad with $FF up to the fixed tile tables at PrgTileTablesAddress; the
+; original padding is $48 bytes, and a negative count fails the build when the
+; code before it grows past the space
+    .res PrgStart + (PrgTileTablesAddress - PrgBaseAddress) - *, $FF
 
 LeftTileByCell:
     .byte $02, $02, $05, $05, $05, $05, $FF, $02, $00, $02, $06, $FF, $02, $07, $25, $27

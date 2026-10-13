@@ -229,9 +229,45 @@ DrawPlayerLeftActionSprite:
 ObjectSpriteHandlerPointers = * + 2  ; overlapping entry $AD93
     STA OamStagingBuffer + $0A
     RTS
-    .byte $E7, $AD, $08, $AE, $12, $AE, $19, $AE, $75, $AE, $BB, $AE, $1E, $AF, $6A, $AF
-    .byte $B0, $AF, $F4, $AF, $FB, $AF, $02, $B0, $09, $B0, $10, $B0, $17, $B0, $2B, $B0
-    .byte $35, $B0, $3C, $B0, $43, $B0, $4A, $B0, $51, $B0, $58, $B0, $5F, $B0, $66, $B0
-    .byte $6D, $B0, $74, $B0, $7B, $B0, $82, $B0, $89, $B0, $89, $B0, $90, $B0, $AC, $B0
-    .byte $C9, $B0, $D0, $B0, $DA, $B0, $E1, $B0, $E8, $B0, $EF, $B0, $14, $B1, $17, $B1
-    .byte $35, $B1
+; Entries for types $81-$A9; entry 0 overlaps the STA operand above and is never used
+    .addr DrawFairySprite  ; $81 Fairy
+    .addr DrawPrincessSprite  ; $82 Princess
+    .addr DrawOxygenTankSprite  ; $83 ItemOxygenTank
+    .addr DrawFighterSprite  ; $84 EnemyFighter
+    .addr DrawBishopSprite  ; $85 EnemyBishop
+    .addr DrawDevilFlowerSprite  ; $86 EnemyDevilFlower
+    .addr DrawKnightSprite  ; $87 EnemyKnight
+    .addr DrawWitchSprite  ; $88 EnemyWitch
+    .addr DrawFlameSprite  ; $89 EnemyFlame
+    .addr DrawJarSprite  ; $8A ObjectJar
+    .addr DrawBrickSprite  ; $8B ObjectBrick
+    .addr DrawBlockSprite  ; $8C ObjectBlock
+    .addr DrawBarrelSprite  ; $8D ObjectBarrel
+    .addr DrawPulleySprite  ; $8E ObjectPulley
+    .addr DrawCandleSprite  ; $8F ObjectCandle
+    .addr DrawDarkBlueKeySprite  ; $90 ItemDarkBlueKey
+    .addr DrawRedKeySprite  ; $91 ItemRedKey
+    .addr DrawPinkKeySprite  ; $92 ItemPinkKey
+    .addr DrawGreenKeySprite  ; $93 ItemGreenKey
+    .addr DrawBlueKeySprite  ; $94 ItemBlueKey
+    .addr DrawYellowKeySprite  ; $95 ItemYellowKey
+    .addr DrawCastleMapSprite  ; $96 ItemCastleMap
+    .addr DrawPotionSprite  ; $97 ItemPotion
+    .addr DrawCrossSprite  ; $98 ItemCross
+    .addr DrawRingSprite  ; $99 ItemRing
+    .addr DrawMoneyBagSprite  ; $9A ItemMoneyBag
+    .addr DrawRuntimeObjectType27Sprite  ; $9B
+    .addr DrawRuntimeObjectType28Sprite  ; $9C
+    .addr DrawRuntimeObjectType29Or30Sprite  ; $9D
+    .addr DrawRuntimeObjectType29Or30Sprite  ; $9E
+    .addr DrawPowerLightSprite  ; $9F ItemPowerLight
+    .addr DrawWitchSummonSprite  ; $A0 WitchSummon
+    .addr DrawLiftSprite  ; $A1 ObjectLift
+    .addr DrawWideLiftSprite  ; $A2 ObjectLiftWide
+    .addr DrawFloatingPlatformSprite  ; $A3 ObjectFloatingPlatform
+    .addr DrawDraggableLiftTopSprite  ; $A4 ObjectDraggableLiftTop
+    .addr DrawDraggableLiftBottomSprite  ; $A5 ObjectDraggableLiftBottom
+    .addr DrawKnightArrowSprite  ; $A6 ObjectKnightArrow
+    .addr DrawRuntimeObjectType39Sprite  ; $A7
+    .addr DrawDefeatEffectSprite  ; $A8 EffectDefeat
+    .addr DrawCollectedItemEffectSprite  ; $A9 EffectCollectedItem

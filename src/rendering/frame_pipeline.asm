@@ -553,9 +553,51 @@ WaitForStatusUploadTiming:
     JMP NmiFrame
 
 NmiTaskHandlerHighBytes:
-    .byte $C8, $C8, $C9, $CB, $CC, $CD, $CF, $D0, $D1, $D2, $D4, $D5, $D6, $D7, $D9, $DA
-    .byte $DB, $DC, $DE, $DF, $E0, $E1, $E3
+    .byte >UploadStatusTiles  ; task $00
+    .byte >UploadRoomCellRow00  ; task $01
+    .byte >UploadRoomCellRow01  ; task $02
+    .byte >UploadRoomCellRow02  ; task $03
+    .byte >UploadRoomCellRow03  ; task $04
+    .byte >UploadRoomCellRow04  ; task $05
+    .byte >UploadRoomCellRow05  ; task $06
+    .byte >UploadRoomCellRow06  ; task $07
+    .byte >UploadRoomCellRow07  ; task $08
+    .byte >UploadRoomCellRow08  ; task $09
+    .byte >UploadRoomCellRow09  ; task $0A
+    .byte >UploadRoomCellRow10  ; task $0B
+    .byte >UploadRoomCellRow11  ; task $0C
+    .byte >UploadRoomCellRow12  ; task $0D
+    .byte >UploadRoomCellRow13  ; task $0E
+    .byte >UploadRoomCellRow14  ; task $0F
+    .byte >UploadRoomCellRow15  ; task $10
+    .byte >UploadRoomCellRow16  ; task $11
+    .byte >UploadRoomCellRow17  ; task $12
+    .byte >UploadRoomCellRow18  ; task $13
+    .byte >UploadRoomCellRow19  ; task $14
+    .byte >UploadLeftRoomAttributesTask  ; task $15
+    .byte >UploadRightRoomAttributesTask  ; task $16
 
 NmiTaskHandlerLowBytes:
-    .byte $04, $BC, $FF, $42, $85, $C8, $0B, $4E, $91, $D4, $17, $5A, $9D, $E0, $23, $66
-    .byte $A9, $EC, $2F, $72, $B5, $F8, $58
+    .byte <UploadStatusTiles  ; task $00
+    .byte <UploadRoomCellRow00  ; task $01
+    .byte <UploadRoomCellRow01  ; task $02
+    .byte <UploadRoomCellRow02  ; task $03
+    .byte <UploadRoomCellRow03  ; task $04
+    .byte <UploadRoomCellRow04  ; task $05
+    .byte <UploadRoomCellRow05  ; task $06
+    .byte <UploadRoomCellRow06  ; task $07
+    .byte <UploadRoomCellRow07  ; task $08
+    .byte <UploadRoomCellRow08  ; task $09
+    .byte <UploadRoomCellRow09  ; task $0A
+    .byte <UploadRoomCellRow10  ; task $0B
+    .byte <UploadRoomCellRow11  ; task $0C
+    .byte <UploadRoomCellRow12  ; task $0D
+    .byte <UploadRoomCellRow13  ; task $0E
+    .byte <UploadRoomCellRow14  ; task $0F
+    .byte <UploadRoomCellRow15  ; task $10
+    .byte <UploadRoomCellRow16  ; task $11
+    .byte <UploadRoomCellRow17  ; task $12
+    .byte <UploadRoomCellRow18  ; task $13
+    .byte <UploadRoomCellRow19  ; task $14
+    .byte <UploadLeftRoomAttributesTask  ; task $15
+    .byte <UploadRightRoomAttributesTask  ; task $16

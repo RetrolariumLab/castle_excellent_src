@@ -8,33 +8,33 @@ DrawFairySprite:
     LSR A
     AND #$03
     BNE SelectType01Frame2OrMiddle
-    LDX #$B5
-    LDY #$94
+    LDX #>(ObjectSpriteFrameRecords + $9E)
+    LDY #<(ObjectSpriteFrameRecords + $9E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType01Frame2OrMiddle:
     CMP #$02
     BNE DrawType01MiddleFrame
-    LDX #$B5
-    LDY #$9C
+    LDX #>(ObjectSpriteFrameRecords + $A6)
+    LDY #<(ObjectSpriteFrameRecords + $A6)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType01MiddleFrame:
-    LDX #$B5
-    LDY #$98
+    LDX #>(ObjectSpriteFrameRecords + $A2)
+    LDY #<(ObjectSpriteFrameRecords + $A2)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawPrincessSprite:
-    LDX #$B5
-    LDY #$AC
+    LDX #>(ObjectSpriteFrameRecords + $B6)
+    LDY #<(ObjectSpriteFrameRecords + $B6)
 
 DrawTwoObjectSpritesAndAdvance:
     JSR DrawTwoObjectSprites
     JMP AdvanceFrameSpriteObject
 
 DrawOxygenTankSprite:
-    LDX #$B5
-    LDY #$BC
+    LDX #>(ObjectSpriteFrameRecords + $C6)
+    LDY #<(ObjectSpriteFrameRecords + $C6)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawFighterSprite:
@@ -42,8 +42,8 @@ DrawFighterSprite:
     BMI SelectType04NegativeStateSprite
     LDA RuntimeObjectFighterJumpCountdown,X
     BEQ SelectType04PositiveStateAnimation
-    LDX #$B5
-    LDY #$0E
+    LDX #>(ObjectSpriteFrameRecords + $18)
+    LDY #<(ObjectSpriteFrameRecords + $18)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType04PositiveStateAnimation:
@@ -52,27 +52,27 @@ SelectType04PositiveStateAnimation:
     LSR A
     AND #$03
     BNE SelectType04PositiveFrame2OrMiddle
-    LDX #$B4
-    LDY #$F6
+    LDX #>(ObjectSpriteFrameRecords)
+    LDY #<(ObjectSpriteFrameRecords)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType04PositiveFrame2OrMiddle:
     CMP #$02
     BNE DrawType04PositiveMiddleFrame
-    LDX #$B4
-    LDY #$FE
+    LDX #>(ObjectSpriteFrameRecords + $08)
+    LDY #<(ObjectSpriteFrameRecords + $08)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType04PositiveMiddleFrame:
-    LDX #$B4
-    LDY #$FA
+    LDX #>(ObjectSpriteFrameRecords + $04)
+    LDY #<(ObjectSpriteFrameRecords + $04)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType04NegativeStateSprite:
     LDA RuntimeObjectFighterJumpCountdown,X
     BEQ SelectType04NegativeStateAnimation
-    LDX #$B5
-    LDY #$12
+    LDX #>(ObjectSpriteFrameRecords + $1C)
+    LDY #<(ObjectSpriteFrameRecords + $1C)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType04NegativeStateAnimation:
@@ -81,20 +81,20 @@ SelectType04NegativeStateAnimation:
     LSR A
     AND #$03
     BNE SelectType04NegativeFrame2OrMiddle
-    LDX #$B5
-    LDY #$02
+    LDX #>(ObjectSpriteFrameRecords + $0C)
+    LDY #<(ObjectSpriteFrameRecords + $0C)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType04NegativeFrame2OrMiddle:
     CMP #$02
     BNE DrawType04NegativeMiddleFrame
-    LDX #$B5
-    LDY #$0A
+    LDX #>(ObjectSpriteFrameRecords + $14)
+    LDY #<(ObjectSpriteFrameRecords + $14)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType04NegativeMiddleFrame:
-    LDX #$B5
-    LDY #$06
+    LDX #>(ObjectSpriteFrameRecords + $10)
+    LDY #<(ObjectSpriteFrameRecords + $10)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawBishopSprite:
@@ -105,20 +105,20 @@ DrawBishopSprite:
     LSR A
     AND #$03
     BNE SelectType05PositiveFrame2OrMiddle
-    LDX #$B5
-    LDY #$16
+    LDX #>(ObjectSpriteFrameRecords + $20)
+    LDY #<(ObjectSpriteFrameRecords + $20)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType05PositiveFrame2OrMiddle:
     CMP #$02
     BNE DrawType05PositiveMiddleFrame
-    LDX #$B5
-    LDY #$1E
+    LDX #>(ObjectSpriteFrameRecords + $28)
+    LDY #<(ObjectSpriteFrameRecords + $28)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType05PositiveMiddleFrame:
-    LDX #$B5
-    LDY #$1A
+    LDX #>(ObjectSpriteFrameRecords + $24)
+    LDY #<(ObjectSpriteFrameRecords + $24)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType05NegativeStateAnimation:
@@ -127,20 +127,20 @@ SelectType05NegativeStateAnimation:
     LSR A
     AND #$03
     BNE SelectType05NegativeFrame2OrMiddle
-    LDX #$B5
-    LDY #$22
+    LDX #>(ObjectSpriteFrameRecords + $2C)
+    LDY #<(ObjectSpriteFrameRecords + $2C)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType05NegativeFrame2OrMiddle:
     CMP #$02
     BNE DrawType05NegativeMiddleFrame
-    LDX #$B5
-    LDY #$2A
+    LDX #>(ObjectSpriteFrameRecords + $34)
+    LDY #<(ObjectSpriteFrameRecords + $34)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType05NegativeMiddleFrame:
-    LDX #$B5
-    LDY #$26
+    LDX #>(ObjectSpriteFrameRecords + $30)
+    LDY #<(ObjectSpriteFrameRecords + $30)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawDevilFlowerSprite:
@@ -154,8 +154,8 @@ DrawDevilFlowerSprite:
     LDA RuntimeObjectXLo,X
     ORA #$04
     STA RuntimeObjectXLo,X
-    LDX #$B5
-    LDY #$2E
+    LDX #>(ObjectSpriteFrameRecords + $38)
+    LDY #<(ObjectSpriteFrameRecords + $38)
     JSR DrawOneObjectSprite
     LDX CurrentObjectOffset
     LDA RuntimeObjectXLo,X
@@ -170,8 +170,8 @@ SelectType06LateRoomPhase:
     BNE SelectType06InnerTransitionFrame
 
 DrawType06OuterTransitionFrame:
-    LDX #$B5
-    LDY #$30
+    LDX #>(ObjectSpriteFrameRecords + $3A)
+    LDY #<(ObjectSpriteFrameRecords + $3A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType06InnerTransitionFrame:
@@ -181,8 +181,8 @@ SelectType06InnerTransitionFrame:
     BNE SelectType06CycleFrame
 
 DrawType06InnerTransitionFrame:
-    LDX #$B5
-    LDY #$34
+    LDX #>(ObjectSpriteFrameRecords + $3E)
+    LDY #<(ObjectSpriteFrameRecords + $3E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType06CycleFrame:
@@ -191,20 +191,20 @@ SelectType06CycleFrame:
     LSR A
     AND #$03
     BNE SelectType06AlternatingFrame
-    LDX #$B5
-    LDY #$38
+    LDX #>(ObjectSpriteFrameRecords + $42)
+    LDY #<(ObjectSpriteFrameRecords + $42)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType06AlternatingFrame:
     AND #$01
     BEQ DrawType06EvenCycleFrame
-    LDX #$B5
-    LDY #$3C
+    LDX #>(ObjectSpriteFrameRecords + $46)
+    LDY #<(ObjectSpriteFrameRecords + $46)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType06EvenCycleFrame:
-    LDX #$B5
-    LDY #$40
+    LDX #>(ObjectSpriteFrameRecords + $4A)
+    LDY #<(ObjectSpriteFrameRecords + $4A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawKnightSprite:
@@ -217,20 +217,20 @@ DrawKnightSprite:
     LSR A
     AND #$03
     BNE SelectType07PositiveFrame2OrMiddle
-    LDX #$B5
-    LDY #$44
+    LDX #>(ObjectSpriteFrameRecords + $4E)
+    LDY #<(ObjectSpriteFrameRecords + $4E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType07PositiveFrame2OrMiddle:
     CMP #$02
     BNE DrawType07PositiveMiddleFrame
-    LDX #$B5
-    LDY #$4C
+    LDX #>(ObjectSpriteFrameRecords + $56)
+    LDY #<(ObjectSpriteFrameRecords + $56)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType07PositiveMiddleFrame:
-    LDX #$B5
-    LDY #$48
+    LDX #>(ObjectSpriteFrameRecords + $52)
+    LDY #<(ObjectSpriteFrameRecords + $52)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType07NegativeStateAnimation:
@@ -241,20 +241,20 @@ SelectType07NegativeStateAnimation:
     LSR A
     AND #$03
     BNE SelectType07NegativeFrame2OrMiddle
-    LDX #$B5
-    LDY #$50
+    LDX #>(ObjectSpriteFrameRecords + $5A)
+    LDY #<(ObjectSpriteFrameRecords + $5A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType07NegativeFrame2OrMiddle:
     CMP #$02
     BNE DrawType07NegativeMiddleFrame
-    LDX #$B5
-    LDY #$58
+    LDX #>(ObjectSpriteFrameRecords + $62)
+    LDY #<(ObjectSpriteFrameRecords + $62)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType07NegativeMiddleFrame:
-    LDX #$B5
-    LDY #$54
+    LDX #>(ObjectSpriteFrameRecords + $5E)
+    LDY #<(ObjectSpriteFrameRecords + $5E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawWitchSprite:
@@ -265,20 +265,20 @@ DrawWitchSprite:
     LSR A
     AND #$03
     BNE SelectType08PositiveFrame2OrMiddle
-    LDX #$B5
-    LDY #$5C
+    LDX #>(ObjectSpriteFrameRecords + $66)
+    LDY #<(ObjectSpriteFrameRecords + $66)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType08PositiveFrame2OrMiddle:
     CMP #$02
     BNE DrawType08PositiveMiddleFrame
-    LDX #$B5
-    LDY #$64
+    LDX #>(ObjectSpriteFrameRecords + $6E)
+    LDY #<(ObjectSpriteFrameRecords + $6E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType08PositiveMiddleFrame:
-    LDX #$B5
-    LDY #$60
+    LDX #>(ObjectSpriteFrameRecords + $6A)
+    LDY #<(ObjectSpriteFrameRecords + $6A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType08NegativeStateAnimation:
@@ -287,20 +287,20 @@ SelectType08NegativeStateAnimation:
     LSR A
     AND #$03
     BNE SelectType08NegativeFrame2OrMiddle
-    LDX #$B5
-    LDY #$6C
+    LDX #>(ObjectSpriteFrameRecords + $76)
+    LDY #<(ObjectSpriteFrameRecords + $76)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType08NegativeFrame2OrMiddle:
     CMP #$02
     BNE DrawType08NegativeMiddleFrame
-    LDX #$B5
-    LDY #$74
+    LDX #>(ObjectSpriteFrameRecords + $7E)
+    LDY #<(ObjectSpriteFrameRecords + $7E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType08NegativeMiddleFrame:
-    LDX #$B5
-    LDY #$70
+    LDX #>(ObjectSpriteFrameRecords + $7A)
+    LDY #<(ObjectSpriteFrameRecords + $7A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawFlameSprite:
@@ -311,14 +311,14 @@ DrawFlameSprite:
     LSR A
     AND #$03
     BNE DrawType09NegativeNonzeroFrame
-    LDX #$B5
-    LDY #$88
+    LDX #>(ObjectSpriteFrameRecords + $92)
+    LDY #<(ObjectSpriteFrameRecords + $92)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType09NegativeNonzeroFrame:
     CMP #$02
-    LDX #$B5
-    LDY #$90
+    LDX #>(ObjectSpriteFrameRecords + $9A)
+    LDY #<(ObjectSpriteFrameRecords + $9A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 UnreferencedType09FrameSelectionBytes:
@@ -330,131 +330,131 @@ SelectType09PositiveStateAnimation:
     LSR A
     AND #$03
     BNE SelectType09PositiveFrame2OrMiddle
-    LDX #$B5
-    LDY #$7C
+    LDX #>(ObjectSpriteFrameRecords + $86)
+    LDY #<(ObjectSpriteFrameRecords + $86)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType09PositiveFrame2OrMiddle:
     CMP #$02
     BNE DrawType09PositiveMiddleFrame
-    LDX #$B5
-    LDY #$84
+    LDX #>(ObjectSpriteFrameRecords + $8E)
+    LDY #<(ObjectSpriteFrameRecords + $8E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType09PositiveMiddleFrame:
-    LDX #$B5
-    LDY #$80
+    LDX #>(ObjectSpriteFrameRecords + $8A)
+    LDY #<(ObjectSpriteFrameRecords + $8A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawJarSprite:
-    LDX #$B5
-    LDY #$C0
+    LDX #>(ObjectSpriteFrameRecords + $CA)
+    LDY #<(ObjectSpriteFrameRecords + $CA)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawBrickSprite:
-    LDX #$B5
-    LDY #$C4
+    LDX #>(ObjectSpriteFrameRecords + $CE)
+    LDY #<(ObjectSpriteFrameRecords + $CE)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawBlockSprite:
-    LDX #$B5
-    LDY #$C8
+    LDX #>(ObjectSpriteFrameRecords + $D2)
+    LDY #<(ObjectSpriteFrameRecords + $D2)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawBarrelSprite:
-    LDX #$B5
-    LDY #$CC
+    LDX #>(ObjectSpriteFrameRecords + $D6)
+    LDY #<(ObjectSpriteFrameRecords + $D6)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawPulleySprite:
-    LDX #$B5
-    LDY #$D0
+    LDX #>(ObjectSpriteFrameRecords + $DA)
+    LDY #<(ObjectSpriteFrameRecords + $DA)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawCandleSprite:
     LDA FrameCounter
     AND #$08
     BNE DrawType15AlternateFrame
-    LDX #$B5
-    LDY #$D4
+    LDX #>(ObjectSpriteFrameRecords + $DE)
+    LDY #<(ObjectSpriteFrameRecords + $DE)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType15AlternateFrame:
-    LDX #$B5
-    LDY #$D8
+    LDX #>(ObjectSpriteFrameRecords + $E2)
+    LDY #<(ObjectSpriteFrameRecords + $E2)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawDarkBlueKeySprite:
-    LDX #$B5
-    LDY #$B0
+    LDX #>(ObjectSpriteFrameRecords + $BA)
+    LDY #<(ObjectSpriteFrameRecords + $BA)
 
 DrawOneObjectSpriteAndAdvance:
     JSR DrawOneObjectSprite
     JMP AdvanceFrameSpriteObject
 
 DrawRedKeySprite:
-    LDX #$B5
-    LDY #$B2
+    LDX #>(ObjectSpriteFrameRecords + $BC)
+    LDY #<(ObjectSpriteFrameRecords + $BC)
     JMP DrawOneObjectSpriteAndAdvance
 
 DrawPinkKeySprite:
-    LDX #$B5
-    LDY #$B4
+    LDX #>(ObjectSpriteFrameRecords + $BE)
+    LDY #<(ObjectSpriteFrameRecords + $BE)
     JMP DrawOneObjectSpriteAndAdvance
 
 DrawGreenKeySprite:
-    LDX #$B5
-    LDY #$B6
+    LDX #>(ObjectSpriteFrameRecords + $C0)
+    LDY #<(ObjectSpriteFrameRecords + $C0)
     JMP DrawOneObjectSpriteAndAdvance
 
 DrawBlueKeySprite:
-    LDX #$B5
-    LDY #$B8
+    LDX #>(ObjectSpriteFrameRecords + $C2)
+    LDY #<(ObjectSpriteFrameRecords + $C2)
     JMP DrawOneObjectSpriteAndAdvance
 
 DrawYellowKeySprite:
-    LDX #$B5
-    LDY #$BA
+    LDX #>(ObjectSpriteFrameRecords + $C4)
+    LDY #<(ObjectSpriteFrameRecords + $C4)
     JMP DrawOneObjectSpriteAndAdvance
 
 DrawCastleMapSprite:
-    LDX #$B5
-    LDY #$DC
+    LDX #>(ObjectSpriteFrameRecords + $E6)
+    LDY #<(ObjectSpriteFrameRecords + $E6)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawPotionSprite:
-    LDX #$B5
-    LDY #$E0
+    LDX #>(ObjectSpriteFrameRecords + $EA)
+    LDY #<(ObjectSpriteFrameRecords + $EA)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawCrossSprite:
-    LDX #$B5
-    LDY #$E4
+    LDX #>(ObjectSpriteFrameRecords + $EE)
+    LDY #<(ObjectSpriteFrameRecords + $EE)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawRingSprite:
-    LDX #$B5
-    LDY #$E8
+    LDX #>(ObjectSpriteFrameRecords + $F2)
+    LDY #<(ObjectSpriteFrameRecords + $F2)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawMoneyBagSprite:
-    LDX #$B5
-    LDY #$EC
+    LDX #>(ObjectSpriteFrameRecords + $F6)
+    LDY #<(ObjectSpriteFrameRecords + $F6)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawRuntimeObjectType27Sprite:
-    LDX #$B5
-    LDY #$F0
+    LDX #>(ObjectSpriteFrameRecords + $FA)
+    LDY #<(ObjectSpriteFrameRecords + $FA)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawRuntimeObjectType28Sprite:
-    LDX #$B5
-    LDY #$F4
+    LDX #>(ObjectSpriteFrameRecords + $FE)
+    LDY #<(ObjectSpriteFrameRecords + $FE)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawRuntimeObjectType29Or30Sprite:
-    LDX #$B5
-    LDY #$FC
+    LDX #>(ObjectSpriteFrameRecords + $106)
+    LDY #<(ObjectSpriteFrameRecords + $106)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawPowerLightSprite:
@@ -466,58 +466,58 @@ SelectType31RoomFrameParity:
     LDA RoomFrameCounter
     LSR A
     BCC DrawType31EvenRoomFrame
-    LDX #$B6
-    LDY #$08
+    LDX #>(ObjectSpriteFrameRecords + $112)
+    LDY #<(ObjectSpriteFrameRecords + $112)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType31EvenRoomFrame:
-    LDX #$B6
-    LDY #$0C
+    LDX #>(ObjectSpriteFrameRecords + $116)
+    LDY #<(ObjectSpriteFrameRecords + $116)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawWitchSummonSprite:
     LDX FrameCounterModulo3A
     BNE SelectWitchSummonModulo3Frame1Or2
-    LDX #$B5
-    LDY #$FC
+    LDX #>(ObjectSpriteFrameRecords + $106)
+    LDY #<(ObjectSpriteFrameRecords + $106)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectWitchSummonModulo3Frame1Or2:
     DEX
     BNE DrawWitchSummonModulo3Frame2
-    LDX #$B6
-    LDY #$00
+    LDX #>(ObjectSpriteFrameRecords + $10A)
+    LDY #<(ObjectSpriteFrameRecords + $10A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawWitchSummonModulo3Frame2:
-    LDX #$B6
-    LDY #$04
+    LDX #>(ObjectSpriteFrameRecords + $10E)
+    LDY #<(ObjectSpriteFrameRecords + $10E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawLiftSprite:
-    LDX #$B6
-    LDY #$18
+    LDX #>(ObjectSpriteFrameRecords + $122)
+    LDY #<(ObjectSpriteFrameRecords + $122)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawWideLiftSprite:
-    LDX #$B6
-    LDY #$10
+    LDX #>(ObjectSpriteFrameRecords + $11A)
+    LDY #<(ObjectSpriteFrameRecords + $11A)
     JSR DrawFourObjectSprites
     JMP AdvanceFrameSpriteObject
 
 DrawFloatingPlatformSprite:
-    LDX #$B6
-    LDY #$20
+    LDX #>(ObjectSpriteFrameRecords + $12A)
+    LDY #<(ObjectSpriteFrameRecords + $12A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawDraggableLiftTopSprite:
-    LDX #$B6
-    LDY #$24
+    LDX #>(ObjectSpriteFrameRecords + $12E)
+    LDY #<(ObjectSpriteFrameRecords + $12E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawDraggableLiftBottomSprite:
-    LDX #$B6
-    LDY #$28
+    LDX #>(ObjectSpriteFrameRecords + $132)
+    LDY #<(ObjectSpriteFrameRecords + $132)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawKnightArrowSprite:
@@ -527,14 +527,14 @@ DrawKnightArrowSprite:
     STA RuntimeObjectY,X
     LDA RuntimeObjectState,X
     BMI DrawType38NegativeStateSprite
-    LDX #$B6
-    LDY #$2E
+    LDX #>(ObjectSpriteFrameRecords + $138)
+    LDY #<(ObjectSpriteFrameRecords + $138)
     JSR DrawOneObjectSprite
     JMP RestoreType38ObjectY
 
 DrawType38NegativeStateSprite:
-    LDX #$B6
-    LDY #$2C
+    LDX #>(ObjectSpriteFrameRecords + $136)
+    LDY #<(ObjectSpriteFrameRecords + $136)
     JSR DrawOneObjectSprite
 
 RestoreType38ObjectY:
@@ -551,113 +551,113 @@ DrawDefeatEffectSprite:
     LDA RuntimeObjectState,X
     LSR A
     BNE SelectType40StatePair1OrLater
-    LDX #$B6
-    LDY #$30
+    LDX #>(ObjectSpriteFrameRecords + $13A)
+    LDY #<(ObjectSpriteFrameRecords + $13A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType40StatePair1OrLater:
     CMP #$01
     BNE DrawType40LaterStateFrame
-    LDX #$B6
-    LDY #$34
+    LDX #>(ObjectSpriteFrameRecords + $13E)
+    LDY #<(ObjectSpriteFrameRecords + $13E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawType40LaterStateFrame:
-    LDX #$B6
-    LDY #$38
+    LDX #>(ObjectSpriteFrameRecords + $142)
+    LDY #<(ObjectSpriteFrameRecords + $142)
     JMP DrawTwoObjectSpritesAndAdvance
 
 DrawCollectedItemEffectSprite:
     LDA RuntimeObjectState,X
     CMP #$01
     BNE SelectType41State2
-    LDX #$B6
-    LDY #$3C
+    LDX #>(ObjectSpriteFrameRecords + $146)
+    LDY #<(ObjectSpriteFrameRecords + $146)
     JSR DrawOneObjectSprite
     JMP AdvanceFrameSpriteObject
 
 SelectType41State2:
     CMP #$02
     BNE SelectType41State3
-    LDX #$B6
-    LDY #$40
+    LDX #>(ObjectSpriteFrameRecords + $14A)
+    LDY #<(ObjectSpriteFrameRecords + $14A)
     JSR DrawOneObjectSprite
     JMP AdvanceFrameSpriteObject
 
 SelectType41State3:
     CMP #$03
     BNE SelectType41State4
-    LDX #$B6
-    LDY #$44
+    LDX #>(ObjectSpriteFrameRecords + $14E)
+    LDY #<(ObjectSpriteFrameRecords + $14E)
     JSR DrawOneObjectSprite
     JMP AdvanceFrameSpriteObject
 
 SelectType41State4:
     CMP #$04
     BNE SelectType41CompactState5
-    LDX #$B6
-    LDY #$48
+    LDX #>(ObjectSpriteFrameRecords + $152)
+    LDY #<(ObjectSpriteFrameRecords + $152)
     JSR DrawOneObjectSprite
     JMP AdvanceFrameSpriteObject
 
 SelectType41CompactState5:
     CMP #$05
     BNE SelectType41CompactState6
-    LDX #$B6
-    LDY #$3C
+    LDX #>(ObjectSpriteFrameRecords + $146)
+    LDY #<(ObjectSpriteFrameRecords + $146)
     JSR DrawTwoCompactObjectSprites
     JMP AdvanceFrameSpriteObject
 
 SelectType41CompactState6:
     CMP #$06
     BNE SelectType41CompactState7
-    LDX #$B6
-    LDY #$40
+    LDX #>(ObjectSpriteFrameRecords + $14A)
+    LDY #<(ObjectSpriteFrameRecords + $14A)
     JSR DrawTwoCompactObjectSprites
     JMP AdvanceFrameSpriteObject
 
 SelectType41CompactState7:
     CMP #$07
     BNE SelectType41CompactState8
-    LDX #$B6
-    LDY #$44
+    LDX #>(ObjectSpriteFrameRecords + $14E)
+    LDY #<(ObjectSpriteFrameRecords + $14E)
     JSR DrawTwoCompactObjectSprites
     JMP AdvanceFrameSpriteObject
 
 SelectType41CompactState8:
     CMP #$08
     BNE SelectType41WideState9
-    LDX #$B6
-    LDY #$48
+    LDX #>(ObjectSpriteFrameRecords + $152)
+    LDY #<(ObjectSpriteFrameRecords + $152)
     JSR DrawTwoCompactObjectSprites
     JMP AdvanceFrameSpriteObject
 
 SelectType41WideState9:
     CMP #$09
     BNE SelectType41WideState10
-    LDX #$B6
-    LDY #$3C
+    LDX #>(ObjectSpriteFrameRecords + $146)
+    LDY #<(ObjectSpriteFrameRecords + $146)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType41WideState10:
     CMP #$0A
     BNE SelectType41WideState11
-    LDX #$B6
-    LDY #$40
+    LDX #>(ObjectSpriteFrameRecords + $14A)
+    LDY #<(ObjectSpriteFrameRecords + $14A)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType41WideState11:
     CMP #$0B
     BNE SelectType41WideState12
-    LDX #$B6
-    LDY #$44
+    LDX #>(ObjectSpriteFrameRecords + $14E)
+    LDY #<(ObjectSpriteFrameRecords + $14E)
     JMP DrawTwoObjectSpritesAndAdvance
 
 SelectType41WideState12:
     CMP #$0C
     BNE FinishType41Sprite
-    LDX #$B6
-    LDY #$48
+    LDX #>(ObjectSpriteFrameRecords + $152)
+    LDY #<(ObjectSpriteFrameRecords + $152)
     JSR DrawTwoObjectSprites
 
 FinishType41Sprite:
