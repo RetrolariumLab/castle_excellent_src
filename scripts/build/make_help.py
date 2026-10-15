@@ -21,6 +21,7 @@ TARGET_GROUPS = (
         (
             ("format", "normalize authored source and metadata"),
             ("lint", "check style, layout, links, and policy"),
+            ("hooks", "install the Git hooks: stop words, lint before each commit"),
             ("scaffold-check", "run the ROM-less public gate"),
             ("quality-check", "run lint and the ROM-backed test suite"),
             ("check", "run the complete static reconstruction gate"),
