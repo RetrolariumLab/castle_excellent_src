@@ -11,37 +11,6 @@ from scripts.build import project
 ROOT = Path(__file__).resolve().parents[2]
 
 
-class RepositoryLayoutTests(unittest.TestCase):
-    def test_config_is_grouped_by_responsibility(self) -> None:
-        project.validate_config_layout(ROOT)
-
-    def test_documentation_index_is_complete_and_links_resolve(self) -> None:
-        project.validate_documentation(ROOT)
-
-    def test_root_documentation_links_are_validated(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            docs = root / "docs"
-            docs.mkdir()
-            (docs / "guide.md").write_text("# Guide\n", encoding="utf-8")
-            (docs / "index.md").write_text(
-                "# Documentation\n\n- [Guide](guide.md)\n", encoding="utf-8"
-            )
-            (root / "README.md").write_text(
-                "[Documentation](docs/index.md)\n", encoding="utf-8"
-            )
-            (root / "CONTRIBUTING.md").write_text(
-                "[Development](docs/guide.md)\n", encoding="utf-8"
-            )
-
-            project.validate_documentation(root)
-            (root / "README.md").write_text(
-                "[Missing](docs/missing.md)\n", encoding="utf-8"
-            )
-            with self.assertRaisesRegex(project.ProjectError, "broken documentation"):
-                project.validate_documentation(root)
-
-
 def sample_ines() -> bytes:
     header = b"NES\x1a" + bytes((2, 4, 0x31, 0)) + bytes(8)
     return header + bytes(32_768) + bytes([0xFF]) * 32_768
@@ -145,94 +114,6 @@ class AssetTests(unittest.TestCase):
             })()
             project.command_split(args)
             self.assertEqual((output / "chr" / "game.chr").read_bytes(), parsed["chr"])
-
-
-class PrgDataRangeTests(unittest.TestCase):
-    def test_loads_sorted_typed_ranges(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "ranges.txt"
-            path.write_text(
-                "table 8000 800F FirstTable\ntext 8100 811F TextData\n",
-                encoding="utf-8",
-            )
-            self.assertEqual(
-                project.load_prg_data_ranges(path),
-                [
-                    ("table", 0x8000, 0x800F, "FirstTable"),
-                    ("text", 0x8100, 0x811F, "TextData"),
-                ],
-            )
-
-    def test_rejects_overlapping_typed_ranges(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "ranges.txt"
-            path.write_text(
-                "table 8000 8010 FirstTable\ndata 8010 8020 OtherData\n",
-                encoding="utf-8",
-            )
-            with self.assertRaisesRegex(project.ProjectError, "overlap"):
-                project.load_prg_data_ranges(path)
-
-    def test_rejects_runtime_code_in_typed_data(self) -> None:
-        ranges = [("table", 0x9000, 0x90FF, "LookupTable")]
-        with tempfile.TemporaryDirectory() as directory:
-            evidence = Path(directory) / "runtime.txt"
-            evidence.write_text("code 9080 9090\n", encoding="utf-8")
-            with self.assertRaisesRegex(project.ProjectError, "overlaps typed data"):
-                project.validate_runtime_data_separation(ranges, evidence)
-
-    def test_loads_sorted_static_code_evidence(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            evidence = Path(directory) / "static.txt"
-            evidence.write_text(
-                "# pointer-table provenance\ncode A000 A00F\ncode A100 A10F\n",
-                encoding="utf-8",
-            )
-            self.assertEqual(
-                project.load_code_evidence(evidence, "static"),
-                [(0xA000, 0xA00F), (0xA100, 0xA10F)],
-            )
-
-    def test_rejects_unsorted_static_code_evidence(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            evidence = Path(directory) / "static.txt"
-            evidence.write_text(
-                "code A100 A10F\ncode A000 A00F\n",
-                encoding="utf-8",
-            )
-            with self.assertRaisesRegex(project.ProjectError, "unsorted"):
-                project.load_code_evidence(evidence, "static")
-
-    def test_loads_sorted_false_instruction_starts(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            registry = Path(directory) / "false-instructions.txt"
-            registry.write_text(
-                "# switch overreach\ninstruction A207 OverlongSwitchCase\n"
-                "instruction B123 RecursiveDecodeArtifact\n",
-                encoding="utf-8",
-            )
-            self.assertEqual(
-                project.load_false_instruction_starts(registry),
-                [(0xA207, "OverlongSwitchCase"), (0xB123, "RecursiveDecodeArtifact")],
-            )
-
-    def test_rejects_unsorted_false_instruction_starts(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            registry = Path(directory) / "false-instructions.txt"
-            registry.write_text(
-                "instruction B123 Later\ninstruction A207 Earlier\n",
-                encoding="utf-8",
-            )
-            with self.assertRaisesRegex(project.ProjectError, "unsorted"):
-                project.load_false_instruction_starts(registry)
-
-    def test_rejects_static_code_in_typed_data(self) -> None:
-        ranges = [("table", 0xA000, 0xA0FF, "LookupTable")]
-        with tempfile.TemporaryDirectory() as directory:
-            evidence = Path(directory) / "static.txt"
-            evidence.write_text("code A080 A090\n", encoding="utf-8")
-            with self.assertRaisesRegex(project.ProjectError, "static code"):
-                project.validate_code_data_separation(ranges, evidence, "static")
 
 
 if __name__ == "__main__":

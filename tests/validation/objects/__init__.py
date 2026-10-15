@@ -1,1 +1,0 @@
-"""Runtime object contract tests."""

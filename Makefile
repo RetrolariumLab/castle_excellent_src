@@ -1,3 +1,5 @@
+# Castle Excellent / Castlequest: build the source back into the original ROMs
+# and check it. `make help` lists the targets.
 PYTHON ?= python
 RUN_TOOL := $(PYTHON) scripts/run.py
 # cc65 from Retrolarium Kit (RLTOOL, default rltool), asked once per run; the
@@ -6,103 +8,50 @@ RLTOOL ?= rltool
 export RLTOOL
 CA65 ?= $(eval CA65 := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path nes ca65)))$(CA65)
 LD65 ?= $(eval LD65 := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path nes ld65)))$(LD65)
+# MAME for `make test-full` and `make golden`.
+MAME ?= $(RETROLARIUM_MAME)
 
 REFERENCE_ROM ?= Castle Excellent (J).nes
 MANIFEST := assets/manifest.json
-SOURCE_1_MANIFEST := config/source_reconstruction_1_0.json
-# The build tools' current contract (the kit's cc65).
-BUILD_TOOLS_MANIFEST := config/source_reconstruction_3_0.json
-SOURCE_2_MANIFEST := config/source_reconstruction_2_0.json
-SOURCE_2_MINOR_MANIFEST := config/source_reconstruction_2_1.json
 REVISION_MANIFEST := config/revision_profiles.json
 FIXED_LAYOUT_MANIFEST := config/fixed_layout_variants.json
-
 REVISION_PROFILE ?= castlequest-usa
 FIXED_LAYOUT_VARIANT ?= start-room-1
-LEVEL_PLAYTEST_ROOM ?= 71
-LEVEL_PLAYTEST_X ?= 16
-LEVEL_PLAYTEST_Y ?= 152
-
-ROMLESS_TEST_MODULES := \
-	tests.test_script_runner \
-	tests.build.test_make_help \
-	tests.build.test_project \
-	tests.build.test_revision_profiles \
-	tests.build.test_verify_rom \
-	tests.build.test_fixed_layout_variant \
-	tests.workflow.test_generate_disassembly \
-	tests.workflow.test_run_ghidra \
-	tests.validation.test_release_audit \
-	tests.validation.test_source_2_release_audit \
-	tests.validation.test_release_history \
-	tests.validation.test_source_2_minor_release_audit \
-	tests.validation.test_public_command_smoke \
-	tests.validation.test_python_source
-
-SYMBOLS := config/reconstruction/symbols.json
-MEMORY_SYMBOLS := config/reconstruction/memory_symbols.json
-OPERAND_OVERRIDES := config/reconstruction/operand_overrides.json
-SOURCE_LAYOUT := config/reconstruction/source_layout.json
-STATIC_CODE_EVIDENCE := config/reconstruction/static_code_evidence.txt
-RUNTIME_EVIDENCE := config/reconstruction/runtime_evidence.txt
-PRG_DATA_RANGES := config/reconstruction/prg_data_ranges.txt
-FALSE_INSTRUCTION_STARTS := config/reconstruction/false_instruction_starts.txt
-
 BUILD_DIR := build/native
 GENERATED_ASSET_DIR := assets/generated
-HEADER_ASSET := $(GENERATED_ASSET_DIR)/header/castle_excellent.hdr
-PRG_ASSET := $(GENERATED_ASSET_DIR)/prg/castle_excellent.prg
 CHR_ASSET := $(GENERATED_ASSET_DIR)/chr/castle_excellent.chr
+PRG_ASSET := $(GENERATED_ASSET_DIR)/prg/castle_excellent.prg
 OBJECT := $(BUILD_DIR)/castle_excellent.o
 ROM := $(BUILD_DIR)/castle_excellent.nes
 LABELS := $(BUILD_DIR)/castle_excellent.lbl
 MAP := $(BUILD_DIR)/castle_excellent.map
 DEBUG := $(BUILD_DIR)/castle_excellent.dbg
-DEBUG_SUMMARY := $(BUILD_DIR)/debug_symbols.json
-DEBUG_RUNTIME_RESULT := $(BUILD_DIR)/debug_symbols_runtime.txt
-GHIDRA_FACTS := build/ghidra/instructions.tsv
-FCEUX := tools/fceux/fceux64.exe
-
-FIXED_LAYOUT_RESULT := build/variants/$(FIXED_LAYOUT_VARIANT)/runtime.txt
-CASTLEQUEST_RUNTIME_RESULT := build/revisions/castlequest-usa/runtime.txt
+# Every routine and table before the fixed PRG tail moves by this many bytes
+# (src/system/famicom_platform.asm); the tail's padding takes up to $48.
+RELOCATION_SHIFT ?= 32
+RELOCATED_DIR := build/relocated
+RELOCATED_ROM := $(RELOCATED_DIR)/castle_excellent.nes
+ATTRACT_CHECK := movies/attract.check.json
 VERIFY_ROM := $(RUN_TOOL) build.verify_rom
-
 SOURCE_FILES := $(sort $(wildcard \
 	src/*.asm src/*/*.asm src/*/*/*.asm src/*/*/*/*.asm \
 	src/*.inc src/*/*.inc src/*/*/*.inc src/*/*/*/*.inc))
-MAKE_FRAGMENTS := mk/runtime.mk mk/validation.mk
 
-.PHONY: all help build clean split inspect rom-info rom-info-reference \
-	rom-info-built verify verify-reference verify-built verify-header \
-	verify-prg verify-chr verify-payload verify-rom verify-assets check-assets \
-	split-profile build-profile verify-profile castlequest-check \
-	castlequest-runtime build-fixed-layout verify-fixed-layout \
-	check-fixed-layout symbols validate-symbols format format-check lint-asm \
-	lint-source lint-python lint-project lint test quality-check scaffold-check \
-	reconstruction-audit build-toolchain-status release-audit source-1-check \
-	source-1-pre-tag-check source-1-tag-check source-2-audit \
-	source-2-check source-2-pre-tag-check studio-check source-3-audit source-3-check \
-	source-2-tag-check public-command-smoke source-2-minor-audit source-2-minor-check \
-	source-2-minor-pre-tag-check source-2-minor-tag-check \
-	ghidra-bootstrap ghidra-status ghidra-inspect \
-	ghidra-analyze disassemble disassembly-check fceux-bootstrap fceux-status \
-	check release-check
+.PHONY: all help build clean split check-assets verify verify-reference verify-built \
+	verify-header verify-prg verify-chr verify-payload verify-rom verify-assets \
+	rom-info rom-info-reference rom-info-built split-profile build-profile verify-profile \
+	castlequest-check build-fixed-layout verify-fixed-layout build-relocated \
+	verify-toolchain studio-check lint format format-check test test-full golden hooks
 
 all: verify
 
-help:
-	@$(RUN_TOOL) build.make_help
+$(BUILD_DIR) $(RELOCATED_DIR):
+	$(RUN_TOOL) build.project mkdir --path "$@"
 
-$(BUILD_DIR):
-	$(RUN_TOOL) build.project mkdir --path "$(BUILD_DIR)"
-
-$(CHR_ASSET):
+$(CHR_ASSET) $(PRG_ASSET):
 	$(RUN_TOOL) build.project require --path "$@" --hint "run 'make split' first"
 
-$(PRG_ASSET):
-	$(RUN_TOOL) build.project require --path "$@" --hint "run 'make split' first"
-
-$(OBJECT): $(SOURCE_FILES) $(CHR_ASSET) Makefile $(MAKE_FRAGMENTS) | $(BUILD_DIR) build-toolchain-status
+$(OBJECT): $(SOURCE_FILES) $(CHR_ASSET) Makefile | $(BUILD_DIR) verify-toolchain
 	$(CA65) --debug-info -g -o "$@" -l "$(BUILD_DIR)/castle_excellent.lst" "src/main.asm"
 
 $(ROM): $(OBJECT) config/linker/cnrom.cfg
@@ -112,31 +61,6 @@ build: $(ROM)
 
 split:
 	$(RUN_TOOL) build.project split --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --output-dir "$(GENERATED_ASSET_DIR)"
-
-split-profile:
-	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" split
-
-build-profile: build-toolchain-status
-	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" build --ca65 "$(CA65)" --ld65 "$(LD65)"
-
-verify-profile: build-profile
-	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" verify
-
-castlequest-check:
-	$(MAKE) split-profile REVISION_PROFILE=castlequest-usa
-	$(MAKE) verify-profile REVISION_PROFILE=castlequest-usa
-
-castlequest-runtime: fceux-bootstrap castlequest-check
-	$(RUN_TOOL) runtime.revision_runtime --revisions "$(REVISION_MANIFEST)" --profile castlequest-usa --fceux "$(FCEUX)" --lua scripts/runtime/capture_castlequest_runtime.lua --result "$(CASTLEQUEST_RUNTIME_RESULT)"
-
-build-fixed-layout: build
-	$(RUN_TOOL) build.fixed_layout_variant build --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
-
-verify-fixed-layout: build
-	$(RUN_TOOL) build.fixed_layout_variant verify --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
-
-check-fixed-layout: fceux-bootstrap build
-	$(RUN_TOOL) build.fixed_layout_variant runtime --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)" --fceux "$(FCEUX)" --lua scripts/runtime/validate_fixed_layout.lua --result "$(FIXED_LAYOUT_RESULT)"
 
 verify-reference:
 	$(RUN_TOOL) build.project verify --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)"
@@ -163,178 +87,84 @@ rom-info-built: $(ROM)
 
 rom-info: rom-info-reference rom-info-built
 
-inspect: rom-info-reference
+# Castlequest and the other revisions of config/revision_profiles.json.
+split-profile:
+	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" split
 
-symbols: $(ROM)
-	$(RUN_TOOL) validation.debug_symbols --debug "$(DEBUG)" --map "$(MAP)" --labels "$(LABELS)" --rom "$(ROM)" --output-dir "$(BUILD_DIR)" --breakpoints config/debugger/breakpoints.json --watches config/debugger/watches.json --source-layout "$(SOURCE_LAYOUT)" --summary "$(DEBUG_SUMMARY)"
+build-profile: verify-toolchain
+	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" build --ca65 "$(CA65)" --ld65 "$(LD65)"
 
-validate-symbols: fceux-bootstrap symbols
-	$(RUN_TOOL) runtime.validate_debug_runtime --fceux "$(FCEUX)" --rom "$(ROM)" --lua scripts/runtime/validate_debug_symbols.lua --result "$(DEBUG_RUNTIME_RESULT)"
+verify-profile: build-profile
+	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" verify
 
-# House style (config/lint.json) from Retrolarium Kit: the ca65 sources and
-# the text contract.
-format:
-	$(RLTOOL) lint --fix
-	$(MAKE) lint
+castlequest-check:
+	$(MAKE) split-profile REVISION_PROFILE=castlequest-usa
+	$(MAKE) verify-profile REVISION_PROFILE=castlequest-usa
 
-format-check: lint-asm
+# The start-room-1 variant (docs/fixed_layout_variants.md).
+build-fixed-layout: build
+	$(RUN_TOOL) build.fixed_layout_variant build --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
 
-lint-asm:
-	$(RLTOOL) lint --only assembly
+verify-fixed-layout: build
+	$(RUN_TOOL) build.fixed_layout_variant verify --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
 
-lint-source:
-	$(RLTOOL) lint --only text
-	$(RUN_TOOL) build.project lint
+build-relocated: $(SOURCE_FILES) $(CHR_ASSET) | $(RELOCATED_DIR) verify-toolchain
+	$(CA65) -D RELOCATION_TEST_SHIFT=$(RELOCATION_SHIFT) -g -o "$(RELOCATED_DIR)/castle_excellent.o" "src/main.asm"
+	$(LD65) -C config/linker/cnrom.cfg -o "$(RELOCATED_ROM)" "$(RELOCATED_DIR)/castle_excellent.o"
 
-lint-python:
-	$(RUN_TOOL) validation.python_source --project-root .
+verify-toolchain:
+	$(PYTHON) scripts/build/toolchain.py --manifest config/toolchain.json
 
-lint-project: lint-source
-
-lint: lint-asm lint-source lint-python
-
-test: ghidra-analyze
-	$(PYTHON) -m unittest discover -s tests -v
-
-quality-check: lint test
-
-scaffold-check: lint
-	$(PYTHON) -m unittest $(ROMLESS_TEST_MODULES) -v
-
-reconstruction-audit:
-	$(RUN_TOOL) validation.source_reconstruction --layout "$(SOURCE_LAYOUT)"
-
-build-toolchain-status:
-	$(RUN_TOOL) validation.release_audit --project-root . --manifest "$(BUILD_TOOLS_MANIFEST)" --build-tools-only --ca65 "$(CA65)" --ld65 "$(LD65)"
-
-# The 1.0 audit runs on HEAD, where the assemblers come from the kit: they are
-# checked against the build-tools manifest, not the 1.0 release's bin/.
-SOURCE_1_AUDIT = $(RUN_TOOL) validation.release_audit --project-root . --manifest "$(SOURCE_1_MANIFEST)" \
-	--build-tools-manifest "$(BUILD_TOOLS_MANIFEST)" --ca65 "$(CA65)" --ld65 "$(LD65)"
-
-release-audit:
-	$(SOURCE_1_AUDIT) --require-clean
-
-source-1-check:
-	$(MAKE) release-check
-
-source-1-pre-tag-check:
-	$(MAKE) release-check
-	$(SOURCE_1_AUDIT) --pre-tag
-
-source-1-tag-check:
-	$(MAKE) release-check
-	$(SOURCE_1_AUDIT) --require-tag
-
-# The 2.0 and 2.1 manifests describe the trees tagged source-reconstruction-2.0
-# and -2.1 (with the studios 3.0 retired), so their audits run there, by the
-# tag's own targets and tools, in a disposable clone.
-SOURCE_2_TAG ?= source-reconstruction-2.0
-SOURCE_2_MINOR_TAG ?= source-reconstruction-2.1
-# The audits hash the built ROMs and the emulator, which no clone tracks.
-SOURCE_2_PRIVATE = --with build/native/castle_excellent.nes \
-	--with build/revisions/castlequest-usa/castlequest.nes \
-	--with build/variants/start-room-1/castle_excellent.nes --with tools/fceux/fceux64.exe
-SOURCE_2_AT_TAG = $(RUN_TOOL) validation.tag_audit --tag "$(SOURCE_2_TAG)" $(SOURCE_2_PRIVATE) --
-SOURCE_2_MINOR_AT_TAG = $(RUN_TOOL) validation.tag_audit --tag "$(SOURCE_2_MINOR_TAG)" $(SOURCE_2_PRIVATE) --
-
-source-2-audit:
-	$(SOURCE_2_AT_TAG) "$(MAKE)" source-2-audit
-
-source-2-check:
-	$(MAKE) source-1-check
-	$(MAKE) castlequest-runtime
-	$(MAKE) check-fixed-layout
-	$(MAKE) source-2-audit
-
-source-2-pre-tag-check:
-	$(MAKE) source-2-check
-	$(SOURCE_2_AT_TAG) scripts/run.py validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)" --pre-tag
-
-source-2-tag-check:
-	$(MAKE) source-2-check
-	$(SOURCE_2_AT_TAG) scripts/run.py validation.source_2_release_audit --project-root . --manifest "$(SOURCE_2_MANIFEST)" --require-tag
-
-source-2-minor-audit:
-	$(SOURCE_2_MINOR_AT_TAG) "$(MAKE)" source-2-minor-audit
-
-public-command-smoke:
-	$(RUN_TOOL) validation.public_command_smoke --project-root . --target lint
-
-source-2-minor-check:
-	$(MAKE) source-2-check
-	$(MAKE) public-command-smoke
-	$(MAKE) source-2-minor-audit
-
-source-2-minor-pre-tag-check:
-	$(MAKE) source-2-minor-check
-	$(SOURCE_2_MINOR_AT_TAG) scripts/run.py validation.source_2_minor_release_audit --project-root . --manifest "$(SOURCE_2_MINOR_MANIFEST)" --pre-tag
-
-source-2-minor-tag-check:
-	$(MAKE) source-2-minor-check
-	$(SOURCE_2_MINOR_AT_TAG) scripts/run.py validation.source_2_minor_release_audit --project-root . --manifest "$(SOURCE_2_MINOR_MANIFEST)" --require-tag
-
-# Retrolarium: every revision of castle_excellent.rlj opens in the kit and
-# builds back to its ROM, in a throwaway copy of the repository.
-RLTOOL ?= rltool
-
+# Open every revision of castle_excellent.rlj in a throwaway copy of the
+# repository the way Retrolarium Studio does, and rebuild each without edits.
 studio-check:
 	$(RLTOOL) studio check castle_excellent.rlj
 
-# Source Reconstruction 3.0, in development until Retrolarium is tagged: the
-# source-2-minor-check gate, then studio-check with the manifest's
-# Retrolarium section checked against the descriptor and the running kit.
-SOURCE_3_MANIFEST ?= config/source_reconstruction_3_0.json
+lint:
+	$(RLTOOL) lint
 
-source-3-audit:
-	$(RLTOOL) studio check castle_excellent.rlj --release $(SOURCE_3_MANIFEST)
+format:
+	$(RLTOOL) lint --fix
 
-source-3-check:
-	$(MAKE) source-2-minor-check
-	$(MAKE) source-3-audit
+format-check:
+	$(RLTOOL) lint --only assembly
 
-ghidra-bootstrap:
-	$(RUN_TOOL) workflow.bootstrap_ghidra install
+# The quick suite: the unit tests, the ROMs byte for byte, the variant, the
+# relocated build and the studio check.
+test:
+	$(PYTHON) -m unittest discover -s tests
+	$(MAKE) --no-print-directory verify castlequest-check verify-fixed-layout build-relocated studio-check
 
-ghidra-status:
-	$(RUN_TOOL) workflow.bootstrap_ghidra status
+# The full suite: the quick one, then the attract mode in MAME (no input, the
+# game plays its own demos) on the relocated build, compared with what the
+# original ROM gives (movies/attract.check.json, written by `make golden`).
+test-full: test
+	$(RLTOOL) movie check $(ATTRACT_CHECK) --rom "$(RELOCATED_ROM)" --mame "$(MAME)"
 
-ghidra-inspect: ghidra-bootstrap
-	$(RUN_TOOL) workflow.run_ghidra inspect --image "$(REFERENCE_ROM)" --output build/ghidra/program.json
-
-ghidra-analyze: ghidra-bootstrap verify-reference
-	$(RUN_TOOL) workflow.run_ghidra export-facts --image "$(REFERENCE_ROM)" --false-instructions "$(FALSE_INSTRUCTION_STARTS)" --static-evidence "$(STATIC_CODE_EVIDENCE)" --runtime-evidence "$(RUNTIME_EVIDENCE)" --data-ranges "$(PRG_DATA_RANGES)" --output "$(GHIDRA_FACTS)"
-
-disassemble: ghidra-analyze $(PRG_ASSET)
-	$(RUN_TOOL) workflow.generate_disassembly write --prg "$(PRG_ASSET)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --memory-symbols "$(MEMORY_SYMBOLS)" --operand-overrides "$(OPERAND_OVERRIDES)" --layout "$(SOURCE_LAYOUT)"
-
-disassembly-check: ghidra-analyze $(PRG_ASSET)
-	$(RUN_TOOL) workflow.generate_disassembly check --prg "$(PRG_ASSET)" --facts "$(GHIDRA_FACTS)" --symbols "$(SYMBOLS)" --memory-symbols "$(MEMORY_SYMBOLS)" --operand-overrides "$(OPERAND_OVERRIDES)" --layout "$(SOURCE_LAYOUT)"
-
-fceux-bootstrap:
-	$(RUN_TOOL) runtime.bootstrap_fceux install
-
-fceux-status:
-	$(RUN_TOOL) runtime.bootstrap_fceux status
-
-include $(MAKE_FRAGMENTS)
-
-check: static-release-check
-
-release-check:
-	$(MAKE) clean
-	$(MAKE) verify-reference verify-assets build-toolchain-status
-	$(MAKE) check
-	$(MAKE) validate-symbols
-	$(MAKE) trace
-	$(MAKE) release-audit
-
-clean:
-	$(RUN_TOOL) build.project clean --path build
+golden:
+	$(RLTOOL) movie golden $(ATTRACT_CHECK) --rom "$(REFERENCE_ROM)" --mame "$(MAME)"
 
 # `make hooks`, once per clone, makes Git check every commit and push for stop
 # words and run `make lint` and `make format-check` first (Retrolarium Kit's
 # rltool hooks; the stop-word list lives outside the repositories).
-.PHONY: hooks
 hooks:
 	$(RLTOOL) hooks install --project .
+
+clean:
+	$(RUN_TOOL) build.project clean --path build
+
+help:
+	@echo "Castle Excellent / Castlequest source reconstruction"
+	@echo "  make split                    unpack the assets from your Castle Excellent ROM (once)"
+	@echo "  make build / verify           the Japanese ROM / and byte for byte"
+	@echo "  make castlequest-check        split and verify Castlequest (USA)"
+	@echo "  make verify-profile REVISION_PROFILE=<id>   one revision of config/revision_profiles.json"
+	@echo "  make build-fixed-layout / verify-fixed-layout   the start-room-1 variant"
+	@echo "  make build-relocated          every routine moved by RELOCATION_SHIFT bytes"
+	@echo "  make studio-check             open and rebuild every castle_excellent.rlj revision"
+	@echo "  make test                     the quick suite"
+	@echo "  make test-full                test, then the attract mode in MAME (MAME=<path>)"
+	@echo "  make golden                   record the attract mode's checkpoints from the original"
+	@echo "  make lint / format / format-check   the house style (Retrolarium Kit)"
+	@echo "  make hooks                    install the Git hooks"
+	@echo "  make rom-info / verify-toolchain / clean"

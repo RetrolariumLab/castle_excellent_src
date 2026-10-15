@@ -1,5 +1,8 @@
 # PRG subsystem landmarks
 
+The validation scripts this page cites (`scripts/validation/...`) belonged
+to Source Reconstruction 1.0 to 3.0; they remain at those tags.
+
 This is the address-ordered PRG inventory. It complements the conceptual
 [architecture](architecture.md) and exact module table in
 [source_layout.md](source_layout.md). Every range has semantic or explicitly

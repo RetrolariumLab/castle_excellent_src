@@ -1,1 +1,0 @@
-"""Player behavior contract tests."""

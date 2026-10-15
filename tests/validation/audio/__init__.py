@@ -1,1 +1,0 @@
-"""Audio contract tests."""

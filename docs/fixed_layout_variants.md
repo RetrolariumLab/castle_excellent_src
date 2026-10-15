@@ -15,11 +15,6 @@ allowlist, or a final hash mismatch.
 ```console
 make build-fixed-layout
 make verify-fixed-layout
-make check-fixed-layout
 ```
 
-The final target boots the isolated output with pinned FCEUX, presses Start,
-waits for the first `MainFrameLoop` entry, and requires `CurrentRoomNumber` at
-RAM `$0037` to equal 1. The canonical Japanese build and private reference are
-never modified. This demonstrates fixed-layout source editing only; expanded
-ROMs and systematic relocation remain outside Source 2.0.
+The canonical Japanese build and private reference are never modified.

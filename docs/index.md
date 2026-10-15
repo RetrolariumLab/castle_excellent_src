@@ -1,61 +1,27 @@
 # Documentation
 
-The sections below provide one canonical entry for every maintained document.
-New pages must be added here, and obsolete pages must be removed rather than
-left as disconnected notes.
+## Builds
 
-## Release contracts
-
-- [Source Reconstruction 2.1](source_reconstruction_2_1.md) — compatible
-  repository-hardening release.
-- [Source Reconstruction contract](source_reconstruction.md) — enduring
-  definition of a reconstructed source release.
-- [Source Reconstruction 2.0](source_reconstruction_2_0.md) — current
-  tag-ready scope and acceptance boundary.
-- [Source Reconstruction 1.0](source_reconstruction_1_0.md) — preserved
-  Japanese-only release boundary.
 - [Revision profiles](revision_profiles.md) — Japanese and USA identities and
   their shared-source strategy.
-- [Fixed-layout variants](fixed_layout_variants.md) — bounded experimental
-  edits and their byte allowlists.
-- [Disassembly pipeline](disassembly_pipeline.md) — reproducible Ghidra inputs
-  and source regeneration.
-- [Verification](verification.md) — identity, runtime, debugger, and release
-  gates.
+- [Fixed-layout variants](fixed_layout_variants.md) — bounded edits and their
+  byte allowlists.
+- [Editing in Retrolarium](retrolarium.md) — how the game is edited.
 
 ## Engine reference
 
 - [Architecture](architecture.md) — conceptual runtime design.
 - [Subsystem landmarks](subsystems.md) — address-ordered PRG inventory.
-- [Source layout and symbols](source_layout.md) — modules, naming ledgers, and
-  original-name provenance.
+- [Source layout](source_layout.md) — modules and how the source is maintained.
 - [RAM map](ram_map.md) — storage lifetimes and shared scratch contracts.
 - [Data formats](data_formats.md) — binary formats and round-trip status.
-- [Editing in Retrolarium](retrolarium.md) — how the game is edited.
 
-## Project policy and evidence
+## Findings
 
-- [Development guide](development.md) — commands, naming, configuration,
-  scripts, tests, and source policy.
-- [Provenance](provenance.md) — cartridge, research, and toolchain origins.
 - [Open questions](unknowns.md) — unresolved claims that can affect public
   contracts.
 - [Resolved findings](resolved_unknowns.md) — evidence-backed investigation
   ledger.
-- [Roadmap](roadmap.md) — release history and deferred work.
 
-Machine-readable release ownership lives in
-`config/source_reconstruction_1_0.json` and
-`config/source_reconstruction_2_0.json`. Active compatible-minor development is
-declared by `config/source_reconstruction_2_1.json`; prose documents explain
-those contracts but do not replace them.
-
-## Corpus review
-
-The 2.1 review followed the build, architecture, source-layout, authoring,
-verification, and provenance journeys from this index. Every maintained page
-has a distinct audience or evidence lifecycle; no stale, duplicate, or orphaned
-page remains. The exact inventory, line counts, dispositions, reader journeys,
-and repeated-prefix decision are recorded in
-`config/reconstruction/documentation_review.json` and checked by repository
-lint.
+The checks are in the README: `make test` after every change, `make test-full`
+for the attract mode in MAME.

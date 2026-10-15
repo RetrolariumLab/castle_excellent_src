@@ -1,5 +1,8 @@
 # Data formats
 
+The validation scripts this page cites (`scripts/validation/...`) belonged
+to Source Reconstruction 1.0 to 3.0; they remain at those tags.
+
 All CPU addresses below refer to the Japanese PRG mapped at `$8000-$FFFF`.
 The descriptions began with the published trace and were checked against the
 exact Japanese reference image identified in `assets/manifest.json`.
@@ -58,7 +61,7 @@ The serial pollers produce this one-byte layout at `$20`:
 
 Each serial read chooses a set D0 bit first and otherwise falls back to D1.
 `scripts/validation/gameplay/controller_input.py` exhaustively reconstructs every mask on both data
-lines and is part of `make release-check`.
+lines.
 
 ## Room pointers and compressed streams
 

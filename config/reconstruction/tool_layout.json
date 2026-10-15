@@ -1,8 +1,0 @@
-{
-  "schema_version": 1,
-  "python_target_lines": {
-    "minimum": 300,
-    "maximum": 700
-  },
-  "size_exceptions": []
-}

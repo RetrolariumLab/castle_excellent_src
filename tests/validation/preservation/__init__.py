@@ -1,1 +1,0 @@
-"""Typed preservation evidence tests."""

@@ -46,10 +46,8 @@ while `src/graphics/chr.asm` includes the four private 8 KiB CHR banks.
 
 ## Module policy
 
-Semantic PRG modules target 300–700 lines. The reconstruction audit rejects a
-larger module, a smaller module without an explicit `size_exception` in
-`config/reconstruction/source_layout.json`, or two source names with the same first
-underscore-delimited word in one directory. This keeps names useful at a glance
+Semantic PRG modules target 300–700 lines, and no two source names in one
+directory share their first underscore-delimited word. This keeps names useful at a glance
 and prevents address-era fragments such as repeated `room_*` or `enemy_*`
 files from accumulating again.
 
@@ -68,80 +66,17 @@ each is a complete 559-line unrolled group of five NMI tasks and already falls
 inside the target range. Their descriptive names live in a dedicated
 `rendering/room_rows` directory without a repeated filename prefix.
 
-## Deterministic regeneration
+## Maintaining the source
 
-`config/reconstruction/source_layout.json` is the machine-readable authority. The platform
-module declares the PRG segment and includes the following 31 modules in CPU
-order. `scripts/workflow/generate_disassembly.py` regenerates every module from pinned
-Ghidra facts, named symbols, operand overrides, revision overlays, and typed
-source replacements. `make disassembly-check` rejects any stale module.
+Releases 1.0 to 3.0 regenerated every module from pinned Ghidra facts, a symbol
+ledger, RAM aliases and operand overrides, and audited the result; that pipeline
+and its ledgers remain at those tags. From 3.1 the source is the authority and
+is edited directly: `make test` rebuilds every ROM byte for byte, and
+`make test-full` plays the attract mode on a build whose routines all moved
+(`make build-relocated`).
 
-Ghidra-defined instructions are emitted mnemonically and all other ranges use
-`.byte`. Static direct branch, jump, and call operands are labels. Because
-Ghidra cannot represent overlapping instructions, proven entry points inside an
-existing instruction remain ca65 offset symbols such as
+`src/memory/ram.inc` names the RAM and I/O addresses; [ram_map.md](ram_map.md)
+describes lifetimes, overlaps and subsystem contracts. Bytes without a stable
+meaning stay unnamed rather than receiving speculative names. Proven entry
+points inside an existing instruction remain ca65 offset symbols such as
 `Label_E5A1 = * + 1`.
-
-`config/reconstruction/memory_symbols.json` makes operand naming deterministic. A global
-entry is used everywhere its address appears; an address-scoped entry is used
-only inside the proven subsystem range. `config/reconstruction/operand_overrides.json`
-records relocatable ca65 expressions together with the exact original operand
-and an evidence note; regeneration fails if the underlying instruction changes.
-
-CHR banks 2 and 3 are not purely graphics. Their room bitstreams remain
-address-stable and are authored only through the proven level codec.
-
-## PRG symbol map
-
-`config/reconstruction/symbols.json` is the machine-readable PRG symbol
-ledger. Its 1,232 records contain an immutable CPU address, current ca65 name,
-semantic kind, and evidence confidence. Source 1.0 contains 295 routine
-entries, 755 local control labels, 127 data labels, 48 general labels, and 7
-tables. Every record belongs to exactly one registered source region.
-
-The module table above provides the address-to-module view; the symbol ledger
-provides the exact address-to-name and kind view. Together they form the
-complete routine map without maintaining a second 1,232-row appendix.
-
-## Original-name provenance
-
-CPU address is the stable join key between imported and reconstructed names.
-Headless Ghidra exports its original `symbol` and `function` columns to
-`build/ghidra/instructions.tsv`; the current name at the same address lives in
-the symbol ledger. The canonical
-[label rename registry](../config/reconstruction/label_renames.json) defines
-this address-keyed old-to-new join and retains notable imported aliases.
-
-| Address | Original Ghidra identity | Current source name |
-| ---: | --- | --- |
-| `$8000` | `FUN_PRG0__8000` | `DelayLongPulseHalf` |
-| `$8225` | `reset` | `Reset` |
-| `$9583` | `FUN_PRG0__9583` | `UpdateRuntimeObjects` |
-| `$C569` | `vblank` | `Nmi` |
-| `$E830` | `FUN_PRG0__e830` | `DecodeRoom` |
-| `$EBE9` | `FUN_PRG0__ebe9` | `LoadStaticRoomObjects` |
-| `$FE31` | `FUN_PRG0__fe31` | `RunGameOverSequence` |
-
-Labels introduced for typed data or unnamed control-flow targets use
-`PRG0:$address` as their original identity. Names can therefore improve
-without losing the connection to the imported ROM, while relocated code
-cannot silently masquerade as a rename.
-
-`make disassembly-check` regenerates Ghidra facts and applies the symbol ledger
-to every source range. `make reconstruction-audit` additionally verifies
-symbol metadata, unique ownership, and RAM aliases. Release manifests freeze
-the expected counts, so additions or removals require a deliberate contract
-update.
-
-## RAM and I/O symbols
-
-`config/reconstruction/memory_symbols.json` is the assembly-facing RAM/I/O
-ledger: 495 aliases, including 368 restricted to a proven PRG consumer range.
-A global alias states a stable game-wide meaning; a scoped alias documents
-scratch reuse without claiming false global ownership. Array records carry a
-validated size so indexed operands remain relocatable.
-
-`src/memory/ram.inc` exposes those addresses and evidence-backed constants to
-ca65. [ram_map.md](ram_map.md) describes lifetimes, overlaps, and subsystem
-contracts for human readers. Bytes without a stable consumer-derived meaning
-remain outside the public RAM ABI rather than receiving speculative names.

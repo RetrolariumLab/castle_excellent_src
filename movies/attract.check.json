@@ -1,0 +1,118 @@
+{
+  "schema": "retrolarium.movie-check",
+  "schema_version": 1,
+  "movie": "attract.rlmovie",
+  "cells": {
+    "room": {
+      "address": "0x0037"
+    },
+    "lives": {
+      "address": "0x0013"
+    },
+    "score": {
+      "address": "0x000B",
+      "length": 2
+    },
+    "demo_active": {
+      "address": "0x07C7"
+    },
+    "player_x": {
+      "address": "0x0038",
+      "length": 2,
+      "endian": "little",
+      "tolerance": 16
+    },
+    "player_y": {
+      "address": "0x003A",
+      "tolerance": 8
+    },
+    "inventory": {
+      "address": "0x0005",
+      "length": 6
+    }
+  },
+  "frames": [
+    1500,
+    3000,
+    4500,
+    6000,
+    9000,
+    12000,
+    15000,
+    "end"
+  ],
+  "expected": {
+    "1500": {
+      "room": "47",
+      "lives": "03",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "9400",
+      "player_y": "70",
+      "inventory": "000000000001"
+    },
+    "3000": {
+      "room": "47",
+      "lives": "03",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "7a00",
+      "player_y": "70",
+      "inventory": "000000000000"
+    },
+    "4500": {
+      "room": "47",
+      "lives": "03",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "d800",
+      "player_y": "78",
+      "inventory": "000000000000"
+    },
+    "6000": {
+      "room": "47",
+      "lives": "03",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "7000",
+      "player_y": "98",
+      "inventory": "000000000000"
+    },
+    "9000": {
+      "room": "47",
+      "lives": "03",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "1c01",
+      "player_y": "78",
+      "inventory": "000000000001"
+    },
+    "12000": {
+      "room": "47",
+      "lives": "03",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "1c01",
+      "player_y": "78",
+      "inventory": "000000000001"
+    },
+    "15000": {
+      "room": "47",
+      "lives": "03",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "1c01",
+      "player_y": "78",
+      "inventory": "000000000001"
+    },
+    "end": {
+      "room": "47",
+      "lives": "03",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "5a00",
+      "player_y": "64",
+      "inventory": "000000000001"
+    }
+  }
+}

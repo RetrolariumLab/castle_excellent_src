@@ -1,5 +1,8 @@
 # Resolved reverse-engineering findings
 
+The validation scripts this page cites (`scripts/validation/...`) belonged
+to Source Reconstruction 1.0 to 3.0; they remain at those tags.
+
 This archive preserves the evidence and closure of questions removed from the
 active registry in `docs/unknowns.md`.
 

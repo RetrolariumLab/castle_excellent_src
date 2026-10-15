@@ -7,18 +7,11 @@ import argparse
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
-import re
 import shutil
-import subprocess
 import sys
 import zlib
 
 from scripts.build import atomic_io
-from scripts.workflow.generate_disassembly import (
-    load_memory_symbols,
-    load_operand_overrides,
-    load_source_layout,
-)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -29,148 +22,6 @@ class ProjectError(ValueError):
 
 
 PRG_DATA_KINDS = {"data", "padding", "table", "text", "vectors"}
-
-
-def load_prg_data_ranges(path: Path) -> list[tuple[str, int, int, str]]:
-    try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-    except OSError as exc:
-        raise ProjectError(f"cannot read typed PRG ranges {path}: {exc}") from exc
-    ranges: list[tuple[str, int, int, str]] = []
-    previous_end = 0x7FFF
-    for line_number, raw in enumerate(lines, 1):
-        line = raw.strip()
-        if not line or line.startswith("#"):
-            continue
-        fields = line.split()
-        if len(fields) != 4 or fields[0] not in PRG_DATA_KINDS:
-            raise ProjectError(f"invalid typed PRG range at {path}:{line_number}")
-        try:
-            start, end = int(fields[1], 16), int(fields[2], 16)
-        except ValueError as exc:
-            raise ProjectError(
-                f"invalid typed PRG address at {path}:{line_number}"
-            ) from exc
-        if not 0x8000 <= start <= end <= 0xFFFF:
-            raise ProjectError(f"typed PRG range is out of bounds at {path}:{line_number}")
-        if start <= previous_end:
-            raise ProjectError(
-                f"typed PRG ranges overlap or are unsorted at {path}:{line_number}"
-            )
-        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", fields[3]):
-            raise ProjectError(f"invalid typed PRG range name at {path}:{line_number}")
-        ranges.append((fields[0], start, end, fields[3]))
-        previous_end = end
-    if not ranges:
-        raise ProjectError(f"typed PRG range registry is empty: {path}")
-    return ranges
-
-
-def load_code_evidence(
-    evidence_path: Path, provenance: str
-) -> list[tuple[int, int]]:
-    try:
-        lines = evidence_path.read_text(encoding="utf-8").splitlines()
-    except OSError as exc:
-        raise ProjectError(
-            f"cannot read {provenance} code evidence {evidence_path}: {exc}"
-        ) from exc
-    ranges: list[tuple[int, int]] = []
-    previous_end = 0x7FFF
-    for line_number, raw in enumerate(lines, 1):
-        fields = raw.split()
-        if not fields or fields[0].startswith("#"):
-            continue
-        if len(fields) != 3:
-            raise ProjectError(
-                f"invalid {provenance} code evidence at {evidence_path}:{line_number}"
-            )
-        if fields[0] != "code":
-            continue
-        try:
-            start, end = int(fields[1], 16), int(fields[2], 16)
-        except ValueError as exc:
-            raise ProjectError(
-                f"invalid {provenance} code address at {evidence_path}:{line_number}"
-            ) from exc
-        if not 0x8000 <= start <= end <= 0xFFFF:
-            raise ProjectError(
-                f"{provenance} code range is out of bounds at "
-                f"{evidence_path}:{line_number}"
-            )
-        if start <= previous_end:
-            raise ProjectError(
-                f"{provenance} code ranges overlap or are unsorted at "
-                f"{evidence_path}:{line_number}"
-            )
-        ranges.append((start, end))
-        previous_end = end
-    if not ranges:
-        raise ProjectError(f"{provenance} code evidence is empty: {evidence_path}")
-    return ranges
-
-
-def load_false_instruction_starts(path: Path) -> list[tuple[int, str]]:
-    try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-    except OSError as exc:
-        raise ProjectError(
-            f"cannot read false-instruction registry {path}: {exc}"
-        ) from exc
-    entries: list[tuple[int, str]] = []
-    previous = 0x7FFF
-    for line_number, raw in enumerate(lines, 1):
-        fields = raw.split()
-        if not fields or fields[0].startswith("#"):
-            continue
-        if len(fields) != 3 or fields[0] != "instruction":
-            raise ProjectError(
-                f"invalid false-instruction entry at {path}:{line_number}"
-            )
-        try:
-            address = int(fields[1], 16)
-        except ValueError as exc:
-            raise ProjectError(
-                f"invalid false-instruction address at {path}:{line_number}"
-            ) from exc
-        if not 0x8000 <= address <= 0xFFFF:
-            raise ProjectError(
-                f"false-instruction address is out of bounds at {path}:{line_number}"
-            )
-        if address <= previous:
-            raise ProjectError(
-                f"false-instruction entries overlap or are unsorted at "
-                f"{path}:{line_number}"
-            )
-        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", fields[2]):
-            raise ProjectError(
-                f"invalid false-instruction name at {path}:{line_number}"
-            )
-        entries.append((address, fields[2]))
-        previous = address
-    if not entries:
-        raise ProjectError(f"false-instruction registry is empty: {path}")
-    return entries
-
-
-def validate_code_data_separation(
-    data_ranges: list[tuple[str, int, int, str]],
-    evidence_path: Path,
-    provenance: str,
-) -> None:
-    for start, end in load_code_evidence(evidence_path, provenance):
-        for _kind, data_start, data_end, name in data_ranges:
-            if max(start, data_start) <= min(end, data_end):
-                raise ProjectError(
-                    f"{provenance} code ${start:04X}-${end:04X} overlaps typed data {name}"
-                )
-
-
-def validate_runtime_data_separation(
-    data_ranges: list[tuple[str, int, int, str]], evidence_path: Path
-) -> None:
-    """Backward-compatible runtime-evidence validation entrypoint."""
-    validate_code_data_separation(data_ranges, evidence_path, "runtime")
 
 
 def digest(data: bytes, algorithm: str = "sha1") -> str:
@@ -385,30 +236,6 @@ def command_clean(args: argparse.Namespace) -> None:
         print(f"[CLEAN] {target}")
 
 
-def validate_test_layout(root: Path) -> None:
-    from scripts.validation import repository_policy
-
-    repository_policy.validate_test_layout(root)
-
-
-def validate_config_layout(root: Path) -> None:
-    from scripts.validation import repository_policy
-
-    repository_policy.validate_config_layout(root)
-
-
-def validate_documentation(root: Path) -> None:
-    from scripts.validation import repository_policy
-
-    repository_policy.validate_documentation(root)
-
-
-def command_lint(args: argparse.Namespace) -> None:
-    from scripts.validation import repository_policy
-
-    repository_policy.command_lint(args)
-
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -446,8 +273,6 @@ def build_parser() -> argparse.ArgumentParser:
     clean.add_argument("--path", required=True)
     clean.set_defaults(handler=command_clean)
 
-    lint = subparsers.add_parser("lint", help="check the repository contract")
-    lint.set_defaults(handler=command_lint)
     return parser
 
 

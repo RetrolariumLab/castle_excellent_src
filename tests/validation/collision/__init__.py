@@ -1,1 +1,0 @@
-"""Collision contract tests."""

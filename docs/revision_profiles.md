@@ -55,10 +55,3 @@ the Japanese load/save dispatch. `make castlequest-check` splits the USA assets,
 builds the shared entrypoint with `CASTLEQUEST_USA=1`, and compares the complete
 output with the reference byte for byte. The Japanese default remains unchanged
 and continues to pass `make verify`.
-
-`make castlequest-runtime` adds direct behavioral evidence. Pinned FCEUX boots
-the source-built USA image, observes 50 lives and room 71 at the first main
-loop, opens the localized sub-command menu through a controller-2 edge, and
-drives its cursor through `0,1,2,0`. Reaching the Japanese Load or Save handlers
-fails the scenario. Runtime support is therefore measured directly rather than
-inferred from static similarity.
