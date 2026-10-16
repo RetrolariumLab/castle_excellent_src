@@ -14,9 +14,7 @@ MAME ?= $(RETROLARIUM_MAME)
 REFERENCE_ROM ?= Castle Excellent (J).nes
 MANIFEST := assets/manifest.json
 REVISION_MANIFEST := config/revision_profiles.json
-FIXED_LAYOUT_MANIFEST := config/fixed_layout_variants.json
 REVISION_PROFILE ?= castlequest-usa
-FIXED_LAYOUT_VARIANT ?= start-room-1
 BUILD_DIR := build/native
 GENERATED_ASSET_DIR := assets/generated
 CHR_ASSET := $(GENERATED_ASSET_DIR)/chr/castle_excellent.chr
@@ -40,7 +38,7 @@ SOURCE_FILES := $(sort $(wildcard \
 .PHONY: all help build clean split check-assets verify verify-reference verify-built \
 	verify-header verify-prg verify-chr verify-payload verify-rom verify-assets \
 	rom-info rom-info-reference rom-info-built split-profile build-profile verify-profile \
-	castlequest-check build-fixed-layout verify-fixed-layout build-relocated \
+	castlequest-check build-relocated \
 	verify-toolchain studio-check lint format format-check test test-full golden hooks
 
 all: verify
@@ -101,13 +99,6 @@ castlequest-check:
 	$(MAKE) split-profile REVISION_PROFILE=castlequest-usa
 	$(MAKE) verify-profile REVISION_PROFILE=castlequest-usa
 
-# The start-room-1 variant (docs/fixed_layout_variants.md).
-build-fixed-layout: build
-	$(RUN_TOOL) build.fixed_layout_variant build --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
-
-verify-fixed-layout: build
-	$(RUN_TOOL) build.fixed_layout_variant verify --manifest "$(FIXED_LAYOUT_MANIFEST)" --variant "$(FIXED_LAYOUT_VARIANT)"
-
 build-relocated: $(SOURCE_FILES) $(CHR_ASSET) | $(RELOCATED_DIR) verify-toolchain
 	$(CA65) -D RELOCATION_TEST_SHIFT=$(RELOCATION_SHIFT) -g -o "$(RELOCATED_DIR)/castle_excellent.o" "src/main.asm"
 	$(LD65) -C config/linker/cnrom.cfg -o "$(RELOCATED_ROM)" "$(RELOCATED_DIR)/castle_excellent.o"
@@ -129,11 +120,11 @@ format:
 format-check:
 	$(RLTOOL) lint --only assembly
 
-# The quick suite: the unit tests, the ROMs byte for byte, the variant, the
-# relocated build and the studio check.
+# The quick suite: the unit tests, the ROMs byte for byte, the relocated build
+# and the studio check.
 test:
 	$(PYTHON) -m unittest discover -s tests
-	$(MAKE) --no-print-directory verify castlequest-check verify-fixed-layout build-relocated studio-check
+	$(MAKE) --no-print-directory verify castlequest-check build-relocated studio-check
 
 # The full suite: the quick one, then the attract mode in MAME (no input, the
 # game plays its own demos) on the relocated build, compared with what the
@@ -159,7 +150,6 @@ help:
 	@echo "  make build / verify           the Japanese ROM / and byte for byte"
 	@echo "  make castlequest-check        split and verify Castlequest (USA)"
 	@echo "  make verify-profile REVISION_PROFILE=<id>   one revision of config/revision_profiles.json"
-	@echo "  make build-fixed-layout / verify-fixed-layout   the start-room-1 variant"
 	@echo "  make build-relocated          every routine moved by RELOCATION_SHIFT bytes"
 	@echo "  make studio-check             open and rebuild every castle_excellent.rlj revision"
 	@echo "  make test                     the quick suite"

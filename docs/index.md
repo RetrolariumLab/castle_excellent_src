@@ -4,8 +4,6 @@
 
 - [Revision profiles](revision_profiles.md) — Japanese and USA identities and
   their shared-source strategy.
-- [Fixed-layout variants](fixed_layout_variants.md) — bounded edits and their
-  byte allowlists.
 - [Editing in Retrolarium](retrolarium.md) — how the game is edited.
 
 ## Engine reference

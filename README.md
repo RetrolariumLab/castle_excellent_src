@@ -36,7 +36,6 @@ extracted assets and build products are ignored by Git.
 ```bash
 make build / verify                     # the Japanese ROM
 make castlequest-check                  # split and verify Castlequest (USA)
-make build-fixed-layout / verify-fixed-layout   # the start-room-1 variant
 make build-relocated                    # every routine moved by 32 bytes
 make studio-check                       # open and rebuild both revisions
 make test / test-full / golden          # the checks
@@ -45,8 +44,8 @@ make lint / format / format-check / hooks / rom-info / clean / help
 
 ## Tests
 
-`make test` (about ten seconds) runs the unit tests, verifies both ROMs and the
-variant byte for byte, builds the relocated ROM and runs the studio check.
+`make test` (about ten seconds) runs the unit tests, verifies both ROMs byte
+for byte, builds the relocated ROM and runs the studio check.
 
 `make test-full` adds the attract mode played in MAME on the relocated build:
 with no input the game plays its own demos, and at eight checkpoints the room,
@@ -60,9 +59,9 @@ the reference values again.
 
 ```text
 src/           ca65 source (main.asm includes the PRG modules in CPU order)
-config/        linker layout, revisions, variant, toolchain, lint, names, profile
+config/        linker layout, revisions, toolchain, lint, names, profile
 assets/        manifest.json (the extracted assets are ignored)
-scripts/build/ split, verification, revision and variant scripts
+scripts/build/ split, verification and revision scripts
 tests/         their unit tests
 movies/        the attract-mode check
 docs/          architecture, subsystems, RAM map, data formats
