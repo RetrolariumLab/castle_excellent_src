@@ -1,9 +1,9 @@
 # Revision profiles
 
-`config/revision_profiles.json` owns the identity, build selection, container,
-private-input policy, and runtime status of each declared NES revision. Source
-Reconstruction 2.0 currently declares the Japanese HSP-05 baseline and the USA
-Castlequest localization. No other regional or platform profile is implied.
+The source builds the Japanese HSP-05 baseline and the USA Castlequest
+localization. `assets/manifest.json` names each ROM by file, size and SHA-1
+(its image id is the revision's name), and the Makefile gives Castlequest its
+`CASTLEQUEST_USA=1` define. No other regional or platform profile is implied.
 
 ## Reference identities
 
@@ -14,7 +14,7 @@ Castlequest localization. No other regional or platform profile is implied.
 
 Both images are 65,552-byte iNES mapper-3 containers with vertical mirroring,
 32 KiB of fixed PRG, and four switchable 8 KiB CHR banks. The complete hashes
-are machine-readable in the profile manifest. Both ROMs remain ignored,
+are in `assets/manifest.json`. Both ROMs remain ignored,
 private user-supplied inputs.
 
 ## Castlequest difference survey
@@ -42,8 +42,8 @@ bank 3 differs in 903 bytes from `$180A` onward. The compressed room arenas are
 therefore identical: all bank-2 room data and the bank-3 room stream below
 `$1161` are shared between revisions.
 
-`make split-profile` validates the selected private reference and extracts only
-declared, hashed binary assets into the ignored profile cache. Each profile owns
+`make split` (`rltool assets split`) checks each ROM that is here and cuts
+only declared, hashed assets into `assets/generated/`. Each profile owns
 its complete CHR payload, the 16-byte title palette at PRG `$450D`, and the
 53-byte sub-command text asset at PRG `$7B77`. Those typed data ranges are
 included from the split files; they are not duplicated as regional byte arrays
@@ -51,7 +51,7 @@ inside the assembly source.
 
 The remaining conditional PRG differences are executable or semantic constants:
 initial lives, menu bounds, and the Castlequest NOP replacement that disables
-the Japanese load/save dispatch. `make castlequest-check` splits the USA assets,
-builds the shared entrypoint with `CASTLEQUEST_USA=1`, and compares the complete
-output with the reference byte for byte. The Japanese default remains unchanged
+the Japanese load/save dispatch. `make verify-revision REVISION=castlequest-usa`
+builds the shared entrypoint with `CASTLEQUEST_USA=1` and compares the complete
+output with the reference byte for byte (`rltool assets verify`). The Japanese default remains unchanged
 and continues to pass `make verify`.

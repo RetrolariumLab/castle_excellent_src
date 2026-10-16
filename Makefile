@@ -1,7 +1,6 @@
 # Castle Excellent / Castlequest: build the source back into the original ROMs
 # and check it. `make help` lists the targets.
 PYTHON ?= python
-RUN_TOOL := $(PYTHON) scripts/run.py
 # cc65 from Retrolarium Kit (RLTOOL, default rltool), asked once per run; the
 # recipes' shell needs forward slashes.
 RLTOOL ?= rltool
@@ -11,96 +10,70 @@ LD65 ?= $(eval LD65 := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path nes ld6
 # MAME for `make test-full` and `make golden`.
 MAME ?= $(RETROLARIUM_MAME)
 
+# The private assets: assets/manifest.json names the ROMs and what `make split`
+# cuts out of them; `rltool assets` (Retrolarium Kit) splits, checks and
+# verifies.
+ASSETS = $(RLTOOL) assets $(1)
+BASE_IMAGE := castle-excellent-japan-hsp-05
 REFERENCE_ROM ?= Castle Excellent (J).nes
-MANIFEST := assets/manifest.json
-REVISION_MANIFEST := config/revision_profiles.json
-REVISION_PROFILE ?= castlequest-usa
+# The revisions: the image ids of assets/manifest.json, their defines and ROM
+# names. The base revision builds into build/native.
+REVISION ?= castlequest-usa
+REVISION_DEFINES_castlequest-usa := -D CASTLEQUEST_USA=1
+REVISION_ROM_castle-excellent-japan-hsp-05 := build/native/castle_excellent.nes
+REVISION_ROM_castlequest-usa := build/revisions/castlequest-usa/castlequest.nes
 BUILD_DIR := build/native
-GENERATED_ASSET_DIR := assets/generated
-CHR_ASSET := $(GENERATED_ASSET_DIR)/chr/castle_excellent.chr
-PRG_ASSET := $(GENERATED_ASSET_DIR)/prg/castle_excellent.prg
-OBJECT := $(BUILD_DIR)/castle_excellent.o
 ROM := $(BUILD_DIR)/castle_excellent.nes
-LABELS := $(BUILD_DIR)/castle_excellent.lbl
-MAP := $(BUILD_DIR)/castle_excellent.map
-DEBUG := $(BUILD_DIR)/castle_excellent.dbg
-# Every routine and table before the fixed PRG tail moves by this many bytes
-# (src/system/famicom_platform.asm); the tail's padding takes up to $48.
 RELOCATED_DIR := build/relocated
 RELOCATED_ROM := $(RELOCATED_DIR)/castle_excellent.nes
 # The movies test-full plays, in this order: a TAS first, then a longplay,
 # then the attract mode.
 MOVIE_CHECKS := movies/attract.check.json
-VERIFY_ROM := $(RUN_TOOL) build.verify_rom
 SOURCE_FILES := $(sort $(wildcard \
 	src/*.asm src/*/*.asm src/*/*/*.asm src/*/*/*/*.asm \
 	src/*.inc src/*/*.inc src/*/*/*.inc src/*/*/*/*.inc))
 
-.PHONY: all help build clean split check-assets verify verify-reference verify-built \
-	verify-header verify-prg verify-chr verify-payload verify-rom verify-assets \
-	rom-info rom-info-reference rom-info-built split-profile build-profile verify-profile \
-	castlequest-check build-relocated \
-	verify-toolchain studio-check lint format format-check test test-full golden hooks
+# One build of src/main.asm: $(call build_rom,<output ROM>,<ca65 defines>)
+build_rom = $(PYTHON) -c "from pathlib import Path; Path('$(dir $(1))').mkdir(parents=True, exist_ok=True)" && \
+	$(CA65) --debug-info -g $(2) -o "$(basename $(1)).o" -l "$(basename $(1)).lst" "src/main.asm" && \
+	$(LD65) -C config/linker/cnrom.cfg -o "$(1)" "$(basename $(1)).o" -Ln "$(basename $(1)).lbl" \
+		-m "$(basename $(1)).map" --dbgfile "$(basename $(1)).dbg"
+
+.PHONY: all help build verify build-revision verify-revision verify-revisions split \
+	_require-assets build-relocated verify-toolchain studio-check lint format format-check \
+	test test-full golden hooks clean
 
 all: verify
 
-$(BUILD_DIR) $(RELOCATED_DIR):
-	$(RUN_TOOL) build.project mkdir --path "$@"
+split:
+	$(call ASSETS,split)
 
-$(CHR_ASSET) $(PRG_ASSET):
-	$(RUN_TOOL) build.project require --path "$@" --hint "run 'make split' first"
+_require-assets:
+	$(call ASSETS,check) --image $(BASE_IMAGE)
 
-$(OBJECT): $(SOURCE_FILES) $(CHR_ASSET) Makefile | $(BUILD_DIR) verify-toolchain
-	$(CA65) --debug-info -g -o "$@" -l "$(BUILD_DIR)/castle_excellent.lst" "src/main.asm"
-
-$(ROM): $(OBJECT) config/linker/cnrom.cfg
-	$(LD65) -C config/linker/cnrom.cfg -o "$@" "$<" -Ln "$(LABELS)" -m "$(MAP)" --dbgfile "$(DEBUG)"
+$(ROM): $(SOURCE_FILES) Makefile | verify-toolchain _require-assets
+	$(call build_rom,$@,)
 
 build: $(ROM)
 
-split:
-	$(RUN_TOOL) build.project split --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --output-dir "$(GENERATED_ASSET_DIR)"
+verify: $(ROM)
+	$(call ASSETS,verify) --image $(BASE_IMAGE) --built "$(ROM)"
 
-verify-reference:
-	$(RUN_TOOL) build.project verify --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)"
+# One revision (REVISION=<image id>).
+build-revision: verify-toolchain
+	$(call ASSETS,check) --image $(REVISION)
+	$(call build_rom,$(REVISION_ROM_$(REVISION)),$(REVISION_DEFINES_$(REVISION)))
 
-verify-built: $(ROM)
-	$(RUN_TOOL) build.project verify --image "$(ROM)" --manifest "$(MANIFEST)"
+verify-revision: build-revision
+	$(call ASSETS,verify) --image $(REVISION) --built "$(REVISION_ROM_$(REVISION))"
 
-verify-header verify-prg verify-chr verify-payload verify-rom: $(ROM)
-	$(VERIFY_ROM) compare --built "$(ROM)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region $(subst verify-,,$@)
+# Every revision whose ROM is here.
+verify-revisions:
+	@for revision in $$($(call ASSETS,images) --present); do \
+		$(MAKE) --no-print-directory verify-revision REVISION=$$revision || exit 1; \
+	done
 
-verify-assets: $(CHR_ASSET)
-	$(VERIFY_ROM) asset --asset "$(CHR_ASSET)" --reference "$(REFERENCE_ROM)" --manifest "$(MANIFEST)" --region chr
-
-check-assets: verify-assets
-
-verify: verify-reference verify-built verify-header verify-prg verify-chr \
-	verify-payload verify-rom verify-assets
-
-rom-info-reference:
-	$(VERIFY_ROM) report --image "$(REFERENCE_ROM)" --manifest "$(MANIFEST)"
-
-rom-info-built: $(ROM)
-	$(VERIFY_ROM) report --image "$(ROM)" --manifest "$(MANIFEST)"
-
-rom-info: rom-info-reference rom-info-built
-
-# Castlequest and the other revisions of config/revision_profiles.json.
-split-profile:
-	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" split
-
-build-profile: verify-toolchain
-	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" build --ca65 "$(CA65)" --ld65 "$(LD65)"
-
-verify-profile: build-profile
-	$(RUN_TOOL) build.revision_profiles --manifest "$(REVISION_MANIFEST)" --profile "$(REVISION_PROFILE)" verify
-
-castlequest-check:
-	$(MAKE) split-profile REVISION_PROFILE=castlequest-usa
-	$(MAKE) verify-profile REVISION_PROFILE=castlequest-usa
-
-build-relocated: $(SOURCE_FILES) $(CHR_ASSET) | $(RELOCATED_DIR) verify-toolchain
+build-relocated: $(SOURCE_FILES) | verify-toolchain _require-assets
 	$(PYTHON) scripts/build/relocate.py --main src/main.asm --output "$(RELOCATED_DIR)/source/main.asm"
 	$(CA65) -g -o "$(RELOCATED_DIR)/castle_excellent.o" "$(RELOCATED_DIR)/source/main.asm"
 	$(LD65) -C config/linker/cnrom.cfg -o "$(RELOCATED_ROM)" "$(RELOCATED_DIR)/castle_excellent.o"
@@ -122,11 +95,11 @@ format:
 format-check:
 	$(RLTOOL) lint --only assembly
 
-# The quick suite: the unit tests, the ROMs byte for byte, the relocated build
-# and the studio check.
+# The quick suite: the unit tests, every revision byte for byte against the
+# ROMs that are here, the relocated build and the studio check.
 test:
 	$(PYTHON) -m unittest discover -s tests
-	$(MAKE) --no-print-directory verify castlequest-check build-relocated studio-check
+	$(MAKE) --no-print-directory verify verify-revisions build-relocated studio-check
 
 # The full suite: the quick one, then the movies in MAME on the relocated
 # build in turn (the first that differs stops it); the attract mode plays with
@@ -145,14 +118,14 @@ hooks:
 	$(RLTOOL) hooks install --project .
 
 clean:
-	$(RUN_TOOL) build.project clean --path build
+	$(PYTHON) -c "import shutil; shutil.rmtree('build', ignore_errors=True)"
 
 help:
 	@echo "Castle Excellent / Castlequest source reconstruction"
-	@echo "  make split                    unpack the assets from your Castle Excellent ROM (once)"
+	@echo "  make split                    cut the assets out of the ROMs that are here (once)"
 	@echo "  make build / verify           the Japanese ROM / and byte for byte"
-	@echo "  make castlequest-check        split and verify Castlequest (USA)"
-	@echo "  make verify-profile REVISION_PROFILE=<id>   one revision of config/revision_profiles.json"
+	@echo "  make build-revision REVISION=<id> / verify-revision / verify-revisions"
+	@echo "                                the revisions (image ids of assets/manifest.json)"
 	@echo "  make build-relocated          every module moved (scripts/build/relocate.py)"
 	@echo "  make studio-check             open and rebuild every castle_excellent.rlj revision"
 	@echo "  make test                     the quick suite"
@@ -160,4 +133,4 @@ help:
 	@echo "  make golden                   record the attract mode's checkpoints from the original"
 	@echo "  make lint / format / format-check   the house style (Retrolarium Kit)"
 	@echo "  make hooks                    install the Git hooks"
-	@echo "  make rom-info / verify-toolchain / clean"
+	@echo "  make verify-toolchain / clean"

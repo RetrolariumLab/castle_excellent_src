@@ -17,7 +17,7 @@ Commit subjects and bodies are written in English. A subject names the completed
 result and has no trailing period; after a blank line, two or three paragraphs
 describe the affected boundary, the reason and the checks that passed.
 
-Do not commit ROM images, extracted header/PRG/CHR regions, build products,
+Do not commit ROM images, extracted assets, build products,
 emulator states, or third-party research clones. Keep `src/main.asm` in address
 order.
 

@@ -23,23 +23,24 @@ You need Python 3, GNU Make and Retrolarium Kit (`rltool` on `PATH`, or
 repository root, then:
 
 ```bash
-make split     # unpack the private assets (once)
+make split     # cut the private assets out of the ROMs (once)
 make verify    # build and compare byte for byte
 ```
 
-For Castlequest, add `Castlequest (U) [!].nes` and run `make castlequest-check`.
-Profile identities are declared in `config/revision_profiles.json`. ROMs,
-extracted assets and build products are ignored by Git.
+For Castlequest, add `Castlequest (U) [!].nes`, run `make split` again and
+`make verify-revision REVISION=castlequest-usa`. `assets/manifest.json` names
+both ROMs and the assets cut out of them (`rltool assets`, Retrolarium Kit).
+ROMs, extracted assets and build products are ignored by Git.
 
 ## Targets
 
 ```bash
 make build / verify                     # the Japanese ROM
-make castlequest-check                  # split and verify Castlequest (USA)
+make build-revision REVISION=<id> / verify-revision / verify-revisions
 make build-relocated                    # every module moved (code and data)
 make studio-check                       # open and rebuild both revisions
 make test / test-full / golden          # the checks
-make lint / format / format-check / hooks / rom-info / clean / help
+make lint / format / format-check / hooks / clean / help
 ```
 
 ## Tests
