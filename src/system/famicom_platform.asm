@@ -6,10 +6,6 @@
 .segment "PRG"
 
 PrgStart:
-.if RELOCATION_TEST_SHIFT
-; Relocation probe: shift every routine and table before the PRG tail
-    .res RELOCATION_TEST_SHIFT, $EA
-.endif
 DelayLongPulseHalf:
     LDX #$91
 

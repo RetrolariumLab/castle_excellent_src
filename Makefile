@@ -26,10 +26,11 @@ MAP := $(BUILD_DIR)/castle_excellent.map
 DEBUG := $(BUILD_DIR)/castle_excellent.dbg
 # Every routine and table before the fixed PRG tail moves by this many bytes
 # (src/system/famicom_platform.asm); the tail's padding takes up to $48.
-RELOCATION_SHIFT ?= 32
 RELOCATED_DIR := build/relocated
 RELOCATED_ROM := $(RELOCATED_DIR)/castle_excellent.nes
-ATTRACT_CHECK := movies/attract.check.json
+# The movies test-full plays, in this order: a TAS first, then a longplay,
+# then the attract mode.
+MOVIE_CHECKS := movies/attract.check.json
 VERIFY_ROM := $(RUN_TOOL) build.verify_rom
 SOURCE_FILES := $(sort $(wildcard \
 	src/*.asm src/*/*.asm src/*/*/*.asm src/*/*/*/*.asm \
@@ -100,7 +101,8 @@ castlequest-check:
 	$(MAKE) verify-profile REVISION_PROFILE=castlequest-usa
 
 build-relocated: $(SOURCE_FILES) $(CHR_ASSET) | $(RELOCATED_DIR) verify-toolchain
-	$(CA65) -D RELOCATION_TEST_SHIFT=$(RELOCATION_SHIFT) -g -o "$(RELOCATED_DIR)/castle_excellent.o" "src/main.asm"
+	$(PYTHON) scripts/build/relocate.py --main src/main.asm --output "$(RELOCATED_DIR)/source/main.asm"
+	$(CA65) -g -o "$(RELOCATED_DIR)/castle_excellent.o" "$(RELOCATED_DIR)/source/main.asm"
 	$(LD65) -C config/linker/cnrom.cfg -o "$(RELOCATED_ROM)" "$(RELOCATED_DIR)/castle_excellent.o"
 
 verify-toolchain:
@@ -126,14 +128,15 @@ test:
 	$(PYTHON) -m unittest discover -s tests
 	$(MAKE) --no-print-directory verify castlequest-check build-relocated studio-check
 
-# The full suite: the quick one, then the attract mode in MAME (no input, the
-# game plays its own demos) on the relocated build, compared with what the
-# original ROM gives (movies/attract.check.json, written by `make golden`).
+# The full suite: the quick one, then the movies in MAME on the relocated
+# build in turn (the first that differs stops it); the attract mode plays with
+# no input, the game showing its own demos. Compared with what the original
+# ROM gives (movies/*.check.json, written by `make golden`).
 test-full: test
-	$(RLTOOL) movie check $(ATTRACT_CHECK) --rom "$(RELOCATED_ROM)" --mame "$(MAME)"
+	$(RLTOOL) movie check $(MOVIE_CHECKS) --rom "$(RELOCATED_ROM)" --mame "$(MAME)"
 
 golden:
-	$(RLTOOL) movie golden $(ATTRACT_CHECK) --rom "$(REFERENCE_ROM)" --mame "$(MAME)"
+	$(RLTOOL) movie golden $(MOVIE_CHECKS) --rom "$(REFERENCE_ROM)" --mame "$(MAME)"
 
 # `make hooks`, once per clone, makes Git check every commit and push for stop
 # words and run `make lint` and `make format-check` first (Retrolarium Kit's
@@ -150,7 +153,7 @@ help:
 	@echo "  make build / verify           the Japanese ROM / and byte for byte"
 	@echo "  make castlequest-check        split and verify Castlequest (USA)"
 	@echo "  make verify-profile REVISION_PROFILE=<id>   one revision of config/revision_profiles.json"
-	@echo "  make build-relocated          every routine moved by RELOCATION_SHIFT bytes"
+	@echo "  make build-relocated          every module moved (scripts/build/relocate.py)"
 	@echo "  make studio-check             open and rebuild every castle_excellent.rlj revision"
 	@echo "  make test                     the quick suite"
 	@echo "  make test-full                test, then the attract mode in MAME (MAME=<path>)"

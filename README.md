@@ -36,7 +36,7 @@ extracted assets and build products are ignored by Git.
 ```bash
 make build / verify                     # the Japanese ROM
 make castlequest-check                  # split and verify Castlequest (USA)
-make build-relocated                    # every routine moved by 32 bytes
+make build-relocated                    # every module moved (code and data)
 make studio-check                       # open and rebuild both revisions
 make test / test-full / golden          # the checks
 make lint / format / format-check / hooks / rom-info / clean / help
@@ -47,8 +47,10 @@ make lint / format / format-check / hooks / rom-info / clean / help
 `make test` (about ten seconds) runs the unit tests, verifies both ROMs byte
 for byte, builds the relocated ROM and runs the studio check.
 
-`make test-full` adds the attract mode played in MAME on the relocated build:
-with no input the game plays its own demos, and at eight checkpoints the room,
+`make test-full` adds the attract mode played in MAME on the relocated build
+(`scripts/build/relocate.py`: a byte at the start of PRG and after every
+module, so each moves further than the one before, absorbed by the padding
+before the fixed tile tables): with no input the game plays its own demos, and at eight checkpoints the room,
 lives, score, demo flag, inventory and player position must equal what the
 original ROM gives (`movies/attract.check.json`). The position may trail by a
 few pixels: a moved routine can cross a page boundary and cost the odd lag
