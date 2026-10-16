@@ -40,6 +40,7 @@ make build-revision REVISION=<id> / verify-revision / verify-revisions
 make build-relocated                    # every module moved (code and data)
 make studio-check                       # open and rebuild both revisions
 make test / test-full / golden          # the checks
+make play MOVIE=attract                 # watch a movie in MAME
 make lint / format / format-check / hooks / clean / help
 ```
 
@@ -55,8 +56,15 @@ before the fixed tile tables): with no input the game plays its own demos, and a
 lives, score, demo flag, inventory and player position must equal what the
 original ROM gives (`movies/attract.check.json`). The position may trail by a
 few pixels: a moved routine can cross a page boundary and cost the odd lag
-frame. Name MAME with `MAME=<path>` or `RETROLARIUM_MAME`; `make golden` records
+frame. Name MAME once with `rltool movie mame <path>`
+(or `MAME=<path>`); `make golden` records
 the reference values again.
+
+`make play MOVIE=attract` shows a movie in a MAME window at the game's
+speed, on the relocated build (or on `ROM=<image>`), and compares its cells
+with the original's once the window is closed; in MAME, F10 lifts the speed
+limit and Insert fast-forwards. `FRAMES=<frame>` closes MAME at that frame, `CLOSE=1`
+when the movie ends. `make play` alone plays `attract`.
 
 ## Repository map
 
