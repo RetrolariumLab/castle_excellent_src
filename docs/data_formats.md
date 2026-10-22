@@ -446,14 +446,37 @@ record contains three little-endian stream pointers followed by two channel
 parameters:
 
 ```text
-pulse 1 pointer, pulse 2 pointer, triangle pointer, parameter 1, parameter 2
+pulse 1 pointer, pulse 2 pointer, triangle pointer, pulse 1 $4000, pulse 2 $4004
 ```
 
-A zero pointer disables that stream. Nonzero pointers address textual music
-streams in `$BBE7-$C20C`. The interpreter recognizes octave (`o`), tempo (`t`),
-default length (`l`), and volume (`v`) commands, notes `a-g`, rest `r`, `+`/`-`
-accidentals, explicit lengths `@/1/2/4/8`, and dotted lengths. Each stream ends
-with `$00`, then a little-endian restart pointer; `$0000` stops the channel.
+The two parameters are the duty, envelope and volume bytes written to the
+pulse channels' `$4000`/`$4004` registers before each note; the triangle always
+gets linear counter `$FF`. A zero pointer disables that stream. Nonzero
+pointers address textual (MML) music streams in `$BBE7-$C20C`, which
+`src/audio/music_engine.asm` writes as strings. Every command is one ASCII
+character, and the ones that take an argument read exactly one more:
+
+| Text | Meaning |
+| --- | --- |
+| `o`*d* | Octave: notes after it use period-table octave *d* − 2. |
+| `t`*d* | Tempo: selects row *d* (0-6) of the note-length table, shared by all three channels. |
+| `l`*c* | Default length: `@` sixteenth, `8` eighth, `4` quarter, `2` half, anything else whole. |
+| `v`*c* | Reads and ignores *c*; the volume comes from the record's parameters. |
+| `a`-`g` | Note, optionally followed by `+` (sharp) or `-` (flat). |
+| `r` | Rest (period 0). |
+
+A note or rest may be followed by an explicit length (`@`, `1`, `2`, `4` or
+`8`, as for `l`; the other digits are consumed but give a wrong length) and
+then by `.`, which adds half the length. At tempo 0 the lengths are 5, 10, 20,
+40 and 80 audio ticks. Three ticks before a note ends the channel is muted,
+which separates repeated notes. The triangle reads its periods one octave
+higher in the table, so the same text sounds at the same pitch on all channels.
+While a sound effect holds a channel, its stream keeps time without writing the
+period.
+
+A stream ends with `$00` and a little-endian restart pointer; any other
+character that is not a command acts the same. Restart pointer `$0000` stops
+the channel.
 
 There are 21 consecutive streams containing 1,511 command bytes. Twenty stream
 starts are referenced by the track table; `$BE17` is structurally valid but is
