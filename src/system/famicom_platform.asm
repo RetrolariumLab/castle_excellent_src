@@ -472,4 +472,4 @@ WaitForMainFrame:
     BEQ MainFrameLoop
 
 PowerOnSignature:
-    .byte $50, $4F, $57, $45, $52
+    .byte "POWER"

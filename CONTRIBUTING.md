@@ -21,6 +21,11 @@ Do not commit ROM images, extracted assets, build products,
 emulator states, or third-party research clones. Keep `src/main.asm` in address
 order.
 
+Write ROM addresses as labels, never as numbers: a table entry or pointer
+named by its address breaks as soon as anything before it moves, and `make
+test-full` will show it. Write on-screen text with `ScreenText` and music as
+MML strings ([`docs/data_formats.md`](docs/data_formats.md)).
+
 Use confidence levels consistently:
 
 - confirmed: directly observed in code, data, or a repeatable trace;

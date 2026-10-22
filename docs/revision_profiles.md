@@ -43,15 +43,10 @@ therefore identical: all bank-2 room data and the bank-3 room stream below
 `$1161` are shared between revisions.
 
 `make split` (`rltool assets split`) checks each ROM that is here and cuts
-only declared, hashed assets into `assets/generated/`. Each profile owns
-its complete CHR payload, the 16-byte title palette at PRG `$450D`, and the
-53-byte sub-command text asset at PRG `$7B77`. Those typed data ranges are
-included from the split files; they are not duplicated as regional byte arrays
-inside the assembly source.
-
-The remaining conditional PRG differences are executable or semantic constants:
-initial lives, menu bounds, and the Castlequest NOP replacement that disables
-the Japanese load/save dispatch. `make verify REVISION=castlequest-usa` builds
+its CHR into `assets/generated/`; the CHR is the only part of a ROM the source
+includes. Every PRG difference is an `.if CASTLEQUEST_USA` in the source: the
+title palette, the menu labels, initial lives, menu bounds, and the
+Castlequest NOP replacement that disables the Japanese load/save dispatch. `make verify REVISION=castlequest-usa` builds
 `src/revisions/castlequest-usa.asm`, which sets `CASTLEQUEST_USA = 1` and
 includes `src/main.asm`, and compares the output with the original byte for
 byte (`rltool assets verify`); `make verify` does the same for the Japanese

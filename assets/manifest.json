@@ -25,39 +25,11 @@
       "sha1": "e6c57329c079eff1fd7fa66eb1a65dc02f4b5a7a"
     },
     {
-      "path": "revisions/castle-excellent-japan-hsp-05/prg/title_palette.bin",
-      "image": "castle-excellent-japan-hsp-05",
-      "offset": 17693,
-      "size": 16,
-      "sha1": "c78f4b91b997e1320640855d3d51938cb6116e42"
-    },
-    {
-      "path": "revisions/castle-excellent-japan-hsp-05/prg/sub_command_text.bin",
-      "image": "castle-excellent-japan-hsp-05",
-      "offset": 31623,
-      "size": 53,
-      "sha1": "9e099ec3ba0f1523748d6b1580c850612c2f3400"
-    },
-    {
       "path": "revisions/castlequest-usa/chr/castlequest.chr",
       "image": "castlequest-usa",
       "offset": 32784,
       "size": 32768,
       "sha1": "7640fc1b2a5eccfe3d2467923cdb083567eea8ee"
-    },
-    {
-      "path": "revisions/castlequest-usa/prg/title_palette.bin",
-      "image": "castlequest-usa",
-      "offset": 17693,
-      "size": 16,
-      "sha1": "00f39cdeb8b044a0b1a50c239b78ca0fc2cac644"
-    },
-    {
-      "path": "revisions/castlequest-usa/prg/sub_command_text.bin",
-      "image": "castlequest-usa",
-      "offset": 31623,
-      "size": 53,
-      "sha1": "aef800ee974b0549bfd885850a2e57c2c8612468"
     }
   ]
 }

@@ -73,13 +73,13 @@ SendSaveDataSignature:
     JMP ExitSubCommandMenu
 
 LoadErrorMessage:
-    .byte $7C, $7F, $71, $74, $FF, $75, $82, $82, $7F, $82, $00
+    ScreenText "LOAD ERROR"
 
 LoadErrorPrompt:
-    .byte $80, $85, $83, $78, $FF, $71, $FF, $7F, $82, $FF, $72, $00
+    ScreenText "PUSH A OR B"
 
 BackwardSaveSignatureText:
-    .byte $47, $4E, $55, $54, $55, $45, $44, $45, $42
+    .byte "GNUTUEDEB"
 
 ShowLoadErrorScreen:
     JSR ClearRoomNametablesAndSprites
@@ -324,7 +324,7 @@ WaitForGameOverRestartDelayVblank:
     JMP Reset
 
 GameOverMessageTiles:
-    .byte $77, $71, $7D, $75, $FF, $7F, $86, $75, $82, $00
+    ScreenText "GAME OVER"
 
 RunType82CompletionSequence:
     JSR UpdateHighScoreFromPlayerScore

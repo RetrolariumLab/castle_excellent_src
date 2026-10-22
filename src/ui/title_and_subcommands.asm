@@ -336,28 +336,43 @@ ExecuteSubCommandSave:
     JMP SaveGameState
 
 SubCommandTitleText:
-    .incbin RevisionSubCommandTextAsset, 0, 12
+    ScreenText "SUB COMMAND"
 
+.if CASTLEQUEST_USA
 SubCommandLoadText:
-    .incbin RevisionSubCommandTextAsset, 12, 5
+    ScreenText "GAME"
 
 SubCommandSaveText:
-    .incbin RevisionSubCommandTextAsset, 17, 5
+    .byte $00  ; empty: the S of SAVE became the terminator
+    ScreenText "AVE"
+.else
+SubCommandLoadText:
+    ScreenText "LOAD"
+
+SubCommandSaveText:
+    ScreenText "SAVE"
+.endif
 
 SubCommandResetText:
-    .incbin RevisionSubCommandTextAsset, 22, 6
+    ScreenText "RESET"
 
 SubCommandBackText:
-    .incbin RevisionSubCommandTextAsset, 28, 5
+    ScreenText "BACK"
 
+.if CASTLEQUEST_USA
 SubCommandGameText:
-    .incbin RevisionSubCommandTextAsset, 33, 5
+    .byte $00  ; empty: the G of GAME became the terminator
+    ScreenText "AME"
+.else
+SubCommandGameText:
+    ScreenText "GAME"
+.endif
 
 LoadTransferMessage:
-    .incbin RevisionSubCommandTextAsset, 38, 8
+    ScreenText "LOADING"
 
 SaveTransferMessage:
-    .incbin RevisionSubCommandTextAsset, 46, 7
+    ScreenText "SAVING"
 
 ResetCurrentRoomFromSubCommand:
     LDA PlayerLives

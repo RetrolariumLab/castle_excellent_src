@@ -16,6 +16,7 @@
 
 .include "memory/hardware.inc"
 .include "revisions/profile.inc"
+.include "ui/screen_text.inc"
 .include "memory/object_types.inc"
 .include "memory/ram.inc"
 

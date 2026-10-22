@@ -207,9 +207,9 @@ CheckCastleMapExit:
     JMP FinalizeRoomLoad
 
 DrawCastleMap:
-    LDA #$1C
+    LDA #CastleMapNametableChrPage
     JSR CopyChrNametablePagesToVram
-    LDY #$01
+    LDY #CastleMapChrBank
     JSR SelectChrBank
     LDA #>CastleMapPaletteData
     STA CastleMapPpuAddressHi

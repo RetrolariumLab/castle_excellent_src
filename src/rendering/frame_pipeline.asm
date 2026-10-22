@@ -130,7 +130,11 @@ CompletionPaletteData:
     .byte $0F, $16, $36, $30, $0F, $1A, $36, $30, $0F, $08, $17, $27, $0F, $00, $10, $30
 
 TitlePaletteData:
-    .incbin RevisionTitlePaletteAsset
+.if CASTLEQUEST_USA
+    .byte $0F, $17, $27, $37, $0F, $00, $10, $20, $0F, $0C, $27, $06, $0F, $11, $19, $24
+.else
+    .byte $0F, $18, $28, $38, $0F, $00, $16, $30, $0F, $00, $2A, $30, $0F, $12, $22, $2A
+.endif
 
 CastleMapPaletteData:
     .byte $0F, $16, $10, $30, $0F, $18, $1A, $2A, $0F, $07, $17, $27, $0F, $12, $21, $28
