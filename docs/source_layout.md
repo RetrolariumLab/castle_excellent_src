@@ -39,8 +39,9 @@ modules own every byte from `$8000` through `$FFFF` exactly once.
 | `src/game/persistence_and_endings.asm` | `$FBFE-$FEE7` | 380 | Save, load, persistent snapshots, and ending sequences |
 | `src/system/prg_tail.asm` | `$FEE8-$FFFF` | 41 | Fixed PRG tail, room tile tables, and interrupt vectors |
 
-The non-PRG entrypoint `src/main.asm` owns the iNES header and canonical include,
-while `src/graphics/chr.asm` includes the four private 8 KiB CHR banks.
+`src/main.asm` owns the iNES header and includes the PRG modules above in CPU
+order (each revision's entry file, `src/revisions/<id>.asm`, includes it), while
+`src/graphics/chr.asm` includes the four private 8 KiB CHR banks.
 `src/memory/hardware.inc`, `src/memory/ram.inc`, and
 `src/revisions/profile.inc` emit no bytes.
 

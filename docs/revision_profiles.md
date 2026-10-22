@@ -51,7 +51,8 @@ inside the assembly source.
 
 The remaining conditional PRG differences are executable or semantic constants:
 initial lives, menu bounds, and the Castlequest NOP replacement that disables
-the Japanese load/save dispatch. `make verify-revision REVISION=castlequest-usa`
-builds the shared entrypoint with `CASTLEQUEST_USA=1` and compares the complete
-output with the reference byte for byte (`rltool assets verify`). The Japanese default remains unchanged
-and continues to pass `make verify`.
+the Japanese load/save dispatch. `make verify REVISION=castlequest-usa` builds
+`src/revisions/castlequest-usa.asm`, which sets `CASTLEQUEST_USA = 1` and
+includes `src/main.asm`, and compares the output with the original byte for
+byte (`rltool assets verify`); `make verify` does the same for the Japanese
+entry file.

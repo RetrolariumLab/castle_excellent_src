@@ -1,0 +1,138 @@
+{
+  "schema": "retrolarium.movie-check",
+  "schema_version": 1,
+  "movie": "attract.rlmovie",
+  "cells": {
+    "room": {
+      "address": "0x0037"
+    },
+    "lives": {
+      "address": "0x0013"
+    },
+    "score": {
+      "address": "0x000B",
+      "length": 2
+    },
+    "demo_active": {
+      "address": "0x07C7"
+    },
+    "player_x": {
+      "address": "0x0038",
+      "length": 2,
+      "endian": "little",
+      "tolerance": 16
+    },
+    "player_y": {
+      "address": "0x003A",
+      "tolerance": 8
+    },
+    "inventory": {
+      "address": "0x0005",
+      "length": 6
+    }
+  },
+  "frames": [
+    300,
+    600,
+    900,
+    1200,
+    1500,
+    1800,
+    2100,
+    2400,
+    2700,
+    "end"
+  ],
+  "expected": {
+    "300": {
+      "room": "ff",
+      "lives": "ff",
+      "score": "ff00",
+      "demo_active": "ff",
+      "player_x": "00ff",
+      "player_y": "00",
+      "inventory": "ff00ff00ff00"
+    },
+    "600": {
+      "room": "ff",
+      "lives": "ff",
+      "score": "ff00",
+      "demo_active": "ff",
+      "player_x": "00ff",
+      "player_y": "00",
+      "inventory": "ff00ff00ff00"
+    },
+    "900": {
+      "room": "47",
+      "lives": "32",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "3000",
+      "player_y": "88",
+      "inventory": "000001000000"
+    },
+    "1200": {
+      "room": "47",
+      "lives": "32",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "d400",
+      "player_y": "76",
+      "inventory": "000000000000"
+    },
+    "1500": {
+      "room": "47",
+      "lives": "32",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "9400",
+      "player_y": "70",
+      "inventory": "000000000001"
+    },
+    "1800": {
+      "room": "47",
+      "lives": "32",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "1c01",
+      "player_y": "78",
+      "inventory": "000000000001"
+    },
+    "2100": {
+      "room": "47",
+      "lives": "32",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "1c01",
+      "player_y": "78",
+      "inventory": "000000000001"
+    },
+    "2400": {
+      "room": "47",
+      "lives": "32",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "1c01",
+      "player_y": "78",
+      "inventory": "000000000001"
+    },
+    "2700": {
+      "room": "47",
+      "lives": "32",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "7c00",
+      "player_y": "98",
+      "inventory": "000000000000"
+    },
+    "end": {
+      "room": "47",
+      "lives": "32",
+      "score": "0000",
+      "demo_active": "ff",
+      "player_x": "7a00",
+      "player_y": "70",
+      "inventory": "000000000000"
+    }
+  }
+}

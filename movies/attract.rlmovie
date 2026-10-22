@@ -1,6 +1,6 @@
 # retrolarium movie 1
 platform nes
-frames 18000
+frames 3000
 offset 0
 ---
-18000 00 00
+3000 00 00

@@ -29,5 +29,4 @@ Use confidence levels consistently:
 - unknown: address-based identity only.
 
 `make hooks` installs Git hooks that check commits and pushes for words that
-must not be published and run `make lint` and `make format-check` before each
-commit.
+must not be published and run `make lint` before each commit.

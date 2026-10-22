@@ -11,11 +11,7 @@
     "json": "indent",
     "skip": [
       "references",
-      "assets/generated",
-      "content/workspace",
-      "tools/.cache",
-      "tools/fceux",
-      "tools/ghidra"
+      "assets/generated"
     ]
   }
 }

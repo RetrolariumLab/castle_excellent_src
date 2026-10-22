@@ -1,8 +1,7 @@
 ; Build-time constants that differ between supported cartridge revisions
-; The default remains the Source Reconstruction 1.0 Japanese HSP-05 image
 
 .ifndef CASTLEQUEST_USA
-CASTLEQUEST_USA = 0
+    .error "assemble a revision's entry file, src/revisions/<id>.asm"
 .endif
 
 .if CASTLEQUEST_USA
