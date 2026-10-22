@@ -1,7 +1,5 @@
 ; Room finalization, object loading, and persistent-state application
-; CPU range $EB6C-$EDEE
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $EB6C-$EDEE
 
 FinalizeRoomLoad:
     JSR ClearRoomNametablesAndSprites

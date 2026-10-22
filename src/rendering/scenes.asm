@@ -1,7 +1,5 @@
 ; Room screen and title demo scenes
-; CPU range $B64C-$B874
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $B64C-$B874
 
 ClearRoomNametablesAndSprites:
     JSR DisableNmi

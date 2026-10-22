@@ -1,7 +1,5 @@
 ; Room navigation and player interaction rules
-; CPU range $A7DB-$AC12
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $A7DB-$AC12
 
 MoveToRoomAbove:
     LDA CurrentRoomNumber

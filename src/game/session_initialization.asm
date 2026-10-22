@@ -1,7 +1,5 @@
 ; New game, room initialization, animation, and status formatting
-; CPU range $A2B1-$A589
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $A2B1-$A589
 
 InitializeNewGame:
     LDA #InitialRoomNumber

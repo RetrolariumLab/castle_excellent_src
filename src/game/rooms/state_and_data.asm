@@ -1,7 +1,5 @@
 ; Mutable state, persistent state, and room object data
-; CPU range $EDEF-$F8FB
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $EDEF-$F8FB
 
 ApplyMutableCellStateBit:
     LDA #>RoomCells

@@ -1,7 +1,5 @@
 ; Upward, horizontal, and shared collision handlers and the per-frame update
-; CPU range $903F-$93F5
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $903F-$93F5
 
 PlayerUpwardRoomCellCollisionHandlerPointers:
     .addr ReturnFromPlayerCollisionHandler  ; cell $00

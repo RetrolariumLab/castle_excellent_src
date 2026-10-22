@@ -1,7 +1,5 @@
 ; Platform and walking enemy patrol behaviors
-; CPU range $9A37-$9D64
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $9A37-$9D64
 
 UpdateFloatingPlatform:
     STX CurrentObjectOffset

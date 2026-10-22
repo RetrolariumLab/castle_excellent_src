@@ -17,9 +17,8 @@
 ## Findings
 
 - [Open questions](unknowns.md) — unresolved claims that can affect public
-  contracts.
-- [Resolved findings](resolved_unknowns.md) — evidence-backed investigation
-  ledger.
+  contracts. The resolved investigation ledger of 1.0 to 3.0 is at those tags
+  (`docs/resolved_unknowns.md`).
 
 The checks are in the README: `make test` after every change, `make test-full`
 for the attract mode in MAME.

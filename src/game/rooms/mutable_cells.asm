@@ -1,7 +1,5 @@
 ; Mutable room cell coordinates, actions, and restoration
-; CPU range $A58A-$A7DA
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $A58A-$A7DA
 
 ConvertPixelPositionToTileCoordinates:
     LSR A

@@ -1,7 +1,5 @@
 ; Music selection, stream engine, tables, and MML data
-; CPU range $B875-$C20C
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $B875-$C20C
 
 LoadAudioTrackSet0:
     LDX #AudioTrackSet0Offset

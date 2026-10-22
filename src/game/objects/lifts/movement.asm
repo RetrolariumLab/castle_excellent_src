@@ -1,7 +1,5 @@
 ; Pushable and lift movement
-; CPU range $965C-$9A36
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $965C-$9A36
 
 UpdatePulley:
     LDA #PushableMotionInactive

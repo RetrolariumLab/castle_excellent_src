@@ -1,7 +1,5 @@
 ; Save, load, persistent snapshots, and ending sequences
-; CPU range $FBFE-$FEE7
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $FBFE-$FEE7
 
 SaveGameState:
     JSR DisableNmi

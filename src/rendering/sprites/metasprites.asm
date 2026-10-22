@@ -1,7 +1,5 @@
 ; Object metasprites and descriptor data
-; CPU range $B1D6-$B64B
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $B1D6-$B64B
 
 DrawTwoObjectSprites:
     STX MetaspritePointerHi

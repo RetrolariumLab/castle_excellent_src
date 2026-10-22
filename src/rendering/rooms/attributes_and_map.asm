@@ -1,7 +1,5 @@
 ; Room attributes and castle map
-; CPU range $E8DF-$EB6B
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $E8DF-$EB6B
 
 GetRoomAttributeMaskAndOffset:
     LDA #$00

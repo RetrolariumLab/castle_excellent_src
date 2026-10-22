@@ -1,7 +1,5 @@
 ; Room row upload tasks 10 through 14
-; CPU range $D55A-$DBA8
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $D55A-$DBA8
 
 UploadRoomCellRow10:
     LDA #$22

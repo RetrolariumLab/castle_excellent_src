@@ -1,7 +1,9 @@
 # Data formats
 
-The validation scripts this page cites (`scripts/validation/...`) belonged
-to Source Reconstruction 1.0 to 3.0; they remain at those tags.
+The models that checked these formats during Source Reconstruction 1.0 to 3.0
+remain at those tags; Retrolarium Kit's Castle codecs
+(`games/castle_excellent/`) read and write the editable ones, and `make
+studio-check` round-trips them against the ROMs.
 
 All CPU addresses below refer to the Japanese PRG mapped at `$8000-$FFFF`.
 The descriptions began with the published trace and were checked against the
@@ -29,8 +31,7 @@ serializes physical RAM regions, not only the currently named logical arrays.
 
 ROM `$FC99-$FCA1` contains ASCII `GNUTUEDEB`. Indexed reads from 8 down to 1
 produce the eight wire bytes `BEDEUTUN`; byte zero, the leading physical `G`,
-is not transferred. `scripts/validation/gameplay/save_data.py` independently round-trips all six
-fields and validates the exact physical and wire signatures.
+is not transferred.
 
 The receiver checks carry after the room byte and every looped byte, but not
 after payload byte 1. This unchecked status is part of the original binary
@@ -60,8 +61,6 @@ The serial pollers produce this one-byte layout at `$20`:
 | 7 | `$80` | Right |
 
 Each serial read chooses a set D0 bit first and otherwise falls back to D1.
-`scripts/validation/gameplay/controller_input.py` exhaustively reconstructs every mask on both data
-lines.
 
 ## Room pointers and compressed streams
 
@@ -77,8 +76,8 @@ output byte, one or more ASCII $30/$31 code bytes, $00
 ```
 
 An `$FF` entry marker terminates the candidate table. The original routine
-compares candidates in table order. `scripts/validation/room_data.py` first proves that
-the recovered table is prefix-free, then uses an equivalent direct lookup.
+compares candidates in table order. The table is prefix-free, so a decoder may
+use an equivalent direct lookup.
 
 The independent decoder reaches exactly 400 output cells for all 100 rooms.
 Its encoder reproduces every physical stream byte-for-byte: the next pointer
@@ -94,9 +93,9 @@ The room-stream arenas and their current capacity are exact:
 
 Bank 3 cannot extend past `$1400` without relocation: the four-page
 CHR-to-nametable copier selects bank 3 and consumes pages `$14-$17` for the
-completion screen. `make validate-rooms` therefore permits repacking only
-within the two stated arenas; using other CHR space is a Source 2.0 relocation
-problem, not implicit free capacity.
+completion screen. Repacked rooms therefore fit only within the two stated
+arenas; using other CHR space needs relocated data, not implicit free
+capacity.
 
 ## Logical cell rendering
 
@@ -116,8 +115,6 @@ by row-major scan. Restoration uses the same scan over original candidates,
 writes `$62/$63` when either horizontal neighbor is `$16`, otherwise
 `$54/$55`, and maps ordinal `n` to byte `(n-1)/8` and mask
 `1 << ((n-1) & 7)`, with the byte division rounded down.
-`scripts/validation/rooms/room_cell_coordinates.py` independently models
-these conversions, predicates, writes, and bit selection.
 
 The collision handler table at `$9155` maps each original cell pair to an
 inventory-backed action:
@@ -169,8 +166,7 @@ followed immediately by 16 initial attribute bytes:
 
 `WriteTerminatedPpuTiles` copies each stream through `$2007`. A fifth pointer
 targets formatted score tiles at RAM `$079D`; `$07A2` is set to zero before
-the copy. `scripts/validation/rooms/room_screen_data.py` checks the four exact boundaries, all
-five immediate pointer loads, 45 tile bytes, and the 16-byte attribute tail.
+the copy. The streams hold 45 tile bytes and a 16-byte attribute tail.
 
 Foreground HUD formatting uses paired high/low tables at `$A551-$A55A` for
 16-bit place values `10000,1000,100,10,1`. Five raw decimal digits become tile
@@ -257,8 +253,7 @@ with the type byte. Those biased operands do not denote separate tables.
 The last height byte at `$AB49` is also the byte immediately before
 `RoomObjectCounts`. One-based room consumers therefore load
 `RoomObjectCounts - 1,x`; the overlap is an address-expression alias, not a
-fifth data structure. `scripts/validation/collision/collision_tables.py` proves the four physical
-ranges and all 18 exact code consumers.
+fifth data structure; 18 code consumers read the four physical ranges.
 
 Player collision results select one of two little-endian pointer tables.
 `PlayerRoomCellCollisionHandlerPointers` at `$926C-$9333` has 100 entries
@@ -286,9 +281,10 @@ mostly share one common map, with direction-specific behavior for `$8A-$8F`.
 The `ASL A` dispatch permits a logical `$A7` index. Downward and upward reads
 overlap the first pointer of the following room table, which is `$926B` and is
 safe. The physical horizontal runtime table ends at `$A6`; a hypothetical
-`$A7` read crosses `$926B-$926C` and forms `$B060`. The validator rejects that
-case explicitly pending proof that no remaining dynamic object transition can
-produce type `$A7` on the horizontal path.
+`$A7` read crosses `$926B-$926C` and forms `$B060`. No static room object,
+cell-derived object or dynamic state machine creates runtime type `$A7` (they
+create `$A0`, `$A1-$A6`, `$A8` and `$A9`), so the horizontal path never reads it;
+a hack that creates one must extend the horizontal table first.
 
 `RoomObjectCounts` at `$AB4A-$ABAD` exactly matches the 100 decoded static
 lists. `RuntimeObjectOffsetByCount` at `$8F10-$8F28` is the sequence
@@ -314,9 +310,8 @@ for encoded types `$12-$29`, so the two logical views intentionally share
 bytes. The typed-data registry represents this as two non-overlapping physical
 ranges rather than pretending the logical tables are disjoint.
 
-`scripts/validation/objects/object_catalog.py` validates the complete cross-table relation for
-runtime types `$80-$A9`. For each index it reports all encoded sources, loader
-initial-state values, occurrence count and room set, update handler, sprite
+For runtime types `$80-$A9` the cross-table relation gives, for each index,
+all encoded sources, loader initial-state values, occurrence count and room set, update handler, sprite
 selector, and collision width/height. Of 61 legal encoded values, 34 occur in
 the original 783-record stream and map to 27 runtime types. Cell markers
 `$4B,$4D,$51,$49,$4A` respectively create `$A1-$A5` with occurrence counts
@@ -462,9 +457,8 @@ with `$00`, then a little-endian restart pointer; `$0000` stops the channel.
 
 There are 21 consecutive streams containing 1,511 command bytes. Twenty stream
 starts are referenced by the track table; `$BE17` is structurally valid but is
-not selected by those eight records. `scripts/validation/audio_data.py` checks the grammar,
-all pointers and terminators, restart targets, and gap-free coverage of the
-complete range.
+not selected by those eight records. Every pointer, terminator and restart
+target lies inside the range, and the streams cover it without gaps.
 
 Seven selector entry points at `$B875-$B88D` load record offsets 0-5 and 7;
 no static selector for record 6 is currently known. Their shared body at
@@ -473,18 +467,8 @@ state and primes each duration counter to one tick.
 
 ## Round-trip status
 
-The static object format has a lossless decoder and encoder. All 100 lists
-re-encode to the original 2,449 bytes, and the packed-state offset table is
-checked against every list's object count. The mutable-cell offset table is
-also checked against all 40,000 decoded cells and its final-room exception.
-Independent models apply both bitmap classes and reproduce the cell-marker
-conversion, coordinate scaling, object initialization, and pool-capacity
-contract.
-
-Before compressed room data becomes editable source, the project still requires:
-
-1. decode every room without overrun;
-2. encode it back to the original bitstream or to an explicitly relocated
-   equivalent format;
-3. verify all pointer boundaries and CHR-bank capacity;
-4. compare rendered rooms and runtime behavior.
+The rooms, their objects and the music round-trip through the kit's codecs
+(`castle-excellent.prefix-rooms.v1` and the others of
+`config/game_profile.json`): all 100 object lists re-encode to the original
+2,449 bytes, and the packed-state and mutable-cell offset tables follow the
+lists. The Studio edits them within the capacities above.

@@ -1,5 +1,4 @@
 ; Evidence-backed global and address-scoped RAM aliases
-; Generated semantic modules select these through config/reconstruction/memory_symbols.json
 
 HighScoreLo = $0001
 HighScoreHi = $0002

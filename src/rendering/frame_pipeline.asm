@@ -1,7 +1,5 @@
 ; Scroll, palette, NMI, OAM, and status rendering pipeline
-; CPU range $C43D-$C8BB
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $C43D-$C8BB
 
 UpdateHorizontalScroll:
     LDA PauseMode

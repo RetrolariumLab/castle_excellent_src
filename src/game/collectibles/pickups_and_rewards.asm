@@ -1,7 +1,5 @@
 ; Collectible collision, inventory, and rewards
-; CPU range $8C12-$8DAA
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $8C12-$8DAA
 
 CollectDarkBlueKey:
     JSR IsCurrentObjectNearPlayer

@@ -1,7 +1,5 @@
 ; Room row upload tasks 00 through 04
-; CPU range $C8BC-$CF0A
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $C8BC-$CF0A
 
 UploadRoomCellRow00:
     LDA #$20

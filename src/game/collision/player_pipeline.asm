@@ -1,7 +1,5 @@
 ; Player collision sampling and downward handlers
-; CPU range $8DAB-$903E
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $8DAB-$903E
 
 HandleAnimatedPlayerHazard:
     LDA PlayerCollisionAnimationCounter

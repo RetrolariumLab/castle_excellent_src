@@ -1,8 +1,5 @@
 # PRG subsystem landmarks
 
-The validation scripts this page cites (`scripts/validation/...`) belonged
-to Source Reconstruction 1.0 to 3.0; they remain at those tags.
-
 This is the address-ordered PRG inventory. It complements the conceptual
 [architecture](architecture.md) and exact module table in
 [source_layout.md](source_layout.md). Every range has semantic or explicitly
@@ -279,11 +276,11 @@ and `$B4B6-$B64B` contains 203 tile/attribute pairs. The independent validator
 recognizes 107 descriptor selections, 98 unique pointers, and five unreferenced
 gaps.
 
-`scripts/validation/objects/object_catalog.py` ties the rendering view back to room data and
-behavior dispatch. It follows each legal encoded value through the overlapping
-loader type/state tables, aggregates all 783 static and 176 cell-derived
-occurrences by room, and joins the resulting runtime type to its update
-handler, sprite selector, and collision dimensions. Thirty-two runtime types
+The rendering view ties back to room data and behavior dispatch. Following
+each legal encoded value through the overlapping loader type/state tables, the
+783 static and 176 cell-derived occurrences group by room, and each resulting
+runtime type joins its update handler, sprite selector, and collision
+dimensions. Thirty-two runtime types
 have a direct room source; the ten unsourced indexes remain explicit candidates
 for runtime transitions or unused slots rather than receiving guessed names.
 

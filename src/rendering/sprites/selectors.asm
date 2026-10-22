@@ -1,7 +1,5 @@
 ; Object sprite selectors
-; CPU range $ADE7-$B1D5
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $ADE7-$B1D5
 
 DrawFairySprite:
     LDA RoomFrameCounter

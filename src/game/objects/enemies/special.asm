@@ -1,7 +1,5 @@
 ; Special enemy behaviors and transient lifecycle
-; CPU range $9D65-$A043
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $9D65-$A043
 
 UpdateFlame:
     LDA NoiseSoundEffectRequest

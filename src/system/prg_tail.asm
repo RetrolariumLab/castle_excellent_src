@@ -1,7 +1,5 @@
 ; Fixed PRG tail, room tile tables, and interrupt vectors
-; CPU range $FEE8-$FFFF
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $FEE8-$FFFF
 
 PaddingBeforeTileTables:
 ; Pad with $FF up to the fixed tile tables at PrgTileTablesAddress; the

@@ -1,7 +1,5 @@
 ; Famicom platform transport, PPU, and startup
-; CPU range $8000-$82CD
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $8000-$82CD
 
 DelayLongPulseHalf:
     LDX #$91

@@ -1,7 +1,5 @@
 ; Player room transitions and object pushing
-; CPU range $867A-$89E0
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $867A-$89E0
 
 TransitionToRoomAbove:
     LDA #AboveRoomEntryPlayerY

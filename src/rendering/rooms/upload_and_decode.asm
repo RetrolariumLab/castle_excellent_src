@@ -1,7 +1,5 @@
 ; Room attribute upload and compressed map decoding
-; CPU range $E1F8-$E8DE
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $E1F8-$E8DE
 
 UploadLeftRoomAttributesTask:
     LDA PPU_STATUS

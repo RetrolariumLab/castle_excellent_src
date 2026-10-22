@@ -1,7 +1,5 @@
 ; Player transition and object frame pipeline
-; CPU range $93F6-$965B
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $93F6-$965B
 
 AdvancePlayerTransitionCountdown:
     DEC PlayerTransitionCountdown

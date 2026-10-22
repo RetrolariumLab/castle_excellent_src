@@ -1,7 +1,5 @@
 ; Linked lift control
-; CPU range $89E1-$8C11
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $89E1-$8C11
 
 HandlePulleyHorizontalCollision:
     LDA #DraggableLiftMotionInactive

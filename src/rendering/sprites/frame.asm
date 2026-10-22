@@ -1,7 +1,5 @@
 ; Frame sprite construction
-; CPU range $AC13-$ADE6
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $AC13-$ADE6
 
 BuildFrameSprites:
     LDA #$FF

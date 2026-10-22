@@ -1,7 +1,5 @@
 ; Room and runtime object collision sampling
-; CPU range $A044-$A2B0
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $A044-$A2B0
 
 ClassifyAnimatedCollisionCell:
     CMP #DecrementingAnimatedCellFirst

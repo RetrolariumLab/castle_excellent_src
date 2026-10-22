@@ -1,7 +1,5 @@
 ; Title screen and sub-command interface
-; CPU range $F8FC-$FBFD
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $F8FC-$FBFD
 
 RunTitleScreen:
     LDA #TitleNametableChrPage

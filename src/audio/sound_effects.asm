@@ -1,7 +1,5 @@
 ; Sound effect engine and tables
-; CPU range $C20D-$C43C
-; Generated deterministically from pinned Ghidra/GhidraNes facts
-; Keep byte-identical through make verify
+; Original CPU range $C20D-$C43C
 
 StartPulse1SoundEffect1:
     LDA #$0F
