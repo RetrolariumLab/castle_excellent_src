@@ -315,9 +315,9 @@ the object falls two pixels until Y reaches `$A0`. The two animated cell
 families carry a supported object two pixels in opposite directions after its
 entering edge is clear. A matching runtime support in `$84-$89` becomes
 transient type `$A8`. The lift-control wrapper consumes the same horizontal-
-motion latch used by player pushing and routes it to the linked lift pair.
+motion latch used by player pushing and routes it to the draggable lift pair.
 
-The linked pair is materialized by the unique cell-derived types `$A4/$A5` in
+The draggable pair is materialized by the unique cell-derived types `$A4/$A5` in
 each of eight rooms. `$89E1-$8C11` accepts either player-driven or conveyor-
 driven motion of the type-`$8E` control block, validates cells `$41-$43`, and
 extends or removes track cell `$52` as both halves move by two pixels. Raising
@@ -325,7 +325,7 @@ uses the same 25-entry occupant bitmap and overlap scanner as the autonomous
 lifts, seeded with both halves, so stacked objects move as a transitive set;
 objects blocked by the ceiling become type `$A8`.
 
-Handler entries 33 and 34 select the small and large lift state machines at
+Handler entries 33 and 34 select the lift and wide lift state machines at
 `$9796/$9869`. They edit one or two shaft cells while moving down or up by eight
 pixels. The rising path seeds a 25-entry occupant set with the current lift,
 repeatedly expands it through `FindRuntimeObjectOverlappingSpan`, adds the
@@ -333,11 +333,11 @@ player through `TestPlayerAgainstObjectSpan`, and then moves the resulting
 transitive stack. This makes multi-object lift support an explicit closure
 operation rather than an incidental order of the 24-record dispatcher.
 
-Handler entry 35 selects the cell-derived Flying Block. Its sign-valued state
-chooses left or right motion; paired top/bottom probes cover the eight-pixel
-leading edge and reject coordinates beyond the 320x160 room. A clear path moves
-two pixels, one blocked side reverses direction, and two blocked sides set the
-byte-five stopped latch.
+Handler entry 35 selects the cell-derived Floating Platform. Its sign-valued
+state chooses left or right motion; paired top/bottom probes cover the
+eight-pixel leading edge and reject coordinates beyond the 320x160 room. A clear
+path moves two pixels, one blocked side reverses direction, and two blocked
+sides set the byte-five stopped latch.
 
 Handler entry 5 selects the Bishop and enters the shared walking-enemy physics
 at `$9B00`. Fighter, Knight, and Witch call the same routine before their own

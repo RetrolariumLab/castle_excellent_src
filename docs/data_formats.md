@@ -349,17 +349,17 @@ entire pool first. It initializes `+4` to zero except for encoded types
 zero.
 
 The `+4` consumers use it as signed direction/orientation for walking enemies,
-Flame, lifts, Flying Block, and Knight Arrow; as the Witch-summon countdown
+Flame, lifts, Floating Platform, and Knight Arrow; as the Witch-summon countdown
 before that slot becomes a walking enemy; as the incrementing type-`$A8`
 animation state; and as type-`$A9`'s collected-appearance selector. The same
 byte intentionally changes interpretation when type `$A0` is replaced.
 
 Only five behaviors consume `+5`: Fighter uses a jump countdown, Knight an arrow
-cooldown and render-phase offset, Flame a horizontal/vertical mode, Flying Block
-a stopped latch, and collected type `$A9` a lifetime countdown. Those accesses
-use explicit contextual aliases in source. Generic creation, replacement,
-persistence, and clear paths use `RuntimeObjectAux` and preserve the contract
-that an otherwise unused auxiliary byte is zero.
+cooldown and render-phase offset, Flame a horizontal/vertical mode, Floating
+Platform a stopped latch, and collected type `$A9` a lifetime countdown. Those
+accesses use explicit contextual aliases in source. Generic creation,
+replacement, persistence, and clear paths use `RuntimeObjectAux` and preserve
+the contract that an otherwise unused auxiliary byte is zero.
 
 Collision callers read record `+1/+2` through shared helpers returning
 A=high/X=low. The fixed probe offsets are 0, +7, +8, +15, +17, and -2; all use

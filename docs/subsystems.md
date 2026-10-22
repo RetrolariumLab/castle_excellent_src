@@ -63,9 +63,9 @@ all 24 runtime records; the first overlap stops the scan, and types
 requested.
 
 `$881A-$89E0` handles player-driven horizontal pushing for runtime types
-`$8A-$8D/$8F`; type `$8E` calls it before its own linked-object mechanics. Three
-bottom probes require support below the pushed object. Six directional player
-probes reject every collision except the same runtime record, then three
+`$8A-$8D/$8F`; type `$8E` calls it before its own draggable-lift mechanics.
+Three bottom probes require support below the pushed object. Six directional
+player probes reject every collision except the same runtime record, then three
 leading-edge probes enforce world bounds and obstacle clearance. A blocking
 runtime type `$84-$89` is converted to `$A8`; otherwise player and object move
 two pixels together and `$0773` records the direction.
@@ -76,20 +76,20 @@ Animated cells `$35-$40` carry them right and `$56-$61` carry them left after
 both entering-edge probes pass. A consistent collision with runtime type
 `$84-$89` changes that support to transient type `$A8` and requests its sound.
 Type `$8E`, the lift-control block, wraps this path and forwards either player-
-or conveyor-driven horizontal motion to the linked lift mechanism.
+or conveyor-driven horizontal motion to the draggable lift mechanism.
 
-Runtime types `$A1/$A2` own the small and large lift state machines at
+Runtime types `$A1/$A2` own the lift and wide lift state machines at
 `$9796-$9A36`. Both move in eight-pixel cell steps on one phase of a 32-frame
 cadence and reverse when the expected shaft marker or destination is absent. On
 ascent, a 25-byte flag set tracks the lift, transitively stacked runtime
 objects, and the player. Supported occupants move to the preceding cell
 boundary; an object blocked by room collision becomes transient type `$A8`.
 
-Cell marker `$51` creates the Flying Block as runtime type `$A3`. Its handler at
-`$9A37-$9AFF` probes both points on the leading vertical edge and moves two
-pixels horizontally while clear. A blocked edge reverses direction if the
-opposite edge is free; blockage on both sides latches byte five and stops the
-platform. Probe bounds match the 320x160-pixel room domain.
+Cell marker `$51` creates the Floating Platform as runtime type `$A3`. Its
+handler at `$9A37-$9AFF` probes both points on the leading vertical edge and
+moves two pixels horizontally while clear. A blocked edge reverses direction if
+the opposite edge is free; blockage on both sides latches byte five and stops
+the platform. Probe bounds match the 320x160-pixel room domain.
 
 The Bishop's handler at `$9B00` is also the common walking-enemy physics path
 used by Fighter, Knight, and Witch. It checks a dedicated room-cell hazard,
@@ -419,7 +419,7 @@ room-cell markers create runtime types `$A1-$A5`; the complete room set contains
 176 such markers. Static and cell-derived objects together peak at 22 records,
 within the 24-record pool.
 
-Types `$A4/$A5` form the paired linked lift controlled by runtime type `$8E`.
+Types `$A4/$A5` form the paired draggable lift controlled by runtime type `$8E`.
 The `$89E1-$8C11` module scans the complete runtime pool for both halves,
 validates the three-cell control track, updates track cell `$52`, and moves the
 pair by two pixels. Its raising path seeds both lift records into the common

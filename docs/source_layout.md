@@ -9,7 +9,7 @@ original image's (a module that grows moves the ones after it).
 | `src/system/famicom_platform.asm`               | `$8000-$82CD`     | Famicom platform transport, PPU, and startup                               |
 | `src/game/player/input_and_movement.asm`        | `$82CE-$8679`     | Player input and movement                                                  |
 | `src/game/player/transitions_and_push.asm`      | `$867A-$89E0`     | Player room transitions and object pushing                                 |
-| `src/game/objects/lifts/linked_control.asm`     | `$89E1-$8C11`     | Linked lift control                                                        |
+| `src/game/objects/lifts/draggable_control.asm`  | `$89E1-$8C11`     | Draggable lift control                                                     |
 | `src/game/collectibles/pickups_and_rewards.asm` | `$8C12-$8DAA`     | Collectible collision, inventory, and rewards                              |
 | `src/game/collision/player_pipeline.asm`        | `$8DAB-$903E`     | Player collision sampling and downward handlers                            |
 | `src/game/collision/handlers.asm`               | `$903F-$93F5`     | Upward, horizontal, and shared collision handlers and the per-frame update |

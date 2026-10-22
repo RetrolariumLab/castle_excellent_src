@@ -131,7 +131,7 @@ Successful conveyor motion writes `$7F/$FF` to contextual latch `$0773`; lift-
 control type `$8E` consumes the same latch after the shared physics returns.
 
 Within `$89E1-$8C11`, `$1E/$1F` retain the runtime offsets of the cell-derived
-`$A4/$A5` linked-lift pair and `$1C` retains the secondary clearance Y. The
+`$A4/$A5` draggable-lift pair and `$1C` retains the secondary clearance Y. The
 room-cell phase uses `$29` and `$2B/$2C`; `$44/$45` then carry its row-update
 address. During raising, `$44-$47` become the overlap span, `$16/$17` drive the
 closure scan, and `$16` is reused as the movement slot. `$07AB-$07C3` is the
@@ -144,7 +144,7 @@ slot. `$07AB-$07C3` is a 25-byte occupant flag set: 24 runtime-object slots
 followed by the player flag. The helper at `$9A1F` maps six-byte record offsets
 to these slots, and `$9A2C` clears the complete set.
 
-Within `$9A37-$9AAC`, `$44-$45` expose the Flying Block contact X after a
+Within `$9A37-$9AAC`, `$44-$45` expose the Floating Platform contact X after a
 successful two-pixel move. The rightward path stores new X plus five; the
 leftward path preserves the previous origin. This contextual output remains
 scoped because later object handlers reuse both scratch bytes.
@@ -282,7 +282,7 @@ The object loader and all update/render consumers prove the complete six-byte
 record contract: `+0` runtime type, `+1/+2` little-endian X in pixels, `+3` Y in
 pixels, `+4` polymorphic primary state, and `+5` polymorphic auxiliary state.
 Field `+5` has contextual source aliases for Fighter jump countdown, Knight
-arrow cooldown, Flame movement mode, Flying Block stop state, and
+arrow cooldown, Flame movement mode, Floating Platform stop state, and
 collected-object lifetime; generic lifecycle code names it `RuntimeObjectAux`.
 The complete per-consumer interpretation is recorded in `docs/data_formats.md`.
 The loader uses contextual aliases for `$1A` as the X high-byte scratch and

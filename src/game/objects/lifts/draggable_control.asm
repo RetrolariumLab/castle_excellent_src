@@ -1,4 +1,4 @@
-; Linked lift control
+; Draggable lift control
 ; Original CPU range $89E1-$8C11
 
 HandlePulleyHorizontalCollision:

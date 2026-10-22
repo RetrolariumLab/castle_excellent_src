@@ -27,7 +27,7 @@ PrgStart:
 .include "system/famicom_platform.asm"
 .include "game/player/input_and_movement.asm"
 .include "game/player/transitions_and_push.asm"
-.include "game/objects/lifts/linked_control.asm"
+.include "game/objects/lifts/draggable_control.asm"
 .include "game/collectibles/pickups_and_rewards.asm"
 .include "game/collision/player_pipeline.asm"
 .include "game/collision/handlers.asm"
