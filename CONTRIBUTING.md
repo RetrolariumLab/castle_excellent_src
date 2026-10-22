@@ -1,8 +1,8 @@
 # Contributing
 
 The project reconstructs the Japanese `HSP-05` release and the US Castlequest
-revision from one shared source tree; both must keep building byte for byte.
-For each change:
+revision from one shared source tree; both must keep building byte for byte. For
+each change:
 
 ```bash
 make format
@@ -17,14 +17,13 @@ Commit subjects and bodies are written in English. A subject names the completed
 result and has no trailing period; after a blank line, two or three paragraphs
 describe the affected boundary, the reason and the checks that passed.
 
-Do not commit ROM images, extracted assets, build products,
-emulator states, or third-party research clones. Keep `src/main.asm` in address
-order.
+Do not commit ROM images, extracted assets, build products, emulator states, or
+third-party research clones. Keep `src/main.asm` in address order.
 
-Write ROM addresses as labels, never as numbers: a table entry or pointer
-named by its address breaks as soon as anything before it moves, and `make
-test-full` will show it. Write on-screen text with `ScreenText` and music as
-MML strings ([`docs/data_formats.md`](docs/data_formats.md)).
+Write ROM addresses as labels, never as numbers: a table entry or pointer named
+by its address breaks as soon as anything before it moves, and `make test-full`
+will show it. Write on-screen text with `ScreenText` and music as MML strings
+([`docs/data_formats.md`](docs/data_formats.md)).
 
 Use confidence levels consistently:
 

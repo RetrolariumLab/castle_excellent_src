@@ -1,8 +1,8 @@
 # Castle Excellent NES source reconstruction
 
 A byte-identical ca65 reconstruction of **Castle Excellent** (`HSP-05`) on
-Famicom and **Castlequest** on NES, edited in Retrolarium Studio. Both
-revisions build from shared PRG source; the ROM-derived assets stay private.
+Famicom and **Castlequest** on NES, edited in Retrolarium Studio. Both revisions
+build from shared PRG source; the ROM-derived assets stay private.
 
 ## Status
 
@@ -11,15 +11,15 @@ Source Reconstruction 3.1. Editing happens in Retrolarium Studio:
 ([`docs/retrolarium.md`](docs/retrolarium.md)).
 
 3.1 keeps only what builds and checks the source. The earlier releases' Ghidra
-regeneration pipeline and its ledgers, audits, runtime evidence, FCEUX
-scenarios and debugger exports remain in the history (tags
-`source-reconstruction-1.0` to `3.0`); the source is now edited directly.
+regeneration pipeline and its ledgers, audits, runtime evidence, FCEUX scenarios
+and debugger exports remain in the history (tags `source-reconstruction-1.0` to
+`3.0`); the source is now edited directly.
 
 ## Quick start
 
-You need Python 3.11 or later, GNU Make and Retrolarium Kit (`rltool` on
-`PATH`, or `RLTOOL=...`); the kit supplies ca65 and ld65 and checks them. Copy
-your `Castle Excellent (J).nes` into the repository root, then:
+You need Python 3.11 or later, GNU Make and Retrolarium Kit (`rltool` on `PATH`,
+or `RLTOOL=...`); the kit supplies ca65 and ld65 and checks them. Copy your
+`Castle Excellent (J).nes` into the repository root, then:
 
 ```bash
 make           # the targets
@@ -49,30 +49,29 @@ Each revision builds from its entry file, `src/revisions/<id>.asm`, which sets
 
 ## Tests
 
-`make test` (about fifteen seconds) runs the unit tests, verifies every ROM
-that is here byte for byte, builds each relocated and runs the studio check.
+`make test` (about fifteen seconds) runs the unit tests, verifies every ROM that
+is here byte for byte, builds each relocated and runs the studio check.
 
 `make test-full` adds the attract mode played in MAME on each relocated build
-(`scripts/build/relocate.py`: a byte at the start of PRG and after every
-module, so each moves further than the one before, absorbed by the padding
-before the fixed tile tables). With no input the game shows its title and
-plays its one demo (72 commands in the title room), which resets to the title;
-3,000 frames cover that once. At ten checkpoints the room, lives, score, demo
-flag, inventory and player position must equal what the original ROM gives
+(`scripts/build/relocate.py`: a byte at the start of PRG and after every module,
+so each moves further than the one before, absorbed by the padding before the
+fixed tile tables). With no input the game shows its title and plays its one
+demo (72 commands in the title room), which resets to the title; 3,000 frames
+cover that once. At ten checkpoints the room, lives, score, demo flag, inventory
+and player position must equal what the original ROM gives
 (`movies/attract.check.json`, `movies/attract-castlequest.check.json`). The
 player position may trail by up to a cell (16 pixels across, 8 down): a moved
 routine can cross a page boundary and cost the odd lag frame. The movie reaches
-the demo's paths only: no room change, death, lift or Witch runs. Name MAME
-once with `rltool movie mame <path>` (or `MAME=<path>`); `make golden` records
-the reference values again. Name MAME once with `rltool movie mame <path>`
-(or `MAME=<path>`); `make golden` records
-the reference values again.
+the demo's paths only: no room change, death, lift or Witch runs. Name MAME once
+with `rltool movie mame <path>` (or `MAME=<path>`); `make golden` records the
+reference values again. Name MAME once with `rltool movie mame <path>` (or
+`MAME=<path>`); `make golden` records the reference values again.
 
-`make play MOVIE=attract` shows a movie in a MAME window at the game's
-speed, on the relocated build (or on `ROM=<image>`), and compares its cells
-with the original's once the window is closed; in MAME, F10 lifts the speed
-limit and Insert fast-forwards. `FRAMES=<frame>` closes MAME at that frame, `CLOSE=1`
-when the movie ends. `make play` alone plays `attract`.
+`make play MOVIE=attract` shows a movie in a MAME window at the game's speed, on
+the relocated build (or on `ROM=<image>`), and compares its cells with the
+original's once the window is closed; in MAME, F10 lifts the speed limit and
+Insert fast-forwards. `FRAMES=<frame>` closes MAME at that frame, `CLOSE=1` when
+the movie ends. `make play` alone plays `attract`.
 
 ## Repository map
 
@@ -90,8 +89,8 @@ castle_excellent.rlj   the Retrolarium project
 
 ## Research and rights
 
-The reconstruction builds on the published Castle Excellent room-data
-analysis and extractor:
+The reconstruction builds on the published Castle Excellent room-data analysis
+and extractor:
 
 - <https://habr.com/ru/articles/991848/>
 - <https://github.com/wizzard2010/cex>

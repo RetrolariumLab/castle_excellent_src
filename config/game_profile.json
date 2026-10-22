@@ -95,15 +95,7 @@
         "state_offsets_cpu": 43950,
         "state_capacity": 108,
         "final_room_minimum_bytes": 3,
-        "persistent_cell_values": [
-          25,
-          28,
-          31,
-          34,
-          37,
-          41,
-          84
-        ]
+        "persistent_cell_values": [25, 28, 31, 34, 37, 41, 84]
       }
     },
     {
@@ -124,21 +116,7 @@
         "initial_attributes_size": 16,
         "attribute_masks_cpu": 59667,
         "attribute_masks_size": 4,
-        "attribute_preserving_cells": [
-          9,
-          24,
-          27,
-          30,
-          33,
-          36,
-          39,
-          40,
-          43,
-          44,
-          45,
-          46,
-          83
-        ],
+        "attribute_preserving_cells": [9, 24, 27, 30, 33, 36, 39, 40, 43, 44, 45, 46, 83],
         "runtime_object_types_cpu": 60303,
         "runtime_object_type_count": 61,
         "metasprite_descriptors_cpu": 46262,
@@ -147,219 +125,142 @@
           {
             "runtime_type": 129,
             "descriptor_cpu": 46484,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 130,
             "descriptor_cpu": 46508,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 131,
             "descriptor_cpu": 46524,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 132,
             "descriptor_cpu": 46350,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 133,
             "descriptor_cpu": 46358,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 134,
             "descriptor_cpu": 46382,
-            "x_offsets": [
-              0
-            ]
+            "x_offsets": [0]
           },
           {
             "runtime_type": 135,
             "descriptor_cpu": 46404,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 136,
             "descriptor_cpu": 46428,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 137,
             "descriptor_cpu": 46472,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 138,
             "descriptor_cpu": 46528,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 139,
             "descriptor_cpu": 46532,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 140,
             "descriptor_cpu": 46536,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 141,
             "descriptor_cpu": 46540,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 142,
             "descriptor_cpu": 46544,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 143,
             "descriptor_cpu": 46548,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 144,
             "descriptor_cpu": 46512,
-            "x_offsets": [
-              0
-            ]
+            "x_offsets": [0]
           },
           {
             "runtime_type": 145,
             "descriptor_cpu": 46514,
-            "x_offsets": [
-              0
-            ]
+            "x_offsets": [0]
           },
           {
             "runtime_type": 146,
             "descriptor_cpu": 46516,
-            "x_offsets": [
-              0
-            ]
+            "x_offsets": [0]
           },
           {
             "runtime_type": 147,
             "descriptor_cpu": 46518,
-            "x_offsets": [
-              0
-            ]
+            "x_offsets": [0]
           },
           {
             "runtime_type": 148,
             "descriptor_cpu": 46520,
-            "x_offsets": [
-              0
-            ]
+            "x_offsets": [0]
           },
           {
             "runtime_type": 149,
             "descriptor_cpu": 46522,
-            "x_offsets": [
-              0
-            ]
+            "x_offsets": [0]
           },
           {
             "runtime_type": 150,
             "descriptor_cpu": 46556,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 151,
             "descriptor_cpu": 46560,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 152,
             "descriptor_cpu": 46564,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 153,
             "descriptor_cpu": 46568,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 154,
             "descriptor_cpu": 46572,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 155,
             "descriptor_cpu": 46576,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           },
           {
             "runtime_type": 159,
             "descriptor_cpu": 46600,
-            "x_offsets": [
-              0,
-              8
-            ]
+            "x_offsets": [0, 8]
           }
         ]
       }
@@ -458,26 +359,8 @@
       "parameters": {
         "file_offset": 31623,
         "size": 53,
-        "record_names": [
-          "title",
-          "load",
-          "save",
-          "reset",
-          "back",
-          "game",
-          "loading",
-          "saving"
-        ],
-        "record_sizes": [
-          12,
-          5,
-          5,
-          6,
-          5,
-          5,
-          8,
-          7
-        ]
+        "record_names": ["title", "load", "save", "reset", "back", "game", "loading", "saving"],
+        "record_sizes": [12, 5, 5, 6, 5, 5, 8, 7]
       }
     },
     {
@@ -495,13 +378,7 @@
           "noise_type_4_period",
           "noise_type_4_length"
         ],
-        "record_sizes": [
-          4,
-          4,
-          4,
-          4,
-          4
-        ]
+        "record_sizes": [4, 4, 4, 4, 4]
       }
     },
     {
@@ -522,11 +399,7 @@
           "Unreferenced selector",
           "Type $81 event"
         ],
-        "channel_names": [
-          "Pulse 1",
-          "Pulse 2",
-          "Triangle"
-        ],
+        "channel_names": ["Pulse 1", "Pulse 2", "Triangle"],
         "playback_prefix_file_offset": 15142,
         "playback_prefix_cpu_address": 47894,
         "playback_prefix_size": 209,
@@ -555,21 +428,9 @@
       "capacity_policy": "fixed",
       "parameters": {
         "chr_file_offset": 57360,
-        "pages": [
-          20,
-          24,
-          28
-        ],
-        "page_names": [
-          "completion",
-          "title",
-          "castle-map"
-        ],
-        "chr_banks": [
-          0,
-          1,
-          1
-        ],
+        "pages": [20, 24, 28],
+        "page_names": ["completion", "title", "castle-map"],
+        "chr_banks": [0, 1, 1],
         "game_over_cpu": 65156,
         "game_over_length": 9
       }

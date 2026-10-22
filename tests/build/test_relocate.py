@@ -41,13 +41,15 @@ class RelocateTests(unittest.TestCase):
         # Nothing between the tail and the CHR, and nothing in the header.
         tail = next(i for i, line in enumerate(lines) if line.endswith('prg_tail.asm"'))
         self.assertNotIn(relocate.EA_DIRECTIVE, lines[tail:])
-        self.assertNotIn(relocate.EA_DIRECTIVE, lines[:lines.index("PrgStart:")])
+        self.assertNotIn(relocate.EA_DIRECTIVE, lines[: lines.index("PrgStart:")])
 
     def test_a_main_of_another_shape_is_refused(self) -> None:
-        for broken in (MAIN.replace("PrgStart:\n", ""),
-                       MAIN.replace('.include "system/famicom_platform.asm"\n', ""),
-                       MAIN.replace('.include "graphics/chr.asm"\n', ""),
-                       MAIN + '.include "game/b.asm"\n'):
+        for broken in (
+            MAIN.replace("PrgStart:\n", ""),
+            MAIN.replace('.include "system/famicom_platform.asm"\n', ""),
+            MAIN.replace('.include "graphics/chr.asm"\n', ""),
+            MAIN + '.include "game/b.asm"\n',
+        ):
             with self.assertRaises(relocate.RelocationError):
                 self.relocated(broken)
 

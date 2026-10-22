@@ -48,7 +48,7 @@ def relocated_main(main_source: Path, output: Path) -> tuple[list[str], int]:
         if paths.count(required) != 1:
             raise RelocationError(f"{main_source.name} must include {required} once")
     first, tail = paths.index(FIRST), paths.index(TAIL)
-    if not lines.index(ORIGIN) < includes[first][0] < includes[tail][0] or paths[tail + 1:] != [AFTER_TAIL]:
+    if not lines.index(ORIGIN) < includes[first][0] < includes[tail][0] or paths[tail + 1 :] != [AFTER_TAIL]:
         raise RelocationError(f"{main_source.name} must have {ORIGIN}, then {FIRST} ... {TAIL}, then {AFTER_TAIL}")
     moved = {index for index, _ in includes[first:tail]}
     result, inserted = [], 0
