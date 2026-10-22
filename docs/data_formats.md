@@ -75,8 +75,10 @@ The codebook begins at `$E45D`. Each entry has this structural form:
 output byte, one or more ASCII $30/$31 code bytes, $00
 ```
 
-An `$FF` entry marker terminates the candidate table. The original routine
-compares candidates in table order. The table is prefix-free, so a decoder may
+In the source each entry is one line, such as `.byte $53, "1", $00`. An `$FF`
+entry marker terminates the candidate table. The decoder reads each room's
+bitstream most significant bit first (`RoomBitMasks`) and compares candidates
+in table order. The table is prefix-free, so a decoder may
 use an equivalent direct lookup.
 
 The independent decoder reaches exactly 400 output cells for all 100 rooms.
@@ -487,6 +489,101 @@ Seven selector entry points at `$B875-$B88D` load record offsets 0-5 and 7;
 no static selector for record 6 is currently known. Their shared body at
 `$B895` copies the three pointers and two channel parameters to zero-page audio
 state and primes each duration counter to one tick.
+
+## Palettes
+
+Every palette upload copies 32 bytes (background and sprites) from a pointer
+into the tables at `$C4FD-$C55C` (`src/rendering/frame_pipeline.asm`):
+
+| Label | Size | Upload starting here |
+| --- | ---: | --- |
+| `CompletionPaletteData` | 16 | completion screen; its sprites use the title palette |
+| `TitlePaletteData` | 16 | title screen; its sprites use the castle map's first 16 bytes |
+| `CastleMapPaletteData` | 32 | castle map |
+| `RoomPaletteData` | 32 | rooms |
+
+So the first three tables overlap: a change to the title palette also changes
+the completion screen's sprite colors. The title palette is the one table that
+differs between revisions. The Studio edits the first three tables as
+`screen-palettes` and the room table as `room-palettes`
+(`nes.palette-table.v1`).
+
+## Full screens
+
+The title, completion and castle-map screens are complete 1 KiB nametables
+(960 tiles and 64 attribute bytes) stored in CHR bank 3.
+`CopyChrNametablePagesToVram` selects that bank, copies four 256-byte pages
+from the given CHR page to nametable `$2000-$23FF`, and the caller then selects
+the bank that holds the screen's tiles:
+
+| Screen | CHR bank 3 range | Page constant | Tiles from bank |
+| --- | --- | --- | ---: |
+| completion | `$1400-$17FF` | `CompletionNametableChrPage` | 0 |
+| title | `$1800-$1BFF` | `TitleNametableChrPage` | 1 |
+| castle map | `$1C00-$1FFF` | `CastleMapNametableChrPage` | 1 |
+
+The completion screen is why bank 3's room arena ends at `$1400`. The Studio
+edits the three screens and the game-over text below as `screens`
+(`castle-excellent.screens.v1`).
+
+## Screen text
+
+Text the game prints uses tiles `$71-$8A` for the letters `A`-`Z`, `$FF` for a
+space and `$00` as the terminator, where `WriteTerminatedPpuTiles` stops. The `ScreenText` macro
+(`src/ui/screen_text.inc`) writes a string this way and appends the
+terminator, for example `ScreenText "GAME OVER"` at `GameOverMessageTiles`.
+`LoadErrorMessage`, `LoadErrorPrompt` and the menu labels use it too. The
+status-bar streams above use other tiles (digits are `$60-$69`) and stay as
+bytes.
+
+The sub-command menu labels and the transfer messages are eight records at
+`SubCommandTitleText` (`$FB77`), 53 bytes in all:
+
+| Record | Japanese | Castlequest | Bytes |
+| --- | --- | --- | ---: |
+| title | `SUB COMMAND` | same | 12 |
+| load | `LOAD` | `GAME` | 5 |
+| save | `SAVE` | empty | 5 |
+| reset | `RESET` | same | 6 |
+| back | `BACK` | same | 5 |
+| game | `GAME` | empty | 5 |
+| loading | `LOADING` | same | 8 |
+| saving | `SAVING` | same | 7 |
+
+Castlequest empties a label by turning its first letter into the terminator;
+the other letters stay behind it. A record's size is fixed, since code points
+to each label: a longer label needs the records after it moved. The Studio
+edits them as `sub-command-text` (`castle-excellent.sub-command-text.v1`).
+
+## Title demo
+
+`TitleDemoInputScript` (`$B82C`, `src/rendering/scenes.asm`) is the input of
+the one title demo: 72 controller bytes (the layout above) and the terminator
+`$FF`. During the demo `ReadDemoController1` returns the current byte with
+Select and Start masked off (`$F3`). A byte lasts 12 polls
+(`DemoInputCommandFrames`), except the first, which lasts 11 because
+`InitializeTitleDemoPlayback` starts the counter at zero. At the terminator
+the game jumps to `Reset`; Start on the real controller leaves the demo at any
+time. The Studio edits it as `title-demo` (`castle-excellent.title-demo.v1`), up to the
+same 72 bytes.
+
+## Sound effect parameters
+
+Five four-byte tables at `$C429-$C43C` (`src/audio/sound_effects.asm`) hold
+the stepped sound effects. Each effect's start routine writes its first
+values directly; then each time the channel's length counter runs out, the
+update advances a step counter and writes entries 1-3. Entry 0 of each table is never read.
+
+| Label | Register | Effect |
+| --- | --- | --- |
+| `TriangleSoundEffect2PeriodLow` | `$400A` | triangle effect 2; nothing starts it |
+| `InventorySoundEffectPeriodLow` | `$4006` | inventory pickup (pulse 2, high byte `$48`) |
+| `NoiseSoundEffect4Volume` | `$400C` | noise effect 4 (`StartNoiseSoundEffect4`) |
+| `NoiseSoundEffect4Period` | `$400E` | noise effect 4 |
+| `NoiseSoundEffect4Length` | `$400F` | noise effect 4 |
+
+The other effects keep their register values in the code. The Studio edits
+these tables as `sfx-parameters` (`castle-excellent.sfx-parameters.v1`).
 
 ## Round-trip status
 
